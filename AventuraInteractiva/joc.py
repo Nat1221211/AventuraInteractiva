@@ -67,25 +67,31 @@ zones[5].AddConnections([zones[4]])
         # Objectes
 objectes = [
             # Objectes de Combat
-            Objectes.ObjecteCombat("Pocio Inferior", "Descripcio", "Health", 10),
-            Objectes.ObjecteCombat("Pocio", "Descripcio", "Health", 20),
-            Objectes.ObjecteCombat("Pocio Intermitja", "Descripcio", "Health", 40),
-            Objectes.ObjecteCombat("Pocio Avançada", "Descripcio", "Health", 60),
-            Objectes.ObjecteCombat("Pocio Completa", "Descripcio", "Health", 100),
-            Objectes.ObjecteCombat("Elixir", "Descripcio", "Health", 9999),
-            Objectes.ObjecteCombat("Força", "Descripcio", "ATK", 1.3),
-            Objectes.ObjecteCombat("Força Superior", "Descripcio", "ATK", 2),
-            Objectes.ObjecteCombat("Força Colerica", "Descripcio", "ATK", 2.5),
-            Objectes.ObjecteCombat("Resistencia", "Descripcio", "DEF", 1.3),
-            Objectes.ObjecteCombat("Mur de Roca", "Descripcio", "DEF", 2),
-            Objectes.ObjecteCombat("Mur d'acer", "Descripcio", "DEF", 2.5),
-            Objectes.ObjecteCombat("Carrera", "Descripcio", "SPD", 1.3),
-            Objectes.ObjecteCombat("Llampeg", "Descripcio", "SPD", 2),
-            Objectes.ObjecteCombat("Raig", "Descripcio", "SPD", 2.5),
+            Objectes.ObjecteCombat("Pocio Inferior", "Cura 10 punts de vida", "Health", 10, 100),
+            Objectes.ObjecteCombat("Pocio", "Descripcio", "Health", 20, 300),
+            Objectes.ObjecteCombat("Pocio Intermitja", "Descripcio", "Health", 40, 750),
+            Objectes.ObjecteCombat("Pocio Avançada", "Descripcio", "Health", 60, 2000),
+            Objectes.ObjecteCombat("Pocio Completa", "Descripcio", "Health", 100, 4000),
+            Objectes.ObjecteCombat("Elixir", "Descripcio", "Health", 9999, 10000),
+            Objectes.ObjecteCombat("Força", "Descripcio", "ATK", 1.3, 300),
+            Objectes.ObjecteCombat("Força Superior", "Descripcio", "ATK", 2, 750),
+            Objectes.ObjecteCombat("Força Colerica", "Descripcio", "ATK", 2.5, 2000),
+            Objectes.ObjecteCombat("Resistencia", "Descripcio", "DEF", 1.3, 300),
+            Objectes.ObjecteCombat("Mur de Roca", "Descripcio", "DEF", 2, 750),
+            Objectes.ObjecteCombat("Mur d'acer", "Descripcio", "DEF", 2.5, 2000),
+            Objectes.ObjecteCombat("Carrera", "Descripcio", "SPD", 1.3, 300),
+            Objectes.ObjecteCombat("Llampeg", "Descripcio", "SPD", 2, 750),
+            Objectes.ObjecteCombat("Raig", "Descripcio", "SPD", 2.5, 2000),
             
             # Objectes de Combat
             Objectes.ObjecteClau("Pedra Misteriosa", "???"),
             ]
+
+botiga = [objectes[0],
+          objectes[6],
+          objectes[9],
+          objectes[12],
+          ]
 
 def CrearJugador():
     nom = ""
@@ -100,13 +106,13 @@ def CrearJugador():
     for i in EntityTypes:
         if i.isPlayable == True:
             clases.append(i)
-            nomclases.append(i.EntityName)
+            nomclases.append(i.EntityName.lower())
     # nomclases =  list(map(lambda x: x.EntityName, clases))
     while clase not in nomclases:
         try:
             for i in clases:
                 print(f"{i.EntityName}, {i.EntityDescription}.")
-            clase = input("Digues una de les clases mostrades anteriorment: ")
+            clase = input("Digues una de les clases mostrades anteriorment: ").lower()
             if clase not in nomclases:
                 print(f"Has de dir una de les clases anteriors: {nomclases}")
         except ValueError:
@@ -115,7 +121,7 @@ def CrearJugador():
     jugador = None
     temp = 0
     while jugador == None:
-        if clases[temp].EntityName == clase:
+        if clases[temp].EntityName.lower() == clase:
             jugador = Entitat.Entity(nom, 5, True,clases[temp])
         temp += 1
 
@@ -159,7 +165,7 @@ def AccioMenuPrincipal():
     elif menu.get(pos) == "Posada":
         Posada()
     elif menu.get(pos) == "Botiga":
-        print("")
+        Botiga()
     elif menu.get(pos) == "Estat":
         jugador.ShowStatus()
     elif menu.get(pos) == "Misions":
@@ -174,6 +180,51 @@ def AccioMenuPrincipal():
         jugador.ObjectesMochila()
     elif menu.get(pos) == "Info":
         print("Info (Ajuda sobre les opcions del menu...)")
+
+def PrepararBotiga(): # Afegir objectes segons nivell
+    global jugador
+    if jugador.Lv > 10:
+        if [objectes[1], objectes[7], objectes[10], objectes[13]] not in botiga:
+            botiga.append(objectes[1])
+            botiga.append(objectes[7])
+            botiga.append(objectes[10])
+            botiga.append(objectes[13])
+    if jugador.Lv > 20:
+        if [objectes[2], objectes[8], objectes[11], objectes[14]] not in botiga:
+            botiga.append(objectes[2])
+            botiga.append(objectes[8])
+            botiga.append(objectes[11])
+            botiga.append(objectes[14])
+    if jugador.Lv > 35:
+        if [objectes[3], objectes[4], objectes[5]] not in botiga:
+            botiga.append(objectes[3])
+            botiga.append(objectes[4])
+            botiga.append(objectes[5])
+
+def Botiga():
+    PrepararBotiga()
+    res = -1
+    while res not in (range(0, len(botiga) + 1)):
+        temp = 0
+        for i in botiga:
+            print(f"{temp + 1} -> {i.ObjectName}")
+            print(f"Preu: {i.Preu} gold\n")
+            temp += 1
+            if temp == len(botiga):
+                print(f"{temp + 1} -> Sortir")
+        res = int(input("Que vols comprar: (Numero)\n"))
+        if res not in (range(0, len(botiga) + 1)):
+            print("Has de dir un dels objectes o el numero equivalent a sortir.")
+    if res == len(botiga) + 1:
+        print("Has sortit de la botiga...")
+    else:
+        qty = 0
+        res = res -1
+        while qty < 1:
+            qty = int(input(f"\nQuants/es {botiga[res].ObjectName} vols comprar: "))
+        jugador.AfegirObjecte(botiga[res], qty)
+        jugador.gold -= botiga[res].Preu * qty
+        print(f"Has comprat {qty} {botiga[res].ObjectName} per {botiga[res].Preu * qty} gold !")
 
 def Posada():
     global jugador
@@ -246,7 +297,7 @@ def AccionsLluita(enemy):
             turn = True
     elif accio == 4:
         os.system("cls")
-        jugador.ShowStatus()
+        jugador.ShowStatus(True)
         turn = True
     
     return enemy, turn

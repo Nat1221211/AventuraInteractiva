@@ -72,23 +72,29 @@ class Entity(EntityType.EntityType):
 
     def atacar(self, enemy):
         damage = ((self.ATK / enemy.DEF) * 1) * (random.randint(90,111) / 100)
-        enemy.CurHP -= round(damage, 2)
+        damage = round(damage, 2)
+        enemy.CurHP -= damage
         if enemy.CurHP <= 0 and enemy.isPlayer == False:
             print(f"{enemy.nom} ha estat derrotat.")
         else:
             print(f"{enemy.nom} ha perdut {damage} punts de vida...")
         return enemy
 
-    def ShowStatus(self):
+    def ShowStatus(self, combat = False):
         print(f"Nom: {self.nom}")
         if self.base.isPlayable == True:
             print(f"Clase: {self.base.EntityName}")
             print(f"Or: {self.gold}")
         print(f"Lv: {self.Lv} / {self.LvLimit}")
         print(f"HP: {round(self.CurHP, 2)} / {self.MaxHP}")
-        print(f"ATK: {self.ATK}")
-        print(f"DEF: {self.DEF}")
-        print(f"SPD: {self.SPD}")
+        if combat == False:
+            print(f"ATK: {self.ATK}")
+            print(f"DEF: {self.DEF}")
+            print(f"SPD: {self.SPD}")
+        else:
+            print(f"ATK: {self.tempATK}")
+            print(f"DEF: {self.tempDEF}")
+            print(f"SPD: {self.tempSPD}")
 
     def LvlUp(self, enemy):
         if self.Lv < self.LvLimit:
@@ -138,7 +144,7 @@ class Entity(EntityType.EntityType):
             if res == 2:
                 obj = -2
                 objectNames = list(self.objectes.keys())
-                while obj not in range(1, len(self.objectes.keys())) and obj != 0:
+                while obj not in range(1, len(objectNames) + 1) and obj != 0:
                     try:
                         os.system("cls")
                         ind = 1

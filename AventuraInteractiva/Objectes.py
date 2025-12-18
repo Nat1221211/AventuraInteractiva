@@ -33,13 +33,15 @@ class ObjecteCombat(Objecte):
 
     TypeEffect = "" # Si afecta a curar, augment d'estadistiques, fugida, etc...
     EffectQuantity = int()  # Quantitat del efecte (curació, augment d'estadistiques, etc. La quantitat)
+    Preu = int()
 
     # Metodes
-    def __init__(self, name, description, TypeEffect, effectquantity):
+    def __init__(self, name, description, TypeEffect, effectquantity, price):
         self.ObjectName = name
         self.ObjectDescription = description
         self.TypeEffect = TypeEffect
         self.EffectQuantity = effectquantity
+        self.Preu = price
     
     def Utilitzar(self, jugador):
         if self.TypeEffect == "Health":
