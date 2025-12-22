@@ -75,15 +75,18 @@ class Entity(EntityType.EntityType):
 
     def CalcularDamage(self, enemy):
         damage = ((self.ATK / enemy.DEF) * 1) * (random.randint(90,111) / 100)
-        crit = random.choices([True, False], cum_weights=[20, 80])
+        crit = random.choices([True, False], cum_weights=[5, 95])
         if crit[0] == True:
             damage *= 1.75
-        
+            print("Ha estat un cop critic...")
         amplify = 1
         for i in self.Tituls:
             if enemy.base in i.Afects:
                 amplify += i.DamageAmplify - 1
+        if amplify != 1:
+            print("El dany causat a incrementat a causa dels titols.")
         damage *= amplify
+        return damage
 
     def atacar(self, enemy):
         damage = self.CalcularDamage(enemy)
