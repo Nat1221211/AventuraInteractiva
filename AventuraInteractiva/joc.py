@@ -128,8 +128,12 @@ achievements = [
 missions = [
     Missions.KillMission("Eliminant el Perill", 
                          "Troba i elimna al perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur", 
-                         [("XP", 1200), ("Gold", 10000), objectes[15]], 1, EntityTypes[10], [("Lv", 5)], zones[3], False,
+                         [("XP", 1200), ("Gold", 10000), (objectes[15], 1)], 1, EntityTypes[10], [("Lv", 5)], zones[3], False,
                          Entitat.Entity("El Golem de Roca", 40, False, EntityTypes[10])),
+    Missions.KillMission("Mostra de Confiança", 
+                         "Troba i elimna al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
+                         [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, EntityTypes[4], [("Lv", 5)], zones[1], False,
+                         Entitat.Entity("Llop Lider", 9, False, EntityTypes[4])),
 ]
 
 
@@ -163,7 +167,7 @@ def CrearJugador():
     temp = 0
     while jugador == None:
         if clases[temp].EntityName.lower() == clase:
-            jugador = Entitat.Entity(nom, 5, True,clases[temp])
+            jugador = Entitat.Entity(nom, 5, True, clases[temp])
         temp += 1
 
     return jugador
@@ -212,7 +216,7 @@ def AccioMenuPrincipal():
     elif menu.get(pos) == "Misions":
         MenuMisions()
     elif menu.get(pos) == "Lluitar":
-        Lluitar()
+        GenerarEnemic()
     elif menu.get(pos) == "Guardar":
         print("")
     elif menu.get(pos) == "Exits":
@@ -251,41 +255,41 @@ def MenuMisions():
                     except ValueError:
                         print("Ha ocurregut un error...")
                 if filtrar == 2:
-                    count = ShowMisions("Accepted", "Res")
+                    count, reclamar = ShowMisions("Accepted", "Res")
                 elif filtrar == 4:
-                    count = ShowMisions("Completed", "Res")
+                    count, reclamar = ShowMisions("Completed", "Res")
                 elif filtrar == 3:
-                    count = ShowMisions("Requisites", "Res")
+                    count, reclamar  = ShowMisions("Requisites", "Res")
                 elif filtrar == 1:
-                    count = ShowMisions("Totes", "Res")
+                    count, reclamar  = ShowMisions("Totes", "Res")
             elif res == 2:
-                count = ShowMisions("Requisites", "Aceptar")
+                count, reclamar  = ShowMisions("Requisites", "Aceptar")
                 aceptar = 0
                 while aceptar not in range(1, count + 1):
                     os.system("cls")
-                    count = ShowMisions("Requisites", "Aceptar")
+                    count, reclamar  = ShowMisions("Requisites", "Aceptar")
                     try:
                         aceptar = int(input("Digues quina misio vols aceptar: "))
                         if aceptar < count + 1 and aceptar > 0:
                             if aceptar == count:
                                 print("Has sortit")
                             else:
-                                missions[aceptar - 1].Aceptar(jugador)
+                                reclamar[aceptar - 1].Aceptar(jugador)
                     except ValueError:
                         print("Ha ocurregut un error...")
             elif res == 3:
-                count = ShowMisions("Rewards Unclaimed", "Aceptar")
+                count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar")
                 aceptar = 0
                 while aceptar not in range(1, count + 1):
                     os.system("cls")
-                    count = ShowMisions("Rewards Unclaimed", "Aceptar")
+                    count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar")
                     try:
-                        aceptar = int(input("Digues quina misio vols aceptar: "))
+                        aceptar = int(input("Digues quina misio vols reclamar: "))
                         if aceptar < count + 1 and aceptar > 0:
                             if aceptar == count:
                                 print("Has sortit")
                             else:
-                                missions[aceptar - 1].ClaimedRewards(jugador)
+                                reclamar[aceptar - 1].ClaimedRewards(jugador)
                     except ValueError:
                         print("Ha ocurregut un error...")
             if res != 4:
@@ -300,6 +304,7 @@ def MenuMisions():
     
 def ShowMisions(filter, accio):
     count = 1
+    llista = []
     for i in missions:
         i.RequisitesCompleted(jugador)
         if i.Status == filter:
@@ -307,15 +312,16 @@ def ShowMisions(filter, accio):
             print(f"Estat: {i.Status}")
             print(f"{i.Description}")
             count += 1
+            llista.append(i)
             if filter == "Requisites":
                 i.ShowRequisites()
-        if accio != "Res":
-                print(f"{count} -> Sortir")
         if filter == "Totes":
             print(f"\n{count} -> {i.Name}")
             print(f"Estat: {i.Status}\n")
             count += 1
-    return count
+    if accio != "Res":
+        print(f"{count} -> Sortir")
+    return count, llista
 
 
 def MostrarExits():
@@ -447,15 +453,15 @@ def Explorar():
     elif prob > 20 and prob <= 60:  # Res
         llista = []
         for i in missions:
-            if i.Status == "Acepted" and i.Place == ubicacio:
+            if i.Status == "Accepted" and i.Place == ubicacio:
                 if type(i) == Missions.KillMission:
                     if i.Generic == False:
                         llista.append(i)
                 else:
                     llista.append(i)
         if len(llista) > 0:
-            choice = random.choices(["res", "missio"], [90, 10])
-            if choice == "missio":
+            choice = random.choices(["res", "missio"], [10, 90])
+            if choice[0] == "missio":
                 misio = random.choice(llista)
                 OcurrenciaMisio(misio)
             else:
@@ -535,7 +541,7 @@ def Fugir(enemy):
    
     # 75% base * resultat de velocitat del jugador entre la del enemic. (75 * (22 / 20) = 1.1) = 82.5)
     if prob < 100:
-        fugir = random.choices([True, False], weights=[prob, 100 - prob])
+        fugir = random.choices([True, False], cum_weights=[prob, 100 - prob])
     else:
         fugir = [True]
     if fugir[0] == True:
@@ -581,15 +587,21 @@ def Lluitar(enemy):
         jugador.gold += enemy.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
         print(f"Has guanyat {enemy.Lv * 10} gold.")
         ComprovarExits(enemy)
+        ComprovarMisions(enemy)
     else:
         finalitzarCombat()
+
+def ComprovarMisions(enemy):
+    for i in missions:
+        if type(i) == Missions.KillMission:
+            i.IncrementCount(enemy)
 
 def finalitzarCombat():
     global jugador
     jugador.DefinirTempStats()
         
 def EntityState(entity):
-    print(f"{entity.nom}, LV: {entity.Lv}, HP: {round(entity.CurHP, 2)} / {entity.MaxHP}")
+    print(f"{entity.nom}, LV: {entity.Lv}, HP: {round(entity.CurHP, 2)} / {round(entity.MaxHP, 2)}")
 
 def main():
     print("!! - Joc Interactiu - !!")

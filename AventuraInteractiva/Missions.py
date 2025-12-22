@@ -140,11 +140,13 @@ class KillMission(Mission):
             self.Enemic = enemy
 
     def IncrementCount(self, enemy):
-        if enemy.base == self.Objective:
-            self.Count += 1
-    
-    def Completed(self):
-        if self.Count >= self.Quantity:
-            self.Status = "Rewards Unclaimed"
+        if self.Generic == True:
+            if enemy.base == self.Objective:
+                self.Count += 1
+            if self.Count >= self.Quantity:
+                self.Status = "Rewards Unclaimed"
+        else:
+            if enemy == self.Enemic:
+                self.Status = "Rewards Unclaimed"
 
 
