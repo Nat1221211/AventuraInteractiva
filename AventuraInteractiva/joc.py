@@ -128,7 +128,8 @@ achievements = [
 missions = [
     Missions.KillMission("Eliminant el Perill", 
                          "Troba i elimna al perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur", 
-                         [("XP", 1200), ("Gold", 10000), objectes[15]], 1, EntityTypes[11], [("Lv", 5)], zones[3]),
+                         [("XP", 1200), ("Gold", 10000), objectes[15]], 1, EntityTypes[10], [("Lv", 5)], zones[3], False,
+                         Entitat.Entity("El Golem de Roca", 40, False, EntityTypes[10])),
 ]
 
 
@@ -209,7 +210,7 @@ def AccioMenuPrincipal():
     elif menu.get(pos) == "Estat":
         jugador.ShowStatus()
     elif menu.get(pos) == "Misions":
-        print("")
+        MenuMisions()
     elif menu.get(pos) == "Lluitar":
         Lluitar()
     elif menu.get(pos) == "Guardar":
@@ -220,6 +221,102 @@ def AccioMenuPrincipal():
         jugador.ObjectesMochila()
     elif menu.get(pos) == "Info":
         print("Info (Ajuda sobre les opcions del menu...)")
+
+def MenuMisions():
+    res = 0
+    while res not in [1, 2, 3, 4]:
+        res = 0
+        os.system("cls")
+        print("1 -> Veure Misions")
+        print("2 -> Acceptar Misions")
+        print("3 -> Reclamar Misions")
+        print("4 -> Sortir")
+        try:
+            res = int(input("Digues el numero segons el que vols fer: "))
+            if res not in [1, 2, 3, 4]:
+                print("Has de dir un dels numeros segons el que vols fer...")
+            elif res == 1:
+                filtrar = 0
+                while filtrar not in [1, 2, 3, 4, 5]:
+                    os.system("cls")
+                    print("1 -> Totes")
+                    print("2 -> Aceptades")
+                    print("3 -> Requisits Complerts per aceptar")
+                    print("4 -> Completades")
+                    print("5 -> Sortir")
+                    try:
+                        filtrar = int(input("Digues que vols fer: "))
+                        if filtrar not in [1, 2, 3, 4, 5]:
+                            print("Has de dir un dels numeros segons el que vols fer...")
+                    except ValueError:
+                        print("Ha ocurregut un error...")
+                if filtrar == 2:
+                    count = ShowMisions("Accepted", "Res")
+                elif filtrar == 4:
+                    count = ShowMisions("Completed", "Res")
+                elif filtrar == 3:
+                    count = ShowMisions("Requisites", "Res")
+                elif filtrar == 1:
+                    count = ShowMisions("Totes", "Res")
+            elif res == 2:
+                count = ShowMisions("Requisites", "Aceptar")
+                aceptar = 0
+                while aceptar not in range(1, count + 1):
+                    os.system("cls")
+                    count = ShowMisions("Requisites", "Aceptar")
+                    try:
+                        aceptar = int(input("Digues quina misio vols aceptar: "))
+                        if aceptar < count + 1 and aceptar > 0:
+                            if aceptar == count:
+                                print("Has sortit")
+                            else:
+                                missions[aceptar - 1].Aceptar(jugador)
+                    except ValueError:
+                        print("Ha ocurregut un error...")
+            elif res == 3:
+                count = ShowMisions("Rewards Unclaimed", "Aceptar")
+                aceptar = 0
+                while aceptar not in range(1, count + 1):
+                    os.system("cls")
+                    count = ShowMisions("Rewards Unclaimed", "Aceptar")
+                    try:
+                        aceptar = int(input("Digues quina misio vols aceptar: "))
+                        if aceptar < count + 1 and aceptar > 0:
+                            if aceptar == count:
+                                print("Has sortit")
+                            else:
+                                missions[aceptar - 1].ClaimedRewards(jugador)
+                    except ValueError:
+                        print("Ha ocurregut un error...")
+            if res != 4:
+                res = 0
+            else:
+                print("Has sortit del menu de misions...")
+            
+        except ValueError:
+            print("Ha ocurregut un error...")
+        
+        input("Presiona per a continuar...")
+    
+def ShowMisions(filter, accio):
+    count = 1
+    for i in missions:
+        i.RequisitesCompleted(jugador)
+        if i.Status == filter:
+            print(f"\n{count} -> {i.Name}")
+            print(f"Estat: {i.Status}")
+            print(f"{i.Description}")
+            count += 1
+            if filter == "Requisites":
+                i.ShowRequisites()
+        if accio != "Res":
+                print(f"{count} -> Sortir")
+        if filter == "Totes":
+            print(f"\n{count} -> {i.Name}")
+            print(f"Estat: {i.Status}\n")
+            count += 1
+    return count
+
 
 def MostrarExits():
     print("Exits")
@@ -307,8 +404,6 @@ def Posada():
     else:
         print("Has marxat...")
 
-
-
 def Mapa():
     global ubicacio
     count = 1
@@ -332,6 +427,17 @@ def Mapa():
     else:
         ubicacio = disponibles[pos - 1]    # Canviem la zona i la retornem
 
+def OcurrenciaMisio(misio):
+    if type(misio) == Missions.KillMission:
+        Lluitar(misio.Enemic)
+    elif type(misio) == Missions.FindMission:
+        print(f"Has trobat {misio.Objective}")
+        misio.Completed()
+    elif type(misio) == Missions.ObjectMission:
+        print(f"Has trobat {misio.Objective}")
+        misio.Completed()
+
+
 def Explorar():
     global jugador, ubicacio
     print("Has començar a explorar...")
@@ -339,10 +445,26 @@ def Explorar():
     if prob <= 20:  # Or
         TrobarOr(ubicacio.Or.keys())
     elif prob > 20 and prob <= 60:  # Res
-        print("No has trobat res...")
+        llista = []
+        for i in missions:
+            if i.Status == "Acepted" and i.Place == ubicacio:
+                if type(i) == Missions.KillMission:
+                    if i.Generic == False:
+                        llista.append(i)
+                else:
+                    llista.append(i)
+        if len(llista) > 0:
+            choice = random.choices(["res", "missio"], [90, 10])
+            if choice == "missio":
+                misio = random.choice(llista)
+                OcurrenciaMisio(misio)
+            else:
+                print("No has trobat res...")   
+        else:
+            print("No has trobat res...")
     elif prob > 60 and prob <= 90:  # Lluitar
-        Lluitar()
-    elif prob > 90 and prob <= 100:
+        GenerarEnemic()
+    elif prob > 90 and prob <= 100: # Seguent ruta
         print("Has trobat una ruta a la seguent zona...")
         for i in ubicacio.Connections:
             if i.Trobada == False:
@@ -422,13 +544,16 @@ def Fugir(enemy):
         print("No has aconseguit escapar...")
     return fugir
     
-    
-
-def Lluitar():
-    global jugador, ubicacio
+def GenerarEnemic():
+    global ubicacio
     opcions = list(ubicacio.Enemies.keys())
     seleccio = random.choices(opcions, ubicacio.Enemies.values())
     enemy = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0])
+    Lluitar(enemy)
+
+def Lluitar(enemy):
+    global jugador, ubicacio
+
     print(f"Ha aparegut un {enemy.nom}")
 
     turn = False

@@ -53,7 +53,8 @@ class Entity(EntityType.EntityType):
         if IsPlayer == True:
             self.gold = 2000
         else:
-            self.nom = self.base.EntityName
+            if nom == "":
+                self.nom = self.base.EntityName
             self.gold = gold
         self.objectes = objectes
         

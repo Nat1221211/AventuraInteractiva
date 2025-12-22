@@ -8,6 +8,7 @@ import random
 import Entitat
 import Objectes
 import Zones
+import EntityType
 
 class Mission():
     
@@ -25,41 +26,61 @@ class Mission():
         self.Description = description
         self.Rewards = rewards
     
-    def Aceptar(self, jugador):
-        reqcompleted = True
+    def RequisitesCompleted(self, jugador):
+        if self.Status not in ["Accepted", "Requisites", "Completed", "Rewards Unclaimed"]:
+            reqcompleted = True
+            if len(self.Requisite) > 0:
+                for i in self.Requisite:
+                    if type(i) == tuple:
+                        if i[0] == "Lv":
+                            if jugador.Lv < i[1]:
+                                reqcompleted = False
+                    elif type(i) in [Mission, FindMission, ObjectMission, KillMission]:
+                        if i.Status != "Completed":
+                            reqcompleted = False
+            if reqcompleted == True:
+                self.Status = "Requisites"
+
+    def ShowRequisites(self):
         if len(self.Requisite) > 0:
+            print("-- Requisites:")
             for i in self.Requisite:
                 if type(i) == tuple:
                     if i[0] == "Lv":
-                        if jugador.Lv <= i[1]:
-                            reqcompleted = False
+                        print(f"    Player Level >= {i[1]}")
                 elif type(i) in [Mission, FindMission, ObjectMission, KillMission]:
-                    if i.Status != "Completed":
-                        reqcompleted = False
-        if reqcompleted == True:
-            self.Status = "Acepted"
+                    print(f"    {i.Name} Completed")
+            print("\n")
+
+
+    def Aceptar(self, jugador):
+        self.RequisitesCompleted(jugador)
+        if self.Status == "Requisites":
+            self.Status = "Accepted"
             print(f"Has aceptat {self.Name}.\n")
         else:
             print("No compleixes amb els requisits per a la missio...")
-        input("Presiona per a continuar...")
     
     def Completed(self):
         self.Status = "Rewards Unclaimed"
 
     def ClaimedRewards(self, jugador):
-        self.Status = "Completed"
-        for i in self.Rewards:
-            if type(i) == str:
-                jugador.Tituls.append(i)
-            elif type(i) == tuple:
-                if type(i[0]) == Objectes.ObjecteCombat:
-                    jugador.AfegirObjecte(i[0], i[1])
-                    print(f"Has obtingut {i[1]} {i[0].ObjectName}")
-                elif i[0] == "Gold":
-                    jugador.gold += i[1]
-                    print(f"Has obtingut {i[1]} gold.")
-                elif i[0] == "XP":
-                    jugador.AddXP(i[1])
+        if self.Status == "Rewards Unclaimed":
+            self.Status = "Completed"
+            for i in self.Rewards:
+                if type(i) == str:
+                    jugador.Tituls.append(i)
+                elif type(i) == tuple:
+                    if type(i[0]) == Objectes.ObjecteCombat:
+                        jugador.AfegirObjecte(i[0], i[1])
+                        print(f"Has obtingut {i[1]} {i[0].ObjectName}")
+                    elif i[0] == "Gold":
+                        jugador.gold += i[1]
+                        print(f"Has obtingut {i[1]} gold.")
+                    elif i[0] == "XP":
+                        jugador.AddXP(i[1])
+        else:
+            print("Encara no has complert la missio...")
 
 class FindMission(Mission):
     
@@ -95,12 +116,18 @@ class ObjectMission(Mission):
 
 class KillMission(Mission):
     
-    Objective = Entitat.Entity
+    Objective = EntityType.EntityType
     Quantity = int()
     Count = int()
+    Generic = True 
+    # En referencia a si un enemic generat aleatori compta, en aquest acs seria si
+    # si el cas es per exemple un unic enemic, que apareix no com els altres sino per que hauria d'estar alla
+    # seria False i el generaria segons el que compte la clase.
+    Enemic = Entitat.Entity
+
     
     # Metodes
-    def __init__(self, name, description, rewards, qty, objective, requisite, place):
+    def __init__(self, name, description, rewards, qty, objective, requisite, place, generic, enemy = Entitat.Entity):
         self.Name = name
         self.Description = description
         self.Rewards = rewards
@@ -108,6 +135,9 @@ class KillMission(Mission):
         self.Objective = objective
         self.Requisite = requisite
         self.Place = place
+        self.Generic = generic
+        if self.Generic == False:
+            self.Enemic = enemy
 
     def IncrementCount(self, enemy):
         if enemy.base == self.Objective:
