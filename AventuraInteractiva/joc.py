@@ -43,11 +43,11 @@ zones = [
         Zones.Zona("Profunditats del Bosc Obscur",
                    "Les profunditats del bosc obscur, una perillosa zona de la que és diu que qui hi entra no en surt...",
                    "Bosc", {EntityTypes[4]: 32, EntityTypes[5]: 40, EntityTypes[6]: 20, EntityTypes[8]: 5, EntityTypes[9]: 3}, 
-                   (5, 15), {"Bronze": [(5, 15), 100]}, True),
+                   (5, 15), {"Bronze": [(5, 15), 100]}),
         Zones.Zona("Centre del Bosc Obscur",
                    "La zona central del bosc obscur, hi habiten monstres desconeguts, ningú ha tornat mai d'aquest lloc...",
                    "Bosc", {EntityTypes[6]: 30, EntityTypes[8]: 30, EntityTypes[9]: 40}, 
-                   (14, 30), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}, True),
+                   (14, 30), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}),
         Zones.Zona("Muntanyes del Origen",
                    "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
                    "Muntanya", {EntityTypes[7]: 50, EntityTypes[8]: 20, EntityTypes[9]: 20, EntityTypes[10]: 10}, 
@@ -74,12 +74,12 @@ objectes = [
             Objectes.ObjecteCombat("Pocio Avançada", "Descripcio", "Health", 60, 2000),
             Objectes.ObjecteCombat("Pocio Completa", "Descripcio", "Health", 100, 4000),
             Objectes.ObjecteCombat("Elixir", "Descripcio", "Health", 9999, 10000),
-            Objectes.ObjecteCombat("Força", "Descripcio", "ATK", 1.3, 300),
-            Objectes.ObjecteCombat("Força Superior", "Descripcio", "ATK", 2, 750),
-            Objectes.ObjecteCombat("Força Colerica", "Descripcio", "ATK", 2.5, 2000),
-            Objectes.ObjecteCombat("Resistencia", "Descripcio", "DEF", 1.3, 300),
-            Objectes.ObjecteCombat("Mur de Roca", "Descripcio", "DEF", 2, 750),
-            Objectes.ObjecteCombat("Mur d'acer", "Descripcio", "DEF", 2.5, 2000),
+            Objectes.ObjecteCombat("Millora", "Descripcio", "ATK", 1.3, 300),
+            Objectes.ObjecteCombat("Millora Superior", "Descripcio", "ATK", 2, 750),
+            Objectes.ObjecteCombat("Millora Divina", "Descripcio", "ATK", 2.5, 2000),
+            Objectes.ObjecteCombat("Barrera", "Descripcio", "DEF", 1.3, 300),
+            Objectes.ObjecteCombat("Barrera Pentagonal", "Descripcio", "DEF", 2, 750),
+            Objectes.ObjecteCombat("Barrera Octagonal", "Descripcio", "DEF", 2.5, 2000),
             Objectes.ObjecteCombat("Carrera", "Descripcio", "SPD", 1.3, 300),
             Objectes.ObjecteCombat("Llampeg", "Descripcio", "SPD", 2, 750),
             Objectes.ObjecteCombat("Raig", "Descripcio", "SPD", 2.5, 2000),
@@ -118,8 +118,9 @@ achievements = [
     Exits.StatusExit("HP 100", "Arriba a 100 HP", "HP", 100, 5, "HP"),
     Exits.StatusExit("HP 150", "Arriba a 150 HP", "HP", 150, 5, "HP"),
     Exits.StatusExit("HP 200", "Arriba a 200 HP", "HP", 200, 5, "HP"),
+
     # Exits de Derrotar Enemics
-    Exits.KillExit("Beast Slayer", "Derrota ... de tipus bestia", [], 10, "Beast Slayer", "ExitBuff")
+    Exits.KillExit("Beast Slayer", "Derrota 10 monstres de tipus bestia", [EntityTypes[4], EntityTypes[7]], 10, "Beast Slayer", "ExitBuff")
 ]
 
 
@@ -220,10 +221,17 @@ def MostrarExits():
         else:
             obtingut = "No Obtingut"
         print(f"{i.Name}, {obtingut}")
-        if type(i) != type(Exits.KillExit):
+        if type(i) != Exits.KillExit:
             print(f"{i.Description} \n")
         else:
-            print(f"{i.Description}, \n{i.Count} / {i.Quantity}")
+            print(f"{i.Description}, \n{i.Count} / {i.Quantity}\n")
+    input("Presiona per a continuar...")
+
+def ComprovarExits(enemy):
+    for i in achievements:
+        if type(i) == Exits.KillExit:
+            i.IncrementCount(enemy)
+        i.Completed(jugador)
 
 
 def PrepararBotiga(): # Afegir objectes segons nivell
@@ -393,8 +401,12 @@ def Fugir(enemy):
     global jugador
     print("Has intentat Fugir...")
     prob = jugador.fleeProb * (jugador.SPD / enemy.SPD)   # fleeProb = 75 de base
+   
     # 75% base * resultat de velocitat del jugador entre la del enemic. (75 * (22 / 20) = 1.1) = 82.5)
-    fugir = random.choices([True, False], cum_weights=[prob, 100 - prob])
+    if prob < 100:
+        fugir = random.choices([True, False], weights=[prob, 100 - prob])
+    else:
+        fugir = [True]
     if fugir[0] == True:
         print("Has aconseguit escapar !!")
     else:
@@ -433,6 +445,8 @@ def Lluitar():
         finalitzarCombat()
         jugador.LvlUp(enemy)
         jugador.gold += enemy.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
+        print(f"Has guanyat {enemy.Lv * 10} gold.")
+        ComprovarExits(enemy)
     else:
         finalitzarCombat()
 

@@ -36,7 +36,7 @@ class Exits():
             jugador.SPD += reward
         elif rewtype == "ExitBuff":
             jugador.Tituls.append(reward)
-            print("")
+        print(f"Has obtingut {reward} {rewtype}.")
 
 class StatusExit(Exits):
 
@@ -55,19 +55,19 @@ class StatusExit(Exits):
         self.RewType = rewardtype
 
     def Completed(self, jugador):
-        if self.RequisitType == "Lv":
+        if self.RequisitStat == "Lv":
             if jugador.Lv >= self.RequisitNumber:
                 self.Obtain(jugador, self.Rewards, self.RewType)
-        elif self.RequisitType == "ATK Stat":
+        elif self.RequisitStat == "ATK Stat":
             if jugador.ATK >= self.RequisitNumber:
                 self.Obtain(jugador, self.Rewards, self.RewType)
-        elif self.RequisitType == "HP Stat":
+        elif self.RequisitStat == "HP Stat":
             if jugador.MaxHP >= self.RequisitNumber:
                 self.Obtain(jugador, self.Rewards, self.RewType)
-        elif self.RequisitType == "DEF Stat":
+        elif self.RequisitStat == "DEF Stat":
             if jugador.DEF >= self.RequisitNumber:
                 self.Obtain(jugador, self.Rewards, self.RewType)
-        elif self.RequisitType == "SPD Stat":
+        elif self.RequisitStat == "SPD Stat":
             if jugador.SPD >= self.RequisitNumber:
                 self.Obtain(jugador, self.Rewards, self.RewType)
 
@@ -107,8 +107,8 @@ class KillExit(Exits):
 
     def IncrementCount(self, enemy):
         if enemy.base in self.Entities:
-            self.count += 1
+            self.Count += 1
     
     def Completed(self, jugador):
-        if self.count >= self.Quantity:
+        if self.Count >= self.Quantity:
             self.Obtain(jugador, self.Rewards, self.RewType)

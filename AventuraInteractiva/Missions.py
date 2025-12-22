@@ -6,24 +6,45 @@
 
 import random
 
-class EntityType():
+class Mission():
     
-    EntityName = ""
-    EntityDescription = ""
-    Health = int()
-    Attack = int()
-    Defense = int()
-    Speed = int()
-    isPlayable = bool()
-    baseXP = int()
+    Name = ""
+    Description = ""
+    Status = "Unaccepted"
+    Rewards = {}
+    Objective = ""
+
 
     # Metodes
-    def __init__(self, name, playable, hp, atk, defs, spd, xp, description):
-        self.EntityName = name
-        self.Health = hp
-        self.Attack = atk
-        self.Defense = defs
-        self.Speed = spd
-        self.isPlayable = playable
-        self.baseXP = xp
-        self.EntityDescription = description
+    def __init__(self, name, description, rewards):
+        self.Name = name
+        self.Description = description
+        self.Rewards = rewards
+    
+    def Aceptar(self):
+        self.Status = "Acepted"
+
+    def Completed(self):
+        self.Status = "Completed"
+
+
+
+# class StoryMission(Mission):
+    
+#     Name = ""
+#     Description = ""
+
+#     # Metodes
+#     def __init__(self, name, description):
+#         self.Name = name
+#         self.Description = description
+
+# class SubMission(Mission):
+    
+#     Name = ""
+#     Description = ""
+
+#     # Metodes
+#     def __init__(self, name, description):
+#         self.Name = name
+#         self.Description = description

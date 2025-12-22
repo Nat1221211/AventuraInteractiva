@@ -121,6 +121,20 @@ class Entity(EntityType.EntityType):
                 self.DefinirStats(True)
                 self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
                 self.Xp = 0
+                input("Presiona per a continuar...")
+    
+    def AddXP(self, xpadded):
+        if self.Lv < self.LvLimit:
+            print(f"Has guanyat {xpadded}.")
+            self.Xp += xpadded
+            self.Xp = float(round(self.Xp, 2))
+            if self.Xp > self.XpRequired:
+                self.Lv += 1
+                print(f"Has pujat de nivell... Ara ets nivell {self.Lv}")
+                self.DefinirStats(True)
+                self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
+                self.Xp = 0
+                input("Presiona per a continuar...")
     
     def AfegirObjecte(self, afegit, quantitat):
         if afegit in self.objectes:
