@@ -15,22 +15,36 @@ import Zones
 import Objectes
 import Exits
 import Missions
+import Titles
 
     # Preparació Joc
         # Entitats
 EntityTypes = [
-        EntityType.EntityType("Guerrer",True,160,140,130,80,50, "Alta salut, resistencia i força pero lenta."),
-        EntityType.EntityType("Mag",True,80,180,100,100,50, "Alt atac, però poca salut, resistencia i velocitat equilibrades."),
-        EntityType.EntityType("Arquer",True,120,140,140,140,50, "Resistencia, Atac i Velocitat equilibrats."),
-        EntityType.EntityType("Lladre",True,120,130,120,160,50, "Alta velocitat, salut i resistencia equilibrades, atac mitja."),
-        EntityType.EntityType("Llop",False,120,120,100,140,30, "Animal comú, pot ser perillos si no es te cuidado."),
-        EntityType.EntityType("Slime",False,100,100,100,100,20, "Entitat no massa perillosa, però s'ha de ser cuidados."),
-        EntityType.EntityType("Sombra",False,150,150,150,150,70, "Dificil de veure, en la foscor."),
-        EntityType.EntityType("Llangardaix de Roca",False,160,160,160,100,100, "Llangardaix amb pell de roca, es molt perillos."),
-        EntityType.EntityType("Driade",False,100,200,100,100,120, "Enitat espiritual que formada per la energia de les plantes."),
-        EntityType.EntityType("Treant",False,200,150,150,100,220, "Un arbre malevol, en algunes ocasions no ho són."),
-        EntityType.EntityType("Golem",False,200,160,200,60,500, "Monstre de Roca, es una forma de vida artificial feta de pedra."),
+        EntityType.EntityType("Guerrer",True,160,140,130,80,50, ["Human"], "Alta salut, resistencia i força pero lenta."),
+        EntityType.EntityType("Mag",True,80,180,100,100,50, ["Human"], "Alt atac, però poca salut, resistencia i velocitat equilibrades."),
+        EntityType.EntityType("Arquer",True,120,140,140,140,50, ["Human"], "Resistencia, Atac i Velocitat equilibrats."),
+        EntityType.EntityType("Lladre",True,120,130,120,160,50, ["Human"], "Alta velocitat, salut i resistencia equilibrades, atac mitja."),
+        EntityType.EntityType("Llop",False,120,120,100,140,30, ["Beast"], "Animal comú, pot ser perillos si no es te cuidado."),
+        EntityType.EntityType("Slime",False,100,100,100,100,20, ["Monster"], "Entitat no massa perillosa, però s'ha de ser cuidados."),
+        EntityType.EntityType("Sombra",False,150,150,150,150,70, ["Monster"], "Dificil de veure, en la foscor."),
+        EntityType.EntityType("Llangardaix de Roca",False,160,160,160,100,100, ["Beast", "Monster"], "Llangardaix amb pell de roca, es molt perillos."),
+        EntityType.EntityType("Driade",False,100,200,100,100,120, ["Spirit"], "Enitat espiritual que formada per la energia de les plantes."),
+        EntityType.EntityType("Treant",False,200,150,150,100,220, ["Monster", "Spirit"], "Un arbre malevol, en algunes ocasions no ho són."),
+        EntityType.EntityType("Golem",False,200,160,200,60,500, ["Artificial"], "Monstre de Roca, es una forma de vida artificial feta de pedra."),
 ]
+
+# Creem la funcio per a generar els grups d'entitats algo aixi com els tipus.
+EntityGroups = {}
+def AddEntityGroups():
+    global EntityGroups
+    for i in EntityTypes:
+        for j in i.EntityGroup:
+            if j not in EntityGroups.keys():
+                EntityGroups[j]=[i]
+            else:
+                EntityGroups[j]+=[i]
+AddEntityGroups()
+
         # Zones
 zones = [
         Zones.Zona("Dawn Village",
@@ -95,6 +109,11 @@ botiga = [objectes[0],
           objectes[12],
           ]
 
+titles = [
+    Titles.Titles("Beast Slayer", "Augmenta el dany causat contra enemics de tipus Bestia",
+                  EntityGroups["Beast"], 1.3)
+]
+
     # Exits (Achievements / Logros)
 achievements = [
     # Exits d'estadistiques
@@ -122,19 +141,20 @@ achievements = [
 
     # Exits de Derrotar Enemics
     Exits.KillExit("Beast Slayer", "Derrota 10 monstres de tipus bestia", 
-                   [EntityTypes[4], EntityTypes[7]], 10, "Beast Slayer", "Title")
+                   EntityGroups["Beast"], 10, titles[0], "Title")
 ]
 
 missions = [
     Missions.KillMission("Eliminant el Perill", 
-                         "Troba i elimna al perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur", 
+                         "Troba i elimina al perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur", 
                          [("XP", 1200), ("Gold", 10000), (objectes[15], 1)], 1, EntityTypes[10], [("Lv", 5)], zones[3], False,
                          Entitat.Entity("El Golem de Roca", 40, False, EntityTypes[10])),
     Missions.KillMission("Mostra de Confiança", 
-                         "Troba i elimna al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
+                         "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
                          [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, EntityTypes[4], [("Lv", 5)], zones[1], False,
                          Entitat.Entity("Llop Lider", 9, False, EntityTypes[4])),
 ]
+
 
 
 def CrearJugador():
@@ -172,9 +192,10 @@ def CrearJugador():
 
     return jugador
 
-# Cridem la funcio per crear el jugador.
+# Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
 jugador = CrearJugador()
 ubicacio = zones[0]
+
 
 # Afegim algun objecte al jugador de base
 jugador.AfegirObjecte(objectes[0], 2)

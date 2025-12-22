@@ -16,9 +16,10 @@ class EntityType():
     Speed = int()
     isPlayable = bool()
     baseXP = int()
+    EntityGroup = []
 
     # Metodes
-    def __init__(self, name, playable, hp, atk, defs, spd, xp, description):
+    def __init__(self, name, playable, hp, atk, defs, spd, xp, group, description):
         self.EntityName = name
         self.Health = hp
         self.Attack = atk
@@ -26,4 +27,5 @@ class EntityType():
         self.Speed = spd
         self.isPlayable = playable
         self.baseXP = xp
+        self.EntityGroup = group
         self.EntityDescription = description

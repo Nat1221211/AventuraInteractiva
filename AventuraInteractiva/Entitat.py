@@ -73,8 +73,20 @@ class Entity(EntityType.EntityType):
         self.tempDEF = self.DEF
         self.tempSPD = self.SPD
 
-    def atacar(self, enemy):
+    def CalcularDamage(self, enemy):
         damage = ((self.ATK / enemy.DEF) * 1) * (random.randint(90,111) / 100)
+        crit = random.choices([True, False], cum_weights=[20, 80])
+        if crit[0] == True:
+            damage *= 1.75
+        
+        amplify = 1
+        for i in self.Tituls:
+            if enemy.base in i.Afects:
+                amplify += i.DamageAmplify - 1
+        damage *= amplify
+
+    def atacar(self, enemy):
+        damage = self.CalcularDamage(enemy)
         damage = round(damage, 2)
         enemy.CurHP -= damage
         if enemy.CurHP <= 0 and enemy.isPlayer == False:
@@ -102,8 +114,8 @@ class Entity(EntityType.EntityType):
         if self.base.isPlayable == True:
             count = 0
             for i in self.Tituls:
-                if count < 5:
-                    print(i, end=", ")
+                if count < 3:
+                    print(i.TitleName, end=", ")
                 else:
                     print(i)
                     count = 0
