@@ -14,6 +14,7 @@ import EntityType
 import Zones
 import Objectes
 import Exits
+import Missions
 
     # Preparació Joc
         # Entitats
@@ -122,6 +123,12 @@ achievements = [
     # Exits de Derrotar Enemics
     Exits.KillExit("Beast Slayer", "Derrota 10 monstres de tipus bestia", 
                    [EntityTypes[4], EntityTypes[7]], 10, "Beast Slayer", "Title")
+]
+
+missions = [
+    Missions.KillMission("Eliminant el Perill", 
+                         "Troba i elimna al perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur", 
+                         [("XP", 1200), ("Gold", 10000), objectes[15]], 1, EntityTypes[11], [("Lv", 5)], zones[3]),
 ]
 
 
