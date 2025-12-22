@@ -120,7 +120,8 @@ achievements = [
     Exits.StatusExit("HP 200", "Arriba a 200 HP", "HP", 200, 5, "HP"),
 
     # Exits de Derrotar Enemics
-    Exits.KillExit("Beast Slayer", "Derrota 10 monstres de tipus bestia", [EntityTypes[4], EntityTypes[7]], 10, "Beast Slayer", "ExitBuff")
+    Exits.KillExit("Beast Slayer", "Derrota 10 monstres de tipus bestia", 
+                   [EntityTypes[4], EntityTypes[7]], 10, "Beast Slayer", "Title")
 ]
 
 
@@ -229,9 +230,10 @@ def MostrarExits():
 
 def ComprovarExits(enemy):
     for i in achievements:
-        if type(i) == Exits.KillExit:
-            i.IncrementCount(enemy)
-        i.Completed(jugador)
+        if i.Obtained == False:
+            if type(i) == Exits.KillExit:
+                i.IncrementCount(enemy)
+            i.Completed(jugador)
 
 
 def PrepararBotiga(): # Afegir objectes segons nivell

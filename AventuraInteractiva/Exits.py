@@ -34,7 +34,7 @@ class Exits():
             jugador.DEF += reward
         elif rewtype == "SPD":
             jugador.SPD += reward
-        elif rewtype == "ExitBuff":
+        elif rewtype == "Title":
             jugador.Tituls.append(reward)
         print(f"Has obtingut {reward} {rewtype}.")
 
