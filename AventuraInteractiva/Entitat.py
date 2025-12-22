@@ -39,9 +39,10 @@ class Entity(EntityType.EntityType):
     gold = 0
     objectes = {} # Diccionari, objecte i quantitat
     fleeProb = 75
+    Tituls = []
 
     # Metodes
-    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}):
+    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10):
         self.nom = nom
         self.Lv = level
         self.isPlayer = IsPlayer
@@ -53,6 +54,7 @@ class Entity(EntityType.EntityType):
             self.gold = 2000
         else:
             self.nom = self.base.EntityName
+            self.gold = gold
         self.objectes = objectes
         
 
@@ -86,26 +88,37 @@ class Entity(EntityType.EntityType):
             print(f"Clase: {self.base.EntityName}")
             print(f"Or: {self.gold}")
         print(f"Lv: {self.Lv} / {self.LvLimit}")
-        print(f"HP: {round(self.CurHP, 2)} / {self.MaxHP}")
+        print(f"XP: {self.Xp} / {self.XpRequired}")
+        print(f"HP: {round(self.CurHP, 2)} / {round(self.MaxHP, 2)}")
         if combat == False:
-            print(f"ATK: {self.ATK}")
-            print(f"DEF: {self.DEF}")
-            print(f"SPD: {self.SPD}")
+            print(f"ATK: {round(self.ATK, 2)}")
+            print(f"DEF: {round(self.DEF, 2)}")
+            print(f"SPD: {round(self.SPD, 2)}")
         else:
-            print(f"ATK: {self.tempATK}")
-            print(f"DEF: {self.tempDEF}")
-            print(f"SPD: {self.tempSPD}")
+            print(f"ATK: {round(self.tempATK, 2)}")
+            print(f"DEF: {round(self.tempDEF, 2)}")
+            print(f"SPD: {round(self.tempSPD, 2)}")
+        if self.base.isPlayable == True:
+            count = 0
+            for i in self.Tituls:
+                if count < 5:
+                    print(i, end=", ")
+                else:
+                    print(i)
+                    count = 0
 
     def LvlUp(self, enemy):
         if self.Lv < self.LvLimit:
-            obtainedXP = 5 + enemy.base.baseXP * (enemy.Lv * 0.2)
+            obtainedXP = float(round(5 + enemy.base.baseXP * (enemy.Lv * 0.2), 2))
             print(f"Has guanyat {obtainedXP}.")
             self.Xp += obtainedXP
+            self.Xp = float(round(self.Xp, 2))
             if self.Xp > self.XpRequired:
                 self.Lv += 1
                 print(f"Has pujat de nivell... Ara ets nivell {self.Lv}")
                 self.DefinirStats(True)
-                self.XpRequired = self.XpRequired + 5 * (self.Lv ** 1.2)
+                self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
+                self.Xp = 0
     
     def AfegirObjecte(self, afegit, quantitat):
         if afegit in self.objectes:
