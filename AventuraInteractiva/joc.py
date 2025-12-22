@@ -448,6 +448,7 @@ def Explorar():
     global jugador, ubicacio
     print("Has començar a explorar...")
     prob = random.randrange(1, 100)
+    choice = [""]
     if prob <= 20:  # Or
         TrobarOr(ubicacio.Or.keys())
     elif prob > 20 and prob <= 60:  # Res
@@ -475,7 +476,8 @@ def Explorar():
         for i in ubicacio.Connections:
             if i.Trobada == False:
                 i.Trobada = True
-    input("Presiona per a continuar...")
+    if prob <= 60 or prob > 90 or choice[0] == "missio":
+        input("Presiona per a continuar...")
 
 def TrobarOr(moneda):
     global ubicacio, jugador
