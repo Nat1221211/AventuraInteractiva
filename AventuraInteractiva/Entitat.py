@@ -106,6 +106,8 @@ class Entity(EntityType.EntityType):
                 else:
                     print(i)
                     count = 0
+        if combat == False:
+            input("Presiona per a sortir...")
 
     def LvlUp(self, enemy):
         if self.Lv < self.LvLimit:

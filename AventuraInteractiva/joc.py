@@ -43,11 +43,11 @@ zones = [
         Zones.Zona("Profunditats del Bosc Obscur",
                    "Les profunditats del bosc obscur, una perillosa zona de la que és diu que qui hi entra no en surt...",
                    "Bosc", {EntityTypes[4]: 32, EntityTypes[5]: 40, EntityTypes[6]: 20, EntityTypes[8]: 5, EntityTypes[9]: 3}, 
-                   (5, 15), {"Bronze": [(5, 15), 100]}),
+                   (5, 15), {"Bronze": [(5, 15), 100]}, True),
         Zones.Zona("Centre del Bosc Obscur",
                    "La zona central del bosc obscur, hi habiten monstres desconeguts, ningú ha tornat mai d'aquest lloc...",
                    "Bosc", {EntityTypes[6]: 30, EntityTypes[8]: 30, EntityTypes[9]: 40}, 
-                   (14, 30), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}),
+                   (14, 30), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}, True),
         Zones.Zona("Muntanyes del Origen",
                    "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
                    "Muntanya", {EntityTypes[7]: 50, EntityTypes[8]: 20, EntityTypes[9]: 20, EntityTypes[10]: 10}, 
@@ -296,18 +296,24 @@ def Mapa():
     global ubicacio
     count = 1
     disponibles = []
+    print(f"VOsté és a {ubicacio.NameZone}.\n")
     for i in ubicacio.Connections:  # Mostrem ubicacions disponibles
         if i.Trobada == True:
             print(f"{count} -> {i.NameZone}")
             count += 1
             disponibles.append(i)
+            if count > len(ubicacio.Connections):
+                print(f"{count} -> Sortir")
     pos = 0
-    while pos not in range(1, count + 1): # Demanem a on anar.
+    while pos not in range(1, count + 2): # Demanem a on anar.
         try:
             pos = int(input("Digues el numero de la zona a la que vols anar: "))
         except ValueError:
             print("Ha ocurregut un error...")
-    ubicacio = disponibles[pos - 1]    # Canviem la zona i la retornem
+    if pos == count:
+        print("Ha decidit quedar-se on es...")
+    else:
+        ubicacio = disponibles[pos - 1]    # Canviem la zona i la retornem
 
 def Explorar():
     global jugador, ubicacio
@@ -324,6 +330,7 @@ def Explorar():
         for i in ubicacio.Connections:
             if i.Trobada == False:
                 i.Trobada = True
+    input("Presiona per a continuar...")
 
 def TrobarOr(moneda):
     global ubicacio, jugador
@@ -336,7 +343,6 @@ def TrobarOr(moneda):
         weight = []
         for i in ubicacio.Or.values():
             weight.append(i[1])
-        print(weight)
         moneda = random.choices(moneda, weight)
         found = random.randint(ubicacio.Or[moneda[0]][0][0], ubicacio.Or[moneda[0]][0][1])
         if moneda[0] == "Bronze":
@@ -367,10 +373,11 @@ def AccionsLluita(enemy):
         except ValueError:
             print("Ha ocurregut un error...")
     turn = False
+    fugir = [False]
     if accio == 1:
         enemy = jugador.atacar(enemy)
     elif accio == 2:
-        Fugir(enemy)
+        fugir = Fugir(enemy)
     elif accio == 3:
         used = jugador.ObjectesMochila(True)
         if used == False:
@@ -380,7 +387,7 @@ def AccionsLluita(enemy):
         jugador.ShowStatus(True)
         turn = True
     
-    return enemy, turn
+    return enemy, turn, fugir
 
 def Fugir(enemy):
     global jugador
@@ -390,10 +397,9 @@ def Fugir(enemy):
     fugir = random.choices([True, False], cum_weights=[prob, 100 - prob])
     if fugir[0] == True:
         print("Has aconseguit escapar !!")
-        input("\nPresiona per a continuar...")
-        main()
     else:
         print("No has aconseguit escapar...")
+    return fugir
     
     
 
@@ -407,14 +413,14 @@ def Lluitar():
     turn = False
     if jugador.SPD >= enemy.SPD:
         turn = True
-
-    while jugador.CurHP > 0 and enemy.CurHP > 0:
+    fugir = [False]
+    while jugador.CurHP > 0 and enemy.CurHP > 0 and fugir[0] == False: 
         os.system("cls")
         EntityState(jugador)
         EntityState(enemy)
         print("\n")
         if turn == True:
-            enemy, turn = AccionsLluita(enemy)
+            enemy, turn, fugir = AccionsLluita(enemy)
         else:
             enemy.atacar(jugador)
             if jugador.CurHP <= 0:
@@ -427,6 +433,8 @@ def Lluitar():
         finalitzarCombat()
         jugador.LvlUp(enemy)
         jugador.gold += enemy.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
+    else:
+        finalitzarCombat()
 
 def finalitzarCombat():
     global jugador
@@ -440,7 +448,6 @@ def main():
     while jugador.CurHP > 0:
         os.system("cls")
         AccioMenuPrincipal()
-        input(f"\nPresiona per a continuar...")
         
     
 
