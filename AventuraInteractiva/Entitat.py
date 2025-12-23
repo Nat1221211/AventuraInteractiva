@@ -9,7 +9,7 @@ import EntityType
 
 import os
 
-class Entity(EntityType.EntityType):
+class Entity():
     
     nom = ""
     base = EntityType.EntityType
@@ -21,12 +21,17 @@ class Entity(EntityType.EntityType):
     # Stats
     MaxHP = int()
     CurHP = int()
+    MaxMana = int()
+    Mana = int() 
     ATK = int()
+    INT = int()
     DEF = int()
     SPD = int()
+    Moves = []
 
     # temp stats
     tempATK = int()
+    tempINT = int()
     tempDEF = int()
     tempSPD = int()
     
@@ -58,23 +63,38 @@ class Entity(EntityType.EntityType):
             self.gold = gold
         self.objectes = objectes
         
+    def DefinirMoves(self):
+        for i in self.base.EntityMoves.items():
+            if i[1] <= self.Lv and i[0] not in self.Moves:
+                self.Moves.append(i[0])
 
     def DefinirStats(self,LvOrNot = False):
         self.MaxHP = 10 + ((self.base.Health / 50) * self.Lv)
+        self.MaxMana = 10 + ((self.base.Magic / 50) * self.Lv)
         self.ATK = 10 + ((self.base.Attack / 50) * self.Lv)
+        self.INT = 10 + ((self.base.Intel / 50) * self.Lv)
         self.DEF = 10 + ((self.base.Defense / 50) * self.Lv)
         self.SPD = 10 + ((self.base.Speed / 50) * self.Lv)
         if LvOrNot == False:
             self.CurHP = self.MaxHP
+            self.Mana = self.MaxMana
         self.DefinirTempStats()
+        self.DefinirMoves()
     
     def DefinirTempStats(self):
         self.tempATK = self.ATK
+        self.tempINT = self.INT
         self.tempDEF = self.DEF
         self.tempSPD = self.SPD
 
-    def CalcularDamage(self, enemy):
-        damage = ((self.ATK / enemy.DEF) * 1) * (random.randint(90,111) / 100)
+    def CalcularDamage(self, enemy, move):
+        if move.Type == False:
+            dif = self.tempATK - enemy.tempDEF
+        else:
+            dif = self.tempINT - enemy.tempDEF
+        if dif < 1:
+            dif = 1
+        damage = (dif * move.Power / 100) * (random.randint(90,111) / 100)
         crit = random.choices([True, False], cum_weights=[5, 95])
         if crit[0] == True:
             damage *= 1.75
@@ -88,14 +108,24 @@ class Entity(EntityType.EntityType):
         damage *= amplify
         return damage
 
-    def atacar(self, enemy):
-        damage = self.CalcularDamage(enemy)
-        damage = round(damage, 2)
-        enemy.CurHP -= damage
-        if enemy.CurHP <= 0 and enemy.isPlayer == False:
-            print(f"{enemy.nom} ha estat derrotat.")
+    def atacar(self, enemy, move):
+        if move.Precision < 100:
+            atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
         else:
-            print(f"{enemy.nom} ha perdut {damage} punts de vida...")
+            atac = [True]
+        if atac == [True]:
+            damage = self.CalcularDamage(enemy, move)
+            damage = round(damage, 2)
+            enemy.CurHP -= damage
+            if enemy.CurHP <= 0 and enemy.isPlayer == False:
+                print(f"{enemy.nom} ha estat derrotat.")
+            else:
+                print(f"{enemy.nom} ha perdut {damage} punts de vida...")
+        else:
+            if self.isPlayer == True:
+                print("Has fallat l'atac...")
+            else:
+                print("L'atac enemic a fallat...")
         return enemy
 
     def ShowStatus(self, combat = False):
@@ -106,12 +136,15 @@ class Entity(EntityType.EntityType):
         print(f"Lv: {self.Lv} / {self.LvLimit}")
         print(f"XP: {self.Xp} / {self.XpRequired}")
         print(f"HP: {round(self.CurHP, 2)} / {round(self.MaxHP, 2)}")
+        print(f"Mana: {round(self.Mana, 2)} / {round(self.MaxMana, 2)}")
         if combat == False:
             print(f"ATK: {round(self.ATK, 2)}")
+            print(f"INT: {round(self.INT, 2)}")
             print(f"DEF: {round(self.DEF, 2)}")
             print(f"SPD: {round(self.SPD, 2)}")
         else:
             print(f"ATK: {round(self.tempATK, 2)}")
+            print(f"INT: {round(self.tempINT, 2)}")
             print(f"DEF: {round(self.tempDEF, 2)}")
             print(f"SPD: {round(self.tempSPD, 2)}")
         if self.base.isPlayable == True:

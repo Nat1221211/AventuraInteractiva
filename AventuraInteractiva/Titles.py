@@ -17,7 +17,7 @@ class Titles():
 
     # Metodes
     def __init__(self, name, description, afects, amplify):
-        self.NameZone = name
+        self.TitleName = name
         self.Description = description
         self.Afects = afects
         self.DamageAmplify = amplify

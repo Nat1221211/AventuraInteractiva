@@ -16,63 +16,115 @@ import Objectes
 import Exits
 import Missions
 import Titles
+import Characteristics
 
 def ClearScreen():
     os.system("cls" if os.name == "nt" else "clear")
 
     # Preparació Joc
+        # Moves
+moves = [
+    Characteristics.Moves("Bola de Foc", "Bola de foc formada amb magia",
+                          50, 100, True, 5, (False, "None")),
+    Characteristics.Moves("Fletxa Perforant", "Fletxa altament perforant gracies a poder magic",
+                          40, 100, False, 5, (False, "None")),
+    Characteristics.Moves("Asalt Relampeg", "Impuls de velocitat i atacs repetits",
+                          40, 100, False, 5, (True, ("SPD", 1.1))),
+    Characteristics.Moves("Tall Potent", "Tall altament poderos, fortaleix el cos amb magia.",
+                          50, 100, False, 5, (False, ("ATK", 1.1))),
+    Characteristics.Moves("Aixafar", "Potent Mossegada",
+                          50, 90, False, 0, (False, ("None"))),
+]
+        # Skills
+skills = [
+
+]
+
         # Entitats
-EntityTypes = [
-        EntityType.EntityType("Guerrer",True,160,140,130,80,50, ["Human"], "Alta salut, resistencia i força pero lenta."),
-        EntityType.EntityType("Mag",True,80,180,100,100,50, ["Human"], "Alt atac, però poca salut, resistencia i velocitat equilibrades."),
-        EntityType.EntityType("Arquer",True,120,140,140,140,50, ["Human"], "Resistencia, Atac i Velocitat equilibrats."),
-        EntityType.EntityType("Lladre",True,120,130,120,160,50, ["Human"], "Alta velocitat, salut i resistencia equilibrades, atac mitja."),
-        EntityType.EntityType("Llop",False,120,120,100,140,30, ["Beast"], "Animal comú, pot ser perillos si no es te cuidado."),
-        EntityType.EntityType("Slime",False,100,100,100,100,20, ["Monster"], "Entitat no massa perillosa, però s'ha de ser cuidados."),
-        EntityType.EntityType("Sombra",False,150,150,150,150,70, ["Monster"], "Dificil de veure, en la foscor."),
-        EntityType.EntityType("Llangardaix de Roca",False,160,160,160,100,100, ["Beast", "Monster"], "Llangardaix amb pell de roca, es molt perillos."),
-        EntityType.EntityType("Driade",False,100,200,100,100,120, ["Spirit"], "Enitat espiritual que formada per la energia de les plantes."),
-        EntityType.EntityType("Treant",False,200,150,150,100,220, ["Monster", "Spirit"], "Un arbre malevol, en algunes ocasions no ho són."),
-        EntityType.EntityType("Golem",False,200,160,200,60,500, ["Artificial"], "Monstre de Roca, es una forma de vida artificial feta de pedra."),
+entityTypes = [
+        EntityType.EntityType("Guerrer", True, 160, 100, 140, 40, 130, 80, 50, ["Human"], 
+                              "Alta salut, resistencia i força pero lenta.",
+                              {moves[3]: 3}
+                              ),
+      
+        EntityType.EntityType("Mag", True, 80, 200, 60, 180, 100, 100, 50, ["Human"], 
+                              "Alt atac, però poca salut, resistencia i velocitat equilibrades.",
+                              {moves[0]: 3}),
+       
+        EntityType.EntityType("Arquer", True, 120, 140, 140, 100, 140, 140, 50, ["Human"], 
+                              "Resistencia, Atac i Velocitat equilibrats.",
+                              {moves[1]: 3}),
+       
+        EntityType.EntityType("Lladre", True, 120, 120, 130, 100, 120, 160, 50, ["Human"], 
+                              "Alta velocitat, salut i resistencia equilibrades, atac mitja.",
+                              {moves[2]: 3}),
+       
+        EntityType.EntityType("Llop", False, 120, 40, 120, 20, 100, 140, 30, ["Beast"], 
+                              "Animal comú, pot ser perillos si no es te cuidado.",
+                              {moves[4]: 3}),
+       
+        EntityType.EntityType("Slime", False, 100, 100, 100, 100, 100, 100, 20, ["Monster"], 
+                              "Entitat no massa perillosa, però s'ha de ser cuidados.",
+                              {moves[4]: 3}),
+       
+        EntityType.EntityType("Sombra",False, 150, 150, 150, 150, 150, 150, 70, ["Monster"], 
+                              "Dificil de veure, en la foscor.",
+                              {moves[4]: 3}),
+       
+        EntityType.EntityType("Llangardaix de Roca", False, 160, 120, 160, 50, 160, 100, 100, ["Beast", "Monster"], 
+                              "Llangardaix amb pell de roca, es molt perillos.",
+                              {moves[4]: 3}),
+       
+        EntityType.EntityType("Driade", False, 100, 230, 100, 250, 100, 100, 120, ["Spirit"], 
+                              "Enitat espiritual que formada per la energia de les plantes.",
+                              {moves[4]: 3}),
+       
+        EntityType.EntityType("Treant", False, 200, 140, 150, 120, 150, 100, 220, ["Monster", "Spirit"], 
+                              "Un arbre malevol, en algunes ocasions no ho són.",
+                              {moves[4]: 3}),
+        
+        EntityType.EntityType("Golem", False, 250, 100, 160, 80, 200, 60, 500, ["Artificial"], 
+                              "Monstre de Roca, es una forma de vida artificial feta de pedra.",
+                              {moves[4]: 3}),
 ]
 
 # Creem la funcio per a generar els grups d'entitats algo aixi com els tipus.
-EntityGroups = {}
+entityGroups = {}
 def AddEntityGroups():
-    global EntityGroups
-    for i in EntityTypes:
+    global entityGroups
+    for i in entityTypes:
         for j in i.EntityGroup:
-            if j not in EntityGroups.keys():
-                EntityGroups[j]=[i]
+            if j not in entityGroups.keys():
+                entityGroups[j]=[i]
             else:
-                EntityGroups[j]+=[i]
+                entityGroups[j]+=[i]
 AddEntityGroups()
 
         # Zones
 zones = [
         Zones.Zona("Dawn Village",
                    "Un poble que representa l'inici, es diu que és el poble on va neixer l'heroi de les llegendes...",
-                   "Poble", {EntityTypes[6]: 20, EntityTypes[6]: 10, EntityTypes[6]: 10, EntityTypes[6]: 60},
+                   "Poble", {entityTypes[6]: 20, entityTypes[6]: 10, entityTypes[6]: 10, entityTypes[6]: 60},
                     (1, 5), {"Bronze": [(1, 7), 100]}, True),
         Zones.Zona("Bosc Obscur",
                    "La zona exterior del bosc obscur, d'on es diu que surjeren els monstres...",
-                   "Bosc", {EntityTypes[4]: 65, EntityTypes[5]: 30, EntityTypes[6]: 5}, 
+                   "Bosc", {entityTypes[4]: 65, entityTypes[5]: 30, entityTypes[6]: 5}, 
                    (3, 7), {"Bronze": [(1, 7), 100]}, True),
         Zones.Zona("Profunditats del Bosc Obscur",
                    "Les profunditats del bosc obscur, una perillosa zona de la que és diu que qui hi entra no en surt...",
-                   "Bosc", {EntityTypes[4]: 32, EntityTypes[5]: 40, EntityTypes[6]: 20, EntityTypes[8]: 5, EntityTypes[9]: 3}, 
+                   "Bosc", {entityTypes[4]: 32, entityTypes[5]: 40, entityTypes[6]: 20, entityTypes[8]: 5, entityTypes[9]: 3}, 
                    (5, 15), {"Bronze": [(5, 15), 100]}),
         Zones.Zona("Centre del Bosc Obscur",
                    "La zona central del bosc obscur, hi habiten monstres desconeguts, ningú ha tornat mai d'aquest lloc...",
-                   "Bosc", {EntityTypes[6]: 30, EntityTypes[8]: 30, EntityTypes[9]: 40}, 
+                   "Bosc", {entityTypes[6]: 30, entityTypes[8]: 30, entityTypes[9]: 40}, 
                    (14, 30), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}),
         Zones.Zona("Muntanyes del Origen",
                    "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
-                   "Muntanya", {EntityTypes[7]: 50, EntityTypes[8]: 20, EntityTypes[9]: 20, EntityTypes[10]: 10}, 
+                   "Muntanya", {entityTypes[7]: 50, entityTypes[8]: 20, entityTypes[9]: 20, entityTypes[10]: 10}, 
                    (30, 45), {"Plata": [(40, 100), 70], "Or": [(1, 10), 30]}),
         Zones.Zona("Cavernes del Origen",
                    "Les cavernes de les muntanyes del origen, no és te coneixement de la existencia d'aquestes...",
-                   "Cavernes", {EntityTypes[6]: 40, EntityTypes[7]: 30, EntityTypes[10]: 30}, 
+                   "Cavernes", {entityTypes[6]: 40, entityTypes[7]: 30, entityTypes[10]: 30}, 
                    (43, 60), {"Plata": [(40, 100), 70], "Or": [(1, 10), 20], "Or Platejat": [(1, 1), 10]})
 ]
         # Connexions de cada zona
@@ -114,7 +166,7 @@ botiga = [objectes[0],
 
 titles = [
     Titles.Titles("Beast Slayer", "Augmenta el dany causat contra enemics de tipus Bestia",
-                  EntityGroups["Beast"], 1.3)
+                  entityGroups["Beast"], 1.3)
 ]
 
     # Exits (Achievements / Logros)
@@ -144,18 +196,18 @@ achievements = [
 
     # Exits de Derrotar Enemics
     Exits.KillExit("Beast Slayer", "Derrota 10 monstres de tipus bestia", 
-                   EntityGroups["Beast"], 10, titles[0], "Title")
+                   entityGroups["Beast"], 10, titles[0], "Title")
 ]
 
 missions = [
     Missions.KillMission("Eliminant el Perill", 
                          "Troba i elimina al perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur", 
-                         [("XP", 1200), ("Gold", 10000), (objectes[15], 1)], 1, EntityTypes[10], [("Lv", 5)], zones[3], False,
-                         Entitat.Entity("El Golem de Roca", 40, False, EntityTypes[10])),
+                         [("XP", 1200), ("Gold", 10000), (objectes[15], 1)], 1, entityTypes[10], [("Lv", 5)], zones[3], False,
+                         Entitat.Entity("El Golem de Roca", 40, False, entityTypes[10])),
     Missions.KillMission("Mostra de Confiança", 
                          "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
-                         [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, EntityTypes[4], [("Lv", 5)], zones[1], False,
-                         Entitat.Entity("Llop Lider", 9, False, EntityTypes[4])),
+                         [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, entityTypes[4], [("Lv", 5)], zones[1], False,
+                         Entitat.Entity("Llop Lider", 9, False, entityTypes[4])),
 ]
 
 
@@ -171,7 +223,7 @@ def CrearJugador():
     clases = []
     nomclases = []
     print("")
-    for i in EntityTypes:
+    for i in entityTypes:
         if i.isPlayable == True:
             clases.append(i)
             nomclases.append(i.EntityName.lower())
@@ -530,6 +582,33 @@ def TrobarOr(moneda):
             print(f"Has trobat {found} monedes d'{moneda[0]}")
     jugador.gold += found * mult
 
+def MenuAtacar():
+    global jugador
+    res = 0
+    while res not in range(1, len(jugador.Moves) + 2):
+        ClearScreen()
+        count = 1
+        for i in jugador.Moves:
+            print(f"{count} -> {i.Name}")
+            print(f"Power: {i.Power}, Precision: {i.Precision}\n")
+            count += 1
+        print(f"{count} -> Sortir")
+        try:
+            res = int(input("Digues quin atac vols fer: "))
+            if res not in range(1, len(jugador.Moves) + 2):
+                print("Has de dir que vols fer...")
+            if res == count:
+                print("Has sortit")
+            else:
+                use = jugador.Moves[res - 1]
+                if use.Cost > jugador.Mana:
+                    print("No tens suficient Mana per a realitzar aquest atac...")
+                    input("Presiona per a continuar...")
+                    return None
+                else:
+                    return use
+        except ValueError:
+            print("Ha ocurregut un error...")
     
 def AccionsLluita(enemy):
     global jugador
@@ -546,7 +625,15 @@ def AccionsLluita(enemy):
     turn = False
     fugir = [False]
     if accio == 1:
-        enemy = jugador.atacar(enemy)
+        move = MenuAtacar()
+        ClearScreen()
+        EntityState(jugador)
+        EntityState(enemy)
+        print("\n")
+        if move != None:
+            enemy = jugador.atacar(enemy, move)
+        else:
+            turn = True
     elif accio == 2:
         fugir = Fugir(enemy)
     elif accio == 3:
@@ -600,7 +687,8 @@ def Lluitar(enemy):
         if turn == True:
             enemy, turn, fugir = AccionsLluita(enemy)
         else:
-            enemy.atacar(jugador)
+            enemyMove = random.choice(enemy.Moves)
+            enemy.atacar(jugador, enemyMove)
             if jugador.CurHP <= 0:
                 print("Has estat derrotat...")
             else:
@@ -627,7 +715,7 @@ def finalitzarCombat():
     jugador.DefinirTempStats()
         
 def EntityState(entity):
-    print(f"{entity.nom}, LV: {entity.Lv}, HP: {round(entity.CurHP, 2)} / {round(entity.MaxHP, 2)}")
+    print(f"{entity.nom}, LV: {entity.Lv}, HP: {round(entity.CurHP, 2)} / {round(entity.MaxHP, 2)}", f", Mana: {round(entity.Mana, 2)} / {round(entity.MaxMana, 2)}" if entity.isPlayer == True else "")
 
 def main():
     print("!! - Joc Interactiu - !!")
