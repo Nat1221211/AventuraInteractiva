@@ -89,12 +89,10 @@ class Entity():
 
     def CalcularDamage(self, enemy, move):
         if move.Type == False:
-            dif = self.tempATK - enemy.tempDEF
+            dif = self.tempATK / enemy.tempDEF
         else:
-            dif = self.tempINT - enemy.tempDEF
-        if dif < 1:
-            dif = 1
-        damage = (dif * move.Power / 100) * (random.randint(90,111) / 100)
+            dif = self.tempINT / enemy.tempDEF
+        damage = (((((self.Lv * 2)/5)+2) * move.Power * dif) / 50) + 2
         crit = random.choices([True, False], cum_weights=[5, 95])
         if crit[0] == True:
             damage *= 1.75
@@ -105,7 +103,8 @@ class Entity():
                 amplify += i.DamageAmplify - 1
         if amplify != 1:
             print("El dany causat a incrementat a causa dels titols.")
-        damage *= amplify
+            damage *= amplify
+        damage *= (random.randint(90,111) / 100)
         return damage
 
     def atacar(self, enemy, move):
