@@ -23,7 +23,7 @@ def ClearScreen():
 
     # Preparació Joc
         # Moves
-moves = [
+movements = [
     Characteristics.Moves("Bola de Foc", "Bola de foc formada amb magia",
                           50, 100, True, 5, (False, "None")),
     Characteristics.Moves("Fletxa Perforant", "Fletxa altament perforant gracies a poder magic",
@@ -44,48 +44,48 @@ skills = [
 entityTypes = [
         EntityType.EntityType("Guerrer", True, 160, 100, 140, 40, 130, 80, 50, ["Human"], 
                               "Alta salut, resistencia i força pero lenta.",
-                              {moves[3]: 3}
+                              {movements[3]: 3}
                               ),
       
         EntityType.EntityType("Mag", True, 80, 200, 60, 180, 100, 100, 50, ["Human"], 
                               "Alt atac, però poca salut, resistencia i velocitat equilibrades.",
-                              {moves[0]: 3}),
+                              {movements[0]: 3}),
        
         EntityType.EntityType("Arquer", True, 120, 140, 140, 100, 140, 140, 50, ["Human"], 
                               "Resistencia, Atac i Velocitat equilibrats.",
-                              {moves[1]: 3}),
+                              {movements[1]: 3}),
        
         EntityType.EntityType("Lladre", True, 120, 120, 130, 100, 120, 160, 50, ["Human"], 
                               "Alta velocitat, salut i resistencia equilibrades, atac mitja.",
-                              {moves[2]: 3}),
+                              {movements[2]: 3}),
        
         EntityType.EntityType("Llop", False, 120, 40, 120, 20, 100, 140, 30, ["Beast"], 
                               "Animal comú, pot ser perillos si no es te cuidado.",
-                              {moves[4]: 3}),
+                              {movements[4]: 3}),
        
         EntityType.EntityType("Slime", False, 100, 100, 100, 100, 100, 100, 20, ["Monster"], 
                               "Entitat no massa perillosa, però s'ha de ser cuidados.",
-                              {moves[4]: 3}),
+                              {movements[4]: 3}),
        
         EntityType.EntityType("Sombra",False, 150, 150, 150, 150, 150, 150, 70, ["Monster"], 
                               "Dificil de veure, en la foscor.",
-                              {moves[4]: 3}),
+                              {movements[4]: 3}),
        
         EntityType.EntityType("Llangardaix de Roca", False, 160, 120, 160, 50, 160, 100, 100, ["Beast", "Monster"], 
                               "Llangardaix amb pell de roca, es molt perillos.",
-                              {moves[4]: 3}),
+                              {movements[4]: 3}),
        
         EntityType.EntityType("Driade", False, 100, 230, 100, 250, 100, 100, 120, ["Spirit"], 
                               "Enitat espiritual que formada per la energia de les plantes.",
-                              {moves[4]: 3}),
+                              {movements[4]: 3}),
        
         EntityType.EntityType("Treant", False, 200, 140, 150, 120, 150, 100, 220, ["Monster", "Spirit"], 
                               "Un arbre malevol, en algunes ocasions no ho són.",
-                              {moves[4]: 3}),
+                              {movements[4]: 3}),
         
         EntityType.EntityType("Golem", False, 250, 100, 160, 80, 200, 60, 500, ["Artificial"], 
                               "Monstre de Roca, es una forma de vida artificial feta de pedra.",
-                              {moves[4]: 3}),
+                              {movements[4]: 3}),
 ]
 
 # Creem la funcio per a generar els grups d'entitats algo aixi com els tipus.
@@ -227,7 +227,6 @@ def CrearJugador():
         if i.isPlayable == True:
             clases.append(i)
             nomclases.append(i.EntityName.lower())
-    # nomclases =  list(map(lambda x: x.EntityName, clases))
     while clase not in nomclases:
         try:
             for i in clases:

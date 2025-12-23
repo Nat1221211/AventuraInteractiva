@@ -6,6 +6,7 @@
 
 import random
 import EntityType
+import Characteristics
 
 import os
 
@@ -27,7 +28,7 @@ class Entity():
     INT = int()
     DEF = int()
     SPD = int()
-    Moves = []
+    Moves = list()
 
     # temp stats
     tempATK = int()
