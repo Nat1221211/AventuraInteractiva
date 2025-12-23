@@ -116,9 +116,9 @@ class ObjectMission(Mission):
 
 class KillMission(Mission):
     
-    Objective = EntityType.EntityType
+    Objective = []
     Quantity = int()
-    Count = int()
+    Count = 0
     Generic = True 
     # En referencia a si un enemic generat aleatori compta, en aquest acs seria si
     # si el cas es per exemple un unic enemic, que apareix no com els altres sino per que hauria d'estar alla
@@ -141,7 +141,7 @@ class KillMission(Mission):
 
     def IncrementCount(self, enemy):
         if self.Generic == True:
-            if enemy.base == self.Objective:
+            if enemy.base in self.Objective:
                 self.Count += 1
             if self.Count >= self.Quantity:
                 self.Status = "Rewards Unclaimed"

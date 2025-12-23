@@ -29,11 +29,13 @@ movements = [
     Characteristics.Moves("Fletxa Perforant", "Fletxa altament perforant gracies a poder magic",
                           40, 100, False, 5, (False, "None")),
     Characteristics.Moves("Asalt Relampeg", "Impuls de velocitat i atacs repetits",
-                          40, 100, False, 5, (True, ("SPD", 1.1))),
+                          40, 100, False, 5, (True, (["SPD"], 1.1))),
     Characteristics.Moves("Tall Potent", "Tall altament poderos, fortaleix el cos amb magia.",
-                          50, 100, False, 5, (False, ("ATK", 1.1))),
+                          50, 100, False, 5, (True, (["ATK"], 1.1))),
     Characteristics.Moves("Aixafar", "Potent Mossegada",
                           50, 90, False, 0, (False, ("None"))),
+    Characteristics.Moves("Debuff", "Reduccio d'estadistiques alta",
+                          50, 90, False, 0, (True, (["ATK", "DEF", "SPD", "INT"], 0.3))),
 ]
         # Skills
 skills = [
@@ -49,7 +51,7 @@ entityTypes = [
       
         EntityType.EntityType("Mag", True, 80, 200, 60, 180, 100, 100, 50, ["Human"], 
                               "Alt atac, però poca salut, resistencia i velocitat equilibrades.",
-                              {movements[0]: 3}),
+                              {movements[0]: 3, movements[5]: 5}),
        
         EntityType.EntityType("Arquer", True, 120, 140, 140, 100, 140, 140, 50, ["Human"], 
                               "Resistencia, Atac i Velocitat equilibrats.",
@@ -138,24 +140,34 @@ zones[5].AddConnections([zones[4]])
         # Objectes
 objectes = [
             # Objectes de Combat
-            Objectes.ObjecteCombat("Pocio Inferior", "Cura 10 punts de vida", "Health", 10, 100),
-            Objectes.ObjecteCombat("Pocio", "Descripcio", "Health", 20, 300),
-            Objectes.ObjecteCombat("Pocio Intermitja", "Descripcio", "Health", 40, 750),
-            Objectes.ObjecteCombat("Pocio Avançada", "Descripcio", "Health", 60, 2000),
-            Objectes.ObjecteCombat("Pocio Completa", "Descripcio", "Health", 100, 4000),
-            Objectes.ObjecteCombat("Elixir", "Descripcio", "Health", 9999, 10000),
-            Objectes.ObjecteCombat("Millora", "Descripcio", "ATK", 1.3, 300),
-            Objectes.ObjecteCombat("Millora Superior", "Descripcio", "ATK", 2, 750),
-            Objectes.ObjecteCombat("Millora Divina", "Descripcio", "ATK", 2.5, 2000),
-            Objectes.ObjecteCombat("Barrera", "Descripcio", "DEF", 1.3, 300),
-            Objectes.ObjecteCombat("Barrera Pentagonal", "Descripcio", "DEF", 2, 750),
-            Objectes.ObjecteCombat("Barrera Octagonal", "Descripcio", "DEF", 2.5, 2000),
-            Objectes.ObjecteCombat("Carrera", "Descripcio", "SPD", 1.3, 300),
-            Objectes.ObjecteCombat("Llampeg", "Descripcio", "SPD", 2, 750),
-            Objectes.ObjecteCombat("Raig", "Descripcio", "SPD", 2.5, 2000),
+            Objectes.ObjecteCombat("Pocio Inferior", "Cura 10 punts de vida", ["Health"], 10, 100),
+            Objectes.ObjecteCombat("Pocio", "Descripcio", ["Health"], 20, 300),
+            Objectes.ObjecteCombat("Pocio Intermitja", "Descripcio", ["Health"], 40, 750),
+            Objectes.ObjecteCombat("Pocio Avançada", "Descripcio", ["Health"], 60, 2000),
+            Objectes.ObjecteCombat("Pocio Completa", "Descripcio", ["Health"], 100, 4000),
+            Objectes.ObjecteCombat("Elixir", "Descripcio", ["Health", "Mana"], 9999, 10000),
+            Objectes.ObjecteCombat("Millora", "Descripcio", ["ATK"], 1.3, 300),
+            Objectes.ObjecteCombat("Millora Superior", "Descripcio", ["ATK"], 2, 750),
+            Objectes.ObjecteCombat("Millora Divina", "Descripcio", ["ATK"], 2.5, 2000),
+            Objectes.ObjecteCombat("Barrera", "Descripcio", ["DEF"], 1.3, 300),
+            Objectes.ObjecteCombat("Barrera Pentagonal", "Descripcio", ["DEF"], 2, 750),
+            Objectes.ObjecteCombat("Barrera Octagonal", "Descripcio", ["DEF"], 2.5, 2000),
+            Objectes.ObjecteCombat("Carrera", "Descripcio", ["SPD"], 1.3, 300),
+            Objectes.ObjecteCombat("Llampeg", "Descripcio", ["SPD"], 2, 750),
+            Objectes.ObjecteCombat("Raig", "Descripcio", ["SPD"], 2.5, 2000),
             
-            # Objectes de Combat
+            # Objectes Clau
             Objectes.ObjecteClau("Pedra Misteriosa", "???"),
+
+            # Mes objectes de Combat
+            Objectes.ObjecteCombat("Pocio de Mana Inferior", "Regenera 10 punts de Mana", ["Mana"], 10, 100),
+            Objectes.ObjecteCombat("Pocio de Mana", "Descripcio", ["Mana"], 20, 300),
+            Objectes.ObjecteCombat("Pocio  de Mana Intermitja", "Descripcio", ["Mana"], 40, 750),
+            Objectes.ObjecteCombat("Pocio de Mana Avançada", "Descripcio", ["Mana"], 60, 2000),
+            Objectes.ObjecteCombat("Pocio de Mana Completa", "Descripcio", ["Mana"], 100, 4000),
+            Objectes.ObjecteCombat("Millora Magica", "Descripcio", ["INT"], 1.3, 300),
+            Objectes.ObjecteCombat("Alta Millora Magica", "Descripcio", ["INT"], 2, 750),
+            Objectes.ObjecteCombat("Super Millora Magica", "Descripcio", ["INT"], 2.5, 2000),
             ]
 # Botiga
 botiga = [objectes[0],
@@ -264,20 +276,27 @@ achievements = [
 missions = [
     Missions.KillMission("Eliminant el Perill", 
                          "Troba i elimina al perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur", 
-                         [("XP", 3000), ("Gold", 10000), (objectes[15], 1)], 1, entityTypes[10], [("Lv", 5)], zones[3], False,
+                         [("XP", 3000), ("Gold", 10000), (objectes[15], 1)], 1, [entityTypes[10]], [("Lv", 5)], zones[3], False,
                          Entitat.Entity("El Golem de Roca", 40, False, entityTypes[10])),
 
     Missions.KillMission("Mostra de Confiança", 
                          "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
-                         [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, entityTypes[4], [("Lv", 5)], zones[1], False,
+                         [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, [entityTypes[4]], [("Lv", 5)], zones[1], False,
                          Entitat.Entity("Llop Lider", 9, False, entityTypes[4])),
 ]
 
 missions.append(
     Missions.KillMission("Mostra de Confiança II", 
     "Elimina les restes de la manada de Llops en el bosc obscur.", 
-    [("XP", 300), ("Gold", 2000), (objectes[1], 1)], 10, entityTypes[4], 
+    [("XP", 300), ("Gold", 2000), (objectes[1], 2)], 10, [entityTypes[4]], 
     [("Lv", 5), missions[1]], zones[1], False),
+    )
+
+missions.append(
+    Missions.KillMission("Eliminant Sombres", 
+    "Elimina 15 sombres del bosc obscur.", 
+    [("XP", 500), ("Gold", 3000), (objectes[1], 5)], 15, [entityTypes[6]], 
+    [("Lv", 10), missions[2]], zones[1], False),
     )
 
 

@@ -34,7 +34,11 @@ class Entity():
     tempINT = int()
     tempDEF = int()
     tempSPD = int()
-    
+    buffATK = 1
+    buffINT = 1
+    buffSPD = 1
+    buffDEF = 1
+
     # Xp
     Xp = 0
     XpRequired = 14
@@ -89,8 +93,46 @@ class Entity():
         self.tempINT = self.INT
         self.tempDEF = self.DEF
         self.tempSPD = self.SPD
+    
+    def BuffTempStats(self, buff, statbuffed):
+        self.DefinirTempStats()
+        for i in statbuffed:
+            if buff > 1:
+                buff -= 1
+            else:
+                buff = abs(buff)
+                buff = -(buff)
+                print(f"La estadistica {i} s'ha reduit en {abs(buff * 100)}%")
+            if i == "ATK":
+                self.buffATK += buff
+                self.tempATK *= self.buffATK
+            if i == "INT":
+                self.buffINT += buff
+                self.tempINT *= self.buffINT
+            if i == "SPD":
+                self.buffSPD += buff
+                self.tempSPD *= self.buffSPD
+            if i == "DEF":
+                self.buffDEF += buff
+                self.tempDEF *= self.buffDEF
+
+    
+    def ResetBuffs(self):
+        self.buffATK = 1
+        self.buffINT = 1
+        self.buffSPD = 1
+        self.buffDEF = 1
 
     def CalcularDamage(self, enemy, move):
+        # Cridar icrements d'stats en cas de ser necessari
+        if move.StatusEffect[0] == True:
+            if move.StatusEffect[1][1] > 1:
+                self.BuffTempStats(move.StatusEffect[1][1], move.StatusEffect[1][0])
+                print(f"{move.StatusEffect[1][0]} ha incrementat.\n")
+            else:
+                enemy.BuffTempStats(move.StatusEffect[1][1], move.StatusEffect[1][0])
+                enemy.ShowStatus(True)
+        # Calcul dels danys
         if move.Type == False:
             dif = self.tempATK / enemy.tempDEF
         else:
@@ -151,7 +193,8 @@ class Entity():
             print(f"INT: {round(self.tempINT, 2)}")
             print(f"DEF: {round(self.tempDEF, 2)}")
             print(f"SPD: {round(self.tempSPD, 2)}")
-        if self.base.isPlayable == True:
+        print("\nTitols: ")
+        if self.isPlayer == True:
             count = 0
             for i in self.Tituls:
                 if count < 3:
@@ -159,6 +202,7 @@ class Entity():
                 else:
                     print(i)
                     count = 0
+        print("")
         if combat == False:
             input("Presiona per a sortir...")
 

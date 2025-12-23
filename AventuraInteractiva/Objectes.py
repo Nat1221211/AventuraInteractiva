@@ -31,7 +31,7 @@ class ObjecteClau(Objecte):
 
 class ObjecteCombat(Objecte):
 
-    TypeEffect = "" # Si afecta a curar, augment d'estadistiques, fugida, etc...
+    TypeEffect = [] # Si afecta a curar, augment d'estadistiques, fugida, etc...
     EffectQuantity = int()  # Quantitat del efecte (curació, augment d'estadistiques, etc. La quantitat)
     Preu = int()
 
@@ -44,16 +44,18 @@ class ObjecteCombat(Objecte):
         self.Preu = price
     
     def Utilitzar(self, jugador):
-        if self.TypeEffect == "Health":
-            if jugador.CurHP + self.EffectQuantity > jugador.MaxHP:
-                jugador.CurHP = jugador.MaxHP
+        for i in self.TypeEffect:
+            if i == "Health":
+                if jugador.CurHP + self.EffectQuantity > jugador.MaxHP:
+                    jugador.CurHP = jugador.MaxHP
+                else:
+                    jugador.CurHP += self.EffectQuantity
+            if i == "Mana":
+                if jugador.Mana + self.EffectQuantity > jugador.MaxMana:
+                    jugador.Mana = jugador.MaxMana
+                else:
+                    jugador.Mana += self.EffectQuantity
+            elif i == "Flee":
+                print("")
             else:
-                jugador.CurHP += self.EffectQuantity
-        elif self.TypeEffect == "ATK":
-            jugador.tempATK *= self.EffectQuantity
-        elif self.TypeEffect == "SPD":
-            jugador.tempSPD *= self.EffectQuantity
-        elif self.TypeEffect == "DEF":
-            jugador.tempDEF *= self.EffectQuantity
-        elif self.TypeEffect == "Flee":
-            print("")
+                jugador.BuffTempStats(self.EffectQuantity, [i])
