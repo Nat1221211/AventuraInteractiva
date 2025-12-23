@@ -135,8 +135,8 @@ class Entity(EntityType.EntityType):
                 self.Lv += 1
                 print(f"Has pujat de nivell... Ara ets nivell {self.Lv}")
                 self.DefinirStats(True)
+                self.Xp -= self.XpRequired
                 self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
-                self.Xp = 0
                 input("Presiona per a continuar...")
     
     def AddXP(self, xpadded):

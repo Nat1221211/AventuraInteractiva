@@ -17,6 +17,9 @@ import Exits
 import Missions
 import Titles
 
+def ClearScreen():
+    os.system("cls" if os.name == "nt" else "clear")
+
     # Preparació Joc
         # Entitats
 EntityTypes = [
@@ -213,7 +216,6 @@ def AccioMenuPrincipal():
         menu = {1: "Explorar", 2: "Mochila", 3: "Lluitar", 4: "Estat", 5: "Mapa", 6: "Misions", 7: "Exits", 8: "Guardar", 9: "Info"}
 
     print(f"Vostre es troba a {ubicacio.NameZone}")
-    os.system("cls")
     while pos not in menu.keys():   # Generem la llista del menu
         for i in menu.keys():
             print(f"{i} -> {menu.get(i)}")
@@ -221,7 +223,8 @@ def AccioMenuPrincipal():
             pos = int(input("Digues quina acció vols fer: "))   # Demanem accio del menu
         except ValueError:
             print("Ha ocurregut un error...")
-        os.system("cls")
+            input("Presiona per a continuar...")
+        ClearScreen()
 
     # Executem acció seleccionada
     if menu.get(pos) == "Mapa":
@@ -251,7 +254,7 @@ def MenuMisions():
     res = 0
     while res not in [1, 2, 3, 4]:
         res = 0
-        os.system("cls")
+        ClearScreen()
         print("1 -> Veure Misions")
         print("2 -> Acceptar Misions")
         print("3 -> Reclamar Misions")
@@ -263,7 +266,7 @@ def MenuMisions():
             elif res == 1:
                 filtrar = 0
                 while filtrar not in [1, 2, 3, 4, 5]:
-                    os.system("cls")
+                    ClearScreen()
                     print("1 -> Totes")
                     print("2 -> Aceptades")
                     print("3 -> Requisits Complerts per aceptar")
@@ -287,7 +290,7 @@ def MenuMisions():
                 count, reclamar  = ShowMisions("Requisites", "Aceptar")
                 aceptar = 0
                 while aceptar not in range(1, count + 1):
-                    os.system("cls")
+                    ClearScreen()
                     count, reclamar  = ShowMisions("Requisites", "Aceptar")
                     try:
                         aceptar = int(input("Digues quina misio vols aceptar: "))
@@ -302,7 +305,7 @@ def MenuMisions():
                 count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar")
                 aceptar = 0
                 while aceptar not in range(1, count + 1):
-                    os.system("cls")
+                    ClearScreen()
                     count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar")
                     try:
                         aceptar = int(input("Digues quina misio vols reclamar: "))
@@ -416,7 +419,7 @@ def Posada():
     global jugador
     res = ""
     while res not in ["S", "N"]:
-        os.system("cls")
+        ClearScreen()
         try:
             res = input("\nVols descansar? Costa 100 gold (S / N): ").capitalize()
         except ValueError:
@@ -551,7 +554,7 @@ def AccionsLluita(enemy):
         if used == False:
             turn = True
     elif accio == 4:
-        os.system("cls")
+        ClearScreen()
         jugador.ShowStatus(True)
         turn = True
     
@@ -590,7 +593,7 @@ def Lluitar(enemy):
         turn = True
     fugir = [False]
     while jugador.CurHP > 0 and enemy.CurHP > 0 and fugir[0] == False: 
-        os.system("cls")
+        ClearScreen()
         EntityState(jugador)
         EntityState(enemy)
         print("\n")
@@ -629,7 +632,7 @@ def EntityState(entity):
 def main():
     print("!! - Joc Interactiu - !!")
     while jugador.CurHP > 0:
-        os.system("cls")
+        ClearScreen()
         AccioMenuPrincipal()
         
     
