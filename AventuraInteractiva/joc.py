@@ -23,7 +23,11 @@ def ClearScreen():
 
     # Preparació Joc
         # Moves
-movements = [
+movements = [   
+    # Per a efectes d'estat dins la tupla un True, Seguit d'una altre tupla amb una llista amb les estadistiques, 
+    # i en la segona part de la tupla la quantitat d'augment o reducció, l'augment ha de ser amb base 1 o superior, 
+    # la reducció ha de ser de 0  a 0.9, es a dir iferior a 1.
+
     Characteristics.Moves("Bola de Foc", "Bola de foc formada amb magia",
                           50, 100, True, 5, (False, "None")),
     Characteristics.Moves("Fletxa Perforant", "Fletxa altament perforant gracies a poder magic",
@@ -44,6 +48,8 @@ skills = [
 
         # Entitats
 entityTypes = [
+    # Cal tenir en compte les estadistiques, els grups als que pertanyen, i el diccionari de moviments i nivell.
+
         EntityType.EntityType("Guerrer", True, 160, 100, 140, 40, 130, 80, 50, ["Human"], 
                               "Alta salut, resistencia i força pero lenta.",
                               {movements[3]: 3}
@@ -104,6 +110,9 @@ AddEntityGroups()
 
         # Zones
 zones = [
+    # Diccionari per a les entitats en la zona, essent la entitat i la probabilitat de que apareixi.
+    # Altre diccionari per a les monedes, essent la moneda, una tupla amb els dos valors limits (min, max), i 
+    # la probabilitat de que surtin al explorar la zona.  
         Zones.Zona("Dawn Village",
                    "Un poble que representa l'inici, es diu que és el poble on va neixer l'heroi de les llegendes...",
                    "Poble", {entityTypes[6]: 20, entityTypes[6]: 10, entityTypes[6]: 10, entityTypes[6]: 60},
@@ -139,6 +148,7 @@ zones[5].AddConnections([zones[4]])
 
         # Objectes
 objectes = [
+    # En els objectes cal tenir en compte la estadistica en la que actuen si son de combat, en forma de llista cada stat.
             # Objectes de Combat
             Objectes.ObjecteCombat("Pocio Inferior", "Cura 10 punts de vida", ["Health"], 10, 100),
             Objectes.ObjecteCombat("Pocio", "Descripcio", ["Health"], 20, 300),
@@ -177,6 +187,8 @@ botiga = [objectes[0],
           ]
 
 titles = [
+    # En els titols cal entendre el grup sobre el que actuen, i l'increment d'estadistiques contra aquell grup.
+
     # Basic Grade
     Titles.Titles("Beast Slayer", "Augmenta el dany causat contra enemics de tipus Bestia",
                   entityGroups["Beast"], 1.3),
@@ -217,6 +229,9 @@ titles = [
 
     # Exits (Achievements / Logros)
 achievements = [
+    # Cal tenir en compte El Requisit que són els 3 i 4 apartats, essent tipus i quantitat.
+    # També les recompenses, essent quantitat i a que afecten en cas dels statusExit.
+
     # Exits d'estadistiques
     Exits.StatusExit("Lv 10", "Arriba al nivell 10", "Lv", 10, 5, "AllStats"),
     Exits.StatusExit("Lv 20", "Arriba al nivell 10", "Lv", 20, 5, "AllStats"),
@@ -239,6 +254,10 @@ achievements = [
     Exits.StatusExit("HP 100", "Arriba a 100 HP", "HP", 100, 5, "HP"),
     Exits.StatusExit("HP 150", "Arriba a 150 HP", "HP", 150, 5, "HP"),
     Exits.StatusExit("HP 200", "Arriba a 200 HP", "HP", 200, 5, "HP"),
+
+
+    # En els killexit son els grups que s'ha de derrotar i la quantitat, així com el titul recibit en cas de ser titul la
+    # recompensa.
 
     # Exits de Derrotar Enemics
     Exits.KillExit("Beast Slayer", "Derrota 10 monstres de tipus bestia", 
@@ -284,6 +303,8 @@ missions = [
                          [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, [entityTypes[4]], [("Lv", 5)], zones[1], False,
                          Entitat.Entity("Llop Lider", 9, False, entityTypes[4])),
 ]
+
+# Afegir missions amb append, ja que si el requisit es una altre missio aquella ha d'estar ja definida.
 
 missions.append(
     Missions.KillMission("Mostra de Confiança II", 
