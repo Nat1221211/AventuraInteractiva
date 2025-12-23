@@ -6,7 +6,6 @@
 
 import random
 import EntityType
-import Characteristics
 
 import os
 
@@ -54,6 +53,7 @@ class Entity():
         self.isPlayer = IsPlayer
         self.LvLimit = limit
         self.base = BaseEntity
+        self.Moves = list()
         self.DefinirStats()
         self.CurHP = self.MaxHP
         if IsPlayer == True:

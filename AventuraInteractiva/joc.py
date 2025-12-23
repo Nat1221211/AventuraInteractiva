@@ -85,7 +85,7 @@ entityTypes = [
         
         EntityType.EntityType("Golem", False, 250, 100, 160, 80, 200, 60, 500, ["Artificial"], 
                               "Monstre de Roca, es una forma de vida artificial feta de pedra.",
-                              {movements[4]: 3}),
+                              {movements[3]: 3}),
 ]
 
 # Creem la funcio per a generar els grups d'entitats algo aixi com els tipus.
@@ -202,7 +202,7 @@ achievements = [
 missions = [
     Missions.KillMission("Eliminant el Perill", 
                          "Troba i elimina al perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur", 
-                         [("XP", 1200), ("Gold", 10000), (objectes[15], 1)], 1, entityTypes[10], [("Lv", 5)], zones[3], False,
+                         [("XP", 3000), ("Gold", 10000), (objectes[15], 1)], 1, entityTypes[10], [("Lv", 5)], zones[3], False,
                          Entitat.Entity("El Golem de Roca", 40, False, entityTypes[10])),
     Missions.KillMission("Mostra de Confiança", 
                          "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
@@ -536,7 +536,7 @@ def Explorar():
                 else:
                     llista.append(i)
         if len(llista) > 0:
-            choice = random.choices(["res", "missio"], [10, 90])
+            choice = random.choices(["res", "missio"], [90, 10])
             if choice[0] == "missio":
                 misio = random.choice(llista)
                 OcurrenciaMisio(misio)
