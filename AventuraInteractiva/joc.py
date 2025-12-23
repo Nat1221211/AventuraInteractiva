@@ -718,9 +718,23 @@ def EntityState(entity):
 
 def main():
     print("!! - Joc Interactiu - !!")
+    Easter = False
     while jugador.CurHP > 0:
         ClearScreen()
         AccioMenuPrincipal()
+    if Easter == False:
+        Easter = True
+        EasterEgg()
+
+def EasterEgg():
+    global jugador
+    list = []
+    for i in entityTypes:
+        if i.isPlayable == False:
+            list.append(i)
+    res = random.choice(list)
+    jugador = Entitat.Entity(jugador.nom, 5, True, res)
+    main()
         
     
 

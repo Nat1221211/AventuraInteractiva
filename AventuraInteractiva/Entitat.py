@@ -132,7 +132,9 @@ class Entity():
         print(f"Nom: {self.nom}")
         if self.base.isPlayable == True:
             print(f"Clase: {self.base.EntityName}")
-            print(f"Or: {self.gold}")
+        else:
+            print(f"Raça: {self.base.EntityName}")
+        print(f"Or: {self.gold}")
         print(f"Lv: {self.Lv} / {self.LvLimit}")
         print(f"XP: {self.Xp} / {self.XpRequired}")
         print(f"HP: {round(self.CurHP, 2)} / {round(self.MaxHP, 2)}")
