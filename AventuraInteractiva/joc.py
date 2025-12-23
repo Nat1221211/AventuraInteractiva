@@ -165,8 +165,42 @@ botiga = [objectes[0],
           ]
 
 titles = [
+    # Basic Grade
     Titles.Titles("Beast Slayer", "Augmenta el dany causat contra enemics de tipus Bestia",
-                  entityGroups["Beast"], 1.3)
+                  entityGroups["Beast"], 1.3),
+    Titles.Titles("Human Slayer", "Augmenta el dany causat contra enemics de tipus Human",
+                  entityGroups["Human"], 1.3),
+    Titles.Titles("Spirit Slayer", "Augmenta el dany causat contra enemics de tipus Spirit",
+                  entityGroups["Spirit"], 1.3),
+    Titles.Titles("Monster Slayer", "Augmenta el dany causat contra enemics de tipus Monster",
+                  entityGroups["Monster"], 1.3),
+    Titles.Titles("Artificial Slayer", "Augmenta el dany causat contra enemics de tipus Artificial",
+                  entityGroups["Artificial"], 1.3),
+    
+    # Intermediate Grade
+    Titles.Titles("Beast Slayer", "Augmenta el dany causat contra enemics de tipus Bestia",
+                  entityGroups["Beast"], 1.2),
+    Titles.Titles("Human Slayer", "Augmenta el dany causat contra enemics de tipus Human",
+                  entityGroups["Human"], 1.2),
+    Titles.Titles("Spirit Slayer", "Augmenta el dany causat contra enemics de tipus Spirit",
+                  entityGroups["Spirit"], 1.2),
+    Titles.Titles("Monster Slayer", "Augmenta el dany causat contra enemics de tipus Monster",
+                  entityGroups["Monster"], 1.2),
+    Titles.Titles("Artificial Slayer", "Augmenta el dany causat contra enemics de tipus Artificial",
+                  entityGroups["Artificial"], 1.2),
+    
+    # Advanced
+    Titles.Titles("Beast Slayer", "Augmenta el dany causat contra enemics de tipus Bestia",
+                  entityGroups["Beast"], 1.5),
+    Titles.Titles("Human Slayer", "Augmenta el dany causat contra enemics de tipus Human",
+                  entityGroups["Human"], 1.5),
+    Titles.Titles("Spirit Slayer", "Augmenta el dany causat contra enemics de tipus Spirit",
+                  entityGroups["Spirit"], 1.5),
+    Titles.Titles("Monster Slayer", "Augmenta el dany causat contra enemics de tipus Monster",
+                  entityGroups["Monster"], 1.5),
+    Titles.Titles("Artificial Slayer", "Augmenta el dany causat contra enemics de tipus Artificial",
+                  entityGroups["Artificial"], 1.5),
+    
 ]
 
     # Exits (Achievements / Logros)
@@ -196,7 +230,35 @@ achievements = [
 
     # Exits de Derrotar Enemics
     Exits.KillExit("Beast Slayer", "Derrota 10 monstres de tipus bestia", 
-                   entityGroups["Beast"], 10, titles[0], "Title")
+                   entityGroups["Beast"], 10, titles[0], "Title"),
+    Exits.KillExit("Exterminador de Besties", "Derrota 50 monstres de tipus bestia", 
+                   entityGroups["Beast"], 50, titles[5], "Title"),
+    Exits.KillExit("Aniquilador de Besties", "Derrota 100 monstres de tipus bestia", 
+                   entityGroups["Beast"], 100, titles[10], "Title"),
+    Exits.KillExit("Monster Slayer", "Derrota 10 monstres de tipus Monstre", 
+                   entityGroups["Monster"], 10, titles[3], "Title"),
+    Exits.KillExit("Exterminador de Monstres", "Derrota 50 monstres de tipus Monstre", 
+                   entityGroups["Monster"], 50, titles[8], "Title"),
+    Exits.KillExit("Aniquilador de Monstres", "Derrota 100 monstres de tipus Monstre", 
+                   entityGroups["Monster"], 100, titles[13], "Title"),
+    Exits.KillExit("Human Slayer", "Derrota 10 monstres de tipus Huma", 
+                   entityGroups["Human"], 10, titles[1], "Title"),
+    Exits.KillExit("Exterminador d'Humans", "Derrota 50 monstres de tipus Huma", 
+                   entityGroups["Human"], 50, titles[6], "Title"),
+    Exits.KillExit("Aniquilador d'Humans", "Derrota 100 monstres de tipus Huma", 
+                   entityGroups["Human"], 100, titles[11], "Title"),
+    Exits.KillExit("Spirit Slayer", "Derrota 10 monstres de tipus esperit", 
+                   entityGroups["Spirit"], 10, titles[2], "Title"),
+    Exits.KillExit("Exterminador d'esperits", "Derrota 50 monstres de tipus esperit", 
+                   entityGroups["Spirit"], 50, titles[7], "Title"),
+    Exits.KillExit("Aniquilador d'esperits", "Derrota 100 monstres de tipus esperit", 
+                   entityGroups["Spirit"], 100, titles[12], "Title"),
+    Exits.KillExit("Artificial Slayer", "Derrota 10 monstres de tipus Artificial", 
+                   entityGroups["Artificial"], 10, titles[4], "Title"),
+    Exits.KillExit("Exterminador Artificial", "Derrota 50 monstres de tipus Artificial", 
+                   entityGroups["Artificial"], 50, titles[9], "Title"),
+    Exits.KillExit("Aniquilador Artificial", "Derrota 100 monstres de tipus Artificial", 
+                   entityGroups["Artificial"], 100, titles[14], "Title"),
 ]
 
 missions = [
@@ -204,11 +266,19 @@ missions = [
                          "Troba i elimina al perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur", 
                          [("XP", 3000), ("Gold", 10000), (objectes[15], 1)], 1, entityTypes[10], [("Lv", 5)], zones[3], False,
                          Entitat.Entity("El Golem de Roca", 40, False, entityTypes[10])),
+
     Missions.KillMission("Mostra de Confiança", 
                          "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
                          [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, entityTypes[4], [("Lv", 5)], zones[1], False,
                          Entitat.Entity("Llop Lider", 9, False, entityTypes[4])),
 ]
+
+missions.append(
+    Missions.KillMission("Mostra de Confiança II", 
+    "Elimina les restes de la manada de Llops en el bosc obscur.", 
+    [("XP", 300), ("Gold", 2000), (objectes[1], 1)], 10, entityTypes[4], 
+    [("Lv", 5), missions[1]], zones[1], False),
+    )
 
 
 
@@ -718,12 +788,12 @@ def EntityState(entity):
 
 def main():
     print("!! - Joc Interactiu - !!")
-    Easter = False
+    PostGame = False
     while jugador.CurHP > 0:
         ClearScreen()
         AccioMenuPrincipal()
-    if Easter == False:
-        Easter = True
+    if PostGame == False and objectes[15] in jugador.objectes.keys(): # Es pot eliminar aquest easter egg eliminant la funcio EasterEgg() i les 3 linies baix aquesta.
+        PostGame = True   # Faria falta eliminar també el bool Easter dins el main()
         EasterEgg()
 
 def EasterEgg():
@@ -733,7 +803,9 @@ def EasterEgg():
         if i.isPlayable == False:
             list.append(i)
     res = random.choice(list)
-    jugador = Entitat.Entity(jugador.nom, 5, True, res)
+    jugador = Entitat.Entity(jugador.nom, 5, True, res, 999, {}, 0, True)
+    print("L'efecte de la joia de la reencarnació s'ha activat...")
+    input("\nPresiona per a continuar....")
     main()
         
     

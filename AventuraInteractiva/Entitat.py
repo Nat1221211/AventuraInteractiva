@@ -45,9 +45,10 @@ class Entity():
     objectes = {} # Diccionari, objecte i quantitat
     fleeProb = 75
     Tituls = []
+    PostGame = False
 
     # Metodes
-    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10):
+    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10, post = False):
         self.nom = nom
         self.Lv = level
         self.isPlayer = IsPlayer
@@ -63,6 +64,7 @@ class Entity():
                 self.nom = self.base.EntityName
             self.gold = gold
         self.objectes = objectes
+        self.PostGame = post
         
     def DefinirMoves(self):
         for i in self.base.EntityMoves.items():
@@ -172,6 +174,9 @@ class Entity():
                 self.DefinirStats(True)
                 self.Xp -= self.XpRequired
                 self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
+                if self.PostGame == True:
+                    self.XpRequired /= 2
+                    self.XpRequired = round(self.XpRequired, 2)                    
                 input("Presiona per a continuar...")
     
     def AddXP(self, xpadded):
