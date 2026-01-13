@@ -22,6 +22,14 @@ def ClearScreen():
     os.system("cls" if os.name == "nt" else "clear")
 
     # Preparació Joc
+
+        # Efectes d'estat (Cremat, Congelat, Paralitzat, Sangrant, etc.)
+Effects = [
+    Characteristics.Effects("Cremada","Estar cremat redueix el atac i la defensa i causa dany cada poc temps...",
+                            True, False, 0, 3, ("Stat", (["ATK", "DEF"], 0.25))),
+    Characteristics.Effects("Sangrat","Tens una ferida greu que fa perdre vida constantment...",
+                            True, False, 0, 8, ("None", "")),
+]
         # Moves
 movements = [   
     # Per a efectes d'estat dins la tupla un True, Seguit d'una altre tupla amb una llista amb les estadistiques, 
@@ -29,17 +37,17 @@ movements = [
     # la reducció ha de ser de 0  a 0.9, es a dir iferior a 1.
 
     Characteristics.Moves("Bola de Foc", "Bola de foc formada amb magia",
-                          50, 100, True, 5, (False, "None")),
+                          70, 100, True, 5, ("Effect", (Effects[0], 30))),
     Characteristics.Moves("Fletxa Perforant", "Fletxa altament perforant gracies a poder magic",
-                          40, 100, False, 5, (False, "None")),
-    Characteristics.Moves("Asalt Relampeg", "Impuls de velocitat i atacs repetits",
-                          40, 100, False, 5, (True, (["SPD"], 1.1))),
+                          60, 100, False, 5, (False, "None")),
+    Characteristics.Moves("Assalt Llampeg", "Impuls de velocitat i atacs repetits",
+                          40, 100, False, 5, ("Stat", (["SPD"], 1.1))),
     Characteristics.Moves("Tall Potent", "Tall altament poderos, fortaleix el cos amb magia.",
-                          50, 100, False, 5, (True, (["ATK"], 1.1))),
+                          50, 100, False, 5, ("Stat", (["ATK"], 1.1))),
     Characteristics.Moves("Aixafar", "Potent Mossegada",
                           50, 90, False, 0, (False, ("None"))),
     Characteristics.Moves("Debuff", "Reduccio d'estadistiques alta",
-                          50, 90, False, 0, (True, (["ATK", "DEF", "SPD", "INT"], 0.3))),
+                          20, 95, True, 10, ("Stat", (["ATK", "DEF", "SPD", "INT"], 0.2))),
 ]
         # Skills
 skills = [
@@ -372,11 +380,11 @@ def AccioMenuPrincipal():
 
     # Seleccionem el menu
     if ubicacio.ZoneType == "Poble":
-        menu = {1: "Mapa", 2: "Mochila", 3: "Posada", 4: "Botiga", 5: "Estat", 6: "Misions", 7: "Exits", 8: "Guardar", 9: "Info"}
+        menu = {1: "Mapa", 2: "Mochila", 3: "Posada", 4: "Botiga", 5: "Estat", 6: "Misions", 7: "Exits", 8: "Guardar"}
     elif ubicacio.ZoneType != "Poble":
-        menu = {1: "Explorar", 2: "Mochila", 3: "Lluitar", 4: "Estat", 5: "Mapa", 6: "Misions", 7: "Exits", 8: "Guardar", 9: "Info"}
+        menu = {1: "Mapa", 2: "Mochila", 3: "Explorar", 4: "Lluitar", 5: "Estat", 6: "Misions", 7: "Exits", 8: "Guardar"}
 
-    print(f"Vostre es troba a {ubicacio.NameZone}")
+    print(f"Vostè es troba a {ubicacio.NameZone}")
     while pos not in menu.keys():   # Generem la llista del menu
         for i in menu.keys():
             print(f"{i} -> {menu.get(i)}")
@@ -408,8 +416,6 @@ def AccioMenuPrincipal():
         MostrarExits()
     elif menu.get(pos) == "Mochila":
         jugador.ObjectesMochila()
-    elif menu.get(pos) == "Info":
-        print("Info (Ajuda sobre les opcions del menu...)")
 
 def MenuMisions():
     res = 0
@@ -590,6 +596,8 @@ def Posada():
             print("Has descansat comodament, t'has recuperat completament...")
             jugador.gold -= 100
             jugador.CurHP = jugador.MaxHP
+            jugador.Mana = jugador.MaxMana
+            jugador.afected = "None"
         else:
             print("No tens suficient gold per pagar la posada, has marxat sense poder descansar...")
     else:
@@ -605,8 +613,8 @@ def Mapa():
             print(f"{count} -> {i.NameZone}")
             count += 1
             disponibles.append(i)
-            if count > len(ubicacio.Connections):
-                print(f"{count} -> Sortir")
+    if count > len(disponibles):
+        print(f"{count} -> Sortir")
     pos = 0
     while pos not in range(1, count + 2): # Demanem a on anar.
         try:
@@ -646,12 +654,13 @@ def Explorar():
                 else:
                     llista.append(i)
         if len(llista) > 0:
-            choice = random.choices(["res", "missio"], [90, 10])
+            choice = random.choices(["res", "missio"], [80, 20])
             if choice[0] == "missio":
                 misio = random.choice(llista)
                 OcurrenciaMisio(misio)
             else:
-                print("No has trobat res...")   
+                print("No has trobat res...")
+                input("Presiona per a continuar...")  
         else:
             print("No has trobat res...")
     elif prob > 60 and prob <= 90:  # Lluitar
@@ -661,9 +670,7 @@ def Explorar():
         for i in ubicacio.Connections:
             if i.Trobada == False:
                 i.Trobada = True
-    if prob <= 60 or prob > 90 or choice[0] == "missio":
-        input("Presiona per a continuar...")
-
+        
 def TrobarOr(moneda):
     global ubicacio, jugador
     moneda = list(moneda)
@@ -779,6 +786,18 @@ def GenerarEnemic():
     enemy = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0])
     Lluitar(enemy)
 
+def ComprobarEfectEstat(entitat):
+    if entitat.afected != "None":
+        if entitat.timer <= 0 and entitat.afected.Turns > 0:
+            entitat.afected = "None"
+        else:
+            if entitat.afected.Damaging == True:
+                damagepereffect = ((entitat.MaxHP / 100) * entitat.afected.Damage)
+                entitat.CurHP -= damagepereffect
+                print(f"{entitat.nom}, ha perdut {damagepereffect} HP degut a la {entitat.afected.Name}.") 
+            entitat.timer -= 1
+            
+
 def Lluitar(enemy):
     global jugador, ubicacio
 
@@ -787,6 +806,9 @@ def Lluitar(enemy):
     turn = False
     if jugador.SPD >= enemy.SPD:
         turn = True
+    else:
+        print(f"Has estat emboscat per un/a {enemy.nom}.")
+        input("Pressiona per a continuar...")
     fugir = [False]
     while jugador.CurHP > 0 and enemy.CurHP > 0 and fugir[0] == False: 
         ClearScreen()
@@ -795,9 +817,11 @@ def Lluitar(enemy):
         print("\n")
         if turn == True:
             enemy, turn, fugir = AccionsLluita(enemy)
+            ComprobarEfectEstat(jugador)
         else:
             enemyMove = random.choice(enemy.Moves)
             enemy.atacar(jugador, enemyMove)
+            ComprobarEfectEstat(enemy)
             if jugador.CurHP <= 0:
                 print("Has estat derrotat...")
             else:
@@ -806,11 +830,12 @@ def Lluitar(enemy):
     if enemy.CurHP <= 0:
         print(f"{enemy.nom}, ha estat derrotat !!")
         finalitzarCombat()
-        jugador.LvlUp(enemy)
-        jugador.gold += enemy.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
-        print(f"Has guanyat {enemy.Lv * 10} gold.")
-        ComprovarExits(enemy)
-        ComprovarMisions(enemy)
+        if jugador.CurHP > 0:
+            jugador.LvlUp(enemy)
+            jugador.gold += enemy.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
+            print(f"Has guanyat {enemy.Lv * 10} gold.")
+            ComprovarExits(enemy)
+            ComprovarMisions(enemy)
     else:
         finalitzarCombat()
 
@@ -824,7 +849,12 @@ def finalitzarCombat():
     jugador.DefinirTempStats()
         
 def EntityState(entity):
-    print(f"{entity.nom}, LV: {entity.Lv}, HP: {round(entity.CurHP, 2)} / {round(entity.MaxHP, 2)}", f", Mana: {round(entity.Mana, 2)} / {round(entity.MaxMana, 2)}" if entity.isPlayer == True else "")
+    print(f"{entity.nom}, LV: {entity.Lv}")
+    print(f"HP: {round(entity.CurHP, 2)} / {round(entity.MaxHP, 2)}", f", Mana: {round(entity.Mana, 2)} / {round(entity.MaxMana, 2)}" if entity.isPlayer == True else "")
+    if entity.afected != "None":
+        print(f"{entity.afected.Name}")
+    print("")
+
 
 def main():
     print("!! - Joc Interactiu - !!")

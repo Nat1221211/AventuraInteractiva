@@ -26,6 +26,27 @@ class Moves():
         self.Cost = cost
         self.StatusEffect = efect
 
+class Effects():
+    
+    Name = ""
+    Description = ""
+    Damaging = bool()   # Si fa dany
+    Blocking = bool() # Si impedeix el moviment
+    Turns = int() # If = 0 es permanent (posada o objecte per eliminar)
+    Damage = int()  # Dany percentual num baix...
+    StatEffects = tuple()   # Reduccions d'estadistiques i altres...
+    
+    
+    # Metodes
+    def __init__(self, name, description, damaging, blocking, turns, damage, statuschanges = "None"):
+        self.Name = name
+        self.Description = description
+        self.Damaging = damaging
+        self.Blocking = blocking
+        self.Turns = turns
+        self.Damage = damage
+        self.StatEffects = statuschanges     
+
 class Skills():
     Name = ""
     Description = ""

@@ -6,6 +6,7 @@
 
 import random
 import EntityType
+import Objectes
 
 import os
 
@@ -29,7 +30,7 @@ class Entity():
     SPD = int()
     Moves = list()
 
-    # temp stats
+    # temp stats / effects
     tempATK = int()
     tempINT = int()
     tempDEF = int()
@@ -38,6 +39,9 @@ class Entity():
     buffINT = 1
     buffSPD = 1
     buffDEF = 1
+
+    afected = ""
+    timer = 0
 
     # Xp
     Xp = 0
@@ -69,6 +73,7 @@ class Entity():
             self.gold = gold
         self.objectes = objectes
         self.PostGame = post
+        self.afected = "None"
         
     def DefinirMoves(self):
         for i in self.base.EntityMoves.items():
@@ -87,6 +92,7 @@ class Entity():
             self.Mana = self.MaxMana
         self.DefinirTempStats()
         self.DefinirMoves()
+        self.afected = "None"
     
     def DefinirTempStats(self):
         self.tempATK = self.ATK
@@ -100,38 +106,69 @@ class Entity():
             if buff > 1:
                 buff -= 1
             else:
-                buff = abs(buff)
-                buff = -(buff)
-                print(f"La estadistica {i} s'ha reduit en {abs(buff * 100)}%")
+                buff = -(abs(buff))
+                print(f"La estadistica {i} de {self.nom} s'ha reduit en {abs(buff * 100)}%")
             if i == "ATK":
                 self.buffATK += buff
+                if self.buffATK < 0.5:
+                    self.buffATK = 0.5
+                elif self.buffATK > 4:
+                    self.buffATK = 4
                 self.tempATK *= self.buffATK
             if i == "INT":
                 self.buffINT += buff
+                if self.buffINT < 0.5:
+                    self.buffINT = 0.5
+                elif self.buffINT > 4:
+                    self.buffINT = 4
                 self.tempINT *= self.buffINT
             if i == "SPD":
                 self.buffSPD += buff
+                if self.buffSPD < 0.5:
+                    self.buffSPD = 0.5
+                elif self.buffSPD > 4:
+                    self.buffSPD = 4
                 self.tempSPD *= self.buffSPD
             if i == "DEF":
                 self.buffDEF += buff
+                if self.buffDEF < 0.5:
+                    self.buffDEF = 0.5
+                elif self.buffDEF > 4:
+                    self.buffDEF = 4
                 self.tempDEF *= self.buffDEF
-
     
     def ResetBuffs(self):
         self.buffATK = 1
         self.buffINT = 1
         self.buffSPD = 1
         self.buffDEF = 1
+    
+    # Pendent d'acabar
+    def ApplyStatusEffects(self, effect, prob):
+        if prob < 100:
+            apply = random.choices([True, False], [prob, 100 - prob])
+        else:
+            apply = [True]
+        if apply[0] == True:
+            if self.afected != effect:
+                if self.afected == "None":
+                    self.afected = effect
+                    self.timer = effect.Turns
+                    print(f"{self.nom} ha estat afectat per {effect.Name}.")
+                    if self.afected.StatEffects[1] != "None":
+                        self.BuffTempStats(self.afected.StatEffects[1][1],self.afected.StatEffects[1][0])
+                else:
+                    print(f"{self.nom} ja esta afectat per {self.afected}")
 
     def CalcularDamage(self, enemy, move):
         # Cridar icrements d'stats en cas de ser necessari
-        if move.StatusEffect[0] == True:
+        if move.StatusEffect[0] == "Stat":
             if move.StatusEffect[1][1] > 1:
                 self.BuffTempStats(move.StatusEffect[1][1], move.StatusEffect[1][0])
                 print(f"{move.StatusEffect[1][0]} ha incrementat.\n")
             else:
                 enemy.BuffTempStats(move.StatusEffect[1][1], move.StatusEffect[1][0])
-                enemy.ShowStatus(True)
+        
         # Calcul dels danys
         if move.Type == False:
             dif = self.tempATK / enemy.tempDEF
@@ -150,6 +187,11 @@ class Entity():
             print("El dany causat a incrementat a causa dels titols.")
             damage *= amplify
         damage *= (random.randint(90,111) / 100)
+        self.Mana -= move.Cost
+
+        # Reduim les estadistiques per efectes d'estat despres de calcular el dany.
+        if move.StatusEffect[0] == "Effect":
+            enemy.ApplyStatusEffects(move.StatusEffect[1][0], move.StatusEffect[1][1])
         return damage
 
     def atacar(self, enemy, move):
@@ -288,12 +330,20 @@ class Entity():
                         print("\nHa ocurregut un error...")
                     input("\nPresiona per a continuar...")
                 if obj != 0:
-                    objectNames[obj - 1].Utilitzar(self)
-                    self.objectes[objectNames[obj - 1]]-= 1
-                    print(f"Has utilitzat: {objectNames[obj - 1].ObjectName}")
-                    if combat == True:
-                        used = True
-                        res = 3
+                    if type(self.objectes[objectNames[obj - 1]]) == Objectes.ObjecteCombat and combat == False:
+                        print("Aquest objecte només es pot utilitzar en combat...")
+                        input("Presiona per a continuar...")
+                    else:
+                        objectNames[obj - 1].Utilitzar(self)
+                        self.objectes[objectNames[obj - 1]]-= 1
+                        print(f"Has utilitzat: {objectNames[obj - 1].ObjectName}")
+                        if combat == True:
+                            used = True
+                            res = 3
+                        if self.objectes[objectNames[obj - 1]] <= 0:
+                            self.objectes.pop(objectNames[obj - 1])
+                        else:
+                            print("No tens aquest objecte...")
                 else:
                     print("Has sortit del menu d'utilització.")
         if combat == True:
