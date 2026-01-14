@@ -155,7 +155,7 @@ class Entity():
                     self.afected = effect
                     self.timer = effect.Turns
                     print(f"{self.nom} ha estat afectat per {effect.Name}.")
-                    if self.afected.StatEffects[1] != "None":
+                    if self.afected.StatEffects[0] != "None":
                         self.BuffTempStats(self.afected.StatEffects[1][1],self.afected.StatEffects[1][0])
                 else:
                     print(f"{self.nom} ja esta afectat per {self.afected}")

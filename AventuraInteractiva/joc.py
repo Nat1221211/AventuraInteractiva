@@ -29,6 +29,10 @@ Effects = [
                             True, False, 0, 3, ("Stat", (["ATK", "DEF"], 0.25))),
     Characteristics.Effects("Sangrat","Tens una ferida greu que fa perdre vida constantment...",
                             True, False, 0, 8, ("None", "")),
+    Characteristics.Effects("Congelacio","Estas congelat durant una certa quantitat de temps...",
+                            False, True, 3, 0, ("None", "")),
+    Characteristics.Effects("Sangrat Greu","Tens una ferida greu que fa perdre vida constantment...",
+                            True, False, 0, 15, ("Stat", (["ATK", "DEF", "SPD"], 0.15))),
 ]
         # Moves
 movements = [   
@@ -39,13 +43,13 @@ movements = [
     Characteristics.Moves("Bola de Foc", "Bola de foc formada amb magia",
                           70, 100, True, 5, ("Effect", (Effects[0], 30))),
     Characteristics.Moves("Fletxa Perforant", "Fletxa altament perforant gracies a poder magic",
-                          60, 100, False, 5, (False, "None")),
+                          60, 100, False, 5, ("Effect", (Effects[1], 60))),
     Characteristics.Moves("Assalt Llampeg", "Impuls de velocitat i atacs repetits",
                           40, 100, False, 5, ("Stat", (["SPD"], 1.1))),
     Characteristics.Moves("Tall Potent", "Tall altament poderos, fortaleix el cos amb magia.",
                           50, 100, False, 5, ("Stat", (["ATK"], 1.1))),
     Characteristics.Moves("Aixafar", "Potent Mossegada",
-                          50, 90, False, 0, (False, ("None"))),
+                          50, 90, False, 0, ("Effect", (Effects[1], 10))),
     Characteristics.Moves("Debuff", "Reduccio d'estadistiques alta",
                           20, 95, True, 10, ("Stat", (["ATK", "DEF", "SPD", "INT"], 0.2))),
 ]
@@ -660,7 +664,6 @@ def Explorar():
                 OcurrenciaMisio(misio)
             else:
                 print("No has trobat res...")
-                input("Presiona per a continuar...")  
         else:
             print("No has trobat res...")
     elif prob > 60 and prob <= 90:  # Lluitar
@@ -670,7 +673,9 @@ def Explorar():
         for i in ubicacio.Connections:
             if i.Trobada == False:
                 i.Trobada = True
-        
+    if choice[0] != "missio" and prob < 60 or prob > 90:
+        input("Presiona per a continuar...")
+
 def TrobarOr(moneda):
     global ubicacio, jugador
     moneda = list(moneda)
@@ -697,6 +702,7 @@ def TrobarOr(moneda):
             mult = 10000
             print(f"Has trobat {found} monedes d'{moneda[0]}")
     jugador.gold += found * mult
+    
 
 def MenuAtacar():
     global jugador
