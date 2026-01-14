@@ -328,9 +328,9 @@ class Entity():
                             print("\nHas de dir un dels objectes... o escriure 0")
                     except ValueError:
                         print("\nHa ocurregut un error...")
-                    input("\nPresiona per a continuar...")
+                        input("\nPresiona per a continuar...")
                 if obj != 0:
-                    if type(self.objectes[objectNames[obj - 1]]) == Objectes.ObjecteCombat and combat == False:
+                    if objectNames[obj - 1].OutCombat == False and combat == False:
                         print("Aquest objecte només es pot utilitzar en combat...")
                         input("Presiona per a continuar...")
                     else:
@@ -342,8 +342,6 @@ class Entity():
                             res = 3
                         if self.objectes[objectNames[obj - 1]] <= 0:
                             self.objectes.pop(objectNames[obj - 1])
-                        else:
-                            print("No tens aquest objecte...")
                 else:
                     print("Has sortit del menu d'utilització.")
         if combat == True:

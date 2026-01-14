@@ -34,14 +34,16 @@ class ObjecteCombat(Objecte):
     TypeEffect = [] # Si afecta a curar, augment d'estadistiques, fugida, etc...
     EffectQuantity = int()  # Quantitat del efecte (curació, augment d'estadistiques, etc. La quantitat)
     Preu = int()
+    OutCombat = False
 
     # Metodes
-    def __init__(self, name, description, TypeEffect, effectquantity, price):
+    def __init__(self, name, description, TypeEffect, effectquantity, price, usableoutcombat = False):
         self.ObjectName = name
         self.ObjectDescription = description
         self.TypeEffect = TypeEffect
         self.EffectQuantity = effectquantity
         self.Preu = price
+        self.OutCombat = usableoutcombat
     
     def Utilitzar(self, jugador):
         for i in self.TypeEffect:
