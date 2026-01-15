@@ -102,9 +102,12 @@ class Entity():
     
     def BuffTempStats(self, buff, statbuffed):
         self.DefinirTempStats()
+        basebuff = buff
         for i in statbuffed:
+            buff = basebuff
             if buff > 1:
                 buff -= 1
+                print(f"La estadistica {i} de {self.nom} s'ha incrementat en {abs(buff * 100)}%")
             else:
                 buff = -(abs(buff))
                 print(f"La estadistica {i} de {self.nom} s'ha reduit en {abs(buff * 100)}%")
@@ -162,12 +165,13 @@ class Entity():
 
     def CalcularDamage(self, enemy, move):
         # Cridar icrements d'stats en cas de ser necessari
-        if move.StatusEffect[0] == "Stat":
-            if move.StatusEffect[1][1] > 1:
-                self.BuffTempStats(move.StatusEffect[1][1], move.StatusEffect[1][0])
-                print(f"{move.StatusEffect[1][0]} ha incrementat.\n")
-            else:
-                enemy.BuffTempStats(move.StatusEffect[1][1], move.StatusEffect[1][0])
+        for i in move.StatusEffect:
+            if i[0] == "Stat":
+                if i[1][1] > 1:
+                    self.BuffTempStats(i[1][1], i[1][0])
+                    print(f"{i[1][0]} ha incrementat.\n")
+                else:
+                    enemy.BuffTempStats(i[1][1], i[1][0])
         
         # Calcul dels danys
         if move.Type == False:

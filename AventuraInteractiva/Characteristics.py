@@ -14,7 +14,7 @@ class Moves():
     Precision = int()
     Type = False
     Cost = int()
-    StatusEffect = ()
+    StatusEffect = list(tuple())
     
     # Metodes
     def __init__(self, name, description, power, precision, tipo, cost, efect):

@@ -41,17 +41,55 @@ movements = [
     # la reducció ha de ser de 0  a 0.9, es a dir iferior a 1.
 
     Characteristics.Moves("Bola de Foc", "Bola de foc formada amb magia",
-                          70, 100, True, 5, ("Effect", (Effects[0], 30))),
+                          40, 100, True, 5, [("Effect", (Effects[0], 30))]),
     Characteristics.Moves("Fletxa Perforant", "Fletxa altament perforant gracies a poder magic",
-                          60, 100, False, 5, ("Effect", (Effects[1], 60))),
+                          60, 100, False, 5, [("Effect", (Effects[1], 60))]),
     Characteristics.Moves("Assalt Llampeg", "Impuls de velocitat i atacs repetits",
-                          40, 100, False, 5, ("Stat", (["SPD"], 1.1))),
+                          30, 100, False, 5, [("Stat", (["SPD"], 1.1))]),
     Characteristics.Moves("Tall Potent", "Tall altament poderos, fortaleix el cos amb magia.",
-                          50, 100, False, 5, ("Stat", (["ATK"], 1.1))),
+                          50, 100, False, 5, [("Stat", (["ATK"], 1.1))]),
     Characteristics.Moves("Aixafar", "Potent Mossegada",
-                          50, 90, False, 0, ("Effect", (Effects[1], 10))),
+                          40, 90, False, 0, [("Effect", (Effects[1], 10))]),
     Characteristics.Moves("Debuff", "Reduccio d'estadistiques alta",
-                          20, 95, True, 10, ("Stat", (["ATK", "DEF", "SPD", "INT"], 0.2))),
+                          20, 95, True, 10, [("Stat", (["ATK", "DEF", "SPD", "INT"], 0.2))]),
+    
+    # Atacs sense consum per a si no queda Mana i no podem realitzar-ne cap altre...
+    Characteristics.Moves("Tall", "Un tall d'arma blanca normal",
+                          30, 100, False, 0, [("None", "")]),
+    Characteristics.Moves("Cop de Basto", "Un cop de basto normal",
+                          20, 100, False, 0, [("None", "")]),
+    Characteristics.Moves("Fletxa", "És dispara una fletxa normal",
+                          30, 100, False, 0, [("None", "")]),
+    
+    # Continuem amb atacs diversos
+        # Mag
+    Characteristics.Moves("Fletxa de flames", "",
+                          60, 100, True, 20, [("Effect", (Effects[0], 80))]),
+    Characteristics.Moves("Increment", "",
+                          20, 100, True, 10, [("Stat", (["ATK", "DEF", "SPD", "INT"], 1.3))]),
+    Characteristics.Moves("Fulla de Vent", "",
+                          60, 100, True, 20, [("Effect", (Effects[1], 80))]),
+        
+        # Guerrer
+    Characteristics.Moves("Tall Llampeg", "",
+                          70, 100, False, 10, [("Effect", (Effects[1], 80))]),
+    Characteristics.Moves("Crit de Guerra", "",
+                          30, 100, False, 10, [("Stat", (["ATK", "DEF", "SPD"], 1.25)), ("Stat", (["ATK", "DEF", "INT", "SPD"], 0.1))]),
+    Characteristics.Moves("", "",
+                          30, 100, False, 10, [("None", "")]),
+        
+        # Arquer
+    Characteristics.Moves("", "",
+                          30, 100, False, 10,[ ("None", "")]),
+    Characteristics.Moves("", "",
+                          30, 100, True, 10, [("None", "")]),
+        
+        # Lladre
+    Characteristics.Moves("", "",
+                          30, 100, True, 10, [("None", "")]),
+    Characteristics.Moves("", "",
+                          30, 100, True, 10, [("None", "")]),
+
 ]
         # Skills
 skills = [
@@ -64,20 +102,20 @@ entityTypes = [
 
         EntityType.EntityType("Guerrer", True, 160, 100, 140, 40, 130, 80, 50, ["Human"], 
                               "Alta salut, resistencia i força pero lenta.",
-                              {movements[3]: 3}
+                              {movements[6]: 1, movements[3]: 3, movements[12]: 3, movements[13]: 3}
                               ),
       
         EntityType.EntityType("Mag", True, 80, 200, 60, 180, 100, 100, 50, ["Human"], 
                               "Alt atac, però poca salut, resistencia i velocitat equilibrades.",
-                              {movements[0]: 3, movements[5]: 5}),
+                              {movements[7]: 1, movements[0]: 3, movements[5]: 5}),
        
         EntityType.EntityType("Arquer", True, 120, 140, 140, 100, 140, 140, 50, ["Human"], 
                               "Resistencia, Atac i Velocitat equilibrats.",
-                              {movements[1]: 3}),
+                              {movements[8]: 1, movements[1]: 3}),
        
         EntityType.EntityType("Lladre", True, 120, 120, 130, 100, 120, 160, 50, ["Human"], 
                               "Alta velocitat, salut i resistencia equilibrades, atac mitja.",
-                              {movements[2]: 3}),
+                              {movements[6]: 1, movements[2]: 3}),
        
         EntityType.EntityType("Llop", False, 120, 40, 120, 20, 100, 140, 30, ["Beast"], 
                               "Animal comú, pot ser perillos si no es te cuidado.",
@@ -196,6 +234,8 @@ botiga = [objectes[0],
           objectes[6],
           objectes[9],
           objectes[12],
+          objectes[16],
+          objectes[21],
           ]
 
 titles = [
@@ -384,9 +424,9 @@ def AccioMenuPrincipal():
 
     # Seleccionem el menu
     if ubicacio.ZoneType == "Poble":
-        menu = {1: "Mapa", 2: "Mochila", 3: "Posada", 4: "Botiga", 5: "Estat", 6: "Misions", 7: "Exits", 8: "Guardar"}
+        menu = {1: "Mapa", 2: "Motxila", 3: "Hostal", 4: "Botiga", 5: "Estat", 6: "Missions", 7: "Éxits", 8: "Guardar"}
     elif ubicacio.ZoneType != "Poble":
-        menu = {1: "Mapa", 2: "Mochila", 3: "Explorar", 4: "Lluitar", 5: "Estat", 6: "Misions", 7: "Exits", 8: "Guardar"}
+        menu = {1: "Mapa", 2: "Motxila", 3: "Explorar", 4: "Lluitar", 5: "Estat", 6: "Missions", 7: "Éxits", 8: "Guardar"}
 
     print(f"Vostè es troba a {ubicacio.NameZone}")
     while pos not in menu.keys():   # Generem la llista del menu
@@ -404,21 +444,21 @@ def AccioMenuPrincipal():
         Mapa()
     elif menu.get(pos) == "Explorar":
         Explorar()
-    elif menu.get(pos) == "Posada":
+    elif menu.get(pos) == "Hostal":
         Posada()
     elif menu.get(pos) == "Botiga":
         Botiga()
     elif menu.get(pos) == "Estat":
         jugador.ShowStatus()
-    elif menu.get(pos) == "Misions":
+    elif menu.get(pos) == "Missions":
         MenuMisions()
     elif menu.get(pos) == "Lluitar":
         GenerarEnemic()
     elif menu.get(pos) == "Guardar":
         print("")
-    elif menu.get(pos) == "Exits":
+    elif menu.get(pos) == "Éxits":
         MostrarExits()
-    elif menu.get(pos) == "Mochila":
+    elif menu.get(pos) == "Motxila":
         jugador.ObjectesMochila()
 
 def MenuMisions():
@@ -712,7 +752,8 @@ def MenuAtacar():
         count = 1
         for i in jugador.Moves:
             print(f"{count} -> {i.Name}")
-            print(f"Power: {i.Power}, Precision: {i.Precision}\n")
+            print(f"Power: {i.Power}, Precision: {i.Precision}")
+            print(f"Mana Cost: {i.Cost}\n")
             count += 1
         print(f"{count} -> Sortir")
         try:
@@ -853,6 +894,7 @@ def ComprovarMisions(enemy):
 def finalitzarCombat():
     global jugador
     jugador.DefinirTempStats()
+    jugador.ResetBuffs()
         
 def EntityState(entity):
     print(f"{entity.nom}, LV: {entity.Lv}")
