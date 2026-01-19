@@ -194,8 +194,9 @@ class Entity():
         self.Mana -= move.Cost
 
         # Reduim les estadistiques per efectes d'estat despres de calcular el dany.
-        if move.StatusEffect[0] == "Effect":
-            enemy.ApplyStatusEffects(move.StatusEffect[1][0], move.StatusEffect[1][1])
+        for i in move.StatusEffect:
+            if i[0] == "Effect":
+                enemy.ApplyStatusEffects(i[1][0], i[1][1])
         return damage
 
     def atacar(self, enemy, move):

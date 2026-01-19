@@ -33,6 +33,8 @@ Effects = [
                             False, True, 3, 0, ("None", "")),
     Characteristics.Effects("Sangrat Greu","Tens una ferida greu que fa perdre vida constantment...",
                             True, False, 0, 15, ("Stat", (["ATK", "DEF", "SPD"], 0.15))),
+    Characteristics.Effects("Terror","",
+                        False, False, 0, 0, ("Stat", (["ATK", "DEF", "INT", "SPD"], 0.25))),
 ]
         # Moves
 movements = [   
@@ -74,7 +76,7 @@ movements = [
     Characteristics.Moves("Tall Llampeg", "",
                           70, 100, False, 10, [("Effect", (Effects[1], 80))]),
     Characteristics.Moves("Crit de Guerra", "",
-                          30, 100, False, 10, [("Stat", (["ATK", "DEF", "SPD"], 1.25)), ("Stat", (["ATK", "DEF", "INT", "SPD"], 0.1))]),
+                          30, 100, False, 10, [("Stat", (["ATK", "DEF", "SPD"], 1.25)), ("Effect", (Effects[4] , 95))]),
     Characteristics.Moves("", "",
                           30, 100, False, 10, [("None", "")]),
         
