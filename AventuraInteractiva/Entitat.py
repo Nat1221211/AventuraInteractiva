@@ -28,7 +28,11 @@ class Entity():
     INT = int()
     DEF = int()
     SPD = int()
+
+    # Characteristics
     Moves = list()
+    subclass = None
+    subAcquirable = False
 
     # temp stats / effects
     tempATK = int()
@@ -53,10 +57,11 @@ class Entity():
     objectes = {} # Diccionari, objecte i quantitat
     fleeProb = 75
     Tituls = []
+    AcquiredAchievements = []
     PostGame = False
 
     # Metodes
-    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10, post = False):
+    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10, subclass = None, paths = None, post = False):
         self.nom = nom
         self.Lv = level
         self.isPlayer = IsPlayer
@@ -74,19 +79,103 @@ class Entity():
         self.objectes = objectes
         self.PostGame = post
         self.afected = "None"
+        self.subclass = subclass
+        self.paths = paths
+    
+    def ComprovarSubClassesDisponibles(self):
+        for i in self.base.paths.items():
+            req = True
+            for j in i[1][0]:
+                if j[0] == "Lv" and self.Lv < j[1]:
+                    req = False
+                elif j[0] == "Stat":
+                    for s in j[1]:
+                        if s[0] == "Mana" and self.MaxMana < s[1]:
+                            req = False
+                        elif s[0] == "Health" and self.MaxHP < s[1]:
+                            req = False
+                        elif s[0] == "Attack" and self.ATK < s[1]:
+                            req = False
+                        elif s[0] == "Int" and self.INT < s[1]:
+                            req = False
+                        elif s[0] == "Defense" and self.DEF < s[1]:
+                            req = False
+                        elif s[0] == "Speed" and self.SPD < s[1]:
+                            req = False
+                elif j[0] == "Éxit":
+                    if j[1] not in self.AcquiredAchievements:
+                        req = False
+            if req == True:
+                self.base.paths[i[0]][1] = True
+                if self.subAcquirable == False and self.subclass == None:
+                    self.subAcquirable = True
+
+    def DefinirSubClass(self):
+        disponible = []
+        for j in self.base.paths.items():
+            if j[1][1] == True:
+                disponible.append(j[0])
+        count = 1
+        sel = 0
+        while sel < 1:
+            os.system("cls" if os.name == "nt" else "clear")
+            print(" - Tria la teva Segona Classe - ")
+            print("No totes les opcions que existeixen poden ser seleccionables..." \
+            "Només és mostren les que es compleixen els requisits...")
+            print()
+            for i in disponible:
+                print(f"{count} -> {i.EntityName}")
+                print(f"{i.EntityDescription}\n")
+                count += 1
+            print(f"{count} -> Sortir\n")
+            try:
+                sel = int(input(f"Digues quina Segona Classe Vols: "))
+                if sel not in range(1, count + 2):
+                    print("Has de dir un dels numeros segons la segona classe que vols...")
+            except ValueError:
+                print("Ha ocurregut un error...")
+        if sel == count:
+            print("Has sortit del menu de seleccio de subclasse...")
+            print("Pots tornar a accedir-hi desde el menu d'estat...")
+            input("Presiona per a continuar...")
+        else:
+            self.subclass = disponible[sel - 1]
+            self.subAcquirable = False
+            self.DefinirStats(True)
+
+
         
     def DefinirMoves(self):
         for i in self.base.EntityMoves.items():
             if i[1] <= self.Lv and i[0] not in self.Moves:
                 self.Moves.append(i[0])
+        if self.subclass != None:
+            for i in self.subclass.EntityMoves.items():
+                if i[1] <= self.Lv and i[0] not in self.Moves:
+                    self.Moves.append(i[0])
 
     def DefinirStats(self,LvOrNot = False):
-        self.MaxHP = 10 + ((self.base.Health / 50) * self.Lv)
-        self.MaxMana = 10 + ((self.base.Magic / 50) * self.Lv)
-        self.ATK = 10 + ((self.base.Attack / 50) * self.Lv)
-        self.INT = 10 + ((self.base.Intel / 50) * self.Lv)
-        self.DEF = 10 + ((self.base.Defense / 50) * self.Lv)
-        self.SPD = 10 + ((self.base.Speed / 50) * self.Lv)
+        baseHealth = self.base.Health / 50
+        baseMagic = self.base.Magic / 50
+        baseAttack = self.base.Attack / 50
+        baseIntel = self.base.Intel / 50
+        baseDefense = self.base.Defense / 50
+        baseSpeed = self.base.Speed / 50
+        
+        if self.subclass != None:
+            baseHealth += self.subclass.Health / 100
+            baseMagic += self.subclass.Magic / 100
+            baseAttack += self.subclass.Attack / 100
+            baseIntel += self.subclass.Intel / 100
+            baseDefense += self.subclass.Defense / 100
+            baseSpeed += self.subclass.Speed / 100            
+
+        self.MaxHP = 10 + (baseHealth * self.Lv)
+        self.MaxMana = 10 + (baseMagic * self.Lv)
+        self.ATK = 10 + (baseAttack * self.Lv)
+        self.INT = 10 + (baseIntel * self.Lv)
+        self.DEF = 10 + (baseDefense * self.Lv)
+        self.SPD = 10 + (baseSpeed * self.Lv)
         if LvOrNot == False:
             self.CurHP = self.MaxHP
             self.Mana = self.MaxMana
@@ -223,6 +312,8 @@ class Entity():
         print(f"Nom: {self.nom}")
         if self.base.isPlayable == True:
             print(f"Clase: {self.base.EntityName}")
+            if self.subclass != None:
+                print(f"Classe Secundaria: {self.subclass.EntityName}")
         else:
             print(f"Raça: {self.base.EntityName}")
         print(f"Or: {self.gold}")
@@ -250,8 +341,14 @@ class Entity():
                     print(i)
                     count = 0
         print("")
-        if combat == False:
-            input("Presiona per a sortir...")
+        if combat == False and self.subAcquirable == True:
+            res = int(input("Digues si vols sortir (1), o obtenir una segona classe (2): "))
+            if res not in [1, 2]:
+                self.ShowStatus()
+            if res == 2:
+                self.DefinirSubClass()
+        elif combat == False:
+            input("Presiona per a continuar...")
 
     def LvlUp(self, enemy):
         if self.Lv < self.LvLimit:
@@ -267,7 +364,7 @@ class Entity():
                 self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
                 if self.PostGame == True:
                     self.XpRequired /= 2
-                    self.XpRequired = round(self.XpRequired, 2)                    
+                    self.XpRequired = round(self.XpRequired, 2)                   
                 input("Presiona per a continuar...")
     
     def AddXP(self, xpadded):

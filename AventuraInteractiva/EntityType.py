@@ -20,6 +20,7 @@ class EntityType():
     baseXP = int()
     EntityGroup = []
     EntityMoves = {}
+    paths = dict()
 
     # Metodes
     def __init__(self, name, playable, hp, magi, atk, intel, defs, spd, xp, group, description, moves):
@@ -35,3 +36,6 @@ class EntityType():
         self.EntityGroup = group
         self.EntityDescription = description
         self.EntityMoves = moves
+    
+    def AddPaths(self, paths):
+        self.paths = paths

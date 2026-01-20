@@ -146,7 +146,17 @@ entityTypes = [
         EntityType.EntityType("Golem", False, 250, 100, 160, 80, 200, 60, 500, ["Artificial"], 
                               "Monstre de Roca, es una forma de vida artificial feta de pedra.",
                               {movements[3]: 3}),
+        
+        EntityType.EntityType("Mag de Flames", False, 60, 250, 60, 220, 50, 50, 40, ["Human"], 
+                              "Molt Atac altres estadistiques baixen, augmentara molt l'atac i el mana pero" \
+                              "\nles altres estadistiques no canviaran massa...",
+                              {movements[9]: 25}),
 ]
+
+# Afegint Paths (Posibles SUbclasses)
+entityTypes[1].AddPaths({entityTypes[11]: [[("Lv", 30), ("Stat", [("Mana", 120)])], False]})
+
+
 
 # Creem la funcio per a generar els grups d'entitats algo aixi com els tipus.
 entityGroups = {}
@@ -401,14 +411,14 @@ def CrearJugador():
         except ValueError:
             print("Ha ocurregut un error...")
     
-    jugador = None
+    playableentity = None
     temp = 0
-    while jugador == None:
+    while playableentity == None:
         if clases[temp].EntityName.lower() == clase:
-            jugador = Entitat.Entity(nom, 5, True, clases[temp])
+            playableentity = Entitat.Entity(nom, 5, True, clases[temp])
         temp += 1
 
-    return jugador
+    return playableentity
 
 # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
 jugador = CrearJugador()
@@ -581,6 +591,7 @@ def ComprovarExits(enemy):
             if type(i) == Exits.KillExit:
                 i.IncrementCount(enemy)
             i.Completed(jugador)
+            jugador.AcquiredAchievements.append(i)
 
 
 def PrepararBotiga(): # Afegir objectes segons nivell
@@ -883,15 +894,21 @@ def Lluitar(enemy):
             jugador.LvlUp(enemy)
             jugador.gold += enemy.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
             print(f"Has guanyat {enemy.Lv * 10} gold.")
-            ComprovarExits(enemy)
-            ComprovarMisions(enemy)
+            Comprovacions(enemy)
     else:
         finalitzarCombat()
 
-def ComprovarMisions(enemy):
+def Comprovacions(enemy):
     for i in missions:
         if type(i) == Missions.KillMission:
             i.IncrementCount(enemy)
+    for i in achievements:
+        if i.Obtained == False:
+            if type(i) == Exits.KillExit:
+                i.IncrementCount(enemy)
+            i.Completed(jugador)
+            jugador.AcquiredAchievements.append(i)
+    jugador.ComprovarSubClassesDisponibles()
 
 def finalitzarCombat():
     global jugador
