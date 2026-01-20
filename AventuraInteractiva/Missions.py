@@ -78,7 +78,7 @@ class Mission():
                         jugador.gold += i[1]
                         print(f"Has obtingut {i[1]} gold.")
                     elif i[0] == "XP":
-                        jugador.AddXP(i[1])
+                        jugador.LvlUp(None, i[1])
         else:
             print("Encara no has complert la missio...")
 

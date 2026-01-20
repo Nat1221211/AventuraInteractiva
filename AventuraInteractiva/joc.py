@@ -140,7 +140,7 @@ entityTypes = [
                               {movements[4]: 3}),
        
         EntityType.EntityType("Treant", False, 200, 140, 150, 120, 150, 100, 220, ["Monster", "Spirit"], 
-                              "Un arbre malevol, en algunes ocasions no ho són.",
+                              "Un arbre malevol, en algunes ocasions no en són.",
                               {movements[4]: 3}),
         
         EntityType.EntityType("Golem", False, 250, 100, 160, 80, 200, 60, 500, ["Artificial"], 
@@ -186,19 +186,19 @@ zones = [
         Zones.Zona("Profunditats del Bosc Obscur",
                    "Les profunditats del bosc obscur, una perillosa zona de la que és diu que qui hi entra no en surt...",
                    "Bosc", {entityTypes[4]: 32, entityTypes[5]: 40, entityTypes[6]: 20, entityTypes[8]: 5, entityTypes[9]: 3}, 
-                   (5, 15), {"Bronze": [(5, 15), 100]}),
+                   (5, 12), {"Bronze": [(5, 15), 100]}),
         Zones.Zona("Centre del Bosc Obscur",
                    "La zona central del bosc obscur, hi habiten monstres desconeguts, ningú ha tornat mai d'aquest lloc...",
                    "Bosc", {entityTypes[6]: 30, entityTypes[8]: 30, entityTypes[9]: 40}, 
-                   (14, 30), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}),
+                   (10, 18), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}),
         Zones.Zona("Muntanyes del Origen",
                    "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
                    "Muntanya", {entityTypes[7]: 50, entityTypes[8]: 20, entityTypes[9]: 20, entityTypes[10]: 10}, 
-                   (30, 45), {"Plata": [(40, 100), 70], "Or": [(1, 10), 30]}),
+                   (15, 25), {"Plata": [(40, 100), 70], "Or": [(1, 10), 30]}),
         Zones.Zona("Cavernes del Origen",
                    "Les cavernes de les muntanyes del origen, no és te coneixement de la existencia d'aquestes...",
                    "Cavernes", {entityTypes[6]: 40, entityTypes[7]: 30, entityTypes[10]: 30}, 
-                   (43, 60), {"Plata": [(40, 100), 70], "Or": [(1, 10), 20], "Or Platejat": [(1, 1), 10]})
+                   (30, 45), {"Plata": [(40, 100), 70], "Or": [(1, 10), 20], "Or Platejat": [(1, 1), 10]})
 ]
         # Connexions de cada zona
 zones[0].AddConnections([zones[1]])
@@ -230,6 +230,7 @@ objectes = [
             
             # Objectes Clau
             Objectes.ObjecteClau("Pedra Misteriosa", "???"),
+            Objectes.ObjecteClau("Tronc extrany", "Tronc d'un arbre extrany"),
 
             # Mes objectes de Combat
             Objectes.ObjecteCombat("Pocio de Mana Inferior", "Regenera 10 punts de Mana", ["Mana"], 10, 100),
@@ -241,6 +242,17 @@ objectes = [
             Objectes.ObjecteCombat("Alta Millora Magica", "Descripcio", ["INT"], 2, 750),
             Objectes.ObjecteCombat("Super Millora Magica", "Descripcio", ["INT"], 2.5, 2000),
             ]
+
+# Afegir Objectes per Trobar explorant cada zona
+zones[1].AfegirObjectePerTrobar([
+    [objectes[16], [30, 2]],
+    [objectes[2], [40, 3]],
+    [objectes[17], [30, 3]],
+    ])
+
+
+
+
 # Botiga
 botiga = [objectes[0],
           objectes[6],
@@ -383,6 +395,13 @@ missions.append(
     [("XP", 500), ("Gold", 3000), (objectes[1], 5)], 15, [entityTypes[6]], 
     [("Lv", 10), missions[2]], zones[1], False),
     )
+
+missions.append(
+    Missions.FindMission("Troba a en Jack", 
+    "Un nen del pobla s'ha perdut, és diu Jack, creuen que s'ha endinsat massa en el bosc obscur...",
+    [("XP", 500), ("Gold", 2000)], "Jack", 
+    [("Lv", 5)], zones[2])
+)
 
 
 
@@ -687,12 +706,29 @@ def OcurrenciaMisio(misio):
     if type(misio) == Missions.KillMission:
         Lluitar(misio.Enemic)
     elif type(misio) == Missions.FindMission:
-        print(f"Has trobat {misio.Objective}")
+        print(f"Has trobat en/la {misio.Objective}")
         misio.Completed()
     elif type(misio) == Missions.ObjectMission:
-        print(f"Has trobat {misio.Objective}")
+        print(f"Has trobat l'objecte {misio.Objective.ObjectName}")
         misio.Completed()
+    if type(misio) != Missions.KillMission:
+        input("Presiona per a Continuar...")
 
+def ExplorarTrobaroNo():
+    global jugador, ubicacio
+    perTrobar = len(ubicacio.ObjectesPerTrobar)
+    if perTrobar >= 1:
+        choice = random.choices(["res", "objecte"], [10, 90])
+        if choice == ["objecte"]:
+            objectes = list(ubicacio.ObjectesPerTrobar.keys())
+            probabilitat = [j[0] for j in ubicacio.ObjectesPerTrobar.values()]
+            trobat = random.choices(objectes, probabilitat)
+            ubicacio.ObjecteTrobat(trobat[0])
+            print(f"Has trobat un/a {trobat[0].ObjectName}.")
+            jugador.AfegirObjecte(trobat[0], 1)
+
+    if perTrobar == 0 or choice == ["res"]:
+        print("No has trobat res...")
 
 def Explorar():
     global jugador, ubicacio
@@ -701,7 +737,7 @@ def Explorar():
     choice = [""]
     if prob <= 20:  # Or
         TrobarOr(ubicacio.Or.keys())
-    elif prob > 20 and prob <= 60:  # Res
+    elif prob > 20 and prob <= 70:  # Res / Missions / Ocurrencies
         llista = []
         for i in missions:
             if i.Status == "Accepted" and i.Place == ubicacio:
@@ -715,18 +751,16 @@ def Explorar():
             if choice[0] == "missio":
                 misio = random.choice(llista)
                 OcurrenciaMisio(misio)
-            else:
-                print("No has trobat res...")
-        else:
-            print("No has trobat res...")
-    elif prob > 60 and prob <= 90:  # Lluitar
+        if len(llista) == 0 or choice == ["res"]:
+            ExplorarTrobaroNo()
+    elif prob > 70 and prob <= 95:  # Lluitar
         GenerarEnemic()
-    elif prob > 90 and prob <= 100: # Seguent ruta
+    elif prob > 95 and prob <= 100: # Seguent ruta
         print("Has trobat una ruta a la seguent zona...")
         for i in ubicacio.Connections:
             if i.Trobada == False:
                 i.Trobada = True
-    if choice[0] != "missio" and prob < 60 or prob > 90:
+    if choice[0] != "missio" and prob < 70 or prob > 95:
         input("Presiona per a continuar...")
 
 def TrobarOr(moneda):
@@ -744,16 +778,16 @@ def TrobarOr(moneda):
         found = random.randint(ubicacio.Or[moneda[0]][0][0], ubicacio.Or[moneda[0]][0][1])
         if moneda[0] == "Bronze":
             mult = 10
-            print(f"Has trobat {found} monedes de {moneda[0]}")
+            print(f"Has trobat {found} monedes de {moneda[0]}.")
         elif moneda[0] == "Plata":
             mult = 100
-            print(f"Has trobat {found} monedes de {moneda[0]}")
+            print(f"Has trobat {found} monedes de {moneda[0]}.")
         elif moneda[0] == "Or":
             mult = 1000
-            print(f"Has trobat {found} monedes d'{moneda[0]}")
+            print(f"Has trobat {found} monedes d'{moneda[0]}.")
         elif moneda[0] == "Or Platejat":
             mult = 10000
-            print(f"Has trobat {found} monedes d'{moneda[0]}")
+            print(f"Has trobat {found} monedes d'{moneda[0]}.")
     jugador.gold += found * mult
     
 

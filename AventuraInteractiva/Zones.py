@@ -18,6 +18,7 @@ class Zona():
     LevelRange = tuple()
     Trobada = False
     Or = {"": [tuple(), 100]}
+    ObjectesPerTrobar = {}
 
 
     # Metodes
@@ -35,3 +36,14 @@ class Zona():
     
     def Trobar(self):
         self.Trobada = True
+    
+    def AfegirObjectePerTrobar(self, objectes):
+        for i in objectes:  
+            self.ObjectesPerTrobar[i[0]] = i[1]
+            # i[0] = Objecte i[1] = llista amb prob i quantitat per trobar.
+    
+    def ObjecteTrobat(self, trobat):
+        if self.ObjectesPerTrobar[trobat][1] >= 1:
+            self.ObjectesPerTrobar[trobat][1] -= 1
+            if self.ObjectesPerTrobar[trobat][1] <= 0:
+                self.ObjectesPerTrobar.pop(trobat)

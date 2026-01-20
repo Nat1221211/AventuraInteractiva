@@ -353,13 +353,19 @@ class Entity():
         elif combat == False:
             input("Presiona per a continuar...")
 
-    def LvlUp(self, enemy):
+    def LvlUp(self, enemy = None, XP = None):
         if self.Lv < self.LvLimit:
-            obtainedXP = float(round(5 + enemy.base.baseXP * (enemy.Lv * 0.2), 2))
-            print(f"Has guanyat {obtainedXP}.")
-            self.Xp += obtainedXP
-            self.Xp = float(round(self.Xp, 2))
-            if self.Xp > self.XpRequired:
+            if XP == None and enemy != None:
+                obtainedXP = float(round(5 + enemy.base.baseXP * (enemy.Lv * 0.2), 2))
+                print(f"Has guanyat {obtainedXP} punts d'experiencia.")
+                self.Xp += obtainedXP
+                self.Xp = float(round(self.Xp, 2))
+            elif XP != None and enemy == None:
+                self.Xp += XP
+                self.Xp = float(round(self.Xp, 2))
+                print(f"Has guanyat {XP} punts d'experiencia.")
+
+            while self.Xp > self.XpRequired:
                 self.Lv += 1
                 print(f"Has pujat de nivell... Ara ets nivell {self.Lv}")
                 self.DefinirStats(True)
@@ -367,7 +373,7 @@ class Entity():
                 self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
                 if self.PostGame == True:
                     self.XpRequired /= 2
-                    self.XpRequired = round(self.XpRequired, 2)                   
+                    self.XpRequired = round(self.XpRequired, 2)            
                 input("Presiona per a continuar...")
     
     def AddXP(self, xpadded):
@@ -435,18 +441,22 @@ class Entity():
                         print("\nHa ocurregut un error...")
                         input("\nPresiona per a continuar...")
                 if obj != 0:
-                    if objectNames[obj - 1].OutCombat == False and combat == False:
-                        print("Aquest objecte només es pot utilitzar en combat...")
-                        input("Presiona per a continuar...")
+                    if type(objectNames[obj - 1]) != Objectes.ObjecteClau:
+                        if objectNames[obj - 1].OutCombat == False and combat == False:
+                            print("Aquest objecte només es pot utilitzar en combat...")
+                            input("Presiona per a continuar...")
+                        else:
+                            objectNames[obj - 1].Utilitzar(self)
+                            self.objectes[objectNames[obj - 1]]-= 1
+                            print(f"Has utilitzat: {objectNames[obj - 1].ObjectName}")
+                            if combat == True:
+                                used = True
+                                res = 3
+                            if self.objectes[objectNames[obj - 1]] <= 0:
+                                self.objectes.pop(objectNames[obj - 1])
                     else:
-                        objectNames[obj - 1].Utilitzar(self)
-                        self.objectes[objectNames[obj - 1]]-= 1
-                        print(f"Has utilitzat: {objectNames[obj - 1].ObjectName}")
-                        if combat == True:
-                            used = True
-                            res = 3
-                        if self.objectes[objectNames[obj - 1]] <= 0:
-                            self.objectes.pop(objectNames[obj - 1])
+                        print("Els objectes clau no es poden utilitzar, son objectes de missio o amb altres finalitats...")
+                        input("Presiona per a continuar")
                 else:
                     print("Has sortit del menu d'utilització.")
         if combat == True:
