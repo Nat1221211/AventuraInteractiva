@@ -44,6 +44,9 @@ class Entity():
     buffSPD = 1
     buffDEF = 1
 
+    # Combat Priority Variables
+    Priority = int()
+
     afected = ""
     timer = 0
 

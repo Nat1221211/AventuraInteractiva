@@ -856,37 +856,59 @@ def ComprobarEfectEstat(entitat):
                 entitat.CurHP -= damagepereffect
                 print(f"{entitat.nom}, ha perdut {damagepereffect} HP degut a la {entitat.afected.Name}.") 
             entitat.timer -= 1
-            
+def PrioritatInicial(enemy):
+    maxSpeed = max(jugador.SPD, enemy.SPD)
+    if jugador.SPD == maxSpeed:
+        jugador.Priority = 100
+        enemy.Priority = (enemy.SPD / maxSpeed) * 100
+    else:
+        enemy.Priority = 100
+        jugador.Priority = (jugador.SPD / maxSpeed) * 100
+    return enemy
+
+def IncrementarPrioritat(enemy):
+    enemy.Priority += enemy.SPD / 300
+    jugador.Priority += jugador.SPD / 300
+    return enemy
+
+def BattleScreenShow(enemy):
+    ClearScreen()
+    EntityState(jugador)
+    EntityState(enemy)
+    print("\n")
 
 def Lluitar(enemy):
     global jugador, ubicacio
 
     print(f"Ha aparegut un {enemy.nom}")
 
-    turn = False
-    if jugador.SPD >= enemy.SPD:
-        turn = True
-    else:
+   
+    enemy = PrioritatInicial(enemy)
+
+    
+    if jugador.Priority < 100:
         print(f"Has estat emboscat per un/a {enemy.nom}.")
         input("Pressiona per a continuar...")
     fugir = [False]
     while jugador.CurHP > 0 and enemy.CurHP > 0 and fugir[0] == False: 
-        ClearScreen()
-        EntityState(jugador)
-        EntityState(enemy)
-        print("\n")
-        if turn == True:
+        if jugador.Priority >= 100:
+            BattleScreenShow(enemy)
             enemy, turn, fugir = AccionsLluita(enemy)
             ComprobarEfectEstat(jugador)
-        else:
+            jugador.Priority = 0
+            input("\nPresiona per a continuar...")
+        elif enemy.Priority >= 100:
+            BattleScreenShow(enemy)
             enemyMove = random.choice(enemy.Moves)
             enemy.atacar(jugador, enemyMove)
+            enemy.Priority = 0
             ComprobarEfectEstat(enemy)
             if jugador.CurHP <= 0:
                 print("Has estat derrotat...")
-            else:
-                turn = True
-        input("\nPresiona per a continuar...")
+            input("\nPresiona per a continuar...")
+        else:
+            enemy = IncrementarPrioritat(enemy)
+        
     if enemy.CurHP <= 0:
         print(f"{enemy.nom}, ha estat derrotat !!")
         finalitzarCombat()
@@ -920,6 +942,7 @@ def EntityState(entity):
     print(f"HP: {round(entity.CurHP, 2)} / {round(entity.MaxHP, 2)}", f", Mana: {round(entity.Mana, 2)} / {round(entity.MaxMana, 2)}" if entity.isPlayer == True else "")
     if entity.afected != "None":
         print(f"{entity.afected.Name}")
+    print(f"Prioritat: {round(entity.Priority, 1)}")
     print("")
 
 
