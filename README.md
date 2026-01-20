@@ -1,8 +1,6 @@
 # AventuraInteractiva
 
-Actualment 23/12/2025, al crear una entitat els moviements els fa en la clase i en el self.Moves però totes les entitats de tipus Entity els comparteixen per alguna rao un cop son generades.
-
-Mateix dia, arreglat colocant en def init damunt de DefinirStats, que crida DefinirMoves, un self.Moves = list(), efectivament resetejant el valor ja contingut en aquest.
-A veure per a errors que hagi provocat aixó.
-
-Comprovat que els enemics no perden el moviments, per tant es pot deduir que era un problema acumulatiu, caad nova entitat generada en global (misions), afegia el seus moviments a les creades més tard.
+Actualment amb Moviments, Efectes d'estat, Augment d'estadistiques per fases(Percentuals) amb limit i reduccio igual.
+Posada per a recuperar vida, missions, logros, botiga, objectes per a utilitzar en combat i fora, opcions d'exploracio amb capacitat de relacionarse amb les missions.
+Combat per torns amb prioritat, es a dir, la velocitat te més importancia que en un jo ataco, ataques tu i així, ja que podries atacar diverses vegades seguides segons la teva velocitat.
+Subclasses afegides, per a poder augmentar més les estadistiques, al cumplir les condicions...
