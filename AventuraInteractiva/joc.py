@@ -252,7 +252,7 @@ objectes = [
 # Afegir Objectes per Trobar explorant cada zona
 zones[1].AfegirObjectePerTrobar([
     [objectes[16], [30, 2]],
-    [objectes[2], [40, 3]],
+    [objectes[1], [40, 3]],
     [objectes[17], [30, 3]],
     ])
 
@@ -448,14 +448,16 @@ def CrearJugador():
 # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
 jugador = CrearJugador()
 ubicacio = zones[0]
+team = []
+team.append(jugador)
 
 
 # Afegim algun objecte al jugador de base
-jugador.AfegirObjecte(objectes[0], 2)
-jugador.AfegirObjecte(objectes[6], 2)
+team[0].AfegirObjecte(objectes[0], 2)
+team[0].AfegirObjecte(objectes[6], 2)
 
 def AccioMenuPrincipal():
-    global jugador, ubicacio
+    global team, ubicacio
     
     pos = 0
 
@@ -486,7 +488,7 @@ def AccioMenuPrincipal():
     elif menu.get(pos) == "Botiga":
         Botiga()
     elif menu.get(pos) == "Estat":
-        jugador.ShowStatus()
+        team[0].ShowStatus()
     elif menu.get(pos) == "Missions":
         MenuMisions()
     elif menu.get(pos) == "Lluitar":
@@ -496,7 +498,7 @@ def AccioMenuPrincipal():
     elif menu.get(pos) == "Éxits":
         MostrarExits()
     elif menu.get(pos) == "Motxila":
-        jugador.ObjectesMochila()
+        team[0].ObjectesMochila()
 
 def MenuMisions():
     res = 0
@@ -546,7 +548,7 @@ def MenuMisions():
                             if aceptar == count:
                                 print("Has sortit")
                             else:
-                                reclamar[aceptar - 1].Aceptar(jugador)
+                                reclamar[aceptar - 1].Aceptar(team[0])
                     except ValueError:
                         print("Ha ocurregut un error...")
             elif res == 3:
@@ -561,7 +563,7 @@ def MenuMisions():
                             if aceptar == count:
                                 print("Has sortit")
                             else:
-                                reclamar[aceptar - 1].ClaimedRewards(jugador)
+                                reclamar[aceptar - 1].ClaimedRewards(team[0])
                     except ValueError:
                         print("Ha ocurregut un error...")
             if res != 4:
@@ -578,7 +580,7 @@ def ShowMisions(filter, accio):
     count = 1
     llista = []
     for i in missions:
-        i.RequisitesCompleted(jugador)
+        i.RequisitesCompleted(team[0])
         if i.Status == filter:
             print(f"\n{count} -> {i.Name}")
             print(f"Estat: {i.Status}")
@@ -615,25 +617,25 @@ def ComprovarExits(enemy):
         if i.Obtained == False:
             if type(i) == Exits.KillExit:
                 i.IncrementCount(enemy)
-            i.Completed(jugador)
-            jugador.AcquiredAchievements.append(i)
+            i.Completed(team[0])
+            team[0].AcquiredAchievements.append(i)
 
 
 def PrepararBotiga(): # Afegir objectes segons nivell
-    global jugador
-    if jugador.Lv > 10:
+    global team
+    if team[0].Lv > 10:
         if [objectes[1], objectes[7], objectes[10], objectes[13]] not in botiga:
             botiga.append(objectes[1])
             botiga.append(objectes[7])
             botiga.append(objectes[10])
             botiga.append(objectes[13])
-    if jugador.Lv > 20:
+    if team[0].Lv > 20:
         if [objectes[2], objectes[8], objectes[11], objectes[14]] not in botiga:
             botiga.append(objectes[2])
             botiga.append(objectes[8])
             botiga.append(objectes[11])
             botiga.append(objectes[14])
-    if jugador.Lv > 35:
+    if team[0].Lv > 35:
         if [objectes[3], objectes[4], objectes[5]] not in botiga:
             botiga.append(objectes[3])
             botiga.append(objectes[4])
@@ -660,12 +662,12 @@ def Botiga():
         res = res -1
         while qty < 1:
             qty = int(input(f"\nQuants/es {botiga[res].ObjectName} vols comprar: "))
-        jugador.AfegirObjecte(botiga[res], qty)
-        jugador.gold -= botiga[res].Preu * qty
+        team[0].AfegirObjecte(botiga[res], qty)
+        team[0].gold -= botiga[res].Preu * qty
         print(f"Has comprat {qty} {botiga[res].ObjectName} per {botiga[res].Preu * qty} gold !")
 
 def Posada():
-    global jugador
+    global team
     res = ""
     while res not in ["S", "N"]:
         ClearScreen()
@@ -674,12 +676,12 @@ def Posada():
         except ValueError:
             print("Ha ocurregut un error...")
     if res == "S":
-        if jugador.gold >= 100:
+        if team[0].gold >= 100:
             print("Has descansat comodament, t'has recuperat completament...")
-            jugador.gold -= 100
-            jugador.CurHP = jugador.MaxHP
-            jugador.Mana = jugador.MaxMana
-            jugador.afected = "None"
+            team[0].gold -= 100
+            team[0].CurHP = team[0].MaxHP
+            team[0].Mana = team[0].MaxMana
+            team[0].afected = "None"
         else:
             print("No tens suficient gold per pagar la posada, has marxat sense poder descansar...")
     else:
@@ -721,7 +723,7 @@ def OcurrenciaMisio(misio):
         input("Presiona per a Continuar...")
 
 def ExplorarTrobaroNo():
-    global jugador, ubicacio
+    global team, ubicacio
     perTrobar = len(ubicacio.ObjectesPerTrobar)
     if perTrobar >= 1:
         choice = random.choices(["res", "objecte"], [10, 90])
@@ -731,13 +733,13 @@ def ExplorarTrobaroNo():
             trobat = random.choices(objectes, probabilitat)
             ubicacio.ObjecteTrobat(trobat[0])
             print(f"Has trobat un/a {trobat[0].ObjectName}.")
-            jugador.AfegirObjecte(trobat[0], 1)
+            team[0].AfegirObjecte(trobat[0], 1)
 
     if perTrobar == 0 or choice == ["res"]:
         print("No has trobat res...")
 
 def Explorar():
-    global jugador, ubicacio
+    global team, ubicacio
     print("Has començar a explorar...")
     prob = random.randrange(1, 100)
     choice = [""]
@@ -770,7 +772,7 @@ def Explorar():
         input("Presiona per a continuar...")
 
 def TrobarOr(moneda):
-    global ubicacio, jugador
+    global ubicacio, team
     moneda = list(moneda)
     mult = 10
     if len(moneda) < 2:
@@ -794,16 +796,16 @@ def TrobarOr(moneda):
         elif moneda[0] == "Or Platejat":
             mult = 10000
             print(f"Has trobat {found} monedes d'{moneda[0]}.")
-    jugador.gold += found * mult
+    team[0].gold += found * mult
     
 
 def MenuAtacar():
-    global jugador
+    global team
     res = 0
-    while res not in range(1, len(jugador.Moves) + 2):
+    while res not in range(1, len(team[0].Moves) + 2):
         ClearScreen()
         count = 1
-        for i in jugador.Moves:
+        for i in team[0].Moves:
             print(f"{count} -> {i.Name}")
             print(f"Power: {i.Power}, Precision: {i.Precision}")
             print(f"Mana Cost: {i.Cost}\n")
@@ -811,13 +813,13 @@ def MenuAtacar():
         print(f"{count} -> Sortir")
         try:
             res = int(input("Digues quin atac vols fer: "))
-            if res not in range(1, len(jugador.Moves) + 2):
+            if res not in range(1, len(team[0].Moves) + 2):
                 print("Has de dir que vols fer...")
             if res == count:
                 print("Has sortit")
             else:
-                use = jugador.Moves[res - 1]
-                if use.Cost > jugador.Mana:
+                use = team[0].Moves[res - 1]
+                if use.Cost > team[0].Mana:
                     print("No tens suficient Mana per a realitzar aquest atac...")
                     input("Presiona per a continuar...")
                     return None
@@ -827,7 +829,7 @@ def MenuAtacar():
             print("Ha ocurregut un error...")
     
 def AccionsLluita(enemy):
-    global jugador
+    global team
     print("1 -> Atacar")
     print("2 -> Fugir")
     print("3 -> Objectes")
@@ -843,30 +845,30 @@ def AccionsLluita(enemy):
     if accio == 1:
         move = MenuAtacar()
         ClearScreen()
-        EntityState(jugador)
+        EntityState(team[0])
         EntityState(enemy)
         print("\n")
         if move != None:
-            enemy = jugador.atacar(enemy, move)
+            enemy = team[0].atacar(enemy, move)
         else:
             turn = True
     elif accio == 2:
         fugir = Fugir(enemy)
     elif accio == 3:
-        used = jugador.ObjectesMochila(True)
+        used = team[0].ObjectesMochila(True)
         if used == False:
             turn = True
     elif accio == 4:
         ClearScreen()
-        jugador.ShowStatus(True)
+        team[0].ShowStatus(True)
         turn = True
     
     return enemy, turn, fugir
 
 def Fugir(enemy):
-    global jugador
+    global team
     print("Has intentat Fugir...")
-    prob = jugador.fleeProb * (jugador.SPD / enemy.SPD)   # fleeProb = 75 de base
+    prob = team[0].fleeProb * (team[0].SPD / enemy.SPD)   # fleeProb = 75 de base
    
     # 75% base * resultat de velocitat del jugador entre la del enemic. (75 * (22 / 20) = 1.1) = 82.5)
     if prob < 100:
@@ -897,28 +899,28 @@ def ComprobarEfectEstat(entitat):
                 print(f"{entitat.nom}, ha perdut {damagepereffect} HP degut a la {entitat.afected.Name}.") 
             entitat.timer -= 1
 def PrioritatInicial(enemy):
-    maxSpeed = max(jugador.SPD, enemy.SPD)
-    if jugador.SPD == maxSpeed:
-        jugador.Priority = 100
+    maxSpeed = max(team[0].SPD, enemy.SPD)
+    if team[0].SPD == maxSpeed:
+        team[0].Priority = 100
         enemy.Priority = (enemy.SPD / maxSpeed) * 100
     else:
         enemy.Priority = 100
-        jugador.Priority = (jugador.SPD / maxSpeed) * 100
+        team[0].Priority = (team[0].SPD / maxSpeed) * 100
     return enemy
 
 def IncrementarPrioritat(enemy):
     enemy.Priority += enemy.SPD / 300
-    jugador.Priority += jugador.SPD / 300
+    team[0].Priority += team[0].SPD / 300
     return enemy
 
 def BattleScreenShow(enemy):
     ClearScreen()
-    EntityState(jugador)
+    EntityState(team[0])
     EntityState(enemy)
     print("\n")
 
 def Lluitar(enemy):
-    global jugador, ubicacio
+    global team, ubicacio
 
     print(f"Ha aparegut un {enemy.nom}")
 
@@ -926,24 +928,25 @@ def Lluitar(enemy):
     enemy = PrioritatInicial(enemy)
 
     
-    if jugador.Priority < 100:
+    if team[0].Priority < 100:
         print(f"Has estat emboscat per un/a {enemy.nom}.")
         input("Pressiona per a continuar...")
     fugir = [False]
-    while jugador.CurHP > 0 and enemy.CurHP > 0 and fugir[0] == False: 
-        if jugador.Priority >= 100:
+    while team[0].CurHP > 0 and enemy.CurHP > 0 and fugir[0] == False: 
+        if team[0].Priority >= 100:
             BattleScreenShow(enemy)
             enemy, turn, fugir = AccionsLluita(enemy)
-            ComprobarEfectEstat(jugador)
-            jugador.Priority = 0
+            if fugir[0] == False:
+                ComprobarEfectEstat(team[0])
+            team[0].Priority = 0
             input("\nPresiona per a continuar...")
-        elif enemy.Priority >= 100:
+        elif enemy.Priority >= 100 and fugir[0] == False:
             BattleScreenShow(enemy)
             enemyMove = random.choice(enemy.Moves)
-            enemy.atacar(jugador, enemyMove)
+            enemy.atacar(team[0], enemyMove)
             enemy.Priority = 0
             ComprobarEfectEstat(enemy)
-            if jugador.CurHP <= 0:
+            if team[0].CurHP <= 0:
                 print("Has estat derrotat...")
             input("\nPresiona per a continuar...")
         else:
@@ -952,9 +955,9 @@ def Lluitar(enemy):
     if enemy.CurHP <= 0:
         print(f"{enemy.nom}, ha estat derrotat !!")
         finalitzarCombat()
-        if jugador.CurHP > 0:
-            jugador.LvlUp(enemy)
-            jugador.gold += enemy.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
+        if team[0].CurHP > 0:
+            team[0].LvlUp(enemy)
+            team[0].gold += enemy.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
             print(f"Has guanyat {enemy.Lv * 10} gold.")
             Comprovacions(enemy)
     else:
@@ -968,14 +971,14 @@ def Comprovacions(enemy):
         if i.Obtained == False:
             if type(i) == Exits.KillExit:
                 i.IncrementCount(enemy)
-            i.Completed(jugador)
-            jugador.AcquiredAchievements.append(i)
-    jugador.ComprovarSubClassesDisponibles()
+            i.Completed(team[0])
+            team[0].AcquiredAchievements.append(i)
+    team[0].ComprovarSubClassesDisponibles()
 
 def finalitzarCombat():
-    global jugador
-    jugador.DefinirTempStats()
-    jugador.ResetBuffs()
+    global team
+    team[0].DefinirTempStats()
+    team[0].ResetBuffs()
         
 def EntityState(entity):
     print(f"{entity.nom}, LV: {entity.Lv}")
@@ -989,21 +992,21 @@ def EntityState(entity):
 def main():
     print("!! - Joc Interactiu - !!")
     PostGame = False
-    while jugador.CurHP > 0:
+    while team[0].CurHP > 0:
         ClearScreen()
         AccioMenuPrincipal()
-    if PostGame == False and objectes[15] in jugador.objectes.keys(): # Es pot eliminar aquest easter egg eliminant la funcio EasterEgg() i les 3 linies baix aquesta.
+    if PostGame == False and objectes[15] in team[0].objectes.keys(): # Es pot eliminar aquest easter egg eliminant la funcio EasterEgg() i les 3 linies baix aquesta.
         PostGame = True   # Faria falta eliminar també el bool Easter dins el main()
         EasterEgg()
 
 def EasterEgg():
-    global jugador
+    global team
     list = []
     for i in entityTypes:
         if i.isPlayable == False:
             list.append(i)
     res = random.choice(list)
-    jugador = Entitat.Entity(jugador.nom, 5, True, res, 999, {}, 0, True)
+    team[0] = Entitat.Entity(team[0].nom, 5, True, res, 999, {}, 0, True)
     print("L'efecte de la joia de la reencarnació s'ha activat...")
     input("\nPresiona per a continuar....")
     main()

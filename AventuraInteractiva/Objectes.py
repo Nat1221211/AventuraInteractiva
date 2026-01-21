@@ -57,7 +57,7 @@ class ObjecteCombat(Objecte):
                     jugador.Mana = jugador.MaxMana
                 else:
                     jugador.Mana += self.EffectQuantity
-            elif i == "Flee":
+            if i == "Flee":
                 print("")
-            else:
+            if i in ["ATK","SPD","DEF","INT"]:
                 jugador.BuffTempStats(self.EffectQuantity, [i])
