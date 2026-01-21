@@ -91,7 +91,8 @@ movements = [
                           30, 100, True, 10, [("None", "")]),
     Characteristics.Moves("", "",
                           30, 100, True, 10, [("None", "")]),
-
+    
+    Characteristics.Moves("Revestiment de Flames", "Utilitzes flames per incrementar les teves capacitats i envoltar la teva arma...", 60, 100, True, 15, [("Stat", (["ATK", "SPD"],1.30)), ("Effect", (Effects[0], 80))])
 ]
         # Skills
 skills = [
@@ -151,6 +152,11 @@ entityTypes = [
                               "Molt Atac altres estadistiques baixen, augmentara molt l'atac i el mana pero" \
                               "\nles altres estadistiques no canviaran massa...",
                               {movements[9]: 25}),
+        EntityType.EntityType("Expert en Armes", False, 160, 120, 180, 100, 130, 100, 50, ["Human"], "Un expert en diverses armes cos a cos, és molt capaç, és una forma millorada del Guerrer...", {}),
+        
+        EntityType.EntityType("Caballer", False, 200, 60, 100, 40, 260, 60, 50, ["Human"], "Un expert especialitzat en la resistencia, tot i això te una capacitat ofensiva considerable.", {}),
+
+        EntityType.EntityType("Aventurer", True, 140, 120, 140, 140, 115, 115, 50, ["Human"], "No especialitzat en cap camp en excés, no destaca en cap camp però tampoc és dolent en cap d'ells...", {movements[6]: 1, movements[3]: 3, movements[19]: 3})
 ]
 
 # Afegint Paths (Posibles SUbclasses)
