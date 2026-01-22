@@ -734,7 +734,9 @@ def Mapa():
 
 def OcurrenciaMisio(misio):
     if type(misio) == Missions.KillMission:
-        Lluitar(misio.Enemic)
+        if misio.Enemic == 1:
+            aLluitar = [misio.Enemic]
+        Lluitar(aLluitar)
     elif type(misio) == Missions.FindMission:
         print(f"Has trobat en/la {misio.Objective}")
         misio.Completed()
@@ -941,7 +943,7 @@ def GenerarEnemic():
     global ubicacio
     opcions = list(ubicacio.Enemies.keys())
     seleccio = random.choices(opcions, ubicacio.Enemies.values())
-    qty = random.choices([1, 2, 3], [20, 78, 2])
+    qty = random.choices([1, 2, 3], [85, 13, 2])
     enemy = []
     for i in range(qty[0]):
         entitat = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0])
