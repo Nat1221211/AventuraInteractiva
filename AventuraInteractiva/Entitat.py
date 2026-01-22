@@ -182,6 +182,7 @@ class Entity():
         if LvOrNot == False:
             self.CurHP = self.MaxHP
             self.Mana = self.MaxMana
+            self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
         self.DefinirTempStats()
         self.DefinirMoves()
         self.afected = "None"
@@ -357,17 +358,17 @@ class Entity():
         if self.Lv < self.LvLimit:
             if XP == None and enemy != None:
                 obtainedXP = float(round(5 + enemy.base.baseXP * (enemy.Lv * 0.2), 2))
-                print(f"Has guanyat {obtainedXP} punts d'experiencia.")
+                print(f"{self.nom} ha guanyat {obtainedXP} punts d'experiencia.")
                 self.Xp += obtainedXP
                 self.Xp = float(round(self.Xp, 2))
             elif XP != None and enemy == None:
                 self.Xp += XP
                 self.Xp = float(round(self.Xp, 2))
-                print(f"Has guanyat {XP} punts d'experiencia.")
+                print(f"{self.nom} ha guanyat {XP} punts d'experiencia.")
 
             while self.Xp > self.XpRequired:
                 self.Lv += 1
-                print(f"Has pujat de nivell... Ara ets nivell {self.Lv}")
+                print(f"{self.nom} ha pujat de nivell... Ara es nivell {self.Lv}")
                 self.DefinirStats(True)
                 self.Xp -= self.XpRequired
                 self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
@@ -402,7 +403,7 @@ class Entity():
             print(f"{i[0].ObjectDescription}")
             print("\n")
     
-    def ObjectesMochila(self, combat = bool(False)):
+    def ObjectesMochila(self, target, combat = bool(False)):
         res = 0
         if combat == True:
             used = False
@@ -446,14 +447,14 @@ class Entity():
                             print("Aquest objecte només es pot utilitzar en combat...")
                             input("Presiona per a continuar...")
                         else:
-                            objectNames[obj - 1].Utilitzar(self)
-                            self.objectes[objectNames[obj - 1]]-= 1
+                            objectNames[obj - 1].Utilitzar(target)
+                            target.objectes[objectNames[obj - 1]]-= 1
                             print(f"Has utilitzat: {objectNames[obj - 1].ObjectName}")
                             if combat == True:
                                 used = True
                                 res = 3
                             if self.objectes[objectNames[obj - 1]] <= 0:
-                                self.objectes.pop(objectNames[obj - 1])
+                                target.objectes.pop(objectNames[obj - 1])
                     else:
                         print("Els objectes clau no es poden utilitzar, son objectes de missio o amb altres finalitats...")
                         input("Presiona per a continuar")

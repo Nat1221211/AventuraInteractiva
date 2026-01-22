@@ -449,7 +449,9 @@ def CrearJugador():
 jugador = CrearJugador()
 ubicacio = zones[0]
 team = []
+
 team.append(jugador)
+team.append(Entitat.Entity("Alias", 7, True, entityTypes[0]))
 
 
 # Afegim algun objecte al jugador de base
@@ -488,7 +490,7 @@ def AccioMenuPrincipal():
     elif menu.get(pos) == "Botiga":
         Botiga()
     elif menu.get(pos) == "Estat":
-        team[0].ShowStatus()
+        VeureEstatus()
     elif menu.get(pos) == "Missions":
         MenuMisions()
     elif menu.get(pos) == "Lluitar":
@@ -499,6 +501,26 @@ def AccioMenuPrincipal():
         MostrarExits()
     elif menu.get(pos) == "Motxila":
         team[0].ObjectesMochila()
+
+def VeureEstatus(combat = False):
+    res = 0
+    while res not in range(1, len(team) + 1):
+        ClearScreen()
+        print("- De Qui vols veure les estadistiques -")
+        count = 1
+        for i in team:
+            print(f"{count} -> {i.nom}")
+            count += 1
+        print(f"{count} -> Sortir")
+        res = int(input("Digues de qui vols veure l'estat: "))
+        if res not in range(1, count + 1):
+            print("Has de dir un dels numeros corresponents...")
+    if res in range(1, count + 1):
+        ClearScreen()
+        if combat == False:
+            team[res - 1].ShowStatus()
+        else:
+            team[res - 1].ShowStatus(True)
 
 def MenuMisions():
     res = 0
@@ -799,13 +821,13 @@ def TrobarOr(moneda):
     team[0].gold += found * mult
     
 
-def MenuAtacar():
+def MenuAtacar(jug):
     global team
     res = 0
-    while res not in range(1, len(team[0].Moves) + 2):
+    while res not in range(1, len(jug.Moves) + 2):
         ClearScreen()
         count = 1
-        for i in team[0].Moves:
+        for i in jug.Moves:
             print(f"{count} -> {i.Name}")
             print(f"Power: {i.Power}, Precision: {i.Precision}")
             print(f"Mana Cost: {i.Cost}\n")
@@ -813,13 +835,13 @@ def MenuAtacar():
         print(f"{count} -> Sortir")
         try:
             res = int(input("Digues quin atac vols fer: "))
-            if res not in range(1, len(team[0].Moves) + 2):
+            if res not in range(1, len(jug.Moves) + 2):
                 print("Has de dir que vols fer...")
             if res == count:
                 print("Has sortit")
             else:
-                use = team[0].Moves[res - 1]
-                if use.Cost > team[0].Mana:
+                use = jug.Moves[res - 1]
+                if use.Cost > jug.Mana:
                     print("No tens suficient Mana per a realitzar aquest atac...")
                     input("Presiona per a continuar...")
                     return None
@@ -828,8 +850,9 @@ def MenuAtacar():
         except ValueError:
             print("Ha ocurregut un error...")
     
-def AccionsLluita(enemy):
+def AccionsLluita(jug, enemy, teamclon):
     global team
+    print(f"És el torn de {jug.nom}")
     print("1 -> Atacar")
     print("2 -> Fugir")
     print("3 -> Objectes")
@@ -842,33 +865,66 @@ def AccionsLluita(enemy):
             print("Ha ocurregut un error...")
     turn = False
     fugir = [False]
+    ClearScreen()
+    BattleScreenShow(teamclon)
+    BattleScreenShow(enemy)
+    print("\n")
     if accio == 1:
-        move = MenuAtacar()
+        move = MenuAtacar(jug)
+        target = None
         ClearScreen()
-        EntityState(team[0])
-        EntityState(enemy)
+        BattleScreenShow(teamclon)
+        BattleScreenShow(enemy)
         print("\n")
         if move != None:
-            enemy = team[0].atacar(enemy, move)
-        else:
+            target = TriarObjectius(enemy)
+            for i in range(len(enemy)):
+                if enemy[i] == target:
+                    enemy[i] = jug.atacar(enemy[i], move)
+                    
+        if move == None or target == False:
             turn = True
     elif accio == 2:
         fugir = Fugir(enemy)
     elif accio == 3:
-        used = team[0].ObjectesMochila(True)
+        used = team[0].ObjectesMochila(jug, True)
         if used == False:
             turn = True
     elif accio == 4:
         ClearScreen()
-        team[0].ShowStatus(True)
+        VeureEstatus(True)
         turn = True
     
-    return enemy, turn, fugir
+    return jug, enemy, turn, fugir
+
+def TriarObjectius(list):
+    count = 1
+    for i in list:
+        print(f"{count} -> {i.nom}")
+        count += 1
+    print(f"{count} -> Sortir")
+    res = int(input("Digues de a qui vols atacar: "))
+    if res not in range(1, count + 1):
+        print("Has de dir un dels numeros corresponents...")
+    target = False
+    if res in range(1, count):
+        target = list[res - 1]
+    if res == count:
+        return target
+    else:
+        return list[res - 1]
+        
 
 def Fugir(enemy):
     global team
     print("Has intentat Fugir...")
-    prob = team[0].fleeProb * (team[0].SPD / enemy.SPD)   # fleeProb = 75 de base
+    teamSPD = 0
+    for i in team:
+        teamSPD += i.SPD
+    enemySPD = 0
+    for j in enemy:
+        enemySPD += j.SPD
+    prob = team[0].fleeProb * (teamSPD / enemySPD)   # fleeProb = 75 de base
    
     # 75% base * resultat de velocitat del jugador entre la del enemic. (75 * (22 / 20) = 1.1) = 82.5)
     if prob < 100:
@@ -885,7 +941,11 @@ def GenerarEnemic():
     global ubicacio
     opcions = list(ubicacio.Enemies.keys())
     seleccio = random.choices(opcions, ubicacio.Enemies.values())
-    enemy = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0])
+    qty = random.choices([1, 2, 3], [20, 78, 2])
+    enemy = []
+    for i in range(qty[0]):
+        entitat = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0])
+        enemy.append(entitat)
     Lluitar(enemy)
 
 def ComprobarEfectEstat(entitat):
@@ -898,70 +958,179 @@ def ComprobarEfectEstat(entitat):
                 entitat.CurHP -= damagepereffect
                 print(f"{entitat.nom}, ha perdut {damagepereffect} HP degut a la {entitat.afected.Name}.") 
             entitat.timer -= 1
+
 def PrioritatInicial(enemy):
-    maxSpeed = max(team[0].SPD, enemy.SPD)
-    if team[0].SPD == maxSpeed:
-        team[0].Priority = 100
-        enemy.Priority = (enemy.SPD / maxSpeed) * 100
-    else:
-        enemy.Priority = 100
-        team[0].Priority = (team[0].SPD / maxSpeed) * 100
+    maxSpeedPlayer = max(team, key=lambda j: j.SPD)
+    maxSpeedEnemies = max(enemy, key=lambda e: e.SPD)
+
+    maxSpeed = max(maxSpeedPlayer.SPD, maxSpeedEnemies.SPD)
+
+    for i in range(len(team)):
+        if team[i].SPD == maxSpeed:
+            team[i].Priority = 100
+        else:
+            team[i].Priority = (team[i].SPD / maxSpeed) * 100
+    
+    for j in range(len(enemy)):
+        if enemy[j].SPD == maxSpeed:
+            enemy[j].Priority = 100
+        else:
+            enemy[j].Priority = (enemy[j].SPD / maxSpeed) * 100
+
     return enemy
 
-def IncrementarPrioritat(enemy):
-    enemy.Priority += enemy.SPD / 300
-    team[0].Priority += team[0].SPD / 300
-    return enemy
+def IncrementarPrioritat(teamclon, enemyclon):
+    for i in range(len(teamclon)):
+        teamclon[i].Priority += teamclon[i].SPD / 300  
+    
+    for j in range(len(enemyclon)):
+        enemyclon[j].Priority += enemyclon[j].SPD / 300
+    return teamclon, enemyclon
 
-def BattleScreenShow(enemy):
-    ClearScreen()
-    EntityState(team[0])
-    EntityState(enemy)
+def BattleScreenShow(teamlist):
+    for i in teamlist:
+        llarg = len(f"{i.nom}, LV: {i.Lv}")
+        espaiat = ""
+        for j in range(30 - llarg):
+            espaiat += " "
+        print(f"{i.nom}, LV: {i.Lv}", end=espaiat)
+    
+    print()
+    for i in teamlist:
+        llarg = len(f"HP: {round(i.CurHP, 2)} / {round(i.MaxHP, 2)}")
+        espaiat = ""
+        for j in range(30 - llarg):
+            espaiat += " "
+        print(f"HP: {round(i.CurHP, 2)} / {round(i.MaxHP, 2)}", end=espaiat)
+    
+    saltdeLinia = False
+    for i in teamlist:
+        if i.isPlayer == True:
+            if saltdeLinia == False:
+                print()
+            llarg = len(f"Mana: {round(i.Mana, 2)} / {round(i.MaxMana, 2)}")
+            espaiat = ""
+            for j in range(30 - llarg):
+                espaiat += " "
+            print(f"Mana: {round(i.Mana, 2)} / {round(i.MaxMana, 2)}", end=espaiat)
+            saltdeLinia = True
+
+    saltdeLinia = False
+    for i in range(len(teamlist)):
+        if teamlist[i].afected != "None":
+            if saltdeLinia == False:
+                print()
+            llarg = len(f"{teamlist[i].afected.Name}")
+            espaiat = ""
+            for j in range(30 - llarg):
+                espaiat += " "
+            print(f"{teamlist[i].afected.Name}", end=espaiat)
+            saltdeLinia = True
+        else:
+            espaiat = ""
+            for j in range(30):
+                espaiat += " "
+            print("", end=espaiat)
+    
+    print()
+    for i in teamlist:
+        llarg = len(f"Prioritat: {round(i.Priority, 1)}")
+        espaiat = ""
+        for j in range(30 - llarg):
+            espaiat += " "
+        print(f"Prioritat: {round(i.Priority, 1)}", end=espaiat)
+        saltdeLinia = True
     print("\n")
 
 def Lluitar(enemy):
     global team, ubicacio
 
-    print(f"Ha aparegut un {enemy.nom}")
+    teamclon = team
+    enemyclon = enemy
 
-   
-    enemy = PrioritatInicial(enemy)
+    enemyclon = PrioritatInicial(enemyclon)
 
+    primer = False
+    for i in team:
+        if i.Priority >= 100:
+            primer = True
     
-    if team[0].Priority < 100:
-        print(f"Has estat emboscat per un/a {enemy.nom}.")
-        input("Pressiona per a continuar...")
-    fugir = [False]
-    while team[0].CurHP > 0 and enemy.CurHP > 0 and fugir[0] == False: 
-        if team[0].Priority >= 100:
-            BattleScreenShow(enemy)
-            enemy, turn, fugir = AccionsLluita(enemy)
-            if fugir[0] == False:
-                ComprobarEfectEstat(team[0])
-            team[0].Priority = 0
-            input("\nPresiona per a continuar...")
-        elif enemy.Priority >= 100 and fugir[0] == False:
-            BattleScreenShow(enemy)
-            enemyMove = random.choice(enemy.Moves)
-            enemy.atacar(team[0], enemyMove)
-            enemy.Priority = 0
-            ComprobarEfectEstat(enemy)
-            if team[0].CurHP <= 0:
-                print("Has estat derrotat...")
-            input("\nPresiona per a continuar...")
-        else:
-            enemy = IncrementarPrioritat(enemy)
-        
-    if enemy.CurHP <= 0:
-        print(f"{enemy.nom}, ha estat derrotat !!")
-        finalitzarCombat()
-        if team[0].CurHP > 0:
-            team[0].LvlUp(enemy)
-            team[0].gold += enemy.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
-            print(f"Has guanyat {enemy.Lv * 10} gold.")
-            Comprovacions(enemy)
+
+    if primer == False:
+        if len(enemy) == 1:
+            print(f"Has estat emboscat per {len(enemy)+1} {enemy[0].nom}s.")
+        elif len(enemy) > 1:
+            print(f"Has estat emboscat per un {enemy[0].nom}.")
+            input("Pressiona per a continuar...")
     else:
-        finalitzarCombat()
+        if len(enemy) == 1:
+            print(f"Han aparegut {len(enemy)+1} {enemy[0].nom}s.")
+        elif len(enemy) > 1:
+            print(f"Ha aparegut un {enemy[0].nom}.")
+            input("Pressiona per a continuar...")
+
+    fugir = [False]
+    combat = True
+    while combat == True and fugir[0] == False: 
+        # Turn Aliat
+        
+        for i in range(len(teamclon)):
+            if teamclon[i].Priority >= 100 and len(enemyclon) >= 1:
+                ClearScreen()
+                BattleScreenShow(teamclon)
+                BattleScreenShow(enemyclon)
+                turn = False
+                teamclon[i], enemyclon, turn, fugir = AccionsLluita(teamclon[i], enemyclon, teamclon)
+                if fugir[0] == False:
+                    ComprobarEfectEstat(teamclon[i])
+                if turn == False:
+                    teamclon[i].Priority = 0
+                input("\nPresiona per a continuar...")
+                ClearScreen()
+                enemyclon, teamclon = DescartarDerrotats(enemyclon, teamclon)
+
+        # Turn enemic
+        for j in range(len(enemyclon)):
+            if enemyclon[j].Priority >= 100 and fugir[0] == False and len(teamclon) >= 1:
+                ClearScreen()
+                BattleScreenShow(teamclon)
+                BattleScreenShow(enemyclon)
+                enemyMove = random.choice(enemyclon[j].Moves)
+                target = random.choice(range(len(team)))
+                enemyclon[j].atacar(teamclon[target], enemyMove)
+                enemyclon[j].Priority = 0
+                ComprobarEfectEstat(enemyclon[j])
+                teamclon, enemyclon = DescartarDerrotats(teamclon, enemyclon)
+                input("\nPresiona per a continuar...")
+                ClearScreen()
+        
+        teamclon, enemyclon = IncrementarPrioritat(teamclon, enemyclon)
+        if len(enemyclon) < 1 or len(teamclon) < 1:
+            combat = False
+            if len(enemyclon) < 1:
+                ClearScreen()
+                print("Tos els enemics han estat derrotats !!")
+                input("Presiona per a continuar")
+    finalitzarCombat()
+
+def DescartarDerrotats(enemyclon, teamclon):
+    derr = None
+    for p in enemyclon:
+        if p.CurHP <= 0:
+            print(f"{p.nom} ha estat derrotat...")
+            derr = p
+            if p.isPlayer == False:
+                alive = 0
+                for i in range(len(teamclon)): 
+                    if teamclon[i].CurHP > 0:
+                        team[i].LvlUp(p)
+                        alive += 1
+                if alive >= 1:
+                    team[0].gold += p.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
+                    print(f"Has guanyat {p.Lv * 10} gold.")
+    if derr != None:
+        enemyclon.remove(derr)
+    return enemyclon, teamclon
 
 def Comprovacions(enemy):
     for i in missions:
@@ -977,8 +1146,9 @@ def Comprovacions(enemy):
 
 def finalitzarCombat():
     global team
-    team[0].DefinirTempStats()
-    team[0].ResetBuffs()
+    for i in range(len(team)):
+        team[i].DefinirTempStats()
+        team[i].ResetBuffs()
         
 def EntityState(entity):
     print(f"{entity.nom}, LV: {entity.Lv}")
