@@ -701,9 +701,10 @@ def Posada():
         if team[0].gold >= 100:
             print("Has descansat comodament, t'has recuperat completament...")
             team[0].gold -= 100
-            team[0].CurHP = team[0].MaxHP
-            team[0].Mana = team[0].MaxMana
-            team[0].afected = "None"
+            for i in team:
+                i.CurHP = i.MaxHP
+                i.Mana = i.MaxMana
+                i.afected = "None"
         else:
             print("No tens suficient gold per pagar la posada, has marxat sense poder descansar...")
     else:
@@ -1113,6 +1114,7 @@ def Lluitar(enemy):
                 ClearScreen()
                 print("Tos els enemics han estat derrotats !!")
                 input("Presiona per a continuar")
+    team = teamclon
     finalitzarCombat()
 
 def DescartarDerrotats(enemyclon, teamclon):

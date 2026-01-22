@@ -375,7 +375,7 @@ class Entity():
                 if self.PostGame == True:
                     self.XpRequired /= 2
                     self.XpRequired = round(self.XpRequired, 2)            
-                input("Presiona per a continuar...")
+            input("Presiona per a continuar...")
     
     def AddXP(self, xpadded):
         if self.Lv < self.LvLimit:
