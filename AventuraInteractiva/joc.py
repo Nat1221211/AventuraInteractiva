@@ -26,15 +26,15 @@ def ClearScreen():
         # Efectes d'estat (Cremat, Congelat, Paralitzat, Sangrant, etc.)
 Effects = [
     Characteristics.Effects("Cremada","Estar cremat redueix el atac i la defensa i causa dany cada poc temps...",
-                            True, False, 0, 3, ("Stat", (["ATK", "DEF"], 0.25))),
+                            True, False, 0, 5, ("Stat", (["ATK", "DEF"], 0.25))),
     Characteristics.Effects("Sangrat","Tens una ferida greu que fa perdre vida constantment...",
                             True, False, 0, 8, ("None", "")),
     Characteristics.Effects("Congelacio","Estas congelat durant una certa quantitat de temps...",
                             False, True, 3, 0, ("None", "")),
     Characteristics.Effects("Sangrat Greu","Tens una ferida greu que fa perdre vida constantment...",
-                            True, False, 0, 15, ("Stat", (["ATK", "DEF", "SPD"], 0.15))),
+                            True, False, 0, 16, ("Stat", (["ATK", "DEF", "SPD"], 0.15))),
     Characteristics.Effects("Terror","",
-                        False, False, 0, 0, ("Stat", (["ATK", "DEF", "INT", "SPD"], 0.25))),
+                            False, False, 0, 0, ("Stat", (["ATK", "DEF", "INT", "SPD"], 0.25))),
 ]
         # Moves
 movements = [   
@@ -556,7 +556,7 @@ def Gremi():
                     print("Has sortit del menu de contractació...")
                 elif res2 == 1:
                     if len(team) < 3:
-                        cost = ((len(contractatsAnteriorment)) + (len(team))) * 5000
+                        cost = ((len(contractatsAnteriorment)) + (len(team))) * 1000
                         if team[0].gold >= cost:
                             crear = ""
                             while crear not in ["s", "n"]:
@@ -968,7 +968,7 @@ def MenuAtacar(jug):
         except ValueError:
             print("Ha ocurregut un error...")
     
-def AccionsLluita(jug, enemy):
+def AccionsLluita(jug, enemy, enemyderr):
     global team
     print(f"És el torn de {jug.nom}")
     print("1 -> Atacar")
@@ -999,7 +999,7 @@ def AccionsLluita(jug, enemy):
             for i in range(len(enemy)):
                 if enemy[i] == target:
                     enemy[i] = jug.atacar(enemy[i], move)
-                    
+                    enemyderr = DescartarDerrotats(enemy[i], enemyderr)
         if move == None or target == False:
             turn = True
     elif accio == 2:
@@ -1013,7 +1013,7 @@ def AccionsLluita(jug, enemy):
         VeureEstatus(True)
         turn = True
     
-    return jug, enemy, turn, fugir
+    return jug, enemy, turn, fugir, enemyderr
 
 def TriarObjectius(list):
     global team
@@ -1022,8 +1022,12 @@ def TriarObjectius(list):
         BattleScreenShow(team)
         BattleScreenShow(list)
         ClearScreen()
-        count = 1
+        targetable = []
         for i in list:
+            if i.CurHP > 0:
+                targetable.append(i)
+        count = 1
+        for i in targetable:
             print(f"{count} -> {i.nom}, Lv: {i.Lv}")
             count += 1
         print(f"{count} -> Sortir")
@@ -1036,11 +1040,8 @@ def TriarObjectius(list):
             input("Presiona per a continuar...")
     target = False
     if res in range(1, count):
-        target = list[res - 1]
-    if res == count:
-        return target
-    else:
-        return list[res - 1]
+        target = targetable[res - 1]
+    return target
         
 
 def Fugir(enemy):
@@ -1076,7 +1077,7 @@ def GenerarEnemic():
         enemy.append(entitat)
     Lluitar(enemy)
 
-def ComprobarEfectEstat(entitat):
+def ComprobarEfectEstat(entitat, derr):
     if entitat.afected != "None":
         if entitat.timer <= 0 and entitat.afected.Turns > 0:
             entitat.afected = "None"
@@ -1084,8 +1085,12 @@ def ComprobarEfectEstat(entitat):
             if entitat.afected.Damaging == True:
                 damagepereffect = ((entitat.MaxHP / 100) * entitat.afected.Damage)
                 entitat.CurHP -= damagepereffect
-                print(f"{entitat.nom}, ha perdut {damagepereffect} HP degut a la {entitat.afected.Name}.") 
+                print(f"{entitat.nom}, ha perdut {damagepereffect} HP degut a la {entitat.afected.Name}.")
+                if entitat.CurHP <= 0:
+                    print(f"{entitat.nom}, ha estat derrotat per {entitat.afected.Name}.")
+                    derr += 1
             entitat.timer -= 1
+    return entitat, derr
 
 def PrioritatInicial(enemy):
     maxSpeedPlayer = max(team, key=lambda j: j.SPD)
@@ -1110,18 +1115,22 @@ def PrioritatInicial(enemy):
 def IncrementarPrioritat(enemy):
     global team
     for i in range(len(team)):
-        team[i].Priority += team[i].SPD / 300  
+        if team[i].CurHP > 0:
+            team[i].Priority += team[i].SPD / 300  
     
     for j in range(len(enemy)):
-        enemy[j].Priority += enemy[j].SPD / 300
+        if enemy[j].CurHP > 0:
+            enemy[j].Priority += enemy[j].SPD / 300
     return enemy
 
 def BattleScreenShow(teamlist):
-    for i in teamlist:
-        if i.CurHP < 0:
-            teamlist.remove(i)
+    teamlis = teamlist[:]
 
-    for i in teamlist:
+    for i in teamlis:
+        if i.CurHP < 0:
+            teamlis.remove(i)
+
+    for i in teamlis:
         llarg = len(f"{i.nom}, LV: {i.Lv}")
         espaiat = ""
         for j in range(30 - llarg):
@@ -1129,7 +1138,7 @@ def BattleScreenShow(teamlist):
         print(f"{i.nom}, LV: {i.Lv}", end=espaiat)
     
     print()
-    for i in teamlist:
+    for i in teamlis:
         llarg = len(f"HP: {round(i.CurHP, 2)} / {round(i.MaxHP, 2)}")
         espaiat = ""
         for j in range(30 - llarg):
@@ -1137,7 +1146,7 @@ def BattleScreenShow(teamlist):
         print(f"HP: {round(i.CurHP, 2)} / {round(i.MaxHP, 2)}", end=espaiat)
     
     saltdeLinia = False
-    for i in teamlist:
+    for i in teamlis:
         if i.isPlayer == True:
             if saltdeLinia == False:
                 print()
@@ -1149,20 +1158,20 @@ def BattleScreenShow(teamlist):
             saltdeLinia = True
 
     saltdeLinia = False
-    for i in range(len(teamlist)):
-        if teamlist[i].afected != "None":
+    for i in range(len(teamlis)):
+        if teamlis[i].afected != "None":
             if saltdeLinia == False:
                 print()
-            llarg = len(f"{teamlist[i].afected.Name}")
+            llarg = len(f"{teamlis[i].afected.Name}")
             espaiat = ""
             for j in range(30 - llarg):
                 espaiat += " "
-            print(f"{teamlist[i].afected.Name}", end=espaiat)
+            print(f"{teamlis[i].afected.Name}", end=espaiat)
             saltdeLinia = True
         else:
             afectats = False
-            for k in range(i, len(teamlist)):
-                if teamlist[k].afected != "None":
+            for k in range(i, len(teamlis)):
+                if teamlis[k].afected != "None":
                     afectats = True
             if afectats == True:
                 espaiat = ""
@@ -1171,7 +1180,7 @@ def BattleScreenShow(teamlist):
                 print(espaiat, end="")
     
     print()
-    for i in teamlist:
+    for i in teamlis:
         llarg = len(f"Prioritat: {round(i.Priority, 1)}")
         espaiat = ""
         for j in range(30 - llarg):
@@ -1213,60 +1222,69 @@ def Lluitar(enemy):
         # Turn Aliat
         
         for i in range(len(team)):
-            if team[i].Priority >= 100 and len(enemy) >= 1 and team[i].CurHP > 0:
+            if team[i].Priority >= 100 and len(enemy) >= 1 and team[i].CurHP > 0 and combat == True:
                 ClearScreen()
                 BattleScreenShow(team)
                 BattleScreenShow(enemy)
                 turn = False
-                team[i], enemy, turn, fugir = AccionsLluita(team[i], enemy)
+                team[i], enemy, turn, fugir, enemyderr = AccionsLluita(team[i], enemy, enemyderr)
                 if fugir[0] == False:
-                    ComprobarEfectEstat(team[i])
+                    team[i], teamderr = ComprobarEfectEstat(team[i], teamderr)
                 if turn == False:
                     team[i].Priority = 0
                 input("\nPresiona per a continuar...")
                 ClearScreen()
-                enemy, enemyderr = DescartarDerrotats(enemy, enemyderr)
+            if combat == True:
+                combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr)
 
         # Turn enemic
         for j in range(len(enemy)):
-            if enemy[j].Priority >= 100 and fugir[0] == False and len(team) >= 1 and enemy[j].CurHP > 0:
+            if enemy[j].Priority >= 100 and fugir[0] == False and len(team) >= 1 and enemy[j].CurHP > 0 and combat == True:
                 ClearScreen()
                 BattleScreenShow(team)
                 BattleScreenShow(enemy)
                 enemyMove = random.choice(enemy[j].Moves)
-                target = random.choice(range(len(team)))
+                targetable = []
+                for e in team:
+                    if e.CurHP > 0:
+                        targetable.append(e)
+                target = random.choice(range(len(targetable)))
                 enemy[j].atacar(team[target], enemyMove)
                 enemy[j].Priority = 0
-                ComprobarEfectEstat(enemy[j])
-                team, teamderr  = DescartarDerrotats(team, teamderr)
+                enemy[j], enemyderr = ComprobarEfectEstat(enemy[j], enemyderr)
+                teamderr = DescartarDerrotats(team[target], teamderr)
                 input("\nPresiona per a continuar...")
                 ClearScreen()
+            if combat == True:
+                combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr)
         
         enemy = IncrementarPrioritat(enemy)
-        if enemyderr == len(enemy) or teamderr == len(team):
+    finalitzarCombat(team)
+
+def ComprobarFiCombat(combat, enemyderr, enemy, teamderr):
+    if enemyderr == len(enemy) or teamderr == len(team):
             combat = False
             if len(enemy) == enemyderr:
                 ClearScreen()
                 print("Tos els enemics han estat derrotats !!")
                 input("Presiona per a continuar")
-    finalitzarCombat(team)
+    return combat
 
-def DescartarDerrotats(group, derr):
+def DescartarDerrotats(p, derr):
     global team
-    for p in group:
-        if p.CurHP <= 0:
-            print(f"{p.nom} ha estat derrotat...")
-            derr += 1
-            if p.isPlayer == False:
-                alive = 0
-                for i in range(len(team)): 
-                    if team[i].CurHP > 0:
-                        team[i].LvlUp(p)
-                        alive += 1
-                if alive >= 1:
-                    team[0].gold += p.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
-                    print(f"Has guanyat {p.Lv * 10} gold.")
-    return group, derr
+    if p.CurHP <= 0:
+        derr += 1
+        if p.isPlayer == False:
+            ClearScreen()
+            alive = 0
+            for i in range(len(team)): 
+                if team[i].CurHP > 0:
+                    team[i].LvlUp(p)
+                    alive += 1
+            if alive >= 1:
+                team[0].gold += p.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
+                print(f"Has guanyat {p.Lv * 10} gold.")
+    return derr
 
 def Comprovacions(enemy):
     for i in missions:
@@ -1309,9 +1327,14 @@ def EntityState(entity):
 def main():
     print("!! - Joc Interactiu - !!")
     PostGame = False
-    while team[0].CurHP > 0:
+    alive = 1
+    while alive > 0:
         ClearScreen()
         AccioMenuPrincipal()
+        alive = 0
+        for i in team:
+            if i.CurHP > 0:
+                alive += 1
     if PostGame == False and objectes[15] in team[0].objectes.keys(): # Es pot eliminar aquest easter egg eliminant la funcio EasterEgg() i les 3 linies baix aquesta.
         PostGame = True   # Faria falta eliminar també el bool Easter dins el main()
         EasterEgg()

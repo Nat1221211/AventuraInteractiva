@@ -299,7 +299,7 @@ class Entity():
             damage = self.CalcularDamage(enemy, move)
             damage = round(damage, 2)
             enemy.CurHP -= damage
-            if enemy.CurHP <= 0 and enemy.isPlayer == False:
+            if enemy.CurHP <= 0:
                 print(f"{enemy.nom} ha estat derrotat.")
             else:
                 print(f"{enemy.nom} ha perdut {damage} punts de vida...")
