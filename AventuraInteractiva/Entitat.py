@@ -73,9 +73,7 @@ class Entity():
         self.Moves = list()
         self.DefinirStats()
         self.CurHP = self.MaxHP
-        if IsPlayer == True:
-            self.gold = 2000
-        else:
+        if IsPlayer == False:
             if nom == "":
                 self.nom = self.base.EntityName
             self.gold = gold
@@ -354,32 +352,28 @@ class Entity():
         elif combat == False:
             input("Presiona per a continuar...")
 
-    def LvlUp(self, enemy = None, XP = None, Text = True):
+    def LvlUp(self, enemy = None, XP = None):
         if self.Lv < self.LvLimit:
             if XP == None and enemy != None:
                 obtainedXP = float(round(5 + enemy.base.baseXP * (enemy.Lv * 0.2), 2))
-                if Text != False:
-                    print(f"{self.nom} ha guanyat {obtainedXP} punts d'experiencia.")
+                print(f"{self.nom} ha guanyat {obtainedXP} punts d'experiencia.")
                 self.Xp += obtainedXP
                 self.Xp = float(round(self.Xp, 2))
             elif XP != None and enemy == None:
                 self.Xp += XP
                 self.Xp = float(round(self.Xp, 2))
-                if Text != False:
-                    print(f"{self.nom} ha guanyat {XP} punts d'experiencia.")
+                print(f"{self.nom} ha guanyat {XP} punts d'experiencia.")
 
             while self.Xp > self.XpRequired:
                 self.Lv += 1
-                if Text != False:
-                    print(f"{self.nom} ha pujat de nivell... Ara es nivell {self.Lv}")
+                print(f"{self.nom} ha pujat de nivell... Ara es nivell {self.Lv}")
                 self.DefinirStats(True)
                 self.Xp -= self.XpRequired
                 self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
                 if self.PostGame == True:
                     self.XpRequired /= 2
                     self.XpRequired = round(self.XpRequired, 2)
-            if Text != False:        
-                input("Presiona per a continuar...")
+            input("Presiona per a continuar...")
     
     def AddXP(self, xpadded):
         if self.Lv < self.LvLimit:
