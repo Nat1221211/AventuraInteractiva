@@ -556,7 +556,7 @@ def Gremi():
                     print("Has sortit del menu de contractació...")
                 elif res2 == 1:
                     if len(team) < 3:
-                        cost = ((len(contractatsAnteriorment)) + (len(team))) * 1000
+                        cost = ((len(contractatsAnteriorment)) + (len(team))) * 5000
                         if team[0].gold >= cost:
                             crear = ""
                             while crear not in ["s", "n"]:
@@ -1082,7 +1082,7 @@ def GenerarEnemic():
     global ubicacio
     opcions = list(ubicacio.Enemies.keys())
     seleccio = random.choices(opcions, ubicacio.Enemies.values())
-    qty = random.choices([1, 2, 3], [88, 10, 2])
+    qty = random.choices([1, 2, 3], [94, 5, 1])
     enemy = []
     for i in range(qty[0]):
         entitat = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0])
