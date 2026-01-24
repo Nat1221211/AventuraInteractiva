@@ -16,9 +16,11 @@ class Moves():
     Cost = int()
     StatusEffect = list(tuple())
     MultiTarget = False
+    Healing = False
+    Protective = False
 
     # Metodes
-    def __init__(self, name, description, power, precision, tipo, cost, efect, multitarget = False):
+    def __init__(self, name, description, power, precision, tipo, cost, efect, multitarget = False, healing = False, protective = False):
         self.Name = name
         self.Description = description
         self.Power = power
@@ -27,6 +29,8 @@ class Moves():
         self.Cost = cost
         self.StatusEffect = efect
         self.MultiTarget = multitarget
+        self.Healing = healing
+        self.Protective = protective
 
 class Effects():
     

@@ -996,13 +996,21 @@ def AccionsLluita(jug, enemy, enemyderr):
         print("\n")
         if move != None:
             if move.MultiTarget == False:
-                target = TriarObjectius(enemy)
+                if move.Healing == False and move.Protective == False:
+                    target = TriarObjectius(enemy)
+                else:
+                    target = TriarObjectius(team)
             else:
                 target = "All"
-            for i in range(len(enemy)):
-                if enemy[i] == target or target == "All":
-                    enemy[i] = jug.atacar(enemy[i], move)
-                    enemyderr = DescartarDerrotats(enemy[i], enemyderr)
+            if move.Healing == False and move.Protective == False:
+                for i in range(len(enemy)):
+                    if enemy[i] == target or target == "All":
+                        enemy[i] = jug.atacar(enemy[i], move)
+                        enemyderr = DescartarDerrotats(enemy[i], enemyderr)
+            else:
+                for i in range(len(team)):
+                    if team[i] == target or target == "All":
+                        team[i] = jug.MoveProtHeal(team[i], move)
             jug.Mana -= move.Cost
         if move == None or target == False:
             turn = True

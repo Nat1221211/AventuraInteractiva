@@ -46,7 +46,7 @@ class Entity():
 
     # Combat Priority Variables
     Priority = int()
-
+    Protected = False
     afected = ""
     timer = 0
 
@@ -295,19 +295,34 @@ class Entity():
         else:
             atac = [True]
         if atac == [True]:
-            damage = self.CalcularDamage(enemy, move)
-            damage = round(damage, 2)
-            enemy.CurHP -= damage
-            if enemy.CurHP <= 0:
-                print(f"{enemy.nom} ha estat derrotat.")
+            if enemy.Protected == False:
+                damage = self.CalcularDamage(enemy, move)
+                damage = round(damage, 2)
+                enemy.CurHP -= damage
+                if enemy.CurHP <= 0:
+                    print(f"{enemy.nom} ha estat derrotat.")
+                else:
+                    print(f"{enemy.nom} ha perdut {damage} punts de vida...")
             else:
-                print(f"{enemy.nom} ha perdut {damage} punts de vida...")
+                print(f"{enemy.nom} esta protegit i per tant l'atac no ha causat res...")
         else:
             if self.isPlayer == True:
                 print("Has fallat l'atac...")
             else:
                 print("L'atac enemic a fallat...")
+        if enemy.Protected == True:
+            enemy.Protected = False
         return enemy
+
+    def MoveProtHeal(self, target, move):
+        if move.Healing == True:
+            if (target.CurHP + (move.Power * (self.INT / 100))) > target.MaxHP:
+                target.CurHP = target.MaxHP
+            else:
+                target.CurHP += (move.Power * (self.INT / 100))
+        if move.Protective == True:
+            target.Protected = True
+        return target
 
     def ShowStatus(self, combat = False):
         print(f"Nom: {self.nom}")
