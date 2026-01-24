@@ -18,9 +18,10 @@ class Moves():
     MultiTarget = False
     Healing = False
     Protective = False
+    AutoDamaging = 0
 
     # Metodes
-    def __init__(self, name, description, power, precision, tipo, cost, efect, multitarget = False, healing = False, protective = False):
+    def __init__(self, name, description, power, precision, tipo, cost, efect, multitarget = False, healing = False, protective = False, autodamage = 0):
         self.Name = name
         self.Description = description
         self.Power = power
@@ -31,6 +32,7 @@ class Moves():
         self.MultiTarget = multitarget
         self.Healing = healing
         self.Protective = protective
+        self.AutoDamaging = autodamage
 
 class Effects():
     

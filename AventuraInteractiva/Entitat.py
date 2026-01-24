@@ -47,6 +47,7 @@ class Entity():
     # Combat Priority Variables
     Priority = int()
     Protected = False
+    ProtectedBy = tuple()
     afected = ""
     timer = 0
 
@@ -295,14 +296,30 @@ class Entity():
         else:
             atac = [True]
         if atac == [True]:
-            if enemy.Protected == False:
+            if enemy.Protected == False or enemy.ProtectedBy[0] != None:
                 damage = self.CalcularDamage(enemy, move)
                 damage = round(damage, 2)
-                enemy.CurHP -= damage
-                if enemy.CurHP <= 0:
-                    print(f"{enemy.nom} ha estat derrotat.")
+                if enemy.Protected == True:
+                    if enemy.ProtectedBy[0] != None:
+                        damage = damage * ((100 - enemy.ProtectedBy[1]) / 100)
+                        enemy.ProtectedBy[0].CurHP -= damage
+                        print(f"{enemy.ProtectedBy[0].nom}, ha entomat el {enemy.ProtectedBy[1]}% del dany...")
+                        if enemy.ProtectedBy[0].CurHP < 0:
+                            print(f"{enemy.ProtectedBy[0].nom}, ha estat derrotat...")
+                        else:
+                            print(f"{enemy.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
+                    else:
+                        enemy.CurHP -= damage
+                        if enemy.CurHP <= 0:
+                            print(f"{enemy.nom} ha estat derrotat.")
+                        else:
+                            print(f"{enemy.nom} ha perdut {damage} punts de vida...")
                 else:
-                    print(f"{enemy.nom} ha perdut {damage} punts de vida...")
+                    enemy.CurHP -= damage
+                    if enemy.CurHP <= 0:
+                        print(f"{enemy.nom} ha estat derrotat.")
+                    else:
+                        print(f"{enemy.nom} ha perdut {damage} punts de vida...")
             else:
                 print(f"{enemy.nom} esta protegit i per tant l'atac no ha causat res...")
         else:
@@ -329,6 +346,17 @@ class Entity():
                     target.ApplyStatusEffects(i[1][0], i[1][1])
         if move.Protective == True:
             target.Protected = True
+            if self == target:
+                print(f"{self.nom} s'ha preparat per protegir-se")
+            else:
+                print(f"{self.nom} s'ha preparat per protegir a {target.nom}")
+            if move.AutoDamaging > 0:
+                target.ProtectedBy = (self, move.AutoDamaging)
+            for i in move.StatusEffect:
+                if i[0] == "Stat":
+                    target.BuffTempStats(i[1][1], i[1][0])
+                if i[0] == "Effect":
+                    target.ApplyStatusEffects(i[1][0], i[1][1])
         return target
 
     def ShowStatus(self, combat = False):

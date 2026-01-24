@@ -78,7 +78,7 @@ movements = [
     Characteristics.Moves("Crit de Guerra", "",
                           30, 100, False, 10, [("Stat", (["ATK", "DEF", "SPD"], 1.25)), ("Effect", (Effects[4] , 95))], True),
     Characteristics.Moves("Bloqueig", "Bloqueja un atac enemic dirijit a un company",
-                          0, 100, False, 3, [("Stat", (["DEF"], 1.3))], False, False, True),
+                          0, 100, False, 3, [("Stat", (["DEF"], 1.3))], False, False, True, 75),
         
         # Arquer
     Characteristics.Moves("Santuari", "Crea un santuari durant uns instants, recupera molta salut als companys...",
@@ -1261,10 +1261,16 @@ def Lluitar(enemy):
                     if e.CurHP > 0:
                         targetable.append(e)
                 target = random.choice(range(len(targetable)))
+                protegitPer = None
+                if team[target].Protected == True:
+                    if team[target].ProtectedBy[0] != None:
+                        protegitPer = team[target].ProtectedBy[0]
                 enemy[j].atacar(team[target], enemyMove)
                 enemy[j].Priority = 0
                 enemy[j], enemyderr = ComprobarEfectEstat(enemy[j], enemyderr)
                 teamderr = DescartarDerrotats(team[target], teamderr)
+                if protegitPer != None:
+                    teamderr = DescartarDerrotats(protegitPer, teamderr)
                 input("\nPresiona per a continuar...")
                 ClearScreen()
             if combat == True:
