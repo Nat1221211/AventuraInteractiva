@@ -43,32 +43,32 @@ movements = [
     # la reducció ha de ser de 0  a 0.9, es a dir iferior a 1.
 
     Characteristics.Moves("Bola de Foc", "Bola de foc formada amb magia",
-                          40, 100, True, 5, [("Effect", (Effects[0], 30))]),
+                          40, 100, True, 5, [("Effect", (Effects[0], 30))], False),
     Characteristics.Moves("Fletxa Perforant", "Fletxa altament perforant gracies a poder magic",
-                          60, 100, False, 5, [("Effect", (Effects[1], 60))]),
+                          60, 100, False, 5, [("Effect", (Effects[1], 60))], False),
     Characteristics.Moves("Assalt Llampeg", "Impuls de velocitat i atacs repetits",
-                          30, 100, False, 5, [("Stat", (["SPD"], 1.1))]),
+                          30, 100, False, 5, [("Stat", (["SPD"], 1.1))], False),
     Characteristics.Moves("Tall Potent", "Tall altament poderos, fortaleix el cos amb magia.",
-                          50, 100, False, 5, [("Stat", (["ATK"], 1.1))]),
+                          50, 100, False, 5, [("Stat", (["ATK"], 1.1))], False),
     Characteristics.Moves("Aixafar", "Potent Mossegada",
-                          40, 90, False, 0, [("Effect", (Effects[1], 10))]),
+                          40, 90, False, 0, [("Effect", (Effects[1], 10))], False),
     Characteristics.Moves("Debuff", "Reduccio d'estadistiques alta",
-                          20, 95, True, 10, [("Stat", (["ATK", "DEF", "SPD", "INT"], 0.2))]),
+                          20, 95, True, 10, [("Stat", (["ATK", "DEF", "SPD", "INT"], 0.2))], True),
     
     # Atacs sense consum per a si no queda Mana i no podem realitzar-ne cap altre...
     Characteristics.Moves("Tall", "Un tall d'arma blanca normal",
-                          30, 100, False, 0, [("None", "")]),
+                          30, 100, False, 0, [("None", "")], False),
     Characteristics.Moves("Cop de Basto", "Un cop de basto normal",
-                          20, 100, False, 0, [("None", "")]),
+                          20, 100, False, 0, [("None", "")], False),
     Characteristics.Moves("Fletxa", "És dispara una fletxa normal",
-                          30, 100, False, 0, [("None", "")]),
+                          30, 100, False, 0, [("None", "")], False),
     
     # Continuem amb atacs diversos
         # Mag
     Characteristics.Moves("Fletxa de flames", "",
                           60, 100, True, 20, [("Effect", (Effects[0], 80))]),
     Characteristics.Moves("Increment", "",
-                          20, 100, True, 10, [("Stat", (["ATK", "DEF", "SPD", "INT"], 1.3))]),
+                          20, 100, True, 10, [("Stat", (["ATK", "DEF", "SPD", "INT"], 1.3))], False),
     Characteristics.Moves("Fulla de Vent", "",
                           60, 100, True, 20, [("Effect", (Effects[1], 80))]),
         
@@ -76,7 +76,7 @@ movements = [
     Characteristics.Moves("Tall Llampeg", "",
                           70, 100, False, 10, [("Effect", (Effects[1], 80))]),
     Characteristics.Moves("Crit de Guerra", "",
-                          30, 100, False, 10, [("Stat", (["ATK", "DEF", "SPD"], 1.25)), ("Effect", (Effects[4] , 95))]),
+                          30, 100, False, 10, [("Stat", (["ATK", "DEF", "SPD"], 1.25)), ("Effect", (Effects[4] , 95))], True),
     Characteristics.Moves("", "",
                           30, 100, False, 10, [("None", "")]),
         
@@ -995,11 +995,15 @@ def AccionsLluita(jug, enemy, enemyderr):
         BattleScreenShow(enemy)
         print("\n")
         if move != None:
-            target = TriarObjectius(enemy)
+            if move.MultiTarget == False:
+                target = TriarObjectius(enemy)
+            else:
+                target = "All"
             for i in range(len(enemy)):
-                if enemy[i] == target:
+                if enemy[i] == target or target == "All":
                     enemy[i] = jug.atacar(enemy[i], move)
                     enemyderr = DescartarDerrotats(enemy[i], enemyderr)
+            jug.Mana -= move.Cost
         if move == None or target == False:
             turn = True
     elif accio == 2:

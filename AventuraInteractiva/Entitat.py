@@ -282,7 +282,6 @@ class Entity():
             print("El dany causat a incrementat a causa dels titols.")
             damage *= amplify
         damage *= (random.randint(90,111) / 100)
-        self.Mana -= move.Cost
 
         # Reduim les estadistiques per efectes d'estat despres de calcular el dany.
         for i in move.StatusEffect:
@@ -290,7 +289,7 @@ class Entity():
                 enemy.ApplyStatusEffects(i[1][0], i[1][1])
         return damage
 
-    def atacar(self, enemy, move):
+    def atacar(self, enemy,  move):
         if move.Precision < 100:
             atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
         else:

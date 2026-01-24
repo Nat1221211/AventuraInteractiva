@@ -15,9 +15,10 @@ class Moves():
     Type = False
     Cost = int()
     StatusEffect = list(tuple())
-    
+    MultiTarget = False
+
     # Metodes
-    def __init__(self, name, description, power, precision, tipo, cost, efect):
+    def __init__(self, name, description, power, precision, tipo, cost, efect, multitarget = False):
         self.Name = name
         self.Description = description
         self.Power = power
@@ -25,6 +26,7 @@ class Moves():
         self.Type = tipo
         self.Cost = cost
         self.StatusEffect = efect
+        self.MultiTarget = multitarget
 
 class Effects():
     
