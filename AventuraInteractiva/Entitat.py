@@ -318,8 +318,15 @@ class Entity():
         if move.Healing == True:
             if (target.CurHP + (move.Power * (self.INT / 100))) > target.MaxHP:
                 target.CurHP = target.MaxHP
+                print(f"{target.nom} ha recuperat vida fins al seu limit...")
             else:
                 target.CurHP += (move.Power * (self.INT / 100))
+                print(f"{target.nom} ha recuperat {move.Power * (self.INT / 100)} punts de vida...")
+            for i in move.StatusEffect:
+                if i[0] == "Stat":
+                    target.BuffTempStats(i[1][1], i[1][0])
+                if i[0] == "Effect":
+                    target.ApplyStatusEffects(i[1][0], i[1][1])
         if move.Protective == True:
             target.Protected = True
         return target

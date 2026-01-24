@@ -77,14 +77,14 @@ movements = [
                           70, 100, False, 10, [("Effect", (Effects[1], 80))]),
     Characteristics.Moves("Crit de Guerra", "",
                           30, 100, False, 10, [("Stat", (["ATK", "DEF", "SPD"], 1.25)), ("Effect", (Effects[4] , 95))], True),
-    Characteristics.Moves("", "",
-                          30, 100, False, 10, [("None", "")]),
+    Characteristics.Moves("Bloqueig", "Bloqueja un atac enemic dirijit a un company",
+                          0, 100, False, 3, [("Stat", (["DEF"], 1.3))], False, False, True),
         
         # Arquer
-    Characteristics.Moves("", "",
-                          30, 100, False, 10,[ ("None", "")]),
-    Characteristics.Moves("", "",
-                          30, 100, True, 10, [("None", "")]),
+    Characteristics.Moves("Santuari", "Crea un santuari durant uns instants, recupera molta salut als companys...",
+                          120, 100, True, 20,[("Stat", (["ATK", "DEF", "INT", "SPD"], 2))], True, True),
+    Characteristics.Moves("Cura", "Cura una petita quantitat de vida a un company",
+                          60, 100, True, 4, [("None", "")], False, True),
         
         # Lladre
     Characteristics.Moves("", "",
@@ -105,14 +105,14 @@ entityTypes = [
 
         EntityType.EntityType("Guerrer", True, 160, 100, 140, 40, 130, 80, 50, ["Human"], 
                               "Alta salut, resistencia i força pero lenta.",
-                              {movements[6]: 1, movements[3]: 3, movements[12]: 3, movements[13]: 3}
+                              {movements[6]: 1, movements[3]: 3, movements[12]: 3, movements[13]: 3, movements[14]: 4}
                               ),
       
         EntityType.EntityType("Mag", True, 80, 200, 60, 180, 100, 100, 50, ["Human"], 
                               "Alt atac, però poca salut, resistencia i velocitat equilibrades.",
-                              {movements[7]: 1, movements[0]: 3, movements[5]: 5}),
+                              {movements[7]: 1, movements[0]: 3, movements[5]: 5, movements[15]: 5, movements[16]: 2}),
        
-        EntityType.EntityType("Arquer", True, 120, 140, 140, 100, 140, 140, 50, ["Human"], 
+        EntityType.EntityType("Arquer", True, 120, 140, 140, 100, 140, 140, 50, ["Human"],
                               "Resistencia, Atac i Velocitat equilibrats.",
                               {movements[8]: 1, movements[1]: 3}),
        

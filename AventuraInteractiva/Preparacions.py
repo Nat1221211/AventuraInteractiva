@@ -34,6 +34,7 @@ import Characteristics
 
 def main():
     print("Preparant...")
+    
 
 
 if __name__ == "__main__":
