@@ -12,6 +12,7 @@ class Zona():
     Description = ""
     ZoneType = ""
     Enemies = {}
+    ProbOfMultiple = []
     # Enemics disponibles en aquesta zona
     Connections = []
     # Zones accessibles des d'aquesta
@@ -22,11 +23,12 @@ class Zona():
 
 
     # Metodes
-    def __init__(self, name, description, tipus, enemies, lvlrange, gol = {"Bronze": [(1, 7), 100]}, trobada = False):
+    def __init__(self, name, description, tipus, enemies, probmultiple, lvlrange, gol = {"Bronze": [(1, 7), 100]}, trobada = False):
         self.NameZone = name
         self.Description = description
         self.ZoneType = tipus
         self.Enemies = enemies
+        self.ProbOfMultiple = probmultiple
         self.LevelRange = lvlrange
         self.Or = gol
         self.Trobada = trobada

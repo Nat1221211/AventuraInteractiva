@@ -183,28 +183,28 @@ zones = [
     # la probabilitat de que surtin al explorar la zona.  
         Zones.Zona("Dawn Village",
                    "Un poble que representa l'inici, es diu que és el poble on va neixer l'heroi de les llegendes...",
-                   "Poble", {entityTypes[6]: 20, entityTypes[6]: 10, entityTypes[6]: 10, entityTypes[6]: 60},
-                    (1, 5), {"Bronze": [(1, 7), 100]}, True),
+                   "Poble", {entityTypes[6]: 20},
+                    [[100]], (1, 5), {"Bronze": [(1, 7), 100]}, True),
         Zones.Zona("Bosc Obscur",
                    "La zona exterior del bosc obscur, d'on es diu que surjeren els monstres...",
-                   "Bosc", {entityTypes[4]: 65, entityTypes[5]: 30, entityTypes[6]: 5}, 
-                   (3, 7), {"Bronze": [(1, 7), 100]}, True),
+                   "Bosc", {entityTypes[4]: 35, entityTypes[5]: 60, entityTypes[6]: 5}, 
+                   [[85, 13, 2], [95, 5], [99, 1]], (3, 7), {"Bronze": [(1, 7), 100]}, True),
         Zones.Zona("Profunditats del Bosc Obscur",
                    "Les profunditats del bosc obscur, una perillosa zona de la que és diu que qui hi entra no en surt...",
                    "Bosc", {entityTypes[4]: 32, entityTypes[5]: 40, entityTypes[6]: 20, entityTypes[8]: 5, entityTypes[9]: 3}, 
-                   (5, 12), {"Bronze": [(5, 15), 100]}),
+                   [[85, 13, 2], [95, 5], [99, 1], [99, 1], [99, 1]], (5, 12), {"Bronze": [(5, 15), 100]}),
         Zones.Zona("Centre del Bosc Obscur",
                    "La zona central del bosc obscur, hi habiten monstres desconeguts, ningú ha tornat mai d'aquest lloc...",
                    "Bosc", {entityTypes[6]: 30, entityTypes[8]: 30, entityTypes[9]: 40}, 
-                   (10, 18), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}),
+                    [[85, 13, 2], [95, 5], [99, 1]], (10, 18), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}),
         Zones.Zona("Muntanyes del Origen",
                    "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
                    "Muntanya", {entityTypes[7]: 50, entityTypes[8]: 20, entityTypes[9]: 20, entityTypes[10]: 10}, 
-                   (15, 25), {"Plata": [(40, 100), 70], "Or": [(1, 10), 30]}),
+                   [[85, 13, 2], [95, 5], [99, 1], [99, 1]], (15, 25), {"Plata": [(40, 100), 70], "Or": [(1, 10), 30]}),
         Zones.Zona("Cavernes del Origen",
                    "Les cavernes de les muntanyes del origen, no és te coneixement de la existencia d'aquestes...",
                    "Cavernes", {entityTypes[6]: 40, entityTypes[7]: 30, entityTypes[10]: 30}, 
-                   (30, 45), {"Plata": [(40, 100), 70], "Or": [(1, 10), 20], "Or Platejat": [(1, 1), 10]})
+                    [[85, 13, 2], [95, 5], [99, 1]], (30, 45), {"Plata": [(40, 100), 70], "Or": [(1, 10), 20], "Or Platejat": [(1, 1), 10]})
 ]
         # Connexions de cada zona
 zones[0].AddConnections([zones[1]])
@@ -1082,7 +1082,15 @@ def GenerarEnemic():
     global ubicacio
     opcions = list(ubicacio.Enemies.keys())
     seleccio = random.choices(opcions, ubicacio.Enemies.values())
-    qty = random.choices([1, 2, 3], [94, 5, 1])
+    for j in range(len(opcions)):
+        if opcions[j] == seleccio[0]:
+            prob = ubicacio.ProbOfMultiple[j]
+    num = []
+    count = 1
+    for i in prob:
+        num.append(count)
+        count += 1
+    qty = random.choices(num, prob)
     enemy = []
     for i in range(qty[0]):
         entitat = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0])
