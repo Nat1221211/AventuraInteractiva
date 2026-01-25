@@ -193,22 +193,22 @@ zones = [
         Zones.Zona("Profunditats del Bosc Obscur",
                    "Les profunditats del bosc obscur, una perillosa zona de la que és diu que qui hi entra no en surt...",
                    "Bosc", {entityTypes[4]: 32, entityTypes[5]: 40, entityTypes[6]: 20, entityTypes[8]: 5, entityTypes[9]: 3}, 
-                   [[85, 13, 2], [95, 5], [99, 1], [99, 1], [99, 1]], (37, 45), {"Bronze": [(5, 15), 100]}),
+                   [[85, 13, 2], [95, 5], [99, 1], [99, 1], [99, 1]], (37, 45), {"Plata": [(15, 25), 100]}),
         Zones.Zona("Centre del Bosc Obscur",
                    "La zona central del bosc obscur, hi habiten monstres desconeguts, ningú ha tornat mai d'aquest lloc...",
                    "Bosc", {entityTypes[6]: 30, entityTypes[8]: 30, entityTypes[9]: 40}, 
-                    [[85, 13, 2], [95, 5], [99, 1]], (43, 52), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}),
+                    [[85, 13, 2], [95, 5], [99, 1]], (43, 52), {"Or": [(1, 10), 40], "Plata": [(20, 40), 60]}),
         Zones.Zona("Muntanyes del Origen",
                    "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
                    "Muntanya", {entityTypes[7]: 50, entityTypes[8]: 20, entityTypes[9]: 20, entityTypes[10]: 10}, 
-                   [[85, 13, 2], [95, 5], [99, 1], [99, 1]], (50, 60), {"Plata": [(40, 100), 70], "Or": [(1, 10), 30]}),
+                   [[85, 13, 2], [95, 5], [99, 1], [99, 1]], (50, 60), {"Or": [(6, 15), 90], "Or Platejat": [(1, 3), 10]}),
         Zones.Zona("Cavernes del Origen",
                    "Les cavernes de les muntanyes del origen, no és te coneixement de la existencia d'aquestes...",
                    "Cavernes", {entityTypes[6]: 40, entityTypes[7]: 30, entityTypes[10]: 30}, 
-                    [[85, 13, 2], [95, 5], [99, 1]], (60, 67), {"Plata": [(40, 100), 70], "Or": [(1, 10), 20], "Or Platejat": [(1, 1), 10]}),
+                    [[85, 13, 2], [95, 5], [99, 1]], (60, 67), {"Or Platejat": [(2, 5), 100]}),
         # Pobles
         Zones.Zona("Silverhorn",
-                   "Un poble envoltat de munatanyes, ",
+                   "Un poble envoltat de munatanyes, del que ningú coneix la existencia...",
                    "Poble", {}, [], (1, 5), {}, False),
         Zones.Zona("Faylight",
                    "Un poble enmig d'un gran bosc molt lluminos...",
@@ -262,41 +262,67 @@ zones = [
         Zones.Zona("Platja de Lakestar",
                    "La platja del Gran llac Lakestar...",
                    "Platja", {entityTypes[5]: 90}, 
-                   [[95, 5]], (10, 15), {"Bronze": [(10, 20), 100]}, False),
-            
-            # Cami de Lakestar a Faylight o (Pendent)
-        Zones.Zona("",
-                   "",
-                   "", {}, 
-                   [], (13, 18), {}, False),
-        Zones.Zona("",
-                   "",
-                   "", {}, 
-                   [], (16, 22), {}, False),
-        Zones.Zona("",
-                   "",
-                   "", {}, 
-                   [], (20, 27), {}, False),
-            
-            # Cami de Faylight a Silverhorn
-        Zones.Zona("Grans Muntanyes Blanques",
-                   "Una gran serralada blanca, és diu que en aquestes muntanyes hi ha un poble llegendari...",
-                   "Muntanya", {},
-                   [], (27, 32), {}, False, None, 20),
-        
+                   [[95, 5]], (10, 15), {"Bronze": [(10, 20), 100]}, False)
 ]
 
-# Més Zones
-    
+# Cami de Lakestar a Faylight o (Pendent)
+zones.append(
+Zones.Zona(
+    "Serra del Bosc de Llum",
+    "Una gran serra que bloqueja el pas cap el Gran Bosc de llum, si hi vols arribar, has de passar per aquestes...",
+    "Muntanya", {}, 
+    [],
+    (15, 20), {"Plata": [(10, 15), 100]}, False, (("Ubicacio", [zones[8]]))),
+)
+
+            
+zones.append(
+Zones.Zona(
+    "Gran Bosc de Llum",
+    "Un Bosc on la llum no desapareix ni tant sols durant la nit, d'aqui el seu nou...",
+    "Bosc", {}, 
+    [], 
+    (18, 23), {"Plata": [(10, 15), 100]}, False)
+)      
+
+zones.append(
+Zones.Zona(
+    "Bosc de les Fades",
+    "Un bosc que quasi ningu coneix, encara que esta dins d'un bosc molt conegut...",
+    "Bosc", {}, 
+    [], 
+    (21, 26), {"Plata": [(10, 15), 100]}, False))
+
+# Cami de Faylight a Silverhorn
+zones.append(
+Zones.Zona(
+    "Grans Muntanyes Blanques",
+    "Una gran serralada blanca, és diu que en aquestes muntanyes hi ha un poble llegendari...",
+    "Muntanya", {},
+    [], 
+    (24, 29), {"Plata": [(10, 15), 100]}, 
+    False, None, 20),)
+                
 zones.append(
 # Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
-Zones.Zona( "Profunditats de Lakestar",
-            "Un cami subterrani que avança dins el Gran llac, normalment ningú en sabria la existencia...",
-            "Cavernes", {},
-            [], 
-            (1, 5), {}, False, 
-            (("Ubicacio", []), ("", [])))
-            )
+Zones.Zona( 
+    "Profunditats de Lakestar",
+    "Un cami subterrani que avança dins el Gran llac, normalment ningú en sabria la existencia...",
+    "Cavernes", {},
+    [], 
+    (30, 35), {}, False,
+    (("Ubicacio", [zones[6]]), ("Object", ["Objecte en questio"])), 25)
+    )
+
+zones.append(
+# Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
+Zones.Zona( 
+    "",
+    "",
+    "", {},
+    [],
+    (33, 38), {}, False)
+    )
 
 
 
