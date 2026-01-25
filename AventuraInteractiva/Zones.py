@@ -20,10 +20,13 @@ class Zona():
     Trobada = False
     Or = {"": [tuple(), 100]}
     ObjectesPerTrobar = {}
+    ExplorarCount = 0
+    CondicioPerTrobarRuta = tuple()
+    IntentsPerTrobar = 5
 
 
     # Metodes
-    def __init__(self, name, description, tipus, enemies, probmultiple, lvlrange, gol = {"Bronze": [(1, 7), 100]}, trobada = False):
+    def __init__(self, name, description, tipus, enemies, probmultiple, lvlrange, gol = {"Bronze": [(1, 7), 100]}, trobada = False, condicio = None, intents = 5):
         self.NameZone = name
         self.Description = description
         self.ZoneType = tipus
@@ -32,6 +35,8 @@ class Zona():
         self.LevelRange = lvlrange
         self.Or = gol
         self.Trobada = trobada
+        self.CondicioPerTrobarRuta = condicio
+        self.IntentsPerTrobar = intents
     
     def AddConnections(self, connections):
         self.Connections = connections
@@ -49,3 +54,6 @@ class Zona():
             self.ObjectesPerTrobar[trobat][1] -= 1
             if self.ObjectesPerTrobar[trobat][1] <= 0:
                 self.ObjectesPerTrobar.pop(trobat)
+    
+    def ComprobarCondicio(self, zones):
+        print()

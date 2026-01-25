@@ -183,36 +183,146 @@ zones = [
     # la probabilitat de que surtin al explorar la zona.  
         Zones.Zona("Dawn Village",
                    "Un poble que representa l'inici, es diu que és el poble on va neixer l'heroi de les llegendes...",
-                   "Poble", {entityTypes[6]: 20},
-                    [[100]], (1, 5), {"Bronze": [(1, 7), 100]}, True),
+                   "Poble", {}, [], (1, 5), {}, True),
         Zones.Zona("Bosc Obscur",
                    "La zona exterior del bosc obscur, d'on es diu que surjeren els monstres...",
-                   "Bosc", {entityTypes[4]: 35, entityTypes[5]: 60, entityTypes[6]: 5}, 
-                   [[85, 13, 2], [95, 5], [99, 1]], (3, 7), {"Bronze": [(1, 7), 100]}, True),
+                   "Bosc", {entityTypes[4]: 35, entityTypes[5]: 60, entityTypes[6]: 5},
+                   # Llista amb probabilitat de cada un dels enemics per ordre d'apareixer en grups de fins a 3.
+                   # Cada llista representa un enemic, i cada valor la prob per 1, 2, 3 enemics.
+                   [[85, 13, 2], [95, 5], [99, 1]], (8, 14), {"Bronze": [(1, 7), 100]}, True),
         Zones.Zona("Profunditats del Bosc Obscur",
                    "Les profunditats del bosc obscur, una perillosa zona de la que és diu que qui hi entra no en surt...",
                    "Bosc", {entityTypes[4]: 32, entityTypes[5]: 40, entityTypes[6]: 20, entityTypes[8]: 5, entityTypes[9]: 3}, 
-                   [[85, 13, 2], [95, 5], [99, 1], [99, 1], [99, 1]], (5, 12), {"Bronze": [(5, 15), 100]}),
+                   [[85, 13, 2], [95, 5], [99, 1], [99, 1], [99, 1]], (37, 45), {"Bronze": [(5, 15), 100]}),
         Zones.Zona("Centre del Bosc Obscur",
                    "La zona central del bosc obscur, hi habiten monstres desconeguts, ningú ha tornat mai d'aquest lloc...",
                    "Bosc", {entityTypes[6]: 30, entityTypes[8]: 30, entityTypes[9]: 40}, 
-                    [[85, 13, 2], [95, 5], [99, 1]], (10, 18), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}),
+                    [[85, 13, 2], [95, 5], [99, 1]], (43, 52), {"Bronze": [(20, 50), 60], "Plata": [(3, 10), 40]}),
         Zones.Zona("Muntanyes del Origen",
                    "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
                    "Muntanya", {entityTypes[7]: 50, entityTypes[8]: 20, entityTypes[9]: 20, entityTypes[10]: 10}, 
-                   [[85, 13, 2], [95, 5], [99, 1], [99, 1]], (15, 25), {"Plata": [(40, 100), 70], "Or": [(1, 10), 30]}),
+                   [[85, 13, 2], [95, 5], [99, 1], [99, 1]], (50, 60), {"Plata": [(40, 100), 70], "Or": [(1, 10), 30]}),
         Zones.Zona("Cavernes del Origen",
                    "Les cavernes de les muntanyes del origen, no és te coneixement de la existencia d'aquestes...",
                    "Cavernes", {entityTypes[6]: 40, entityTypes[7]: 30, entityTypes[10]: 30}, 
-                    [[85, 13, 2], [95, 5], [99, 1]], (30, 45), {"Plata": [(40, 100), 70], "Or": [(1, 10), 20], "Or Platejat": [(1, 1), 10]})
+                    [[85, 13, 2], [95, 5], [99, 1]], (60, 67), {"Plata": [(40, 100), 70], "Or": [(1, 10), 20], "Or Platejat": [(1, 1), 10]}),
+        # Pobles
+        Zones.Zona("Silverhorn",
+                   "Un poble envoltat de munatanyes, ",
+                   "Poble", {}, [], (1, 5), {}, False),
+        Zones.Zona("Faylight",
+                   "Un poble enmig d'un gran bosc molt lluminos...",
+                   "Poble", {}, [], (1, 5), {}, False),
+        Zones.Zona("Lakestar",
+                   "Un pobla al costat d'un gran llac, és diu que en el llac s'hi amaga una estrella...",
+                   "Poble", {}, [], (1, 5), {}, False),
+        Zones.Zona("Knightshire",
+                   "La capital del regne, una gran terra de caballers...",
+                   "Poble", {}, [], (1, 5), {}, False),
+        
+        # Camins i zones
+            # Cami de Dawn Village a Knightshire
+        Zones.Zona("Bosc del Sud",
+                   "Un bosc ubicat al sud de Dawn Village, un bosc relativament segur...",
+                   "Bosc", {entityTypes[4]: 21, entityTypes[5]: 70, entityTypes[0]: 3, 
+                            entityTypes[2]: 3, entityTypes[3]: 3}, 
+                   [[85, 13, 2], [93, 5, 2], [95, 4, 1], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
+                   (3, 5), {"Bronze": [(1, 5), 100]}, True),
+
+        Zones.Zona("Rocklink",
+                   "Unes muntanyes que presenten el cami cap a la capital del regne...",
+                   "Muntanya", {entityTypes[4]: 60, entityTypes[5]: 20, entityTypes[7]: 7, entityTypes[1]: 1, 
+                                entityTypes[0]: 5, entityTypes[2]: 3, entityTypes[3]: 4}, 
+                   [[82, 15, 3],[92, 6, 2],[98,2], [30, 50, 20], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
+                   (5, 9), {"Bronze": [(10, 20), 90], "Plata": [(2, 5), 10]}, False),
+
+        Zones.Zona("Camps de Knightshire",
+                   "Els camps a les afores de knightshire, aquestes \"afores\" son bastant grans...",
+                   "Camps", {entityTypes[5]: 90, entityTypes[4]: 10}, 
+                   [[95, 5], [50, 45, 5]], (3, 5), {"Bronze": [(1, 5), 100]}, False),
+            
+            # Cami de Knightshire a Lakestar o Faylight (Pasant per Munatnyes Estelars)
+        Zones.Zona("Bosc Estelar",
+                   "Un bosc que guia cap a les muntanyes estelars...",
+                   "Bosc", {entityTypes[5]: 30, entityTypes[4]: 30}, 
+                   [[70, 25, 5],[80, 15, 5]], 
+                   (8, 13), {"Bronze": [(12, 25), 70], "Plata": [(4, 9), 30]}, False),
+        Zones.Zona("Muntanyes Estelars",
+                   "Unes muntanyes de les que es diu que les estrelles guien a les persones que hi passen...",
+                   "Muntanya", {entityTypes[4]: 60, entityTypes[5]: 18, entityTypes[7]: 15, entityTypes[1]: 1, 
+                                entityTypes[0]: 2, entityTypes[2]: 2, entityTypes[3]: 2}, 
+                   [[82, 15, 3],[92, 6, 2], [98,2], [30, 50, 20], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
+                   (12, 17), {"Bronze": [(16, 25), 70], "Plata": [(7, 9), 30]}, False),
+        Zones.Zona("Cami de Roca",
+                   "Un cami rocos que guia cap a la platja de Lakestar.",
+                   "Muntanya", {entityTypes[4]: 50, entityTypes[5]: 10, entityTypes[7]: 15, entityTypes[1]: 3, 
+                                entityTypes[0]: 10, entityTypes[2]: 6, entityTypes[3]: 5}, 
+                   [[82, 15, 3],[92, 6, 2], [98,2], [30, 50, 20], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
+                   (15, 17), {"Bronze": [(16, 25), 70], "Plata": [(7, 9), 30]}, False),
+        Zones.Zona("Platja de Lakestar",
+                   "La platja del Gran llac Lakestar...",
+                   "Platja", {entityTypes[5]: 90}, 
+                   [[95, 5]], (10, 15), {"Bronze": [(10, 20), 100]}, False),
+            
+            # Cami de Lakestar a Faylight o (Pendent)
+        Zones.Zona("",
+                   "",
+                   "", {}, 
+                   [], (13, 18), {}, False),
+        Zones.Zona("",
+                   "",
+                   "", {}, 
+                   [], (16, 22), {}, False),
+        Zones.Zona("",
+                   "",
+                   "", {}, 
+                   [], (20, 27), {}, False),
+            
+            # Cami de Faylight a Silverhorn
+        Zones.Zona("Grans Muntanyes Blanques",
+                   "Una gran serralada blanca, és diu que en aquestes muntanyes hi ha un poble llegendari...",
+                   "Muntanya", {},
+                   [], (27, 32), {}, False, None, 20),
+        
 ]
+
+# Més Zones
+    
+zones.append(
+# Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
+Zones.Zona( "Profunditats de Lakestar",
+            "Un cami subterrani que avança dins el Gran llac, normalment ningú en sabria la existencia...",
+            "Cavernes", {},
+            [], 
+            (1, 5), {}, False, 
+            (("Ubicacio", []), ("", [])))
+            )
+
+
+
         # Connexions de cada zona
-zones[0].AddConnections([zones[1]])
+    # Pobles
+zones[0].AddConnections([zones[1], zones[10]])
+zones[6].AddConnections([zones[1]])
+zones[7].AddConnections([zones[1]])
+zones[8].AddConnections([zones[16]])
+zones[9].AddConnections([zones[12]])
+
+    # Salvatge
 zones[1].AddConnections([zones[0], zones[2]])
 zones[2].AddConnections([zones[1], zones[3]])
 zones[3].AddConnections([zones[2], zones[4]])
 zones[4].AddConnections([zones[3], zones[5]])
 zones[5].AddConnections([zones[4]])
+zones[10].AddConnections([zones[0], zones[11]])
+zones[11].AddConnections([zones[10], zones[12]])
+zones[12].AddConnections([zones[11], zones[9], zones[13]])
+zones[13].AddConnections([zones[12], zones[14]])
+zones[14].AddConnections([zones[13], zones[15], zones[17]])
+zones[15].AddConnections([zones[14], zones[16]])
+zones[16].AddConnections([zones[15], zones[8]])
+
+
 
         # Objectes
 objectes = [
@@ -833,6 +943,7 @@ def Mapa():
     for i in ubicacio.Connections:  # Mostrem ubicacions disponibles
         if i.Trobada == True:
             print(f"{count} -> {i.NameZone}")
+            print(f"{i.Description}")
             count += 1
             disponibles.append(i)
     if count > len(disponibles):
@@ -904,12 +1015,22 @@ def Explorar():
     elif prob > 70 and prob <= 95:  # Lluitar
         GenerarEnemic()
     elif prob > 95 and prob <= 100: # Seguent ruta
-        print("Has trobat una ruta a la seguent zona...")
+        trobat = random.choice(ubicacio.Connections)
+        if trobat.Trobada == False:
+            print(f"Has trobat una ruta a {trobat.NameZone}.")
+            trobat.Trobada = True
+        
+    ubicacio.ExplorarCount += 1
+    if ubicacio.ExplorarCount >= ubicacio.IntentsPerTrobar:
         for i in ubicacio.Connections:
-            if i.Trobada == False:
-                i.Trobada = True
+            if i.ZoneType == "Poble":
+                if i.Trobada == False:
+                    i.Trobada = True
+                    print(f"Has trobat un cami a {i.NameZone}")
     if choice[0] != "missio" and prob < 70 or prob > 95:
         input("Presiona per a continuar...")
+    
+
 
 def TrobarOr(moneda):
     global ubicacio, team
@@ -1092,9 +1213,20 @@ def GenerarEnemic():
         count += 1
     qty = random.choices(num, prob)
     enemy = []
-    for i in range(qty[0]):
-        entitat = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0])
-        enemy.append(entitat)
+    if "Human" not in seleccio[0].EntityGroup:
+        for i in range(qty[0]):
+            entitat = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0])
+            enemy.append(entitat)
+    else:
+        opcionsHumanes = []
+        for i in entityGroups["Human"]:
+            if i in opcions:
+                opcionsHumanes.append(i)
+        enemy.append(Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0]))
+        for i in range(qty[0] - 1):
+            clase = random.choice(opcionsHumanes)
+            entitat = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, clase)
+            enemy.append(entitat)
     Lluitar(enemy)
 
 def ComprobarEfectEstat(entitat, derr):
