@@ -63,8 +63,8 @@ movements = [
     Characteristics.Moves("Fletxa", "És dispara una fletxa normal",
                           30, 100, False, 0, [("None", "")], False),
     
-    # Continuem amb atacs diversos
-        # Mag
+    # Continuem amb moviments diversos
+
     Characteristics.Moves("Fletxa de flames", "",
                           60, 100, True, 20, [("Effect", (Effects[0], 80))]),
     Characteristics.Moves("Increment", "",
@@ -72,7 +72,6 @@ movements = [
     Characteristics.Moves("Fulla de Vent", "",
                           60, 100, True, 20, [("Effect", (Effects[1], 80))]),
         
-        # Guerrer
     Characteristics.Moves("Tall Llampeg", "",
                           70, 100, False, 10, [("Effect", (Effects[1], 80))]),
     Characteristics.Moves("Crit de Guerra", "",
@@ -80,13 +79,11 @@ movements = [
     Characteristics.Moves("Bloqueig", "Bloqueja un atac enemic dirijit a un company",
                           0, 100, False, 3, [("Stat", (["DEF"], 1.3))], False, False, True, 75),
         
-        # Arquer
     Characteristics.Moves("Santuari", "Crea un santuari durant uns instants, recupera molta salut als companys...",
                           120, 100, True, 20,[("Stat", (["ATK", "DEF", "INT", "SPD"], 2))], True, True),
     Characteristics.Moves("Cura", "Cura una petita quantitat de vida a un company",
                           60, 100, True, 4, [("None", "")], False, True),
         
-        # Lladre
     Characteristics.Moves("", "",
                           30, 100, True, 10, [("None", "")]),
     Characteristics.Moves("", "",
@@ -449,23 +446,23 @@ titles = []
 def CrearTitolsIKillExits():
     for i in entityGroups.items():
         slayer =Titles.Titles(f"{i[0]} Slayer", f"Augmenta el dany causat contra enemics de tipus {i[0]}", i[1], 1.3)
-        anihilator = Titles(f"{i[0]} Anihilator", f"Augmenta el dany causat contra enemics de tipus {i[0]}", i[1], 1.2)
+        anihilator = Titles.Titles(f"{i[0]} Anihilator", f"Augmenta el dany causat contra enemics de tipus {i[0]}", i[1], 1.2)
         terror = Titles.Titles(f"Terror of the {i[0]}", f"Augmenta el dany causat contra enemics de tipus {i[0]}", i[1], 1.5)
         
         achievements.append(
-            Exits.KillExit(f"{i[0]} Slayer", f"Derrota 10 entitats de tipus {i[0]}", i[1], 10, slayer)
+            Exits.KillExit(f"{i[0]} Slayer", f"Derrota 10 entitats de tipus {i[0]}", i[1], 10, "Title", slayer)
         )
         achievements.append(
-            Exits.KillExit(f"{i[0]} Anihilator", f"Derrota 50 entitats de tipus {i[0]}", i[1], 50, anihilator)
+            Exits.KillExit(f"{i[0]} Anihilator", f"Derrota 50 entitats de tipus {i[0]}", i[1], 50, "Title", anihilator)
         )
         achievements.append(
-            Exits.KillExit(f"Terror of the {i[0]}", f"Derrota 100 entitats de tipus {i[0]}", i[1], 100, terror)
+            Exits.KillExit(f"Terror of the {i[0]}", f"Derrota 100 entitats de tipus {i[0]}", i[1], 100, "Title", terror)
         )
 
         titles.append(slayer)
         titles.append(anihilator)
         titles.append(terror)
-
+CrearTitolsIKillExits()
 
 
 missions = [
