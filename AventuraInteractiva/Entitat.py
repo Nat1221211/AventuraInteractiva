@@ -293,23 +293,37 @@ class Entity():
         return damage
 
     def atacar(self, enemy,  move):
-        if move.Precision < 100:
-            atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
-        else:
-            atac = [True]
-        if atac == [True]:
-            if enemy.Protected == False or enemy.ProtectedBy[0] != None:
-                damage = self.CalcularDamage(enemy, move)
-                damage = round(damage, 2)
-                if enemy.Protected == True:
-                    if enemy.ProtectedBy[0] != None:
-                        damage = damage * ((100 - enemy.ProtectedBy[1]) / 100)
-                        enemy.ProtectedBy[0].CurHP -= damage
-                        print(f"{enemy.ProtectedBy[0].nom}, ha entomat el {enemy.ProtectedBy[1]}% del dany...")
-                        if enemy.ProtectedBy[0].CurHP < 0:
-                            print(f"{enemy.ProtectedBy[0].nom}, ha estat derrotat...")
+        impedit = False
+        if self.afected != None:
+            if self.afected.Blocking[0] == True:
+                if self.afected.Blocking[1] >= 100:
+                    impedit = [True]
+                else:
+                    impedit = random.choices([True, False], cum_weights=[self.afected.Blocking[1], 100 - self.afected.Blocking[1]])
+        if impedit[0] == False:
+            if move.Precision < 100:
+                atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
+            else:
+                atac = [True]
+            if atac == [True]:
+                if enemy.Protected == False or enemy.ProtectedBy[0] != None:
+                    damage = self.CalcularDamage(enemy, move)
+                    damage = round(damage, 2)
+                    if enemy.Protected == True:
+                        if enemy.ProtectedBy[0] != None:
+                            damage = damage * ((100 - enemy.ProtectedBy[1]) / 100)
+                            enemy.ProtectedBy[0].CurHP -= damage
+                            print(f"{enemy.ProtectedBy[0].nom}, ha entomat el {enemy.ProtectedBy[1]}% del dany...")
+                            if enemy.ProtectedBy[0].CurHP < 0:
+                                print(f"{enemy.ProtectedBy[0].nom}, ha estat derrotat...")
+                            else:
+                                print(f"{enemy.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
                         else:
-                            print(f"{enemy.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
+                            enemy.CurHP -= damage
+                            if enemy.CurHP <= 0:
+                                print(f"{enemy.nom} ha estat derrotat.")
+                            else:
+                                print(f"{enemy.nom} ha perdut {damage} punts de vida...")
                     else:
                         enemy.CurHP -= damage
                         if enemy.CurHP <= 0:
@@ -317,20 +331,16 @@ class Entity():
                         else:
                             print(f"{enemy.nom} ha perdut {damage} punts de vida...")
                 else:
-                    enemy.CurHP -= damage
-                    if enemy.CurHP <= 0:
-                        print(f"{enemy.nom} ha estat derrotat.")
-                    else:
-                        print(f"{enemy.nom} ha perdut {damage} punts de vida...")
+                    print(f"{enemy.nom} esta protegit i per tant l'atac no ha causat res...")
             else:
-                print(f"{enemy.nom} esta protegit i per tant l'atac no ha causat res...")
+                if self.isPlayer == True:
+                    print("Has fallat l'atac...")
+                else:
+                    print("L'atac enemic a fallat...")
+            if enemy.Protected == True:
+                enemy.Protected = False
         else:
-            if self.isPlayer == True:
-                print("Has fallat l'atac...")
-            else:
-                print("L'atac enemic a fallat...")
-        if enemy.Protected == True:
-            enemy.Protected = False
+            print(f"Has estat impedit per {self.afected.Name}")
         return enemy
 
     def MoveProtHeal(self, target, move):

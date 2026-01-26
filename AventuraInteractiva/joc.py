@@ -26,15 +26,15 @@ def ClearScreen():
         # Efectes d'estat (Cremat, Congelat, Paralitzat, Sangrant, etc.)
 Effects = [
     Characteristics.Effects("Cremada","Estar cremat redueix el atac i la defensa i causa dany cada poc temps...",
-                            True, False, 0, 5, ("Stat", (["ATK", "DEF"], 0.25))),
+                            True, (False), 0, 5, ("Stat", (["ATK", "DEF"], 0.25))),
     Characteristics.Effects("Sangrat","Tens una ferida greu que fa perdre vida constantment...",
-                            True, False, 0, 8, ("None", "")),
+                            True, (False), 0, 8, ("None", "")),
     Characteristics.Effects("Congelacio","Estas congelat durant una certa quantitat de temps...",
-                            False, True, 3, 0, ("None", "")),
+                            False, (True, 100), 3, 0, ("None", "")),
     Characteristics.Effects("Sangrat Greu","Tens una ferida greu que fa perdre vida constantment...",
-                            True, False, 0, 16, ("Stat", (["ATK", "DEF", "SPD"], 0.15))),
-    Characteristics.Effects("Terror","",
-                            False, False, 0, 0, ("Stat", (["ATK", "DEF", "INT", "SPD"], 0.25))),
+                            True, (False), 0, 16, ("Stat", (["ATK", "DEF", "SPD"], 0.15))),
+    Characteristics.Effects("Terror","Causa una sensació de terror en l'objectiu, impedint actuar amb normalitat...",
+                            False, (False), 0, 0, ("Stat", (["ATK", "DEF", "INT", "SPD"], 0.25))),
 ]
         # Moves
 movements = [   
