@@ -22,7 +22,7 @@ class Zona():
     ObjectesPerTrobar = {}
     ExplorarCount = 0
     CondicioPerTrobarRuta = tuple()
-    IntentsPerTrobar = 5
+    IntentsPerTrobar = 10
 
 
     # Metodes
@@ -55,5 +55,25 @@ class Zona():
             if self.ObjectesPerTrobar[trobat][1] <= 0:
                 self.ObjectesPerTrobar.pop(trobat)
     
-    def ComprobarCondicio(self, zones):
-        print()
+    def ComprobarCondicio(self, team):
+        if self.CondicioPerTrobarRuta != None:
+            trobada = True
+            for j in self.CondicioPerTrobarRuta:
+                if j[0] == "Ubicacio":
+                    for k in j[1]:
+                        if k.Trobada != True:
+                            trobada = False
+                if j[0] == "Objecte":
+                    for v in j[1]:
+                        if v not in team[0].objectes.keys():
+                            trobada = False
+                if j[0] == "Missio":
+                    for m in j[1]:
+                        if m.Finished != True:
+                            trobada = False
+            return trobada
+        else:
+            return True
+    
+    def AfegirCondicio(self, condicio):
+        self.CondicioPerTrobarRuta = condicio

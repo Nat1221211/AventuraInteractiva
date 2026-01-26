@@ -19,24 +19,31 @@ class Exits():
         self.Name = name
         self.Description = description
     
-    def Obtain(self, jugador, reward, rewtype):
+    def Obtain(self, team, reward, rewtype):
         self.Obtained = True
-        if rewtype == "AllStats":
-            jugador.MaxHP += reward
-            jugador.ATK += reward
-            jugador.DEF += reward
-            jugador.SPD += reward
-        elif rewtype == "HP":
-            jugador.MaxHP += reward
-        elif rewtype == "ATK":
-            jugador.ATK += reward
-        elif rewtype == "DEF":
-            jugador.DEF += reward
-        elif rewtype == "SPD":
-            jugador.SPD += reward
-        elif rewtype == "Title":
-            jugador.Tituls.append(reward)
-        print(f"Has obtingut {reward} {rewtype}.")
+        for i in team:
+            if rewtype == "AllStats":
+                i.MaxHP += reward
+                i.ATK += reward
+                i.DEF += reward
+                i.SPD += reward
+                print(f"{i.nom} ha obtingut {reward} punts a totes les estadistiques.")
+            elif rewtype == "HP":
+                i.MaxHP += reward
+                print(f"{i.nom} ha obtingut {reward} punts de Vida.")
+            elif rewtype == "ATK":
+                i.ATK += reward
+                print(f"{i.nom} ha obtingut {reward} punts de'Atac.")
+            elif rewtype == "DEF":
+                i.DEF += reward
+                print(f"{i.nom} ha obtingut {reward} punts de Defensa.")
+            elif rewtype == "SPD":
+                i.SPD += reward
+                print(f"{i.nom} ha obtingut {reward} punts de Velocitat.")
+        if rewtype == "Title":
+            team[0].Tituls.append(reward)
+            print(f"Has obtingut el titol {reward.TitleName}.")
+        
 
 class StatusExit(Exits):
 
@@ -109,6 +116,6 @@ class KillExit(Exits):
         if enemy.base in self.Entities:
             self.Count += 1
     
-    def Completed(self, jugador):
+    def Completed(self, team):
         if self.Count >= self.Quantity:
-            self.Obtain(jugador, self.Rewards, self.RewType)
+            self.Obtain(team, self.Rewards, self.RewType)

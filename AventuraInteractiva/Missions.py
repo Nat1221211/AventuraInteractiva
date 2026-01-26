@@ -18,6 +18,7 @@ class Mission():
     Rewards = {}
     Requisite = []
     Place = Zones.Zona
+    Finished = False
 
 
     # Metodes
@@ -64,21 +65,23 @@ class Mission():
     def Completed(self):
         self.Status = "Rewards Unclaimed"
 
-    def ClaimedRewards(self, jugador):
+    def ClaimedRewards(self, team):
         if self.Status == "Rewards Unclaimed":
             self.Status = "Completed"
             for i in self.Rewards:
                 if type(i) == str:
-                    jugador.Tituls.append(i)
+                    team[0].Tituls.append(i)
                 elif type(i) == tuple:
                     if type(i[0]) == Objectes.ObjecteCombat:
-                        jugador.AfegirObjecte(i[0], i[1])
+                        team[0].AfegirObjecte(i[0], i[1])
                         print(f"Has obtingut {i[1]} {i[0].ObjectName}")
                     elif i[0] == "Gold":
-                        jugador.gold += i[1]
+                        team[0].gold += i[1]
                         print(f"Has obtingut {i[1]} gold.")
                     elif i[0] == "XP":
-                        jugador.LvlUp(None, i[1])
+                        for t in team:
+                            t.LvlUp(None, i[1])
+            self.Finished = True
         else:
             print("Encara no has complert la missio...")
 

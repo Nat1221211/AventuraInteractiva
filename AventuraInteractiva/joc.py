@@ -176,6 +176,42 @@ def AddEntityGroups():
                 entityGroups[j]+=[i]
 AddEntityGroups()
 
+        # Objectes
+objectes = [
+    # En els objectes cal tenir en compte la estadistica en la que actuen si son de combat, en forma de llista cada stat.
+            # Objectes de Combat
+            Objectes.ObjecteCombat("Pocio Inferior", "Cura 10 punts de vida", ["Health"], 10, 100, True),
+            Objectes.ObjecteCombat("Pocio", "Descripcio", ["Health"], 20, 300, True),
+            Objectes.ObjecteCombat("Pocio Intermitja", "Descripcio", ["Health"], 40, 750, True),
+            Objectes.ObjecteCombat("Pocio Avançada", "Descripcio", ["Health"], 60, 2000, True),
+            Objectes.ObjecteCombat("Pocio Completa", "Descripcio", ["Health"], 100, 4000, True),
+            Objectes.ObjecteCombat("Elixir", "Descripcio", ["Health", "Mana"], 9999, 30000, True),
+            Objectes.ObjecteCombat("Millora", "Descripcio", ["ATK"], 1.3, 300),
+            Objectes.ObjecteCombat("Millora Superior", "Descripcio", ["ATK"], 2, 750),
+            Objectes.ObjecteCombat("Millora Divina", "Descripcio", ["ATK"], 2.5, 2000),
+            Objectes.ObjecteCombat("Barrera", "Descripcio", ["DEF"], 1.3, 300),
+            Objectes.ObjecteCombat("Barrera Pentagonal", "Descripcio", ["DEF"], 2, 750),
+            Objectes.ObjecteCombat("Barrera Octagonal", "Descripcio", ["DEF"], 2.5, 2000),
+            Objectes.ObjecteCombat("Carrera", "Descripcio", ["SPD"], 1.3, 300),
+            Objectes.ObjecteCombat("Llampeg", "Descripcio", ["SPD"], 2, 750),
+            Objectes.ObjecteCombat("Raig", "Descripcio", ["SPD"], 2.5, 2000),
+            
+            # Objectes Clau
+            Objectes.ObjecteClau("Pedra Misteriosa", "???"),
+            Objectes.ObjecteClau("Tronc extrany", "Tronc d'un arbre extrany"),
+
+            # Mes objectes de Combat
+            Objectes.ObjecteCombat("Pocio de Mana Inferior", "Regenera 10 punts de Mana", ["Mana"], 10, 100, True),
+            Objectes.ObjecteCombat("Pocio de Mana", "Descripcio", ["Mana"], 20, 300, True),
+            Objectes.ObjecteCombat("Pocio  de Mana Intermitja", "Descripcio", ["Mana"], 40, 750, True),
+            Objectes.ObjecteCombat("Pocio de Mana Avançada", "Descripcio", ["Mana"], 60, 2000, True),
+            Objectes.ObjecteCombat("Pocio de Mana Completa", "Descripcio", ["Mana"], 100, 4000, True),
+            Objectes.ObjecteCombat("Millora Magica", "Descripcio", ["INT"], 1.3, 300),
+            Objectes.ObjecteCombat("Alta Millora Magica", "Descripcio", ["INT"], 2, 750),
+            Objectes.ObjecteCombat("Super Millora Magica", "Descripcio", ["INT"], 2.5, 2000),
+            ]
+
+
         # Zones
 zones = [
     # Diccionari per a les entitats en la zona, essent la entitat i la probabilitat de que apareixi.
@@ -184,24 +220,29 @@ zones = [
         Zones.Zona("Dawn Village",
                    "Un poble que representa l'inici, es diu que és el poble on va neixer l'heroi de les llegendes...",
                    "Poble", {}, [], (1, 5), {}, True),
+
         Zones.Zona("Bosc Obscur",
                    "La zona exterior del bosc obscur, d'on es diu que surjeren els monstres...",
                    "Bosc", {entityTypes[4]: 35, entityTypes[5]: 60, entityTypes[6]: 5},
                    # Llista amb probabilitat de cada un dels enemics per ordre d'apareixer en grups de fins a 3.
                    # Cada llista representa un enemic, i cada valor la prob per 1, 2, 3 enemics.
                    [[85, 13, 2], [95, 5], [99, 1]], (8, 14), {"Bronze": [(1, 7), 100]}, True),
+        
         Zones.Zona("Profunditats del Bosc Obscur",
                    "Les profunditats del bosc obscur, una perillosa zona de la que és diu que qui hi entra no en surt...",
                    "Bosc", {entityTypes[4]: 32, entityTypes[5]: 40, entityTypes[6]: 20, entityTypes[8]: 5, entityTypes[9]: 3}, 
                    [[85, 13, 2], [95, 5], [99, 1], [99, 1], [99, 1]], (37, 45), {"Plata": [(15, 25), 100]}),
+        
         Zones.Zona("Centre del Bosc Obscur",
                    "La zona central del bosc obscur, hi habiten monstres desconeguts, ningú ha tornat mai d'aquest lloc...",
                    "Bosc", {entityTypes[6]: 30, entityTypes[8]: 30, entityTypes[9]: 40}, 
                     [[85, 13, 2], [95, 5], [99, 1]], (43, 52), {"Or": [(1, 10), 40], "Plata": [(20, 40), 60]}),
+        
         Zones.Zona("Muntanyes del Origen",
                    "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
                    "Muntanya", {entityTypes[7]: 50, entityTypes[8]: 20, entityTypes[9]: 20, entityTypes[10]: 10}, 
                    [[85, 13, 2], [95, 5], [99, 1], [99, 1]], (50, 60), {"Or": [(6, 15), 90], "Or Platejat": [(1, 3), 10]}),
+        
         Zones.Zona("Cavernes del Origen",
                    "Les cavernes de les muntanyes del origen, no és te coneixement de la existencia d'aquestes...",
                    "Cavernes", {entityTypes[6]: 40, entityTypes[7]: 30, entityTypes[10]: 30}, 
@@ -311,7 +352,7 @@ Zones.Zona(
     "Cavernes", {},
     [], 
     (30, 35), {}, False,
-    (("Ubicacio", [zones[6]]), ("Object", ["Objecte en questio"])), 25)
+    (("Ubicacio", [zones[6]]), ("Object", [objectes[15]])), 25)
     )
 
 zones.append(
@@ -350,40 +391,6 @@ zones[16].AddConnections([zones[15], zones[8]])
 
 
 
-        # Objectes
-objectes = [
-    # En els objectes cal tenir en compte la estadistica en la que actuen si son de combat, en forma de llista cada stat.
-            # Objectes de Combat
-            Objectes.ObjecteCombat("Pocio Inferior", "Cura 10 punts de vida", ["Health"], 10, 100, True),
-            Objectes.ObjecteCombat("Pocio", "Descripcio", ["Health"], 20, 300, True),
-            Objectes.ObjecteCombat("Pocio Intermitja", "Descripcio", ["Health"], 40, 750, True),
-            Objectes.ObjecteCombat("Pocio Avançada", "Descripcio", ["Health"], 60, 2000, True),
-            Objectes.ObjecteCombat("Pocio Completa", "Descripcio", ["Health"], 100, 4000, True),
-            Objectes.ObjecteCombat("Elixir", "Descripcio", ["Health", "Mana"], 9999, 30000, True),
-            Objectes.ObjecteCombat("Millora", "Descripcio", ["ATK"], 1.3, 300),
-            Objectes.ObjecteCombat("Millora Superior", "Descripcio", ["ATK"], 2, 750),
-            Objectes.ObjecteCombat("Millora Divina", "Descripcio", ["ATK"], 2.5, 2000),
-            Objectes.ObjecteCombat("Barrera", "Descripcio", ["DEF"], 1.3, 300),
-            Objectes.ObjecteCombat("Barrera Pentagonal", "Descripcio", ["DEF"], 2, 750),
-            Objectes.ObjecteCombat("Barrera Octagonal", "Descripcio", ["DEF"], 2.5, 2000),
-            Objectes.ObjecteCombat("Carrera", "Descripcio", ["SPD"], 1.3, 300),
-            Objectes.ObjecteCombat("Llampeg", "Descripcio", ["SPD"], 2, 750),
-            Objectes.ObjecteCombat("Raig", "Descripcio", ["SPD"], 2.5, 2000),
-            
-            # Objectes Clau
-            Objectes.ObjecteClau("Pedra Misteriosa", "???"),
-            Objectes.ObjecteClau("Tronc extrany", "Tronc d'un arbre extrany"),
-
-            # Mes objectes de Combat
-            Objectes.ObjecteCombat("Pocio de Mana Inferior", "Regenera 10 punts de Mana", ["Mana"], 10, 100, True),
-            Objectes.ObjecteCombat("Pocio de Mana", "Descripcio", ["Mana"], 20, 300, True),
-            Objectes.ObjecteCombat("Pocio  de Mana Intermitja", "Descripcio", ["Mana"], 40, 750, True),
-            Objectes.ObjecteCombat("Pocio de Mana Avançada", "Descripcio", ["Mana"], 60, 2000, True),
-            Objectes.ObjecteCombat("Pocio de Mana Completa", "Descripcio", ["Mana"], 100, 4000, True),
-            Objectes.ObjecteCombat("Millora Magica", "Descripcio", ["INT"], 1.3, 300),
-            Objectes.ObjecteCombat("Alta Millora Magica", "Descripcio", ["INT"], 2, 750),
-            Objectes.ObjecteCombat("Super Millora Magica", "Descripcio", ["INT"], 2.5, 2000),
-            ]
 
 # Afegir Objectes per Trobar explorant cada zona
 zones[1].AfegirObjectePerTrobar([
@@ -635,9 +642,11 @@ def AccioMenuPrincipal():
     elif menu.get(pos) == "Éxits":
         MostrarExits()
     elif menu.get(pos) == "Motxila":
-        team[0].ObjectesMochila()
+        team[0].ObjectesMochila(team)
     elif menu.get(pos) == "Gremi":
         Gremi()
+
+
 
 contractatsAnteriorment = []
 def Gremi():
@@ -1041,22 +1050,46 @@ def Explorar():
     elif prob > 70 and prob <= 95:  # Lluitar
         GenerarEnemic()
     elif prob > 95 and prob <= 100: # Seguent ruta
-        trobat = random.choice(ubicacio.Connections)
-        if trobat.Trobada == False:
-            print(f"Has trobat una ruta a {trobat.NameZone}.")
-            trobat.Trobada = True
+        TrobarSeguentZona()
         
     ubicacio.ExplorarCount += 1
-    if ubicacio.ExplorarCount >= ubicacio.IntentsPerTrobar:
-        for i in ubicacio.Connections:
-            if i.ZoneType == "Poble":
-                if i.Trobada == False:
-                    i.Trobada = True
-                    print(f"Has trobat un cami a {i.NameZone}")
-    if choice[0] != "missio" and prob < 70 or prob > 95:
+    rutaTrobada = False
+    for i in ubicacio.Connections:
+        if i.ZoneType == "Poble":
+            if i.Trobada == False:
+                i.Trobada = True
+                print(f"Has trobat un cami a {i.NameZone}")
+                rutaTrobada = True
+        else:
+            if ubicacio.ExplorarCount >= i.IntentsPerTrobar and i.Trobada != True:
+                i.Trobada = True
+                print(f"Has trobat un cami a {i.NameZone}")
+                rutaTrobada = True
+    if (choice[0] != "missio" and prob < 70 or prob > 95) or rutaTrobada == True:
         input("Presiona per a continuar...")
     
+def TrobarSeguentZona():
+    global team, ubicacio
+    posiblesRutesATrobar = []
+    rutesTrobades = []
+    for i in ubicacio.Connections:
+        complert = i.ComprobarCondicio(team)
+        if complert == True and i.Trobada == False:
+            posiblesRutesATrobar.append(i)
+        if i.Trobada == True:
+            rutesTrobades.append(i)
+    if len(posiblesRutesATrobar) == 0:
+        if len(rutesTrobades) == len(ubicacio.Connections):
+            print("Ja has trobat totes les rutes en aquesta zona...")
+        else:
+            print("No sembla haber-hi cap altre ruta...")
+    else:
+        trobat = random.choice(ubicacio.Connections)
+        print(f"Has trobat una ruta a {trobat.NameZone}.")
+        trobat.Trobada = True
+    input("Presiona per a continuar...")
 
+    
 
 def TrobarOr(moneda):
     global ubicacio, team
@@ -1164,7 +1197,7 @@ def AccionsLluita(jug, enemy, enemyderr):
     elif accio == 2:
         fugir = Fugir(enemy)
     elif accio == 3:
-        used = team[0].ObjectesMochila(jug, True)
+        used = team[0].ObjectesMochila(team, jug, True)
         if used == False:
             turn = True
     elif accio == 4:
