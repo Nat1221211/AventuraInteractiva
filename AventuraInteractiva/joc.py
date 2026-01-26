@@ -520,11 +520,13 @@ achievements = [
 missions = [
     Missions.KillMission("Eliminant el Perill", 
                          "Troba i elimina al perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur", 
+                         "Principal",
                          [("XP", 3000), ("Gold", 10000), (objectes[15], 1)], 1, [entityTypes[10]], [("Lv", 5)], zones[3], False,
                          Entitat.Entity("El Golem de Roca", 40, False, entityTypes[10])),
 
     Missions.KillMission("Mostra de Confiança", 
                          "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
+                         "Principal",
                          [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, [entityTypes[4]], [("Lv", 5)], zones[1], False,
                          Entitat.Entity("Llop Lider", 9, False, entityTypes[4])),
 ]
@@ -534,21 +536,21 @@ missions = [
 missions.append(
     Missions.KillMission("Mostra de Confiança II", 
     "Elimina les restes de la manada de Llops en el bosc obscur.", 
-    [("XP", 300), ("Gold", 2000), (objectes[1], 2)], 10, [entityTypes[4]], 
+    "Principal", [("XP", 300), ("Gold", 2000), (objectes[1], 2)], 10, [entityTypes[4]], 
     [("Lv", 5), missions[1]], zones[1], False),
     )
 
 missions.append(
     Missions.KillMission("Eliminant Sombres", 
     "Elimina 15 sombres del bosc obscur.", 
-    [("XP", 500), ("Gold", 3000), (objectes[1], 5)], 15, [entityTypes[6]], 
+    "Principal", [("XP", 500), ("Gold", 3000), (objectes[1], 5)], 15, [entityTypes[6]], 
     [("Lv", 10), missions[2]], zones[1], False),
     )
 
 missions.append(
     Missions.FindMission("Troba a en Jack", 
     "Un nen del pobla s'ha perdut, és diu Jack, creuen que s'ha endinsat massa en el bosc obscur...",
-    [("XP", 500), ("Gold", 2000)], "Jack", 
+    "Principal", [("XP", 500), ("Gold", 2000)], "Jack", 
     [("Lv", 5)], zones[2])
 )
 

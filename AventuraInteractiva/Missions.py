@@ -19,13 +19,15 @@ class Mission():
     Requisite = []
     Place = Zones.Zona
     Finished = False
+    Categoria = ""
 
 
     # Metodes
-    def __init__(self, name, description, rewards):
+    def __init__(self, name, description, rewards, cat):
         self.Name = name
         self.Description = description
         self.Rewards = rewards
+        self.Categoria = cat
     
     def RequisitesCompleted(self, jugador):
         if self.Status not in ["Accepted", "Requisites", "Completed", "Rewards Unclaimed"]:
@@ -90,13 +92,15 @@ class FindMission(Mission):
     Objective = ""
     
     # Metodes
-    def __init__(self, name, description, rewards, objective, requisite, place):
+    def __init__(self, name, description, cat, rewards, objective, requisite, place):
         self.Name = name
         self.Description = description
+        self.Categoria = cat
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
         self.Place = place
+        
     
     def Completed(self):
         self.Status = "Rewards Unclaimed"
@@ -106,9 +110,10 @@ class ObjectMission(Mission):
     Objective = Objectes.ObjecteClau
     
     # Metodes
-    def __init__(self, name, description, rewards, objective, requisite, place):
+    def __init__(self, name, description, cat, rewards, objective, requisite, place):
         self.Name = name
         self.Description = description
+        self.Categoria = cat
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
@@ -130,9 +135,10 @@ class KillMission(Mission):
 
     
     # Metodes
-    def __init__(self, name, description, rewards, qty, objective, requisite, place, generic, enemy = Entitat.Entity):
+    def __init__(self, name, description, cat, rewards, qty, objective, requisite, place, generic, enemy = Entitat.Entity):
         self.Name = name
         self.Description = description
+        self.Categoria = cat
         self.Rewards = rewards
         self.Quantity = qty
         self.Objective = objective
