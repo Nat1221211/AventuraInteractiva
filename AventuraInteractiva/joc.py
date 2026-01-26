@@ -34,7 +34,7 @@ Effects = [
     Characteristics.Effects("Sangrat Greu","Tens una ferida greu que fa perdre vida constantment...",
                             True, (False), 0, 16, ("Stat", (["ATK", "DEF", "SPD"], 0.15))),
     Characteristics.Effects("Terror","Causa una sensació de terror en l'objectiu, impedint actuar amb normalitat...",
-                            False, (False), 0, 0, ("Stat", (["ATK", "DEF", "INT", "SPD"], 0.25))),
+                            False, (False), 0, 4, ("Stat", (["ATK", "DEF", "INT", "SPD"], 0.25))),
 ]
         # Moves
 movements = [   
@@ -1271,7 +1271,11 @@ def GenerarEnemic():
 def ComprobarEfectEstat(entitat, derr):
     if entitat.afected != "None":
         if entitat.timer <= 0 and entitat.afected.Turns > 0:
+            statsafected = entitat.afected.StatEffects[1][0]
+            efectname = entitat.afected.Name
             entitat.afected = "None"
+            entitat.BuffTempStats(0, statsafected)
+            print(f"{entitat.nom}, ja no esta afectat per {efectname}, les seves estadistiques han retornat al que eren...")
         else:
             if entitat.afected.Damaging == True:
                 damagepereffect = ((entitat.MaxHP / 100) * entitat.afected.Damage)

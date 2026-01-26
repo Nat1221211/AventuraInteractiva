@@ -199,7 +199,7 @@ class Entity():
         basebuff = buff
         for i in statbuffed:
             buff = basebuff
-            if buff > 1:
+            if buff >= 1:
                 buff -= 1
                 print(f"La estadistica {i} de {self.nom} s'ha incrementat en {abs(buff * 100)}%")
             else:
@@ -233,6 +233,8 @@ class Entity():
                 elif self.buffDEF > 4:
                     self.buffDEF = 4
                 self.tempDEF *= self.buffDEF
+        if self.afected != "None":
+            self.StatusEffectStatReduction()
     
     def ResetBuffs(self):
         self.buffATK = 1
@@ -240,7 +242,20 @@ class Entity():
         self.buffSPD = 1
         self.buffDEF = 1
     
-    # Pendent d'acabar
+    def StatusEffectStatReduction(self):
+        if self.afected.StatEffects[0] != "None":
+            for i in self.afected.StatEffects[1][0]:
+                if i == "ATK":
+                    self.tempATK *= (1 - self.afected.StatEffects[1][1])
+                if i == "INT":
+                    self.tempINT *= (1 - self.afected.StatEffects[1][1])
+                if i == "SPD":
+                    self.tempSPD *= (1 - self.afected.StatEffects[1][1])
+                if i == "DEF":
+                    self.tempDEF *= (1 - self.afected.StatEffects[1][1])
+                print(f"La estadistica {i} de {self.nom} s'ha reduit en {abs(self.afected.StatEffects[1][1] * 100)}%")
+    
+    
     def ApplyStatusEffects(self, effect, prob):
         if prob < 100:
             apply = random.choices([True, False], [prob, 100 - prob])
@@ -252,8 +267,7 @@ class Entity():
                     self.afected = effect
                     self.timer = effect.Turns
                     print(f"{self.nom} ha estat afectat per {effect.Name}.")
-                    if self.afected.StatEffects[0] != "None":
-                        self.BuffTempStats(self.afected.StatEffects[1][1],self.afected.StatEffects[1][0])
+                    self.StatusEffectStatReduction()
                 else:
                     print(f"{self.nom} ja esta afectat per {self.afected}")
 
