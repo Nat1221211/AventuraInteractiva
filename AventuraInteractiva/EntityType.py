@@ -21,6 +21,7 @@ class EntityType():
     EntityGroup = []
     EntityMoves = {}
     paths = dict()
+    Companions = {}
 
     # Metodes
     def __init__(self, name, playable, hp, magi, atk, intel, defs, spd, xp, group, description, moves):
@@ -39,3 +40,7 @@ class EntityType():
     
     def AddPaths(self, paths):
         self.paths = paths
+    
+    def AddCompanions(self, companions):
+        for i in companions.items():
+            self.Companions[i[0]]=i[1]

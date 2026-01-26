@@ -119,31 +119,31 @@ entityTypes = [
        
         EntityType.EntityType("Llop", False, 120, 40, 120, 20, 100, 140, 30, ["Beast"], 
                               "Animal comú, pot ser perillos si no es te cuidado.",
-                              {movements[4]: 3}),
+                              {movements[4]: 1}),
        
         EntityType.EntityType("Slime", False, 100, 100, 100, 100, 100, 100, 20, ["Monster"], 
                               "Entitat no massa perillosa, però s'ha de ser cuidados.",
-                              {movements[4]: 3}),
+                              {movements[4]: 1}),
        
         EntityType.EntityType("Sombra",False, 150, 150, 150, 150, 150, 150, 70, ["Monster"], 
                               "Dificil de veure, en la foscor.",
-                              {movements[4]: 3}),
+                              {movements[4]: 1}),
        
         EntityType.EntityType("Llangardaix de Roca", False, 160, 120, 160, 50, 160, 100, 100, ["Beast", "Monster"], 
                               "Llangardaix amb pell de roca, es molt perillos.",
-                              {movements[4]: 3}),
+                              {movements[4]: 1}),
        
         EntityType.EntityType("Driade", False, 100, 230, 100, 250, 100, 100, 120, ["Spirit"], 
                               "Enitat espiritual que formada per la energia de les plantes.",
-                              {movements[4]: 3}),
+                              {movements[4]: 1}),
        
         EntityType.EntityType("Treant", False, 200, 140, 150, 120, 150, 100, 220, ["Monster", "Spirit"], 
                               "Un arbre malevol, en algunes ocasions no en són.",
-                              {movements[4]: 3}),
+                              {movements[4]: 1}),
         
         EntityType.EntityType("Golem", False, 250, 100, 160, 80, 200, 60, 500, ["Artificial"], 
                               "Monstre de Roca, es una forma de vida artificial feta de pedra.",
-                              {movements[3]: 3}),
+                              {movements[3]: 1}),
         
         EntityType.EntityType("Mag de Flames", False, 60, 250, 60, 220, 50, 50, 40, ["Human"], 
                               "Molt Atac altres estadistiques baixen, augmentara molt l'atac i el mana pero" \
@@ -160,6 +160,8 @@ entityTypes = [
 entityTypes[1].AddPaths({entityTypes[11]: [[("Lv", 30), ("Stat", [("Mana", 120)])], False]})
 
 
+# Afegint monstres que poden apareixer conjuntament amb un altre.
+entityTypes[4].AddCompanions({entityTypes[5]: 80})
 
 # Creem la funcio per a generar els grups d'entitats algo aixi com els tipus.
 entityGroups = {}
@@ -262,9 +264,9 @@ zones = [
             # Cami de Dawn Village a Knightshire
         Zones.Zona("Bosc del Sud",
                    "Un bosc ubicat al sud de Dawn Village, un bosc relativament segur...",
-                   "Bosc", {entityTypes[4]: 21, entityTypes[5]: 70, entityTypes[0]: 3, 
+                   "Bosc", {entityTypes[4]: 101, entityTypes[5]: 30, entityTypes[0]: 3, 
                             entityTypes[2]: 3, entityTypes[3]: 3}, 
-                   [[85, 13, 2], [93, 5, 2], [95, 4, 1], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
+                   [[15, 83, 2], [93, 5, 2], [95, 4, 1], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
                    (3, 5), {"Bronze": [(1, 5), 100]}, True),
 
         Zones.Zona("Rocklink",
@@ -277,7 +279,7 @@ zones = [
         Zones.Zona("Camps de Knightshire",
                    "Els camps a les afores de knightshire, aquestes \"afores\" son bastant grans...",
                    "Camps", {entityTypes[5]: 90, entityTypes[4]: 10}, 
-                   [[95, 5], [50, 45, 5]], (3, 5), {"Bronze": [(1, 5), 100]}, False),
+                   [[95, 5], [40, 55, 5]], (3, 5), {"Bronze": [(1, 5), 100]}, False),
             
             # Cami de Knightshire a Lakestar o Faylight (Pasant per Muntayes Estelars)
         Zones.Zona("Bosc Estelar",
@@ -1252,20 +1254,26 @@ def GenerarEnemic():
         count += 1
     qty = random.choices(num, prob)
     enemy = []
-    if "Human" not in seleccio[0].EntityGroup:
-        for i in range(qty[0]):
-            entitat = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0])
+
+    enemy.append(Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0]))
+
+    probs = []
+    opcionsPosib = []
+
+    for v in seleccio[0].Companions.items():
+        probs.append(v[1])
+        opcionsPosib.append(v[0])
+
+
+    if qty[0] > 1:
+        for l in range(qty[0] - 1):
+            if len(seleccio[0].Companions.keys()) >= 1:
+                apareix = random.choices(opcionsPosib, probs)
+            else:
+                apareix = [seleccio[0]]
+            entitat = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0] - 2, enemy[0].Lv), False, apareix[0])
             enemy.append(entitat)
-    else:
-        opcionsHumanes = []
-        for i in entityGroups["Human"]:
-            if i in opcions:
-                opcionsHumanes.append(i)
-        enemy.append(Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, seleccio[0]))
-        for i in range(qty[0] - 1):
-            clase = random.choice(opcionsHumanes)
-            entitat = Entitat.Entity("", random.randrange(ubicacio.LevelRange[0], ubicacio.LevelRange[1] + 1), False, clase)
-            enemy.append(entitat)
+    
     Lluitar(enemy)
 
 def ComprobarEfectEstat(entitat, derr):
