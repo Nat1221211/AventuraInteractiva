@@ -282,7 +282,7 @@ zones = [
                    "Camps", {entityTypes[5]: 90, entityTypes[4]: 10}, 
                    [[95, 5], [50, 45, 5]], (3, 5), {"Bronze": [(1, 5), 100]}, False),
             
-            # Cami de Knightshire a Lakestar o Faylight (Pasant per Munatnyes Estelars)
+            # Cami de Knightshire a Lakestar o Faylight (Pasant per Muntayes Estelars)
         Zones.Zona("Bosc Estelar",
                    "Un bosc que guia cap a les muntanyes estelars...",
                    "Bosc", {entityTypes[5]: 30, entityTypes[4]: 30}, 
@@ -362,7 +362,7 @@ Zones.Zona(
     "",
     "", {},
     [],
-    (33, 38), {}, False)
+    (35, 40), {}, False)
     )
 
 
