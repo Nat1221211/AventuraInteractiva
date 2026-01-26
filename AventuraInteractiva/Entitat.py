@@ -62,6 +62,8 @@ class Entity():
     fleeProb = 75
     Tituls = []
     AcquiredAchievements = []
+    MisionsAcceptades = []
+    MissionsFinalitzades = []
     PostGame = False
 
     # Metodes

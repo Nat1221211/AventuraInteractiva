@@ -38,7 +38,7 @@ class Mission():
                         if i[0] == "Lv":
                             if jugador.Lv < i[1]:
                                 reqcompleted = False
-                    elif type(i) in [Mission, FindMission, ObjectMission, KillMission]:
+                    elif type(i) in [Mission, FindMission, ObjectMission, KillMission, PlaceMission]:
                         if i.Status != "Completed":
                             reqcompleted = False
             if reqcompleted == True:
@@ -84,6 +84,7 @@ class Mission():
                         for t in team:
                             t.LvlUp(None, i[1])
             self.Finished = True
+            team[0].MissionsFinalitzades.append(self)
         else:
             print("Encara no has complert la missio...")
 
@@ -104,6 +105,7 @@ class FindMission(Mission):
     
     def Completed(self):
         self.Status = "Rewards Unclaimed"
+        print(f"Has completat la missio {self.Name}.")
 
 class ObjectMission(Mission):
     
@@ -118,6 +120,22 @@ class ObjectMission(Mission):
         self.Objective = objective
         self.Requisite = requisite
         self.Place = place
+   
+    def Completed(self):
+        self.Status = "Rewards Unclaimed"
+
+class PlaceMission(Mission):
+    
+    Objective = Zones.Zona
+    
+    # Metodes
+    def __init__(self, name, description, cat, rewards, objective, requisite):
+        self.Name = name
+        self.Description = description
+        self.Categoria = cat
+        self.Rewards = rewards
+        self.Objective = objective
+        self.Requisite = requisite
    
     def Completed(self):
         self.Status = "Rewards Unclaimed"

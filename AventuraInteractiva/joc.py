@@ -411,46 +411,7 @@ botiga = [objectes[0],
           objectes[21],
           ]
 
-titles = [
-    # En els titols cal entendre el grup sobre el que actuen, i l'increment d'estadistiques contra aquell grup.
 
-    # Basic Grade
-    Titles.Titles("Beast Slayer", "Augmenta el dany causat contra enemics de tipus Bestia",
-                  entityGroups["Beast"], 1.3),
-    Titles.Titles("Human Slayer", "Augmenta el dany causat contra enemics de tipus Human",
-                  entityGroups["Human"], 1.3),
-    Titles.Titles("Spirit Slayer", "Augmenta el dany causat contra enemics de tipus Spirit",
-                  entityGroups["Spirit"], 1.3),
-    Titles.Titles("Monster Slayer", "Augmenta el dany causat contra enemics de tipus Monster",
-                  entityGroups["Monster"], 1.3),
-    Titles.Titles("Artificial Slayer", "Augmenta el dany causat contra enemics de tipus Artificial",
-                  entityGroups["Artificial"], 1.3),
-    
-    # Intermediate Grade
-    Titles.Titles("Beast Slayer", "Augmenta el dany causat contra enemics de tipus Bestia",
-                  entityGroups["Beast"], 1.2),
-    Titles.Titles("Human Slayer", "Augmenta el dany causat contra enemics de tipus Human",
-                  entityGroups["Human"], 1.2),
-    Titles.Titles("Spirit Slayer", "Augmenta el dany causat contra enemics de tipus Spirit",
-                  entityGroups["Spirit"], 1.2),
-    Titles.Titles("Monster Slayer", "Augmenta el dany causat contra enemics de tipus Monster",
-                  entityGroups["Monster"], 1.2),
-    Titles.Titles("Artificial Slayer", "Augmenta el dany causat contra enemics de tipus Artificial",
-                  entityGroups["Artificial"], 1.2),
-    
-    # Advanced
-    Titles.Titles("Beast Slayer", "Augmenta el dany causat contra enemics de tipus Bestia",
-                  entityGroups["Beast"], 1.5),
-    Titles.Titles("Human Slayer", "Augmenta el dany causat contra enemics de tipus Human",
-                  entityGroups["Human"], 1.5),
-    Titles.Titles("Spirit Slayer", "Augmenta el dany causat contra enemics de tipus Spirit",
-                  entityGroups["Spirit"], 1.5),
-    Titles.Titles("Monster Slayer", "Augmenta el dany causat contra enemics de tipus Monster",
-                  entityGroups["Monster"], 1.5),
-    Titles.Titles("Artificial Slayer", "Augmenta el dany causat contra enemics de tipus Artificial",
-                  entityGroups["Artificial"], 1.5),
-    
-]
 
     # Exits (Achievements / Logros)
 achievements = [
@@ -479,78 +440,84 @@ achievements = [
     Exits.StatusExit("HP 100", "Arriba a 100 HP", "HP", 100, 5, "HP"),
     Exits.StatusExit("HP 150", "Arriba a 150 HP", "HP", 150, 5, "HP"),
     Exits.StatusExit("HP 200", "Arriba a 200 HP", "HP", 200, 5, "HP"),
-
-
+]
     # En els killexit son els grups que s'ha de derrotar i la quantitat, així com el titul recibit en cas de ser titul la
     # recompensa.
+titles = []
 
-    # Exits de Derrotar Enemics
-    Exits.KillExit("Beast Slayer", "Derrota 10 monstres de tipus bestia", 
-                   entityGroups["Beast"], 10, titles[0], "Title"),
-    Exits.KillExit("Exterminador de Besties", "Derrota 50 monstres de tipus bestia", 
-                   entityGroups["Beast"], 50, titles[5], "Title"),
-    Exits.KillExit("Aniquilador de Besties", "Derrota 100 monstres de tipus bestia", 
-                   entityGroups["Beast"], 100, titles[10], "Title"),
-    Exits.KillExit("Monster Slayer", "Derrota 10 monstres de tipus Monstre", 
-                   entityGroups["Monster"], 10, titles[3], "Title"),
-    Exits.KillExit("Exterminador de Monstres", "Derrota 50 monstres de tipus Monstre", 
-                   entityGroups["Monster"], 50, titles[8], "Title"),
-    Exits.KillExit("Aniquilador de Monstres", "Derrota 100 monstres de tipus Monstre", 
-                   entityGroups["Monster"], 100, titles[13], "Title"),
-    Exits.KillExit("Human Slayer", "Derrota 10 monstres de tipus Huma", 
-                   entityGroups["Human"], 10, titles[1], "Title"),
-    Exits.KillExit("Exterminador d'Humans", "Derrota 50 monstres de tipus Huma", 
-                   entityGroups["Human"], 50, titles[6], "Title"),
-    Exits.KillExit("Aniquilador d'Humans", "Derrota 100 monstres de tipus Huma", 
-                   entityGroups["Human"], 100, titles[11], "Title"),
-    Exits.KillExit("Spirit Slayer", "Derrota 10 monstres de tipus esperit", 
-                   entityGroups["Spirit"], 10, titles[2], "Title"),
-    Exits.KillExit("Exterminador d'esperits", "Derrota 50 monstres de tipus esperit", 
-                   entityGroups["Spirit"], 50, titles[7], "Title"),
-    Exits.KillExit("Aniquilador d'esperits", "Derrota 100 monstres de tipus esperit", 
-                   entityGroups["Spirit"], 100, titles[12], "Title"),
-    Exits.KillExit("Artificial Slayer", "Derrota 10 monstres de tipus Artificial", 
-                   entityGroups["Artificial"], 10, titles[4], "Title"),
-    Exits.KillExit("Exterminador Artificial", "Derrota 50 monstres de tipus Artificial", 
-                   entityGroups["Artificial"], 50, titles[9], "Title"),
-    Exits.KillExit("Aniquilador Artificial", "Derrota 100 monstres de tipus Artificial", 
-                   entityGroups["Artificial"], 100, titles[14], "Title"),
-]
+
+def CrearTitolsIKillExits():
+    for i in entityGroups.items():
+        slayer =Titles.Titles(f"{i[0]} Slayer", f"Augmenta el dany causat contra enemics de tipus {i[0]}", i[1], 1.3)
+        anihilator = Titles(f"{i[0]} Anihilator", f"Augmenta el dany causat contra enemics de tipus {i[0]}", i[1], 1.2)
+        terror = Titles.Titles(f"Terror of the {i[0]}", f"Augmenta el dany causat contra enemics de tipus {i[0]}", i[1], 1.5)
+        
+        achievements.append(
+            Exits.KillExit(f"{i[0]} Slayer", f"Derrota 10 entitats de tipus {i[0]}", i[1], 10, slayer)
+        )
+        achievements.append(
+            Exits.KillExit(f"{i[0]} Anihilator", f"Derrota 50 entitats de tipus {i[0]}", i[1], 50, anihilator)
+        )
+        achievements.append(
+            Exits.KillExit(f"Terror of the {i[0]}", f"Derrota 100 entitats de tipus {i[0]}", i[1], 100, terror)
+        )
+
+        titles.append(slayer)
+        titles.append(anihilator)
+        titles.append(terror)
+
+
 
 missions = [
     Missions.KillMission("Eliminant el Perill", 
-                         "Troba i elimina al perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur", 
+                         "Un perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur.", 
                          "Principal",
-                         [("XP", 3000), ("Gold", 10000), (objectes[15], 1)], 1, [entityTypes[10]], [("Lv", 5)], zones[3], False,
+                         [("XP", 3000), ("Gold", 10000), (objectes[15], 1)], 1, [entityTypes[10]], [("Lv", 35)], zones[3], False,
                          Entitat.Entity("El Golem de Roca", 40, False, entityTypes[10])),
-
-    Missions.KillMission("Mostra de Confiança", 
-                         "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
-                         "Principal",
-                         [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, [entityTypes[4]], [("Lv", 5)], zones[1], False,
-                         Entitat.Entity("Llop Lider", 9, False, entityTypes[4])),
 ]
 
 # Afegir missions amb append, ja que si el requisit es una altre missio aquella ha d'estar ja definida.
+
+    # Missions Principals
+missions.append(
+    Missions.PlaceMission(
+        "La Primera Parada", 
+        "Com a bon aventurer, vols començar el teu viatge, i la primera parada d'aquest és la ciutat dels caballers, Knightshire.", 
+        "Principal",
+        [("XP", 500), ("Gold", 3000), (objectes[2], 5)], zones[9], [("Lv", 5)]),
+)
+
+
+missions.append(
+    Missions.KillMission(
+        "Mostra de Confiança", 
+        "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
+        "Principal",
+        [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, [entityTypes[4]], [("Lv", 15)], zones[1], False,
+        Entitat.Entity("Llop Lider", 17, False, entityTypes[4])),
+)
 
 missions.append(
     Missions.KillMission("Mostra de Confiança II", 
     "Elimina les restes de la manada de Llops en el bosc obscur.", 
     "Principal", [("XP", 300), ("Gold", 2000), (objectes[1], 2)], 10, [entityTypes[4]], 
-    [("Lv", 5), missions[1]], zones[1], False),
+    [("Lv", 16), missions[1]], zones[1], False),
     )
+
+
+    # Missions Secundaries
 
 missions.append(
     Missions.KillMission("Eliminant Sombres", 
     "Elimina 15 sombres del bosc obscur.", 
-    "Principal", [("XP", 500), ("Gold", 3000), (objectes[1], 5)], 15, [entityTypes[6]], 
+    "Secundaria", [("XP", 500), ("Gold", 3000), (objectes[1], 5)], 15, [entityTypes[6]], 
     [("Lv", 10), missions[2]], zones[1], False),
     )
 
 missions.append(
     Missions.FindMission("Troba a en Jack", 
     "Un nen del pobla s'ha perdut, és diu Jack, creuen que s'ha endinsat massa en el bosc obscur...",
-    "Principal", [("XP", 500), ("Gold", 2000)], "Jack", 
+    "Secundaria", [("XP", 500), ("Gold", 2000)], "Jack", 
     [("Lv", 5)], zones[2])
 )
 
@@ -797,63 +764,72 @@ def MenuMisions():
             res = int(input("Digues el numero segons el que vols fer: "))
             if res not in [1, 2, 3, 4]:
                 print("Has de dir un dels numeros segons el que vols fer...")
-            elif res == 1:
-                filtrar = 0
-                while filtrar not in [1, 2, 3, 4, 5]:
-                    ClearScreen()
-                    print("1 -> Totes")
-                    print("2 -> Aceptades")
-                    print("3 -> Requisits Complerts per aceptar")
-                    print("4 -> Completades")
-                    print("5 -> Sortir")
-                    try:
-                        filtrar = int(input("Digues que vols fer: "))
-                        if filtrar not in [1, 2, 3, 4, 5]:
-                            print("Has de dir un dels numeros segons el que vols fer...")
-                    except ValueError:
-                        print("Ha ocurregut un error...")
-                if filtrar == 2:
-                    count, reclamar = ShowMisions("Accepted", "Res")
-                elif filtrar == 4:
-                    count, reclamar = ShowMisions("Completed", "Res")
-                elif filtrar == 3:
-                    count, reclamar  = ShowMisions("Requisites", "Res")
-                elif filtrar == 1:
-                    count, reclamar  = ShowMisions("Totes", "Res")
-            elif res == 2:
-                count, reclamar  = ShowMisions("Requisites", "Aceptar")
-                aceptar = 0
-                while aceptar not in range(1, count + 1):
-                    ClearScreen()
-                    count, reclamar  = ShowMisions("Requisites", "Aceptar")
-                    try:
-                        aceptar = int(input("Digues quina misio vols aceptar: "))
-                        if aceptar < count + 1 and aceptar > 0:
-                            if aceptar == count:
-                                print("Has sortit")
-                            else:
-                                reclamar[aceptar - 1].Aceptar(team[0])
-                    except ValueError:
-                        print("Ha ocurregut un error...")
-            elif res == 3:
-                count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar")
-                aceptar = 0
-                while aceptar not in range(1, count + 1):
-                    ClearScreen()
-                    count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar")
-                    try:
-                        aceptar = int(input("Digues quina misio vols reclamar: "))
-                        if aceptar < count + 1 and aceptar > 0:
-                            if aceptar == count:
-                                print("Has sortit")
-                            else:
-                                reclamar[aceptar - 1].ClaimedRewards(team[0])
-                    except ValueError:
-                        print("Ha ocurregut un error...")
-            if res != 4:
-                res = 0
+            if res in [2, 3] and ubicacio.ZoneType != "Poble":
+                print(f"Per acceptar o reclamar missions has d'estar en un Poblat.")
             else:
-                print("Has sortit del menu de misions...")
+                if res == 1:
+                    filtrar = 0
+                    while filtrar not in [1, 2, 3, 4, 5]:
+                        ClearScreen()
+                        print("1 -> Totes")
+                        print("2 -> Aceptades")
+                        print("3 -> Requisits Complerts per aceptar")
+                        print("4 -> Completades")
+                        print("5 -> Sortir")
+                        try:
+                            filtrar = int(input("Digues que vols fer: "))
+                            if filtrar not in [1, 2, 3, 4, 5]:
+                                print("Has de dir un dels numeros segons el que vols fer...")
+                        except ValueError:
+                            print("Ha ocurregut un error...")
+                    if filtrar in [1, 3, 4] and ubicacio.ZoneType != "Poble":
+                        print(f"Per revisar aquestes missions hauries d'estar en una zona segura (Poble).")
+                    else:
+                        if filtrar == 2:
+                            count, reclamar = ShowMisions("Accepted", "Res")
+                        elif filtrar == 4:
+                            count, reclamar = ShowMisions("Completed", "Res")
+                        elif filtrar == 3:
+                            count, reclamar  = ShowMisions("Requisites", "Res")
+                        elif filtrar == 1:
+                            count, reclamar  = ShowMisions("Totes", "Res")
+                        if len(reclamar) == 0:
+                            print("No hi ha cap missio en aquest apartat...")
+                elif res == 2:
+                    count, reclamar  = ShowMisions("Requisites", "Aceptar")
+                    aceptar = 0
+                    while aceptar not in range(1, count + 1):
+                        ClearScreen()
+                        count, reclamar  = ShowMisions("Requisites", "Aceptar")
+                        try:
+                            aceptar = int(input("Digues quina misio vols aceptar: "))
+                            if aceptar < count + 1 and aceptar > 0:
+                                if aceptar == count:
+                                    print("Has sortit")
+                                else:
+                                    reclamar[aceptar - 1].Aceptar(team[0])
+                                    team[0].MisionsAcceptades.append(reclamar[aceptar - 1])
+                        except ValueError:
+                            print("Ha ocurregut un error...")
+                elif res == 3:
+                    count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar")
+                    aceptar = 0
+                    while aceptar not in range(1, count + 1):
+                        ClearScreen()
+                        count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar")
+                        try:
+                            aceptar = int(input("Digues quina misio vols reclamar: "))
+                            if aceptar < count + 1 and aceptar > 0:
+                                if aceptar == count:
+                                    print("Has sortit")
+                                else:
+                                    reclamar[aceptar - 1].ClaimedRewards(team)
+                        except ValueError:
+                            print("Ha ocurregut un error...")
+                if res != 4:
+                    res = 0
+                else:
+                    print("Has sortit del menu de misions...")
             
         except ValueError:
             print("Ha ocurregut un error...")
@@ -867,6 +843,7 @@ def ShowMisions(filter, accio):
         i.RequisitesCompleted(team[0])
         if i.Status == filter:
             print(f"\n{count} -> {i.Name}")
+            print(f"Categoria: {i.Categoria}")
             print(f"Estat: {i.Status}")
             print(f"{i.Description}")
             count += 1
@@ -995,6 +972,10 @@ def Mapa():
         print("Ha decidit quedar-se on es...")
     else:
         ubicacio = disponibles[pos - 1]    # Canviem la zona i la retornem
+        for i in team[0].MisionsAcceptades:
+            if type(i) == Missions.PlaceMission:
+                if i.Objective == ubicacio:
+                    i.Completed()
 
 def OcurrenciaMisio(misio):
     if type(misio) == Missions.KillMission:
@@ -1067,7 +1048,7 @@ def Explorar():
                 i.Trobada = True
                 print(f"Has trobat un cami a {i.NameZone}")
                 rutaTrobada = True
-    if (choice[0] != "missio" and prob < 70 or prob > 95) or rutaTrobada == True:
+    if choice[0] != "missio" and prob < 70 or rutaTrobada == True:
         input("Presiona per a continuar...")
     
 def TrobarSeguentZona():
