@@ -48,7 +48,7 @@ class Entity():
     Priority = int()
     Protected = False
     ProtectedBy = tuple()
-    afected = ""
+    afected = "None"
     timer = 0
 
     # Xp
@@ -307,8 +307,8 @@ class Entity():
         return damage
 
     def atacar(self, enemy,  move):
-        impedit = False
-        if self.afected != None:
+        impedit = [False]
+        if self.afected != "None":
             if self.afected.Blocking[0] == True:
                 if self.afected.Blocking[1] >= 100:
                     impedit = [True]
