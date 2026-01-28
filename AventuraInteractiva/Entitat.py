@@ -78,7 +78,10 @@ class Entity():
         self.CurHP = self.MaxHP
         if IsPlayer == False:
             if nom == "":
-                self.nom = self.base.EntityName
+                if "Human" in self.base.EntityGroup:
+                    self.nom = "Bandit"
+                else:
+                    self.nom = self.base.EntityName
             self.gold = gold
         self.objectes = objectes
         self.PostGame = post
