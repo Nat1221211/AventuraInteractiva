@@ -310,12 +310,12 @@ zones = [
         Zones.Zona("Muntanyes del Origen",
                    "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
                    "Muntanya", {entityTypes[7]: 50, entityTypes[8]: 20, entityTypes[9]: 20, entityTypes[10]: 10}, 
-                   [[85, 13, 2], [95, 5], [99, 1], [99, 1]], (50, 60), {"Or": [(6, 15), 90], "Or Platejat": [(1, 3), 10]}),
+                   [[85, 13, 2], [95, 5], [99, 1], [99, 1]], (50, 55), {"Or": [(6, 15), 90], "Or Platejat": [(1, 3), 10]}),
         
         Zones.Zona("Cavernes del Origen",
                    "Les cavernes de les muntanyes del origen, no és te coneixement de la existencia d'aquestes...",
                    "Cavernes", {entityTypes[6]: 40, entityTypes[7]: 30, entityTypes[10]: 30}, 
-                    [[85, 13, 2], [95, 5], [99, 1]], (60, 67), {"Or Platejat": [(2, 5), 100]}),
+                    [[85, 13, 2], [95, 5], [99, 1]], (52, 57), {"Or Platejat": [(2, 5), 100]}),
         # Pobles
         Zones.Zona("Silverhorn",
                    "Un poble envoltat de munatanyes, del que ningú coneix la existencia...",
@@ -593,9 +593,110 @@ missions.append(
         [("Lv", 7), missions[0]], zones[12], True),
 )
 
+missions.append(
+    Missions.PlaceMission(
+        "Dirigeixte a Lakestar", 
+        "Ves a la segona parada del teu viatge, Lakestar.", 
+        "Principal",
+        [("XP", 700), ("Gold", 3000), (objectes[2], 5)], zones[8], [("Lv", 9), missions[1]]),
+)
 
+missions.append(
+    Missions.KillMission(
+        "El Gran Cranc", 
+        "A Lakestar decideixes començar una peticio del gremi d'aventurers, consisteix en eliminar a cert Cranc Aberrant... Se'l ha vist per la platja de Lakestar.", 
+        "Principal", [("XP", 1250), ("Gold", 3500)], 1, [entityTypes[43]], 
+        [("Lv", 12), missions[2]], zones[16], False, 
+        Entitat.Entity("Cranc Aberrant Extrany", 12, False, entityTypes[43])),
+)
 
+missions.append(
+    Missions.KillMission(
+        "Eliminació de Bandits", 
+        "A Lakestar decideixes començar una altre peticio del gremi d'aventurers, eliminar els bandits de les muntanyes estelars.", 
+        "Principal", [("XP", 1000), ("Gold", 3500)], 4, [entityTypes[0], entityTypes[1], entityTypes[2], entityTypes[3]], 
+        [("Lv", 14), missions[3]], zones[14], True),
+)
 
+missions.append(
+    Missions.PlaceMission(
+        "Un nou destí", 
+        "Ves al Gran Bosc Lluminos, es diu que hi ha un antic poble amagat en aquest...", 
+        "Principal",
+        [("XP", 2000), ("Gold", 5000)], zones[7], [("Lv", 17), missions[4]]),
+)
+
+missions.append(
+    Missions.KillMission(
+        "La Gran Aranya", 
+        "A Faylight et demanen que elimins una perillosa aranya que habita en el Gran Bosc Lluminos...", 
+        "Principal", [("XP", 2500), ("Gold", 5000)], 1, [entityTypes[70]], 
+        [("Lv", 20), missions[5]], zones[18], False, 
+        Entitat.Entity("Gran Aranya", 22, False, entityTypes[70])),
+)
+
+missions.append(
+    Missions.PlaceMission(
+        "El poble platejat", 
+        "Despres d'agrairte l'ajuda, en Faylight, has escoltat parlar d'un poble amagat en les muntanyes, un poble d'enans...", 
+        "Principal",
+        [("XP", 6000), ("Gold", 10000)], zones[6], [("Lv", 24), missions[6]]),
+)
+
+missions.append(
+    Missions.KillMission(
+        "Eliminació de Perills", 
+        "A SIlverhorn et demanen que eliminis diverses amenaçes per el poble...", 
+        "Principal", [("XP", 1000), ("Gold", 3500)], 10, 
+        [entityTypes[7], entityTypes[31], entityTypes[33], entityTypes[34], entityTypes[35],
+        entityTypes[36], entityTypes[37], entityTypes[44], entityTypes[45], entityTypes[47], 
+        entityTypes[48], entityTypes[51], entityTypes[52], entityTypes[68], entityTypes[69],
+        entityTypes[46], entityTypes[27]], 
+        [("Lv", 27), missions[7]], zones[20], True),
+)
+
+missions.append(
+    Missions.KillMission(
+        "El Gran Gegant", 
+        "A Silverhorn et donen una proba, si la superes et donaran un antic objecte del poble...", 
+        "Principal", [("XP", 2500), ("Gold", 5000)], 1, [entityTypes[70]], 
+        [("Lv", 30), missions[8]], zones[20], False, 
+        Entitat.Entity("Gegant Daurat", 25, False, entityTypes[54])),
+)
+
+missions.append(
+    Missions.PlaceMission(
+        "Una vella historia sobre una Estrella", 
+        "Escoltes d'una llegenda del poble, sobre una estrella enfonsant-se en un llac, diu la llegenda que en realitat aquesta estrella no es va efnfonsar sino que el va formar...", 
+        "Principal",
+        [("XP", 6000), ("Gold", 10000)], zones[21], [("Lv", 32), missions[9]]),
+)
+
+missions.append(
+    Missions.PlaceMission(
+        "Buscant una Estrella", 
+        "Un cop confirmat que sota el llac existeix algo, decideixes busacr l'estrella...", 
+        "Principal",
+        [("XP", 9000), ("Gold", 10000)], zones[23], [("Lv", 34), missions[10]]),
+)
+
+missions.append(
+    Missions.KillMission(
+        "El Guardia del Origen", 
+        "Escoltes d'una bestia sagrada en el lloc de l'estrella, que aquesta originalment hauria d'estar en les Muntanyes del Origen...\n" \
+        "Derroyta al guardia perillos del que t'ha parlat i entra en les Cavernes del Origen, ubicades més enlla del Bosc Obscur.", 
+        "Principal", [("XP", 15000), ("Gold", 25000)], 1, [entityTypes[70]], 
+        [("Lv", 40), missions[11]], zones[4], False,
+        Entitat.Entity("Eternitat", 40, False, entityTypes[62])),
+)
+
+missions.append(
+    Missions.PlaceMission(
+        "Pedra Misteriosa", 
+        "Dins les cavernes despres de retornar la estrella al seu lloc d'origen, recibeixes una misteriosa pedra des del lloc on has retornat l'estrella...", 
+        "Principal",
+        [("XP", 20000), ("Gold", 30000)], zones[5], [("Lv", 44), missions[12]]),
+)
 
     # Missions Secundaries
 
