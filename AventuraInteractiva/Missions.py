@@ -10,6 +10,8 @@ import Objectes
 import Zones
 import EntityType
 
+import os
+
 class Mission():
     
     Name = ""
@@ -122,6 +124,7 @@ class ObjectMission(Mission):
         self.Place = place
    
     def Completed(self):
+        print(f"Has completat la missio {self.Name}.")
         self.Status = "Rewards Unclaimed"
 
 class PlaceMission(Mission):
@@ -138,7 +141,10 @@ class PlaceMission(Mission):
         self.Requisite = requisite
    
     def Completed(self):
-        self.Status = "Rewards Unclaimed"
+        if self.Status == "Accepted":
+            self.Status = "Rewards Unclaimed"
+            print(f"\nHas completat la missio {self.Name}.")
+            input("\nPresiona per a continuar...")
 
 class KillMission(Mission):
     
@@ -153,7 +159,7 @@ class KillMission(Mission):
 
     
     # Metodes
-    def __init__(self, name, description, cat, rewards, qty, objective, requisite, place, generic, enemy = Entitat.Entity):
+    def __init__(self, name, description, cat, rewards, qty, objective, requisite, place, generic = True, enemy = Entitat.Entity):
         self.Name = name
         self.Description = description
         self.Categoria = cat
@@ -171,7 +177,10 @@ class KillMission(Mission):
             if enemy.base in self.Objective:
                 self.Count += 1
             if self.Count >= self.Quantity:
+                os.system("cls" if os.name == "nt" else "clear")
                 self.Status = "Rewards Unclaimed"
+                print(f"\nHas completat la missió {self.Name}.\n")
+                input("Presiona per a continuar...")
         else:
             if enemy == self.Enemic:
                 self.Status = "Rewards Unclaimed"

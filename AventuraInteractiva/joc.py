@@ -567,11 +567,11 @@ CrearTitolsIKillExits()
 
 
 missions = [
-    Missions.KillMission("Eliminant el Perill", 
-                         "Un perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur.", 
-                         "Principal",
-                         [("XP", 3000), ("Gold", 10000), (objectes[15], 1)], 1, [entityTypes[10]], [("Lv", 35)], zones[3], False,
-                         Entitat.Entity("El Golem de Roca", 40, False, entityTypes[10])),
+    # Missions.KillMission("Eliminant el Perill", 
+    #                      "Un perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur.", 
+    #                      "Principal",
+    #                      [("XP", 3000), ("Gold", 10000), (objectes[15], 1)], 1, [entityTypes[10]], [("Lv", 35)], zones[3], False,
+    #                      Entitat.Entity("El Golem de Roca", 40, False, entityTypes[10])),
 ]
 
 # Afegir missions amb append, ja que si el requisit es una altre missio aquella ha d'estar ja definida.
@@ -585,38 +585,50 @@ missions.append(
         [("XP", 500), ("Gold", 3000), (objectes[2], 5)], zones[9], [("Lv", 5)]),
 )
 
-
 missions.append(
     Missions.KillMission(
-        "Mostra de Confiança", 
-        "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
-        "Principal",
-        [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, [entityTypes[4]], [("Lv", 15)], zones[1], False,
-        Entitat.Entity("Llop Lider", 17, False, entityTypes[4])),
+        "Primera Petició", 
+        "A Knightshire t'han demanat, en el gremi d'aventurers, que derrotis 5 conills cornuts, en els camps de Knioghtshire.", 
+        "Principal", [("XP", 750), ("Gold", 3000), (objectes[2], 4)], 5, [entityTypes[26]], 
+        [("Lv", 7), missions[0]], zones[12], True),
 )
 
-missions.append(
-    Missions.KillMission("Mostra de Confiança II", 
-    "Elimina les restes de la manada de Llops en el bosc obscur.", 
-    "Principal", [("XP", 300), ("Gold", 2000), (objectes[1], 2)], 10, [entityTypes[4]], 
-    [("Lv", 16), missions[1]], zones[1], False),
-    )
+
+
 
 
     # Missions Secundaries
 
 missions.append(
-    Missions.KillMission("Eliminant Sombres", 
-    "Elimina 15 sombres del bosc obscur.", 
-    "Secundaria", [("XP", 500), ("Gold", 3000), (objectes[1], 5)], 15, [entityTypes[6]], 
-    [("Lv", 10), missions[2]], zones[1], False),
-    )
+    Missions.KillMission(
+        "Mostra de Confiança", 
+        "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
+        "Secundaria",
+        [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, [entityTypes[4]], [("Lv", 15)], zones[1], False,
+        Entitat.Entity("Llop Lider", 17, False, entityTypes[4])),
+)
+
+# missions.append(
+#     Missions.KillMission("Mostra de Confiança II", 
+#     "Elimina les restes de la manada de Llops en el bosc obscur.", 
+#     "Secundaria", [("XP", 300), ("Gold", 2000), (objectes[1], 2)], 10, [entityTypes[4]], 
+#     [("Lv", 16), missions[1]], zones[1], True),
+#     )
+
+
+
+# missions.append(
+#     Missions.KillMission("Eliminant Sombres", 
+#     "Elimina 15 sombres del bosc obscur.", 
+#     "Secundaria", [("XP", 500), ("Gold", 3000), (objectes[1], 5)], 15, [entityTypes[6]], 
+#     [("Lv", 10), missions[2]], zones[1], True),
+#     )
 
 missions.append(
     Missions.FindMission("Troba a en Jack", 
     "Un nen del pobla s'ha perdut, és diu Jack, creuen que s'ha endinsat massa en el bosc obscur...",
     "Secundaria", [("XP", 500), ("Gold", 2000)], "Jack", 
-    [("Lv", 5)], zones[2])
+    [("Lv", 5)], zones[1])
 )
 
 
@@ -944,6 +956,8 @@ def ShowMisions(filter, accio):
             print(f"Categoria: {i.Categoria}")
             print(f"Estat: {i.Status}")
             print(f"{i.Description}")
+            if type(i) == Missions.KillMission:
+                print(f"{i.Count} / {i.Quantity}")
             count += 1
             llista.append(i)
             if filter == "Requisites":
@@ -1592,6 +1606,7 @@ def DescartarDerrotats(p, derr):
             if alive >= 1:
                 team[0].gold += p.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
                 print(f"Has guanyat {p.Lv * 10} gold.")
+            Comprovacions(p)
     return derr
 
 def Comprovacions(enemy):
