@@ -1140,19 +1140,21 @@ def Botiga():
         team[0].gold -= botiga[res].Preu * qty
         print(f"Has comprat {qty} {botiga[res].ObjectName} per {botiga[res].Preu * qty} gold !")
 
-def Posada():
+def Posada(free = False):
     global team
     res = ""
-    while res not in ["S", "N"]:
-        ClearScreen()
-        try:
-            res = input("\nVols descansar? Costa 100 gold (S / N): ").capitalize()
-        except ValueError:
-            print("Ha ocurregut un error...")
-    if res == "S":
-        if team[0].gold >= 100:
+    if free == False:
+        while res not in ["S", "N"]:
+            ClearScreen()
+            try:
+                res = input("\nVols descansar? Costa 100 gold (S / N): ").capitalize()
+            except ValueError:
+                print("Ha ocurregut un error...")
+    if res == "S" or free == True:
+        if team[0].gold >= 100 or free == True:
             print("Has descansat comodament, t'has recuperat completament...")
-            team[0].gold -= 100
+            if free == False:
+                team[0].gold -= 100
             for i in team:
                 i.CurHP = i.MaxHP
                 i.Mana = i.MaxMana
@@ -1761,7 +1763,7 @@ def main():
                 if i.CurHP > 0:
                     alive += 1
         print(f"Has estat derrotat, t'han trobat i ara estas en la posada del ultim poble per el que has passat...")
-        Posada()
+        Posada(True)
         if PostGame == False and objectes[15] in team[0].objectes.keys(): # Es pot eliminar aquest easter egg eliminant la funcio EasterEgg() i les 3 linies baix aquesta.
             PostGame = True   # Faria falta eliminar també el bool Easter dins el main()
             EasterEgg()
