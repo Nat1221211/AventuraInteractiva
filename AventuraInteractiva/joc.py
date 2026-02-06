@@ -7,6 +7,7 @@
 # Llibreries
 import os
 import random
+import tkinter
 
 # Moduls
 import Entitat
@@ -20,112 +21,6 @@ import Characteristics
 
 def ClearScreen():
     os.system("cls" if os.name == "nt" else "clear")
-
-    # Preparació Joc
-
-        # Efectes d'estat (Cremat, Congelat, Paralitzat, Sangrant, etc.)
-Effects = [
-    Characteristics.Effects("Cremada","Estar cremat redueix el atac i la defensa i causa dany cada poc temps...",
-                            True, (False, 0), 0, 5, ("Stat", (["ATK", "DEF"], 0.25))),
-    Characteristics.Effects("Sangrat","Tens una ferida greu que fa perdre vida constantment...",
-                            True, (False, 0), 0, 8, ("None", "")),
-    Characteristics.Effects("Congelacio","Estas congelat durant una certa quantitat de temps...",
-                            False, (True, 100), 3, 0, ("None", "")),
-    Characteristics.Effects("Sangrat Greu","Tens una ferida greu que fa perdre vida constantment...",
-                            True, (False, 0), 0, 16, ("Stat", (["ATK", "DEF", "SPD"], 0.15))),
-    Characteristics.Effects("Terror","Causa una sensació de terror en l'objectiu, impedint actuar amb normalitat...",
-                            False, (False, 0), 0, 4, ("Stat", (["ATK", "DEF", "INT", "SPD"], 0.25))),
-    Characteristics.Effects("Paralisis","Causa una descarrega electrica al excedir-se...",
-                            False, (True, 40), 0, 0, ("Stat", (["SPD"], 0.25))),
-    Characteristics.Effects("Veri","Causa una quantitat de dany cada vegada que s'actua...",
-                            False, (False, 0), 10, 0, ("None", "")),
-    Characteristics.Effects("Mon dels Somnis","Entres en el domini dels somnis, aqui no saps que et depara el desti...",
-                            False, (False, 0), 0, 0, ("Stat", (["ATK", "DEF", "INT", "SPD"], 0.5))),
-    
-    
-]
-        # Moves
-movements = [   
-    # Per a efectes d'estat dins la tupla un True, Seguit d'una altre tupla amb una llista amb les estadistiques, 
-    # i en la segona part de la tupla la quantitat d'augment o reducció, l'augment ha de ser amb base 1 o superior, 
-    # la reducció ha de ser de 0  a 0.9, es a dir iferior a 1.
-
-    Characteristics.Moves("Bola de Foc", "Una bola de flamesd'alta temperatura", 40, 100, True, 5, [("Effect", (Effects[0], 30))], False, False, False),
-    Characteristics.Moves("Fletxa Perforant", "", 50, 100, False, 5, [("Effect", (Effects[1], 60))], False, False, False),
-    Characteristics.Moves("Assalt Llampeg", "Un conjunt d'atacs", 30, 100, False, 5, [("Stat", (["ATK", "SPD"],1.10))], False, False, False),
-    Characteristics.Moves("Tall potent", "Un potent tall", 50, 100, False, 5, [("Stat", (["ATK"],1,1))], False, False, False),
-    Characteristics.Moves("Aixafar", "", 20, 90, False, 0,  [("None","")], False, False, False),
-    Characteristics.Moves("Debuff", "", 10, 100, False, 10, [("Stat", (["ATK", "DEF", "INT", "SPD"],0.25))], False, False, False),
-    Characteristics.Moves("Tall", "", 25, 100, False, 0,  [("None","")], False, False, False),
-    Characteristics.Moves("Cop de Basto", "", 5, 100, False, 0,  [("None","")], False, False, False),
-    Characteristics.Moves("Dispar de Fletxa", "", 15, 100, False, 0,  [("None","")], False, False, False),
-    Characteristics.Moves("Fletxa de flames", "", 45, 100, False, 10,  [("None","")], False, False, False),
-    Characteristics.Moves("Increment", "", 0, 100, True, 10, [("Stat", (["ATK", "DEF", "INT", "SPD"],1.50))], False, False, False),
-    Characteristics.Moves("Fulla de Vent", "", 45, 100, True, 10,  [("None","")], False, False, False),
-    Characteristics.Moves("Tall Llampeg", "", 70, 100, False, 10, [("Stat", (["SPD"],))], False, False, False),
-    Characteristics.Moves("Crit de Guerra", "", 5, 100, False, 10, [("Stat", (["ATK", "DEF", "SPD", "INT"],1,25)), ("Effect", (Effects[4], 100))], False, True, False),
-    Characteristics.Moves("Bloqueig", "", 0, 100, False, 5, [("Stat", (["DEF"],1,5))], False, False, True, 40),
-    Characteristics.Moves("Santuari", "", 150, 100, True, 90, [("Stat", (["ATK", "DEF", "INT", "SPD"],2.00))], True, True, False),
-    Characteristics.Moves("Cura", "", 25, 100, True, 10,  [("None","")], True, False, False),
-    Characteristics.Moves("Mossegada", "", 35, 100, False, 0,  [("None","")], False, False, False),
-    Characteristics.Moves("Cop de Cua", "", 15, 100, False, 0,  [("None","")], False, False, False),
-    Characteristics.Moves("Urpada", "", 20, 100, False, 0,  [("None","")], False, False, False),
-    Characteristics.Moves("Picada", "", 15, 100, False, 0,  [("None","")], False, False, False),
-    Characteristics.Moves("Cop", "", 20, 100, False, 0,  [("None","")], False, False, False),
-    Characteristics.Moves("Embestir", "", 25, 100, False, 0,  [("None","")], False, False, False),
-    Characteristics.Moves("Javelina de Glaç", "", 80, 100, True, 30,  [("None","")], False, False, False),
-    Characteristics.Moves("Fletxa de Potencia", "", 160, 100, False, 70, [("Stat", (["ATK"],1,5)), ("Effect", (Effects[1], 100))], False, False, False),
-    Characteristics.Moves("Revestiment de Flames", "Utilitzes flames per incrementar les teves capacitats i envoltar la teva arma...", 60, 100, True, 25, [("Stat", (["ATK", "SPD"],1.40))], False, False, False),
-    Characteristics.Moves("Foc Infernal", "", 180, 90, True, 130,  [("None","")], False, True, False),
-    Characteristics.Moves("Cocytus", "", 180, 90, True, 130,  [("None","")], False, True, False),
-    Characteristics.Moves("Gravetat", "", 80, 100, True, 50, [("Stat", (["SPD"],0,4))], False, True, False),
-    Characteristics.Moves("Gravidon", "", 150, 70, True, 100, [("Stat", (["SPD"],0,25))], False, False, False),
-    Characteristics.Moves("Hydromancia", "", 50, 100, True, 20,  [("None","")], False, True, False),
-    Characteristics.Moves("Esfera d'aigua", "", 40, 100, True, 5,  [("None","")], False, False, False),
-    Characteristics.Moves("Tempesta", "", 100, 100, True, 70,  [("None","")], False, True, False),
-    Characteristics.Moves("Raig", "", 90, 100, True, 50, [("Effect", (Effects[5], 20))], False, False, False),
-    Characteristics.Moves("Pluja d'estalactites", "", 90, 100, True, 70,  [("None","")], False, True, False),
-    Characteristics.Moves("Camp Electric", "", 90, 100, True, 70, [("Effect", (Effects[5], 90))], False, True, False),
-    Characteristics.Moves("Cura en Area", "", 60, 100, True, 70,  [("None","")], True, True, False),
-    Characteristics.Moves("Cura Potent", "", 100, 100, True, 60,  [("None","")], True, False, False),
-    Characteristics.Moves("Regeneracio", "", 90, 100, True, 60,  [("None","")], True, False, False),
-    Characteristics.Moves("Ventisca", "", 100, 100, True, 70, [("Effect", (Effects[2], 60))], False, True, False),
-    Characteristics.Moves("Enllaç Electric", "", 70, 100, True, 50,  [("None","")], False, False, False),
-    Characteristics.Moves("Gravetat Reduida", "", 40, 100, True, 20, [("Stat", (["SPD"],1,4))], False, False, False),
-    Characteristics.Moves("Corrosio", "", 70, 100, True, 40, [("Stat", (["DEF"],0,4))], False, False, False),
-    Characteristics.Moves("Mossegada Verinosa", "", 50, 100, False, 15, [("Effect", (Effects[6], 20))], False, False, False),
-    Characteristics.Moves("Rafaga de Punyalades", "", 75, 100, False, 25, [("Effect", (Effects[1], 70))], False, False, False),
-    Characteristics.Moves("Agulles de Terra", "", 100, 100, True, 90, [("Effect", (Effects[1], 70))], False, True, False),
-    Characteristics.Moves("Fletxa Gelida", "", 100, 100, False, 50, [("Effect", (Effects[1], 20))], False, False, False),
-    Characteristics.Moves("Fletxa Electrica", "", 100, 100, False, 50, [("Effect", (Effects[5], 90))], False, False, False),
-    Characteristics.Moves("Dispar Rapid", "", 30, 100, False, 15, [("Stat", (["SPD"],1,4))], False, False, False),
-    Characteristics.Moves("Agilitat", "", 30, 100, False, 5, [("Stat", (["SPD"],1,4))], False, False, False),
-    Characteristics.Moves("Martell Sacre", "", 120, 90, True, 60,  [("None","")], False, False, False),
-    Characteristics.Moves("Estandard Sacre", "", 20, 100, True, 25, [("Stat", (["ATK", "DEF", "SPD", "INT"],2.00))], False, True, False),
-    Characteristics.Moves("Reforçament Sacre", "", 0, 100, True, 25, [("Stat", (["ATK", "DEF", "SPD"],2.00))], False, False, False),
-    Characteristics.Moves("Torbelli", "", 40, 100, True, 15,  [("None","")], False, True, False),
-    Characteristics.Moves("Tela d'aranya", "", 5, 75, False, 5, [("Stat", (["SPD"],0,3))], False, False, False),
-    Characteristics.Moves("Tela Corrosiva", "", 60, 90, False, 25, [("Stat", (["DEF"],0,2))], False, False, False),
-    Characteristics.Moves("Control Sanguini", "", 75, 100, True, 60, [("Effect", (Effects[3], 80))], False, True, False),
-    Characteristics.Moves("Llança de Sang", "", 90, 90, True, 50, [("Effect", (Effects[3], 90))], False, False, False),
-    Characteristics.Moves("Esfera Vital", "", 100, 90, True, 50,  [("None","")], False, False, False),
-    Characteristics.Moves("Mirall dels Somnis", "", 150, 100, True, 200, [("Stat", (["ATK", "DEF", "INT", "SPD"],0,5)), ("Effect", (Effects[7], 100))], False, False, False),
-    Characteristics.Moves("Dimensio Alterada", "", 200, 100, True, 300, [("Stat", (["SPD", "DEF"],0,5)), ("Effect", (Effects[7], 100))], False, True, False),
-    Characteristics.Moves("Gran Resistencia", "", 0, 100, False, 20, [("Stat", (["DEF"],2,5))], False, False, False),
-    Characteristics.Moves("Contratac", "", 0, 100, False, 20, [("Stat", (["ATK"],2))], False, False, True, 100),
-    Characteristics.Moves("Cant Mortal", "", 0, 30, True, 100,  [("None","")], False, True, False),
-    Characteristics.Moves("Espases d'aigua", "", 130, 100, True, 100, [("Effect", (Effects[3], 30))], False, True, False),
-    Characteristics.Moves("Escut de Gel", "", 0, 100, True, 15,  [("None","")], False, False, True, 70),
-    Characteristics.Moves("Mur de Roca", "", 0, 100, True, 15,  [("None","")], False, False, True, 70),
-    Characteristics.Moves("Proteccio del Caballer", "", 0, 100, False, 20, [("Stat", (["DEF", "ATK", "INT"],1.60))], False, True, True, 100),
-    Characteristics.Moves("Resurreccio", "", 250, 100, True, 100, [("Stat", (["INT", "ATK", "DEF", "SPD"],2.00))], True, False, False),
-    Characteristics.Moves("Disolucio", "", 30, 100, False, 5,  [("None","")], False, False, False),
-    Characteristics.Moves("Fum Sospitos", "", 15, 100, False, 10, [("Stat", (["ATK", "DEF", "INT", "SPD"],0.35))], False, True, False),
-]
-        # Skills
-skills = [
-
-]
 
         # Entitats
 entityTypes = [
