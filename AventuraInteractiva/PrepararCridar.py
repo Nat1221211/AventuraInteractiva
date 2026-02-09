@@ -31,7 +31,7 @@ def CallCSV(cami):
             DictData = {}
             for i in data[1:]:
                 linia = i.strip().split(";")
-                for j in range(len(linia) -1):
+                for j in range(len(linia)):
                     linia[j] = linia[j].strip()
                     if caps[j].endswith("?"):
                         linia[j] = bool(linia[j])
@@ -42,7 +42,7 @@ def CallCSV(cami):
                         linia[j] = dict()
                         for v in items:
                             kv = v.split(": ")
-                            linia[j][kv[0]] = int(kv[1]) if not kv[1].endswith("%") else kv[1]
+                            linia[j][kv[0]] = float(kv[1]) if not kv[1].endswith("%") else kv[1]
                     elif len(linia[j].split(", ")) > 1:
                         linia[j] = linia[j].split(", ")
                     DictData[caps[j]] = linia[j]
@@ -56,7 +56,14 @@ def CallCSV(cami):
 
 def main():
     print("!! - Joc de Preguntes - !!")
+    print("Entitats")
     CallCSV("Data/EntityTypes.csv")
+    print("\n\n\nMoviments")
+    CallCSV("Data/Movements.csv")
+    print("\n\n\nEfectes")
+    CallCSV("Data/effects.csv")
+    print("\n\n\nObjectes")
+    CallCSV("Data/Objects.csv")
 
 if __name__ == "__main__":
     main()

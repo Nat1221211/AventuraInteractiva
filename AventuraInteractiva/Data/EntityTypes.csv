@@ -1,4 +1,4 @@
-Nom; Descripcio; Vida; Mana; ATK; INT; DEF; SPD; Playable?; XP; Groups; Movements
+Nom;Descripcio;Vida;Mana;ATK;INT;DEF;SPD;Playable?;XP;Groups;Movements
 Guerrer;;160;100;140;40;130;80;TRUE;50;"Human";Tall: 1,  Tall potent: 3,  Tall Llampeg: 10,  Crit de Guerra: 12,  Bloqueig: 5
 Mag;;80;200;60;180;100;100;TRUE;50;"Human";Cop de Basto: 1,  Bola de Foc: 3,  Fletxa de flames: 6,  Fulla de Vent: 6,  Increment: 10,  Javelina de Glaç: 14,  Gravetat: 20
 Arquer;;120;140;140;100;140;120;TRUE;50;"Human";Dispar de Fletxa: 1,  Fletxa Perforant: 3,  Dispar Rapid: 6,  Fletxa Electrica: 22,  Fletxa de Potencia: 33
