@@ -1,5 +1,5 @@
-Nom; Descripcio; Potencia; Precisio; Cost; Magic?; Efecte; ProbEfecte; MultipleObjectiu?; Cura; Protegeix; DanyperProteccio
-Bola de Foc;Una bola de flames d'alta temperatura;40;100;5;TRUE;Cremada;30;FALSE;FALSE;FALSE;0
+Nom;Descripcio;Potencia;Precisio;Cost;Magic?;Efecte;ProbEfecte;MultipleObjectiu?;Cura;Protegeix;DanyperProteccio
+Bola de Foc;Una bola de flames d'alta temperatura;40;100;5;TRUE;Cremada, Inteligencia;30;FALSE;FALSE;FALSE;0
 Fletxa Perforant;Descripció;50;100;5;FALSE;;60;FALSE;FALSE;FALSE;0
 Assalt Llampeg;Descripció;30;100;5;FALSE;;num;FALSE;FALSE;FALSE;0
 Tall potent;Descripció;50;100;5;FALSE;;num;FALSE;FALSE;FALSE;0

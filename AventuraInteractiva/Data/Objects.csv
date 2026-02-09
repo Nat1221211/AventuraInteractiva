@@ -1,4 +1,4 @@
-Nom; Tipus; Efectes; ForadeCombat?; Descripcio
+Nom;Tipus;Efectes;ForadeCombat?;Descripcio
 Pocio Inferior; Combat; Health: 10; True; Cura 10 punts de vida
 Pocio; Combat; Health: 30; True; Cura 30 punts de vida
 Pocio Intermitja; Combat; Health: 70; True; Cura 70 punts de vida
