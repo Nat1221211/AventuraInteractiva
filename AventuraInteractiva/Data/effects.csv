@@ -1,4 +1,4 @@
-Nom, Descripcio, ImpedeixAccions?, ProbabilitatImpedirAccio, Duracio, Dany, EstatsAfectades, EfecteSobreAquestes
+Nom; Descripcio; ImpedeixAccions?; ProbabilitatImpedirAccio; Duracio; Dany; EstatsAfectades; EfecteSobreAquestes
 Cremada;Estar cremat redueix el atac i la defensa i causa dany cada poc temps...;True;False; 0; 0; 5; ATK, DEF; 0.25
 Sangrat;Tens una ferida greu que fa perdre vida constantment...;True;False;0;0;8;;0
 Congelacio;Estas congelat durant una certa quantitat de temps...;False;True;100;3;0;;0

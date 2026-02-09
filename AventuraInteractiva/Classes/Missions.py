@@ -5,10 +5,10 @@
 # Creem la classe Mission.
 
 import random
-import Entitat
-import Objectes
-import Zones
-import EntityType
+from Classes import Entitat
+from Classes import Objectes
+from Classes import Zones
+from Classes import EntityType
 
 import os
 

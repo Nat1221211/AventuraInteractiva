@@ -9,136 +9,40 @@ import os
 import random
 import tkinter
 
-# Moduls
-import Entitat
-import EntityType
-import Zones
-import Objectes
-import Exits
-import Missions
-import Titles
-import Characteristics
+from Classes import Objectes
+from Classes import Exits
+from Classes import Entitat
+from Classes import Missions
+from Classes import Titles
+from Classes import Zones
+import PrepararCridar as Call
 
 def ClearScreen():
     os.system("cls" if os.name == "nt" else "clear")
 
-        # Entitats
-entityTypes = [
-    # Cal tenir en compte les estadistiques, els grups als que pertanyen, i el diccionari de moviments i nivell.
-        EntityType.EntityType("Guerrer", True, 160, 100, 140, 40, 130, 80, 50, ["Human"], "", {movements[6]: 1, movements[3]: 3, movements[12]: 10, movements[13]: 12, movements[14]: 5}),
-        EntityType.EntityType("Mag", True, 80, 200, 60, 180, 100, 100, 50, ["Human"], "", {movements[7]: 1, movements[0]: 3, movements[9]: 6, movements[11]: 6, movements[10]: 10, movements[23]: 14, movements[28]: 20}),
-        EntityType.EntityType("Arquer", True, 120, 140, 140, 100, 140, 120, 50, ["Human"], "", {movements[8]: 1, movements[1]: 3, movements[48]: 6, movements[47]: 22, movements[24]: 33}),
-        EntityType.EntityType("Lladre", True, 120, 120, 130, 100, 120, 160, 50, ["Human"], "", {movements[6]: 1, movements[2]: 3, movements[44]: 8, movements[49]: 12}),
-        EntityType.EntityType("Llop", False, 120, 40, 120, 20, 100, 140, 30, ["Beast"], "", {movements[17]: 1, movements[19]: 5}),
-        EntityType.EntityType("Slime", False, 60, 60, 60, 60, 60, 60, 20, ["Monster"], "", {movements[21]: 1, movements[22]: 6, movements[69]: 9}),
-        EntityType.EntityType("Sombra", False, 120, 120, 120, 120, 120, 120, 200, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Llangardaix de Roca", False, 160, 120, 160, 50, 160, 100, 100, ["Monster", "Beast"], "", {movements[17]: 1, movements[18]: 3, movements[4]: 5, movements[45]: 25}),
-        EntityType.EntityType("Driade", False, 100, 230, 100, 250, 100, 100, 400, ["Spirit"], "", {movements[17]: 1}),
-        EntityType.EntityType("Treant", False, 200, 140, 150, 120, 150, 100, 400, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Golem", False, 250, 100, 160, 80, 200, 60, 500, ["Artificial"], "", {movements[17]: 1}),
-        EntityType.EntityType("Mag de Flames", False, 60, 250, 60, 220, 50, 50, 50, ["Human"], "Un mag centrat en poderosos atacs destructius", {movements[17]: 1}),
-        EntityType.EntityType("Griu", False, 200, 200, 220, 160, 160, 220, 1000, ["Beast", "Monster"], "Una bestia llegendaria, amb cap i ales d'aguila i cos de lleó...", {movements[17]: 1}),
-        EntityType.EntityType("Expert en Armes", False, 160, 120, 180, 100, 130, 100, 50, ["Human"], "Un expert en diverses armes cos a cos, és molt capaç, és una forma millorada del Guerrer...", {movements[17]: 1}),
-        EntityType.EntityType("Caballer", False, 200, 60, 100, 40, 260, 60, 50, ["Human"], "Un expert especialitzat en la resistencia, tot i això te una capacitat ofensiva considerable.", {movements[17]: 1}),
-        EntityType.EntityType("Aventurer", True, 140, 120, 140, 140, 115, 115, 50, ["Human"], "No especialitzat en cap camp en excés, no destaca en cap camp però tampoc és dolent en cap d'ells...", {movements[17]: 1}),
-        EntityType.EntityType("Porc Senglar", False, 150, 40, 150, 20, 140, 80, 35, ["Beast"], "", {movements[21]: 1, movements[22]: 5}),
-        EntityType.EntityType("Sacerdot", True, 120, 160, 80, 120, 120, 120, 50, ["Human"], "", {movements[17]: 1}),
-        EntityType.EntityType("Sacerdot Guerrer", False, 200, 160, 250, 180, 150, 150, 150, ["Human"], "", {movements[17]: 1}),
-        EntityType.EntityType("Caballer Magic", False, 250, 160, 200, 300, 180, 160, 150, ["Human"], "Un forma avançada de caballeria i magia...", {movements[17]: 1}),
-        EntityType.EntityType("Sant", False, 200, 250, 80, 200, 120, 100, 150, ["Human"], "Una especialitzacio en curacio per part del sacerdot", {movements[17]: 1}),
-        EntityType.EntityType("Sage", False, 150, 280, 80, 300, 120, 150, 150, ["Human"], "Un Mag que ha entes la veritat de la magia", {movements[17]: 1}),
-        EntityType.EntityType("Atacant Veloç", False, 170, 100, 150, 100, 120, 250, 150, ["Human"], "Una disposicio agil permet a un lladre concentrarse en realitzar multiples atacs i acomular dany gradualment", {movements[17]: 1}),
-        EntityType.EntityType("Atacant de Descentatges", False, 170, 120, 110, 150, 120, 200, 150, ["Human"], "Un lladre centrat en atacar aplicant desventatges en els enemics", {movements[17]: 1}),
-        EntityType.EntityType("Arquer Magic", False, 170, 160, 200, 160, 120, 200, 150, ["Human"], "Un arquer centrat en multiples atacs magics i normals", {movements[17]: 1}),
-        EntityType.EntityType("Arquer Potent", False, 180, 120, 200, 100, 120, 50, 150, ["Human"], "Un arquer centrat en el dany per atac mes que en atacar seguit", {movements[17]: 1}),
-        EntityType.EntityType("Conill Cornut", False, 100, 20, 80, 20, 100, 110, 25, ["Beast", "Monster"], "", {movements[22]: 1, movements[17]: 5}),
-        EntityType.EntityType("Fenrir", False, 400, 400, 400, 400, 400, 400, 4000, ["Divine", "Beast"], "", {movements[17]: 1}),
-        EntityType.EntityType("Wight", False, 120, 100, 120, 40, 120, 100, 50, ["Spirit", "Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Lich", False, 200, 300, 150, 250, 200, 180, 800, ["Spirit", "Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Vampire", False, 250, 200, 250, 250, 200, 180, 800, ["Monster", "Human"], "", {movements[17]: 1}),
-        EntityType.EntityType("Ghoul", False, 140, 100, 140, 80, 130, 110, 75, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Aranya de Bosc", False, 140, 40, 140, 40, 120, 120, 50, ["Monster"], "", {movements[18]: 1, movements[22]: 3, movements[0]: 10, movements[45]: 30}),
-        EntityType.EntityType("Wyrm", False, 180, 120, 160, 160, 140, 140, 75, ["Monster"], "", {movements[17]: 1, movements[20]: 4, movements[54]: 5, movements[55]: 10, movements[43]: 24}),
-        EntityType.EntityType("Guivern de Gel", False, 220, 250, 200, 220, 220, 180, 500, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Guivern", False, 220, 250, 220, 200, 210, 190, 500, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Guivern de Roca", False, 250, 220, 200, 200, 260, 150, 500, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Guivern de Vent", False, 220, 250, 200, 200, 190, 200, 500, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Gran Tortuga", False, 200, 160, 150, 150, 200, 80, 300, ["Monster", "Aquatic"], "", {movements[22]: 1, movements[30]: 5, movements[31]: 7}),
-        EntityType.EntityType("Tortuga Marina", False, 150, 80, 120, 120, 150, 60, 100, ["Monster", "Aquatic"], "", {movements[22]: 1, movements[23]: 24, movements[30]: 5, movements[31]: 7}),
-        EntityType.EntityType("Serp Marina", False, 150, 180, 150, 180, 140, 120, 220, ["Monster", "Aquatic"], "", {movements[18]: 1, movements[17]: 4, movements[23]: 24, movements[30]: 5, movements[31]: 7}),
-        EntityType.EntityType("Leviathan", False, 420, 400, 400, 420, 420, 300, 4000, ["Divine", "Aquatic"], "", {movements[17]: 1}),
-        EntityType.EntityType("Cranc Aberrant", False, 140, 100, 150, 120, 130, 100, 150, ["Aquatic", "Monster"], "", {movements[21]: 1, movements[4]: 4}),
-        EntityType.EntityType("Gran Cranc Aberrant", False, 180, 150, 180, 160, 180, 120, 370, ["Aquatic", "Monster"], "", {movements[21]: 1, movements[4]: 4, movements[23]: 26, movements[30]: 5, movements[31]: 7}),
-        EntityType.EntityType("Os Monstruos", False, 160, 80, 160, 80, 170, 110, 200, ["Monster", "Beast"], "", {movements[19]: 1, movements[17]: 4}),
-        EntityType.EntityType("Os de Fang", False, 240, 240, 240, 240, 240, 200, 600, ["Artificial", "Monster"], "", {movements[19]: 1, movements[17]: 4, movements[45]: 30, movements[28]: 23}),
-        EntityType.EntityType("Aguila Terrorifica", False, 120, 120, 120, 120, 100, 150, 100, ["Monster", "Beast"], "", {movements[19]: 1, movements[17]: 4, movements[11]: 10}),
-        EntityType.EntityType("Aguila Platejada", False, 170, 170, 180, 120, 130, 180, 400, ["Spirit", "Beast"], "", {movements[19]: 1, movements[17]: 4, movements[11]: 10, movements[32]: 30, movements[23]: 25}),
-        EntityType.EntityType("Ogre", False, 140, 120, 150, 120, 160, 130, 250, ["Monster", "Human"], "", {movements[21]: 1, movements[3]: 4, movements[12]: 10, movements[25]: 24}),
-        EntityType.EntityType("Orc", False, 120, 100, 110, 100, 120, 80, 150, ["Monster", "Human"], "", {movements[21]: 1, movements[8]: 4}),
-        EntityType.EntityType("Goblin", False, 80, 20, 80, 20, 100, 120, 25, ["Monster", "Human"], "", {movements[21]: 1, movements[8]: 4}),
-        EntityType.EntityType("Formiga Ogre", False, 120, 120, 140, 100, 130, 140, 200, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Caball d'Acer", False, 150, 50, 140, 50, 170, 170, 250, ["Monster", "Beast"], "", {movements[17]: 1}),
-        EntityType.EntityType("Gran Slime", False, 200, 200, 200, 200, 200, 200, 500, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Golem d'Oricalc", False, 400, 300, 350, 300, 370, 150, 2000, ["Artificial", "Divine"], "", {movements[17]: 1}),
-        EntityType.EntityType("Slime de Ferro", False, 170, 170, 170, 170, 170, 160, 200, ["Artificial", "Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Slime d'Oricalc", False, 400, 400, 320, 350, 340, 250, 3000, ["Divine", "Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Basilisc", False, 260, 240, 260, 250, 220, 230, 1000, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Quimera", False, 250, 250, 250, 250, 250, 200, 1000, ["Artificial", "Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Manticora", False, 240, 240, 280, 240, 250, 270, 1000, ["Human"], "", {movements[17]: 1}),
-        EntityType.EntityType("Cor d'Acer Magic", False, 300, 300, 280, 250, 300, 50, 1200, ["Human"], "", {movements[17]: 1}),
-        EntityType.EntityType("Siren", False, 120, 120, 130, 130, 100, 160, 200, ["Human"], "Un ocell amb cap huma, causa terror entre els mariners...", {movements[19]: 1, movements[11]: 10, movements[53]: 14}),
-        EntityType.EntityType("Ouroboros", False, 500, 500, 400, 450, 500, 250, 5000, ["Divine", "Beast"], "", {movements[17]: 1}),
-        EntityType.EntityType("Jormungandr", False, 450, 400, 400, 380, 450, 200, 4000, ["Divine", "Beast"], "", {movements[17]: 1}),
-        EntityType.EntityType("Walpurgis", False, 200, 500, 200, 500, 300, 350, 4000, ["Divine", "Spirit"], "", {movements[17]: 1}),
-        EntityType.EntityType("Serafi", False, 300, 300, 300, 300, 300, 300, 3000, ["Divine", "Spirit"], "", {movements[17]: 1}),
-        EntityType.EntityType("Golem de Metall", False, 300, 150, 250, 150, 280, 100, 1000, ["Artificial"], "", {movements[17]: 1}),
-        EntityType.EntityType("Sephirot", False, 450, 450, 350, 420, 420, 150, 3800, ["Divine", "Beast"], "", {movements[17]: 1}),
-        EntityType.EntityType("Anogratch", False, 140, 120, 140, 120, 120, 140, 70, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Bagragratch", False, 170, 150, 170, 150, 150, 170, 340, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Gran aranya", False, 200, 200, 220, 170, 220, 160, 370, ["Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Rey Ogre", False, 250, 200, 250, 200, 250, 220, 750, ["Monster", "Human"], "", {movements[17]: 1}),
-        EntityType.EntityType("Oni", False, 300, 300, 350, 300, 320, 300, 3000, ["Divine", "Monster"], "", {movements[17]: 1}),
-        EntityType.EntityType("Vespa Gegant", False, 150, 120, 150, 120, 100, 160, 120, ["Monster"], "", {movements[20]: 1, movements[43]: 4}),
-        EntityType.EntityType("Granota Verinosa", False, 120, 100, 120, 100, 100, 120, 100, ["Monster"], "", {movements[21]: 1, movements[43]: 4}),
-        EntityType.EntityType("Gran Granota Verinosa", False, 160, 160, 170, 150, 150, 140, 300, ["Monster"], "", {movements[21]: 1, movements[43]: 4}),
-        EntityType.EntityType("Vespa General", False, 170, 120, 170, 140, 120, 190, 300, ["Monster"], "", {movements[20]: 1, movements[43]: 4}),
-        EntityType.EntityType("Verdader Ancestre Vampir", False, 420, 420, 400, 400, 300, 300, 3000, ["Divine", "Spirit"], "", {movements[17]: 1}),
-        EntityType.EntityType("Oneiros", False, 400, 400, 450, 450, 400, 370, 5000, ["Divine", "Beast"], "", {movements[17]: 1}),
-        EntityType.EntityType("Fada", False, 80, 250, 10, 200, 30, 200, 100, ["Spirit"], "", {movements[21]: 1}),
-        EntityType.EntityType("Gnom", False, 150, 150, 150, 100, 150, 120, 100, ["Spirit", "Beast"], "", {movements[21]: 1}),
-        ]
 
-# Afegint Paths (Posibles SUbclasses)
-entityTypes[1].AddPaths({entityTypes[11]: [[("Lv", 30), ("Stat", [("Mana", 120)])], False]})
+# # Afegint Paths (Posibles SUbclasses)
+# entityTypes[1].AddPaths({entityTypes[11]: [[("Lv", 30), ("Stat", [("Mana", 120)])], False]})
 
 
-# Afegint monstres que poden apareixer conjuntament amb un altre.
-entityTypes[43].AddCompanions({entityTypes[42]: 99, entityTypes[43]: 1})    # Gran Cranc Abberrant
-entityTypes[38].AddCompanions({entityTypes[39]: 99, entityTypes[38]: 1})    # Gran Toruga Marina
-entityTypes[34].AddCompanions({entityTypes[33]: 100})   # Guiverns els 4 d'aball
-entityTypes[35].AddCompanions({entityTypes[33]: 100})
-entityTypes[36].AddCompanions({entityTypes[33]: 100})
-entityTypes[37].AddCompanions({entityTypes[33]: 100})
-entityTypes[53].AddCompanions({entityTypes[5]: 99, entityTypes[53]: 1}) # Gran Slime
-entityTypes[69].AddCompanions({entityTypes[68]: 100})   # Bagragratch
-entityTypes[75].AddCompanions({entityTypes[74]: 95, entityTypes[75]: 5})    # Granota
-entityTypes[76].AddCompanions({entityTypes[73]: 95, entityTypes[76]: 5})    # Vespa
+# # Afegint monstres que poden apareixer conjuntament amb un altre.
+# entityTypes[43].AddCompanions({entityTypes[42]: 99, entityTypes[43]: 1})    # Gran Cranc Abberrant
+# entityTypes[38].AddCompanions({entityTypes[39]: 99, entityTypes[38]: 1})    # Gran Toruga Marina
+# entityTypes[34].AddCompanions({entityTypes[33]: 100})   # Guiverns els 4 d'aball
+# entityTypes[35].AddCompanions({entityTypes[33]: 100})
+# entityTypes[36].AddCompanions({entityTypes[33]: 100})
+# entityTypes[37].AddCompanions({entityTypes[33]: 100})
+# entityTypes[53].AddCompanions({entityTypes[5]: 99, entityTypes[53]: 1}) # Gran Slime
+# entityTypes[69].AddCompanions({entityTypes[68]: 100})   # Bagragratch
+# entityTypes[75].AddCompanions({entityTypes[74]: 95, entityTypes[75]: 5})    # Granota
+# entityTypes[76].AddCompanions({entityTypes[73]: 95, entityTypes[76]: 5})    # Vespa
 
 
 
 
 
 # Creem la funcio per a generar els grups d'entitats algo aixi com els tipus.
-entityGroups = {}
-def AddEntityGroups():
-    global entityGroups
-    for i in entityTypes:
-        for j in i.EntityGroup:
-            if j not in entityGroups.keys():
-                entityGroups[j]=[i]
-            else:
-                entityGroups[j]+=[i]
-AddEntityGroups()
+entityGroups = {""}
 
         # Objectes
 objectes = [
@@ -187,30 +91,30 @@ zones = [
 
         Zones.Zona("Bosc Obscur",
                    "La zona exterior del bosc obscur, d'on es diu que surjeren els monstres...",
-                   "Bosc", {entityTypes[4]: 35, entityTypes[5]: 40, entityTypes[15]: 25},
+                   "Bosc", {Call.CallEntity("Llop"): 35, Call.CallEntity("Slime"): 40},
                    # Llista amb probabilitat de cada un dels enemics per ordre d'apareixer en grups de fins a 3.
                    # Cada llista representa un enemic, i cada valor la prob per 1, 2, 3 enemics.
                    [[85, 13, 2], [95, 5], [99, 1]], (8, 14), {"Bronze": [(1, 7), 100]}, True),
         
-        Zones.Zona("Profunditats del Bosc Obscur",
-                   "Les profunditats del bosc obscur, una perillosa zona de la que és diu que qui hi entra no en surt...",
-                   "Bosc", {entityTypes[4]: 32, entityTypes[5]: 40, entityTypes[6]: 20, entityTypes[8]: 5, entityTypes[9]: 3}, 
-                   [[85, 13, 2], [95, 5], [99, 1], [99, 1], [99, 1]], (37, 45), {"Plata": [(15, 25), 100]}),
+        # Zones.Zona("Profunditats del Bosc Obscur",
+        #            "Les profunditats del bosc obscur, una perillosa zona de la que és diu que qui hi entra no en surt...",
+        #            "Bosc", {entityTypes[4]: 32, entityTypes[5]: 40, entityTypes[6]: 20, entityTypes[8]: 5, entityTypes[9]: 3}, 
+        #            [[85, 13, 2], [95, 5], [99, 1], [99, 1], [99, 1]], (37, 45), {"Plata": [(15, 25), 100]}),
         
-        Zones.Zona("Centre del Bosc Obscur",
-                   "La zona central del bosc obscur, hi habiten monstres desconeguts, ningú ha tornat mai d'aquest lloc...",
-                   "Bosc", {entityTypes[6]: 30, entityTypes[8]: 30, entityTypes[9]: 40}, 
-                    [[85, 13, 2], [95, 5], [99, 1]], (43, 52), {"Or": [(1, 10), 40], "Plata": [(20, 40), 60]}),
+        # Zones.Zona("Centre del Bosc Obscur",
+        #            "La zona central del bosc obscur, hi habiten monstres desconeguts, ningú ha tornat mai d'aquest lloc...",
+        #            "Bosc", {entityTypes[6]: 30, entityTypes[8]: 30, entityTypes[9]: 40}, 
+        #             [[85, 13, 2], [95, 5], [99, 1]], (43, 52), {"Or": [(1, 10), 40], "Plata": [(20, 40), 60]}),
         
-        Zones.Zona("Muntanyes del Origen",
-                   "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
-                   "Muntanya", {entityTypes[7]: 50, entityTypes[8]: 20, entityTypes[9]: 20, entityTypes[10]: 10}, 
-                   [[85, 13, 2], [95, 5], [99, 1], [99, 1]], (50, 55), {"Or": [(6, 15), 90], "Or Platejat": [(1, 3), 10]}),
+        # Zones.Zona("Muntanyes del Origen",
+        #            "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
+        #            "Muntanya", {entityTypes[7]: 50, entityTypes[8]: 20, entityTypes[9]: 20, entityTypes[10]: 10}, 
+        #            [[85, 13, 2], [95, 5], [99, 1], [99, 1]], (50, 55), {"Or": [(6, 15), 90], "Or Platejat": [(1, 3), 10]}),
         
-        Zones.Zona("Cavernes del Origen",
-                   "Les cavernes de les muntanyes del origen, no és te coneixement de la existencia d'aquestes...",
-                   "Cavernes", {entityTypes[6]: 40, entityTypes[7]: 30, entityTypes[10]: 30}, 
-                    [[85, 13, 2], [95, 5], [99, 1]], (52, 57), {"Or Platejat": [(2, 5), 100]}),
+        # Zones.Zona("Cavernes del Origen",
+        #            "Les cavernes de les muntanyes del origen, no és te coneixement de la existencia d'aquestes...",
+        #            "Cavernes", {entityTypes[6]: 40, entityTypes[7]: 30, entityTypes[10]: 30}, 
+        #             [[85, 13, 2], [95, 5], [99, 1]], (52, 57), {"Or Platejat": [(2, 5), 100]}),
         # Pobles
         Zones.Zona("Silverhorn",
                    "Un poble envoltat de munatanyes, del que ningú coneix la existencia...",
@@ -229,128 +133,127 @@ zones = [
             # Cami de Dawn Village a Knightshire
         Zones.Zona("Bosc del Sud",
                    "Un bosc ubicat al sud de Dawn Village, un bosc relativament segur...",
-                   "Bosc", {entityTypes[4]: 8, entityTypes[5]: 30, entityTypes[26]: 47, entityTypes[15]: 5, 
-                            entityTypes[0]: 3, entityTypes[2]: 3, entityTypes[3]: 4}, 
+                   "Bosc", {Call.CallEntity("Llop"): 8, Call.CallEntity("Slime"): 30, Call.CallEntity("Conill Cornut"): 47}, 
                    [[15, 83, 2], [93, 5, 2], [95, 5], [99, 1], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
                    (3, 5), {"Bronze": [(1, 5), 100]}, True),
 
-        Zones.Zona("Rocklink",
-                   "Unes muntanyes que presenten el cami cap a la capital del regne...",
-                   "Muntanya", {entityTypes[4]: 40, entityTypes[33]: 20, entityTypes[7]: 30, 
-                            entityTypes[0]: 3, entityTypes[2]: 3, entityTypes[3]: 4}, 
-                   [[20, 75, 5], [100], [95, 5], [50, 40], [50, 40], [50, 40]], 
-                   (5, 9), {"Bronze": [(10, 20), 90], "Plata": [(2, 5), 10]}, False),
+        # Zones.Zona("Rocklink",
+        #            "Unes muntanyes que presenten el cami cap a la capital del regne...",
+        #            "Muntanya", {entityTypes[4]: 40, entityTypes[33]: 20, entityTypes[7]: 30, 
+        #                     entityTypes[0]: 3, entityTypes[2]: 3, entityTypes[3]: 4}, 
+        #            [[20, 75, 5], [100], [95, 5], [50, 40], [50, 40], [50, 40]], 
+        #            (5, 9), {"Bronze": [(10, 20), 90], "Plata": [(2, 5), 10]}, False),
 
-        Zones.Zona("Camps de Knightshire",
-                   "Els camps a les afores de knightshire, aquestes \"afores\" son bastant grans...",
-                   "Camps", {entityTypes[5]: 90, entityTypes[4]: 10, entityTypes[26]: 50}, 
-                   [[95, 5], [40, 55, 5], [95, 5]], (3, 5), {"Bronze": [(1, 5), 100]}, False),
+        # Zones.Zona("Camps de Knightshire",
+        #            "Els camps a les afores de knightshire, aquestes \"afores\" son bastant grans...",
+        #            "Camps", {entityTypes[5]: 90, entityTypes[4]: 10, entityTypes[26]: 50}, 
+        #            [[95, 5], [40, 55, 5], [95, 5]], (3, 5), {"Bronze": [(1, 5), 100]}, False),
             
             # Cami de Knightshire a Lakestar o Faylight (Pasant per Muntayes Estelars)
         
-        Zones.Zona("Bosc Estelar",
-                   "Un bosc que guia cap a les muntanyes estelars...",
-                   "Bosc", {entityTypes[26]: 50, entityTypes[32]: 50, entityTypes[28]: 50}, 
-                   [], 
-                   (8, 13), {"Bronze": [(12, 25), 70], "Plata": [(4, 9), 30]}, False),
+#         Zones.Zona("Bosc Estelar",
+#                    "Un bosc que guia cap a les muntanyes estelars...",
+#                    "Bosc", {entityTypes[26]: 50, entityTypes[32]: 50, entityTypes[28]: 50}, 
+#                    [], 
+#                    (8, 13), {"Bronze": [(12, 25), 70], "Plata": [(4, 9), 30]}, False),
         
-        Zones.Zona("Muntanyes Estelars",
-                   "Unes muntanyes de les que es diu que les estrelles guien a les persones que hi passen...",
-                   "Muntanya", {entityTypes[4]: 30, entityTypes[5]: 40, entityTypes[7]: 35, entityTypes[44]: 8, 
-                                entityTypes[1]: 1, entityTypes[0]: 2, entityTypes[2]: 2, entityTypes[3]: 2}, 
-                   [[82, 15, 3],[92, 6, 2], [98,2], [100], [30, 50, 20], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
-                   (12, 17), {"Bronze": [(16, 25), 70], "Plata": [(7, 9), 30]}, False),
+#         Zones.Zona("Muntanyes Estelars",
+#                    "Unes muntanyes de les que es diu que les estrelles guien a les persones que hi passen...",
+#                    "Muntanya", {entityTypes[4]: 30, entityTypes[5]: 40, entityTypes[7]: 35, entityTypes[44]: 8, 
+#                                 entityTypes[1]: 1, entityTypes[0]: 2, entityTypes[2]: 2, entityTypes[3]: 2}, 
+#                    [[82, 15, 3],[92, 6, 2], [98,2], [100], [30, 50, 20], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
+#                    (12, 17), {"Bronze": [(16, 25), 70], "Plata": [(7, 9), 30]}, False),
         
-        Zones.Zona("Cami de Roca",
-                   "Un cami rocos que guia cap a la platja de Lakestar.",
-                   "Muntanya i Platja", {entityTypes[4]: 50, entityTypes[46]: 20, entityTypes[7]: 18, 
-                                         entityTypes[1]: 3, entityTypes[0]: 4, entityTypes[2]: 3, entityTypes[3]: 3}, 
-                   [[82, 15, 3],[92, 6, 2], [98,2], [30, 50, 20], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
-                   (15, 17), {"Bronze": [(16, 25), 70], "Plata": [(7, 9), 30]}, False),
+#         Zones.Zona("Cami de Roca",
+#                    "Un cami rocos que guia cap a la platja de Lakestar.",
+#                    "Muntanya i Platja", {entityTypes[4]: 50, entityTypes[46]: 20, entityTypes[7]: 18, 
+#                                          entityTypes[1]: 3, entityTypes[0]: 4, entityTypes[2]: 3, entityTypes[3]: 3}, 
+#                    [[82, 15, 3],[92, 6, 2], [98,2], [30, 50, 20], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
+#                    (15, 17), {"Bronze": [(16, 25), 70], "Plata": [(7, 9), 30]}, False),
         
-        Zones.Zona("Platja de Lakestar",
-                   "La platja del Gran llac Lakestar...",
-                   "Platja", {entityTypes[46]: 32, entityTypes[38]: 2, entityTypes[39]: 30, entityTypes[40]: 15,
-                              entityTypes[42]: 20, entityTypes[43]: 1}, 
-                   [[95, 5], [100], [95, 5], [100], [95, 5], [100]], 
-                   (10, 15), {"Bronze": [(10, 20), 100]}, False)
-]
+#         Zones.Zona("Platja de Lakestar",
+#                    "La platja del Gran llac Lakestar...",
+#                    "Platja", {entityTypes[46]: 32, entityTypes[38]: 2, entityTypes[39]: 30, entityTypes[40]: 15,
+#                               entityTypes[42]: 20, entityTypes[43]: 1}, 
+#                    [[95, 5], [100], [95, 5], [100], [95, 5], [100]], 
+#                    (10, 15), {"Bronze": [(10, 20), 100]}, False)
+ ]
 
-# Cami de Lakestar a Faylight o (Pendent)
-zones.append(
-Zones.Zona(
-    "Serra del Bosc de Llum",
-    "Una gran serra que bloqueja el pas cap el Gran Bosc de llum, si hi vols arribar, has de passar per aquestes...",
-    "Muntanya", {entityTypes[33]: 22, entityTypes[7]: 25, entityTypes[48]: 5, entityTypes[49]: 8,
-                 entityTypes[44]: 10, entityTypes[50]: 30}, 
-    [[90, 10], [95, 5], [100], [95, 5], [100], [40, 55, 5]],
-    (15, 20), {"Plata": [(10, 15), 100]}, False, (("Ubicacio", [zones[8]]))),
-)
+# # Cami de Lakestar a Faylight o (Pendent)
+# zones.append(
+# Zones.Zona(
+#     "Serra del Bosc de Llum",
+#     "Una gran serra que bloqueja el pas cap el Gran Bosc de llum, si hi vols arribar, has de passar per aquestes...",
+#     "Muntanya", {entityTypes[33]: 22, entityTypes[7]: 25, entityTypes[48]: 5, entityTypes[49]: 8,
+#                  entityTypes[44]: 10, entityTypes[50]: 30}, 
+#     [[90, 10], [95, 5], [100], [95, 5], [100], [40, 55, 5]],
+#     (15, 20), {"Plata": [(10, 15), 100]}, False, (("Ubicacio", [zones[8]]))),
+# )
 
             
-zones.append(
-Zones.Zona(
-    "Gran Bosc de Llum",
-    "Un Bosc on la llum no desapareix ni tant sols durant la nit, d'aqui el seu nou...",
-    "Bosc", {entityTypes[50]: 30, entityTypes[32]: 40, entityTypes[70]: 2, entityTypes[73]: 14, entityTypes[74]: 14}, 
-    [[30, 65, 5], [80, 20], [100], [90, 10], [90, 10]], 
-    (18, 23), {"Plata": [(10, 15), 100]}, False)
-)      
+# zones.append(
+# Zones.Zona(
+#     "Gran Bosc de Llum",
+#     "Un Bosc on la llum no desapareix ni tant sols durant la nit, d'aqui el seu nou...",
+#     "Bosc", {entityTypes[50]: 30, entityTypes[32]: 40, entityTypes[70]: 2, entityTypes[73]: 14, entityTypes[74]: 14}, 
+#     [[30, 65, 5], [80, 20], [100], [90, 10], [90, 10]], 
+#     (18, 23), {"Plata": [(10, 15), 100]}, False)
+# )      
 
-zones.append(
-Zones.Zona(
-    "Bosc de les Fades",
-    "Un bosc que quasi ningu coneix, encara que esta dins d'un bosc molt conegut...",
-    "Bosc", {entityTypes[79]: 80, entityTypes[80]: 20}, [[100], [100]],
-    (21, 26), {"Plata": [(10, 15), 100]}, False))
+# zones.append(
+# Zones.Zona(
+#     "Bosc de les Fades",
+#     "Un bosc que quasi ningu coneix, encara que esta dins d'un bosc molt conegut...",
+#     "Bosc", {entityTypes[79]: 80, entityTypes[80]: 20}, [[100], [100]],
+#     (21, 26), {"Plata": [(10, 15), 100]}, False))
 
-# Cami de Faylight a Silverhorn
-zones.append(
-Zones.Zona(
-    "Grans Muntanyes Blanques",
-    "Una gran serralada blanca, és diu que en aquestes muntanyes hi ha un poble llegendari...",
-    "Muntanya", {entityTypes[7]: 40, entityTypes[31]: 15, entityTypes[33]: 30, entityTypes[34]: 15, entityTypes[35]: 15,
-                entityTypes[36]: 15, entityTypes[37]: 15, entityTypes[44]: 15, entityTypes[45]: 7, entityTypes[47]: 20, 
-                entityTypes[48]: 20, entityTypes[51]: 20, entityTypes[52]: 20, entityTypes[68]: 7, entityTypes[69]: 7,
-                entityTypes[46]: 20, entityTypes[27]: 1},
-                [[90, 10], [100], [100], [100], [100], [100], [100], [95, 5], [100], [100], [95, 5], [88, 10, 2], [95, 5], [70, 25, 5], [100], [60, 35, 5], [100]], 
-    (24, 29), {"Plata": [(10, 15), 100]}, 
-    False, None, 20)
-    )
+# # Cami de Faylight a Silverhorn
+# zones.append(
+# Zones.Zona(
+#     "Grans Muntanyes Blanques",
+#     "Una gran serralada blanca, és diu que en aquestes muntanyes hi ha un poble llegendari...",
+#     "Muntanya", {entityTypes[7]: 40, entityTypes[31]: 15, entityTypes[33]: 30, entityTypes[34]: 15, entityTypes[35]: 15,
+#                 entityTypes[36]: 15, entityTypes[37]: 15, entityTypes[44]: 15, entityTypes[45]: 7, entityTypes[47]: 20, 
+#                 entityTypes[48]: 20, entityTypes[51]: 20, entityTypes[52]: 20, entityTypes[68]: 7, entityTypes[69]: 7,
+#                 entityTypes[46]: 20, entityTypes[27]: 1},
+#                 [[90, 10], [100], [100], [100], [100], [100], [100], [95, 5], [100], [100], [95, 5], [88, 10, 2], [95, 5], [70, 25, 5], [100], [60, 35, 5], [100]], 
+#     (24, 29), {"Plata": [(10, 15), 100]}, 
+#     False, None, 20)
+#     )
                 
-zones.append(
-# Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
-Zones.Zona( 
-    "Profunditats de Lakestar",
-    "Un cami subterrani que avança dins el Gran llac, normalment ningú en sabria la existencia...",
-    "Cavernes", {entityTypes[68]: 20, entityTypes[69]: 5, entityTypes[42]: 20, entityTypes[43]: 5, 
-                 entityTypes[39]: 20, entityTypes[38]: 5, entityTypes[74]: 20, entityTypes[75]: 5},
-    [[75, 25], [98, 2], [75, 25], [98, 2], [75, 25], [98, 2], [75, 25], [98, 2]], 
-    (30, 35), {"Plata": [(20, 25), 100]}, False,
-    (("Ubicacio", [zones[6]])), 25)
-    )
+# zones.append(
+# # Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
+# Zones.Zona( 
+#     "Profunditats de Lakestar",
+#     "Un cami subterrani que avança dins el Gran llac, normalment ningú en sabria la existencia...",
+#     "Cavernes", {entityTypes[68]: 20, entityTypes[69]: 5, entityTypes[42]: 20, entityTypes[43]: 5, 
+#                  entityTypes[39]: 20, entityTypes[38]: 5, entityTypes[74]: 20, entityTypes[75]: 5},
+#     [[75, 25], [98, 2], [75, 25], [98, 2], [75, 25], [98, 2], [75, 25], [98, 2]], 
+#     (30, 35), {"Plata": [(20, 25), 100]}, False,
+#     (("Ubicacio", [zones[6]])), 25)
+#     )
 
-zones.append(
-# Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
-Zones.Zona( 
-    "Mon Subterrani",
-    "Un mon subterrani sota el Gran Llac, aquest lloc sembla donar sentit a la historia de la estrella...",
-    "Cavernes", {entityTypes[68]: 50, entityTypes[69]: 15, entityTypes[51]: 30, entityTypes[53]: 10,
-                 entityTypes[42]: 50, entityTypes[43]: 15, entityTypes[74]: 30, entityTypes[75]: 10, entityTypes[57]: 1},
-    [[40, 40, 20], [80, 20], [50, 40, 10], [60, 35, 5], [40, 40, 20], [60, 35, 5], [40, 40, 20], [80, 20], [100]],
-    (35, 40), {"Plata": [(30, 45), 100]}, False)
-    )
+# zones.append(
+# # Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
+# Zones.Zona( 
+#     "Mon Subterrani",
+#     "Un mon subterrani sota el Gran Llac, aquest lloc sembla donar sentit a la historia de la estrella...",
+#     "Cavernes", {entityTypes[68]: 50, entityTypes[69]: 15, entityTypes[51]: 30, entityTypes[53]: 10,
+#                  entityTypes[42]: 50, entityTypes[43]: 15, entityTypes[74]: 30, entityTypes[75]: 10, entityTypes[57]: 1},
+#     [[40, 40, 20], [80, 20], [50, 40, 10], [60, 35, 5], [40, 40, 20], [60, 35, 5], [40, 40, 20], [80, 20], [100]],
+#     (35, 40), {"Plata": [(30, 45), 100]}, False)
+#     )
 
-zones.append(
-# Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
-Zones.Zona( 
-    "Illa estelar",
-    "Es pot veure l'estrella en el crater d'aquesta illa..., rodejada per un munt de monstres marins.",
-    "Cavernes", {entityTypes[40]: 50, entityTypes[41]: 1, entityTypes[42]: 50, entityTypes[43]: 15,
-                 entityTypes[39]: 50, entityTypes[38]: 15, entityTypes[53]: 15},
-    [[40, 40, 20], [100], [50, 40, 10], [60, 35, 5], [40, 40, 20], [60, 35, 5], [60, 35, 5]],
-    (35, 40), {"Plata": [(35, 45), 100]}, False)
-    )
+# zones.append(
+# # Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
+# Zones.Zona( 
+#     "Illa estelar",
+#     "Es pot veure l'estrella en el crater d'aquesta illa..., rodejada per un munt de monstres marins.",
+#     "Cavernes", {entityTypes[40]: 50, entityTypes[41]: 1, entityTypes[42]: 50, entityTypes[43]: 15,
+#                  entityTypes[39]: 50, entityTypes[38]: 15, entityTypes[53]: 15},
+#     [[40, 40, 20], [100], [50, 40, 10], [60, 35, 5], [40, 40, 20], [60, 35, 5], [60, 35, 5]],
+#     (35, 40), {"Plata": [(35, 45), 100]}, False)
+#     )
 
 
 
@@ -362,26 +265,26 @@ zones[7].AddConnections([zones[18], zones[20]]) # Faylight
 zones[8].AddConnections([zones[16]]) # Lakestar
 zones[9].AddConnections([zones[12]]) # Knightshire
 
-    # Salvatge
-zones[1].AddConnections([zones[0], zones[2]])   # Bosc Obscur
-zones[2].AddConnections([zones[1], zones[3]])   # Profunditats Bosc Obscur
-zones[3].AddConnections([zones[2], zones[4]])   # Centre Bosc Obscur
-zones[4].AddConnections([zones[3], zones[5]])   # Muntanyes Origen
-zones[5].AddConnections([zones[4]]) # Cavernes del origen
+#     # Salvatge
+# zones[1].AddConnections([zones[0], zones[2]])   # Bosc Obscur
+# zones[2].AddConnections([zones[1], zones[3]])   # Profunditats Bosc Obscur
+# zones[3].AddConnections([zones[2], zones[4]])   # Centre Bosc Obscur
+# zones[4].AddConnections([zones[3], zones[5]])   # Muntanyes Origen
+# zones[5].AddConnections([zones[4]]) # Cavernes del origen
 zones[10].AddConnections([zones[0], zones[11]]) # Bosc del SUd
 zones[11].AddConnections([zones[10], zones[12]])    # Rocklink
 zones[12].AddConnections([zones[11], zones[9], zones[13]])  # Camps de Knightshire
-zones[13].AddConnections([zones[12], zones[14]])    # Bosc Estelar
-zones[14].AddConnections([zones[13], zones[15], zones[17]]) # Muntanyes Estelars
-zones[15].AddConnections([zones[14], zones[16], zones[21]])    # Cami Rocos
-zones[16].AddConnections([zones[15], zones[8]]) # Platja de Lakestar
-zones[17].AddConnections([zones[14], zones[18]]) # Serra del Bosc de Llum
-zones[18].AddConnections([zones[17], zones[19]]) # Gran Bosc de Llum
-zones[19].AddConnections([zones[18], zones[7]]) # Bosc de Fades
-zones[20].AddConnections([zones[7], zones[6]]) # Grans Muntanyes Blanques
-zones[21].AddConnections([zones[15], zones[22]]) # Profunditats de Lakestar
-zones[22].AddConnections([zones[21], zones[23]]) # Mon Subterrani
-zones[23].AddConnections([zones[22]]) # Illa Estelar
+# zones[13].AddConnections([zones[12], zones[14]])    # Bosc Estelar
+# zones[14].AddConnections([zones[13], zones[15], zones[17]]) # Muntanyes Estelars
+# zones[15].AddConnections([zones[14], zones[16], zones[21]])    # Cami Rocos
+# zones[16].AddConnections([zones[15], zones[8]]) # Platja de Lakestar
+# zones[17].AddConnections([zones[14], zones[18]]) # Serra del Bosc de Llum
+# zones[18].AddConnections([zones[17], zones[19]]) # Gran Bosc de Llum
+# zones[19].AddConnections([zones[18], zones[7]]) # Bosc de Fades
+# zones[20].AddConnections([zones[7], zones[6]]) # Grans Muntanyes Blanques
+# zones[21].AddConnections([zones[15], zones[22]]) # Profunditats de Lakestar
+# zones[22].AddConnections([zones[21], zones[23]]) # Mon Subterrani
+# zones[23].AddConnections([zones[22]]) # Illa Estelar
 
 
 
@@ -471,138 +374,138 @@ missions = [
 
 # Afegir missions amb append, ja que si el requisit es una altre missio aquella ha d'estar ja definida.
 
-    # Missions Principals
-missions.append(
-    Missions.PlaceMission(
-        "La Primera Parada", 
-        "Com a bon aventurer, vols començar el teu viatge, i la primera parada d'aquest és la ciutat dels caballers, Knightshire.", 
-        "Principal",
-        [("XP", 500), ("Gold", 3000), (objectes[2], 5)], zones[9], [("Lv", 5)]),
-)
+#     # Missions Principals
+# missions.append(
+#     Missions.PlaceMission(
+#         "La Primera Parada", 
+#         "Com a bon aventurer, vols començar el teu viatge, i la primera parada d'aquest és la ciutat dels caballers, Knightshire.", 
+#         "Principal",
+#         [("XP", 500), ("Gold", 3000), (objectes[2], 5)], zones[9], [("Lv", 5)]),
+# )
 
-missions.append(
-    Missions.KillMission(
-        "Primera Petició", 
-        "A Knightshire t'han demanat, en el gremi d'aventurers, que derrotis 5 conills cornuts, en els camps de Knioghtshire.", 
-        "Principal", [("XP", 750), ("Gold", 3000), (objectes[2], 4)], 5, [entityTypes[26]], 
-        [("Lv", 7), missions[0]], zones[12], True),
-)
+# missions.append(
+#     Missions.KillMission(
+#         "Primera Petició", 
+#         "A Knightshire t'han demanat, en el gremi d'aventurers, que derrotis 5 conills cornuts, en els camps de Knioghtshire.", 
+#         "Principal", [("XP", 750), ("Gold", 3000), (objectes[2], 4)], 5, [entityTypes[26]], 
+#         [("Lv", 7), missions[0]], zones[12], True),
+# )
 
-missions.append(
-    Missions.PlaceMission(
-        "Dirigeixte a Lakestar", 
-        "Ves a la segona parada del teu viatge, Lakestar.", 
-        "Principal",
-        [("XP", 700), ("Gold", 3000), (objectes[2], 5)], zones[8], [("Lv", 9), missions[1]]),
-)
+# missions.append(
+#     Missions.PlaceMission(
+#         "Dirigeixte a Lakestar", 
+#         "Ves a la segona parada del teu viatge, Lakestar.", 
+#         "Principal",
+#         [("XP", 700), ("Gold", 3000), (objectes[2], 5)], zones[8], [("Lv", 9), missions[1]]),
+# )
 
-missions.append(
-    Missions.KillMission(
-        "El Gran Cranc", 
-        "A Lakestar decideixes començar una peticio del gremi d'aventurers, consisteix en eliminar a cert Cranc Aberrant... Se'l ha vist per la platja de Lakestar.", 
-        "Principal", [("XP", 1250), ("Gold", 3500)], 1, [entityTypes[43]], 
-        [("Lv", 12), missions[2]], zones[16], False, 
-        Entitat.Entity("Cranc Aberrant Extrany", 12, False, entityTypes[43])),
-)
+# missions.append(
+#     Missions.KillMission(
+#         "El Gran Cranc", 
+#         "A Lakestar decideixes començar una peticio del gremi d'aventurers, consisteix en eliminar a cert Cranc Aberrant... Se'l ha vist per la platja de Lakestar.", 
+#         "Principal", [("XP", 1250), ("Gold", 3500)], 1, [entityTypes[43]], 
+#         [("Lv", 12), missions[2]], zones[16], False, 
+#         Entitat.Entity("Cranc Aberrant Extrany", 12, False, entityTypes[43])),
+# )
 
-missions.append(
-    Missions.KillMission(
-        "Eliminació de Bandits", 
-        "A Lakestar decideixes començar una altre peticio del gremi d'aventurers, eliminar els bandits de les muntanyes estelars.", 
-        "Principal", [("XP", 1000), ("Gold", 3500)], 4, [entityTypes[0], entityTypes[1], entityTypes[2], entityTypes[3]], 
-        [("Lv", 14), missions[3]], zones[14], True),
-)
+# missions.append(
+#     Missions.KillMission(
+#         "Eliminació de Bandits", 
+#         "A Lakestar decideixes començar una altre peticio del gremi d'aventurers, eliminar els bandits de les muntanyes estelars.", 
+#         "Principal", [("XP", 1000), ("Gold", 3500)], 4, [entityTypes[0], entityTypes[1], entityTypes[2], entityTypes[3]], 
+#         [("Lv", 14), missions[3]], zones[14], True),
+# )
 
-missions.append(
-    Missions.PlaceMission(
-        "Un nou destí", 
-        "Ves al Gran Bosc Lluminos, es diu que hi ha un antic poble amagat en aquest...", 
-        "Principal",
-        [("XP", 2000), ("Gold", 5000)], zones[7], [("Lv", 17), missions[4]]),
-)
+# missions.append(
+#     Missions.PlaceMission(
+#         "Un nou destí", 
+#         "Ves al Gran Bosc Lluminos, es diu que hi ha un antic poble amagat en aquest...", 
+#         "Principal",
+#         [("XP", 2000), ("Gold", 5000)], zones[7], [("Lv", 17), missions[4]]),
+# )
 
-missions.append(
-    Missions.KillMission(
-        "La Gran Aranya", 
-        "A Faylight et demanen que elimins una perillosa aranya que habita en el Gran Bosc Lluminos...", 
-        "Principal", [("XP", 2500), ("Gold", 5000)], 1, [entityTypes[70]], 
-        [("Lv", 20), missions[5]], zones[18], False, 
-        Entitat.Entity("Gran Aranya", 22, False, entityTypes[70])),
-)
+# missions.append(
+#     Missions.KillMission(
+#         "La Gran Aranya", 
+#         "A Faylight et demanen que elimins una perillosa aranya que habita en el Gran Bosc Lluminos...", 
+#         "Principal", [("XP", 2500), ("Gold", 5000)], 1, [entityTypes[70]], 
+#         [("Lv", 20), missions[5]], zones[18], False, 
+#         Entitat.Entity("Gran Aranya", 22, False, entityTypes[70])),
+# )
 
-missions.append(
-    Missions.PlaceMission(
-        "El poble platejat", 
-        "Despres d'agrairte l'ajuda, en Faylight, has escoltat parlar d'un poble amagat en les muntanyes, un poble d'enans...", 
-        "Principal",
-        [("XP", 6000), ("Gold", 10000)], zones[6], [("Lv", 24), missions[6]]),
-)
+# missions.append(
+#     Missions.PlaceMission(
+#         "El poble platejat", 
+#         "Despres d'agrairte l'ajuda, en Faylight, has escoltat parlar d'un poble amagat en les muntanyes, un poble d'enans...", 
+#         "Principal",
+#         [("XP", 6000), ("Gold", 10000)], zones[6], [("Lv", 24), missions[6]]),
+# )
 
-missions.append(
-    Missions.KillMission(
-        "Eliminació de Perills", 
-        "A SIlverhorn et demanen que eliminis diverses amenaçes per el poble...", 
-        "Principal", [("XP", 1000), ("Gold", 3500)], 10, 
-        [entityTypes[7], entityTypes[31], entityTypes[33], entityTypes[34], entityTypes[35],
-        entityTypes[36], entityTypes[37], entityTypes[44], entityTypes[45], entityTypes[47], 
-        entityTypes[48], entityTypes[51], entityTypes[52], entityTypes[68], entityTypes[69],
-        entityTypes[46], entityTypes[27]], 
-        [("Lv", 27), missions[7]], zones[20], True),
-)
+# missions.append(
+#     Missions.KillMission(
+#         "Eliminació de Perills", 
+#         "A SIlverhorn et demanen que eliminis diverses amenaçes per el poble...", 
+#         "Principal", [("XP", 1000), ("Gold", 3500)], 10, 
+#         [entityTypes[7], entityTypes[31], entityTypes[33], entityTypes[34], entityTypes[35],
+#         entityTypes[36], entityTypes[37], entityTypes[44], entityTypes[45], entityTypes[47], 
+#         entityTypes[48], entityTypes[51], entityTypes[52], entityTypes[68], entityTypes[69],
+#         entityTypes[46], entityTypes[27]], 
+#         [("Lv", 27), missions[7]], zones[20], True),
+# )
 
-missions.append(
-    Missions.KillMission(
-        "El Gran Gegant", 
-        "A Silverhorn et donen una proba, si la superes et donaran un antic objecte del poble...", 
-        "Principal", [("XP", 2500), ("Gold", 5000)], 1, [entityTypes[70]], 
-        [("Lv", 30), missions[8]], zones[20], False, 
-        Entitat.Entity("Gegant Daurat", 25, False, entityTypes[54])),
-)
+# missions.append(
+#     Missions.KillMission(
+#         "El Gran Gegant", 
+#         "A Silverhorn et donen una proba, si la superes et donaran un antic objecte del poble...", 
+#         "Principal", [("XP", 2500), ("Gold", 5000)], 1, [entityTypes[70]], 
+#         [("Lv", 30), missions[8]], zones[20], False, 
+#         Entitat.Entity("Gegant Daurat", 25, False, entityTypes[54])),
+# )
 
-missions.append(
-    Missions.PlaceMission(
-        "Una vella historia sobre una Estrella", 
-        "Escoltes d'una llegenda del poble, sobre una estrella enfonsant-se en un llac, diu la llegenda que en realitat aquesta estrella no es va efnfonsar sino que el va formar...", 
-        "Principal",
-        [("XP", 6000), ("Gold", 10000)], zones[21], [("Lv", 32), missions[9]]),
-)
+# missions.append(
+#     Missions.PlaceMission(
+#         "Una vella historia sobre una Estrella", 
+#         "Escoltes d'una llegenda del poble, sobre una estrella enfonsant-se en un llac, diu la llegenda que en realitat aquesta estrella no es va efnfonsar sino que el va formar...", 
+#         "Principal",
+#         [("XP", 6000), ("Gold", 10000)], zones[21], [("Lv", 32), missions[9]]),
+# )
 
-missions.append(
-    Missions.PlaceMission(
-        "Buscant una Estrella", 
-        "Un cop confirmat que sota el llac existeix algo, decideixes busacr l'estrella...", 
-        "Principal",
-        [("XP", 9000), ("Gold", 10000)], zones[23], [("Lv", 34), missions[10]]),
-)
+# missions.append(
+#     Missions.PlaceMission(
+#         "Buscant una Estrella", 
+#         "Un cop confirmat que sota el llac existeix algo, decideixes busacr l'estrella...", 
+#         "Principal",
+#         [("XP", 9000), ("Gold", 10000)], zones[23], [("Lv", 34), missions[10]]),
+# )
 
-missions.append(
-    Missions.KillMission(
-        "El Guardia del Origen", 
-        "Escoltes d'una bestia sagrada en el lloc de l'estrella, que aquesta originalment hauria d'estar en les Muntanyes del Origen...\n" \
-        "Derroyta al guardia perillos del que t'ha parlat i entra en les Cavernes del Origen, ubicades més enlla del Bosc Obscur.", 
-        "Principal", [("XP", 15000), ("Gold", 25000)], 1, [entityTypes[70]], 
-        [("Lv", 40), missions[11]], zones[4], False,
-        Entitat.Entity("Eternitat", 40, False, entityTypes[62])),
-)
+# missions.append(
+#     Missions.KillMission(
+#         "El Guardia del Origen", 
+#         "Escoltes d'una bestia sagrada en el lloc de l'estrella, que aquesta originalment hauria d'estar en les Muntanyes del Origen...\n" \
+#         "Derroyta al guardia perillos del que t'ha parlat i entra en les Cavernes del Origen, ubicades més enlla del Bosc Obscur.", 
+#         "Principal", [("XP", 15000), ("Gold", 25000)], 1, [entityTypes[70]], 
+#         [("Lv", 40), missions[11]], zones[4], False,
+#         Entitat.Entity("Eternitat", 40, False, entityTypes[62])),
+# )
 
-missions.append(
-    Missions.PlaceMission(
-        "Pedra Misteriosa", 
-        "Dins les cavernes despres de retornar la estrella al seu lloc d'origen, recibeixes una misteriosa pedra des del lloc on has retornat l'estrella...", 
-        "Principal",
-        [("XP", 20000), ("Gold", 30000)], zones[5], [("Lv", 44), missions[12]]),
-)
+# missions.append(
+#     Missions.PlaceMission(
+#         "Pedra Misteriosa", 
+#         "Dins les cavernes despres de retornar la estrella al seu lloc d'origen, recibeixes una misteriosa pedra des del lloc on has retornat l'estrella...", 
+#         "Principal",
+#         [("XP", 20000), ("Gold", 30000)], zones[5], [("Lv", 44), missions[12]]),
+# )
 
-    # Missions Secundaries
+#     # Missions Secundaries
 
-missions.append(
-    Missions.KillMission(
-        "Mostra de Confiança", 
-        "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
-        "Secundaria",
-        [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, [entityTypes[4]], [("Lv", 15)], zones[1], False,
-        Entitat.Entity("Llop Lider", 17, False, entityTypes[4])),
-)
+# missions.append(
+#     Missions.KillMission(
+#         "Mostra de Confiança", 
+#         "Troba i elimina al Llop lider, diuen que s'ha vist recentment per el Bosc Obscur", 
+#         "Secundaria",
+#         [("XP", 120), ("Gold", 1000), (objectes[1], 1)], 1, [entityTypes[4]], [("Lv", 15)], zones[1], False,
+#         Entitat.Entity("Llop Lider", 17, False, entityTypes[4])),
+# )
 
 # missions.append(
 #     Missions.KillMission("Mostra de Confiança II", 
@@ -640,10 +543,10 @@ def CrearJugador():
     clases = []
     nomclases = []
     print("")
-    for i in entityTypes:
-        if i.isPlayable == True:
-            clases.append(i)
-            nomclases.append(i.EntityName.lower())
+    lista = Call.CallEntity("", True)
+    for i in lista:
+        clases.append(i)
+        nomclases.append(i.EntityName.lower())
     while clase not in nomclases:
         try:
             for i in clases:
@@ -1666,9 +1569,9 @@ def main():
 def EasterEgg():
     global team
     list = []
-    for i in entityTypes:
-        if i.isPlayable == False:
-            list.append(i)
+    # for i in entityTypes:
+    #     if i.isPlayable == False:
+    #         list.append(i)
     res = random.choice(list)
     team[0] = Entitat.Entity(team[0].nom, 5, True, res, 999, {}, 0, True)
     print("L'efecte de la joia de la reencarnació s'ha activat...")

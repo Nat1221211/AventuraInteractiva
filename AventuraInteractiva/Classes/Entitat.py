@@ -5,8 +5,8 @@
 # Creem la classe entitat.
 
 import random
-import EntityType
-import Objectes
+from Classes import EntityType
+from Classes import Objectes
 
 import os
 
@@ -20,35 +20,50 @@ class Entity():
     LvLimit = int()
 
     # Stats
-    MaxHP = int()
-    CurHP = int()
-    MaxMana = int()
-    Mana = int() 
-    ATK = int()
-    INT = int()
-    DEF = int()
-    SPD = int()
+    StatsBase = {
+        "MaxHP": int(),
+        "CurHP": int(),
+        "MaxMana": int(),
+        "Mana": int(),
+        "ATK": int(),
+        "INT": int(),
+        "DEF": int(),
+        "SPD": int()
+    }
+
+    StatsPermanents = {
+        "MaxHP": {"%": int(), "Flat": int()},
+        "CurHP": {"%": int(), "Flat": int()},
+        "MaxMana": {"%": int(), "Flat": int()},
+        "Mana": {"%": int(), "Flat": int()},
+        "ATK": {"%": int(), "Flat": int()},
+        "INT": {"%": int(), "Flat": int()},
+        "DEF": {"%": int(), "Flat": int()},
+        "SPD": {"%": int(), "Flat": int()},
+    }
+
+    StatsCombat = {
+        "MaxHP": int(),
+        "CurHP": int(),
+        "MaxMana": int(),
+        "Mana": int(),
+        "ATK": int(),
+        "INT": int(),
+        "DEF": int(),
+        "SPD": int()
+    }
+    
 
     # Characteristics
     Moves = list()
-    subclass = None
+    PastClasses = []
     subAcquirable = False
-
-    # temp stats / effects
-    tempATK = int()
-    tempINT = int()
-    tempDEF = int()
-    tempSPD = int()
-    buffATK = 1
-    buffINT = 1
-    buffSPD = 1
-    buffDEF = 1
 
     # Combat Priority Variables
     Priority = int()
     Protected = False
     ProtectedBy = tuple()
-    afected = "None"
+    afected = ["None"]
     timer = 0
 
     # Xp
@@ -67,7 +82,7 @@ class Entity():
     PostGame = False
 
     # Metodes
-    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10, subclass = None, paths = None, post = False):
+    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10, subclass = None, post = False):
         self.nom = nom
         self.Lv = level
         self.isPlayer = IsPlayer
@@ -87,7 +102,6 @@ class Entity():
         self.PostGame = post
         self.afected = "None"
         self.subclass = subclass
-        self.paths = paths
     
     def ComprovarSubClassesDisponibles(self):
         for i in self.base.paths.items():
@@ -146,20 +160,22 @@ class Entity():
             print("Pots tornar a accedir-hi desde el menu d'estat...")
             input("Presiona per a continuar...")
         else:
-            self.subclass = disponible[sel - 1]
+            self.PastClasses.append(self.base)
+            self.base = disponible[sel - 1]
             self.subAcquirable = False
             self.DefinirStats(True)
 
 
         
     def DefinirMoves(self):
-        for i in self.base.EntityMoves.items():
-            if i[1] <= self.Lv and i[0] not in self.Moves:
-                self.Moves.append(i[0])
-        if self.subclass != None:
-            for i in self.subclass.EntityMoves.items():
-                if i[1] <= self.Lv and i[0] not in self.Moves:
-                    self.Moves.append(i[0])
+        for k in self.base.EntityMoves.items():
+            if k[1] <= self.Lv and k[0] not in self.Moves:
+                self.Moves.append(k[0])
+        if len(self.PastClasses) > 0:
+            for i in self.PastClasses:
+                for j in i.EntityMoves.items():
+                    if j[1] <= self.Lv and j[0] not in self.Moves:
+                        self.Moves.append(j[0])
 
     def DefinirStats(self,LvOrNot = False):
         baseHealth = self.base.Health / 50
@@ -169,33 +185,48 @@ class Entity():
         baseDefense = self.base.Defense / 50
         baseSpeed = self.base.Speed / 50
         
-        if self.subclass != None:
-            baseHealth += self.subclass.Health / 100
-            baseMagic += self.subclass.Magic / 100
-            baseAttack += self.subclass.Attack / 100
-            baseIntel += self.subclass.Intel / 100
-            baseDefense += self.subclass.Defense / 100
-            baseSpeed += self.subclass.Speed / 100            
+        if len(self.PastClasses) > 0:
+            for i in self.PastClasses:
+                baseHealth += self.subclass.Health / 100
+                baseMagic += self.subclass.Magic / 100
+                baseAttack += self.subclass.Attack / 100
+                baseIntel += self.subclass.Intel / 100
+                baseDefense += self.subclass.Defense / 100
+                baseSpeed += self.subclass.Speed / 100            
 
-        self.MaxHP = 10 + (baseHealth * self.Lv)
-        self.MaxMana = 10 + (baseMagic * self.Lv)
-        self.ATK = 10 + (baseAttack * self.Lv)
-        self.INT = 10 + (baseIntel * self.Lv)
-        self.DEF = 10 + (baseDefense * self.Lv)
-        self.SPD = 10 + (baseSpeed * self.Lv)
+        self.StatsBase["MaxHP"] = 10 + (baseHealth * self.Lv)
+        self.StatsBase["MaxMana"] = 10 + (baseMagic * self.Lv)
+        self.StatsBase["ATK"] = 5 + (baseAttack * self.Lv)
+        self.StatsBase["INT"] = 5 + (baseIntel * self.Lv)
+        self.StatsBase["DEF"] = 5 + (baseDefense * self.Lv)
+        self.StatsBase["SPD"] = 5 + (baseSpeed * self.Lv)
+        
         if LvOrNot == False:
-            self.CurHP = self.MaxHP
-            self.Mana = self.MaxMana
+            self.StatsBase["CurHP"] = self.MaxHP
+            self.StatsBase["Mana"] = self.MaxMana
             self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
-        self.DefinirTempStats()
+        self.DefinirCombatStats()
         self.DefinirMoves()
         self.afected = "None"
     
-    def DefinirTempStats(self):
-        self.tempATK = self.ATK
-        self.tempINT = self.INT
-        self.tempDEF = self.DEF
-        self.tempSPD = self.SPD
+    def DefinirPermanentStats(self, permanentbuff):
+        if "%" in permanentbuff[1]:
+            self.StatsPermanents[permanentbuff[0]]["Type"] += float(permanentbuff[1])
+        else:
+            self.StatsPermanents[permanentbuff[0]]["Type"] += float(permanentbuff[1])
+    
+    def DefinirCombatStats(self):
+        for k, v in self.StatsBase:
+            PostBuff = v + self.StatsPermanents[k]["Flat"]
+            PostBuff *= (1 + self.StatsPermanents[k]["%"])
+            self.StatsCombat[k] = PostBuff
+        self.AplicarEfectesEstat()
+    
+    def AplicarEfectesEstat(self):
+        for i in self.afected:
+            for k, v in i.StatEffects.items():
+                self.StatsCombat[k] *= (1 + (v / 100))
+
     
     def BuffTempStats(self, buff, statbuffed):
         self.DefinirTempStats()

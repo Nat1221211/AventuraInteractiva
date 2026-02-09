@@ -5,7 +5,7 @@
 # Creem la classe Tipus d'entitat.
 
 import random
-import Objectes
+from Classes import Objectes
 
 class Exits():
     
