@@ -47,23 +47,51 @@ def CallCSV(cami):
                         linia[j] = linia[j].split(", ")
                     DictData[caps[j]] = linia[j]
                 Data.append(DictData.copy())
-            print(Data)
+            return Data
 
 
     except FileNotFoundError:
         print("Ha ocurregut un error carregant el fitxer...")
 
+def CallEntity(trobar):
+    entities = CallCSV("Data/EntityTypes.csv")
+    for i in entities:
+        if i["Nom"] == trobar:
+            entitat = EntityType.EntityType(i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
+                                  i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
+    return entitat
+
+def CallEfect(trobar):
+    entities = CallCSV("Data/effects.csv")
+    for i in entities:
+        if i["Nom"] == trobar:
+            entitat = Characteristics.Effects(i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
+                                  i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
+    return entitat
+
+def CallMovement(trobar):
+    entities = CallCSV("Data/Movements.csv")
+    for i in entities:
+        if i["Nom"] == trobar:
+            if i["Tipus"] == "Combat":
+                entitat = Characteristics.Moves(i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
+            elif i["Tipus"] == "Clau":
+                entitat = Objectes.ObjecteCombat(i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
+    return entitat
+
+def CallObject(trobar):
+    entities = CallCSV("Data/Objects.csv")
+    for i in entities:
+       if i["Nom"] == trobar:
+            if i["Tipus"] == "Combat":
+                entitat = Objectes.ObjecteCombat(i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
+            elif i["Tipus"] == "Clau":
+                entitat = Objectes.ObjecteClau(i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
+    return entitat
 
 def main():
     print("!! - Joc de Preguntes - !!")
-    print("Entitats")
-    CallCSV("Data/EntityTypes.csv")
-    print("\n\n\nMoviments")
-    CallCSV("Data/Movements.csv")
-    print("\n\n\nEfectes")
-    CallCSV("Data/effects.csv")
-    print("\n\n\nObjectes")
-    CallCSV("Data/Objects.csv")
+    
 
 if __name__ == "__main__":
     main()

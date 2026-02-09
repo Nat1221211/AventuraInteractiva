@@ -45,39 +45,39 @@ def ClearScreen():
 entityGroups = {""}
 
         # Objectes
-objectes = [
-    # En els objectes cal tenir en compte la estadistica en la que actuen si son de combat, en forma de llista cada stat.
-            # Objectes de Combat
-            Objectes.ObjecteCombat("Pocio Inferior", "Cura 10 punts de vida", ["Health"], 10, 100, True),
-            Objectes.ObjecteCombat("Pocio", "Descripcio", ["Health"], 20, 300, True),
-            Objectes.ObjecteCombat("Pocio Intermitja", "Descripcio", ["Health"], 40, 750, True),
-            Objectes.ObjecteCombat("Pocio Avançada", "Descripcio", ["Health"], 60, 2000, True),
-            Objectes.ObjecteCombat("Pocio Completa", "Descripcio", ["Health"], 100, 4000, True),
-            Objectes.ObjecteCombat("Elixir", "Descripcio", ["Health", "Mana"], 9999, 30000, True),
-            Objectes.ObjecteCombat("Millora", "Descripcio", ["ATK"], 1.3, 300),
-            Objectes.ObjecteCombat("Millora Superior", "Descripcio", ["ATK"], 2, 750),
-            Objectes.ObjecteCombat("Millora Divina", "Descripcio", ["ATK"], 2.5, 2000),
-            Objectes.ObjecteCombat("Barrera", "Descripcio", ["DEF"], 1.3, 300),
-            Objectes.ObjecteCombat("Barrera Pentagonal", "Descripcio", ["DEF"], 2, 750),
-            Objectes.ObjecteCombat("Barrera Octagonal", "Descripcio", ["DEF"], 2.5, 2000),
-            Objectes.ObjecteCombat("Carrera", "Descripcio", ["SPD"], 1.3, 300),
-            Objectes.ObjecteCombat("Llampeg", "Descripcio", ["SPD"], 2, 750),
-            Objectes.ObjecteCombat("Raig", "Descripcio", ["SPD"], 2.5, 2000),
+# objectes = [
+#     # En els objectes cal tenir en compte la estadistica en la que actuen si son de combat, en forma de llista cada stat.
+#             # Objectes de Combat
+#             Objectes.ObjecteCombat("Pocio Inferior", "Cura 10 punts de vida", ["Health"], 10, 100, True),
+#             Objectes.ObjecteCombat("Pocio", "Descripcio", ["Health"], 20, 300, True),
+#             Objectes.ObjecteCombat("Pocio Intermitja", "Descripcio", ["Health"], 40, 750, True),
+#             Objectes.ObjecteCombat("Pocio Avançada", "Descripcio", ["Health"], 60, 2000, True),
+#             Objectes.ObjecteCombat("Pocio Completa", "Descripcio", ["Health"], 100, 4000, True),
+#             Objectes.ObjecteCombat("Elixir", "Descripcio", ["Health", "Mana"], 9999, 30000, True),
+#             Objectes.ObjecteCombat("Millora", "Descripcio", ["ATK"], 1.3, 300),
+#             Objectes.ObjecteCombat("Millora Superior", "Descripcio", ["ATK"], 2, 750),
+#             Objectes.ObjecteCombat("Millora Divina", "Descripcio", ["ATK"], 2.5, 2000),
+#             Objectes.ObjecteCombat("Barrera", "Descripcio", ["DEF"], 1.3, 300),
+#             Objectes.ObjecteCombat("Barrera Pentagonal", "Descripcio", ["DEF"], 2, 750),
+#             Objectes.ObjecteCombat("Barrera Octagonal", "Descripcio", ["DEF"], 2.5, 2000),
+#             Objectes.ObjecteCombat("Carrera", "Descripcio", ["SPD"], 1.3, 300),
+#             Objectes.ObjecteCombat("Llampeg", "Descripcio", ["SPD"], 2, 750),
+#             Objectes.ObjecteCombat("Raig", "Descripcio", ["SPD"], 2.5, 2000),
             
-            # Objectes Clau
-            Objectes.ObjecteClau("Pedra Misteriosa", "???"),
-            Objectes.ObjecteClau("Tronc extrany", "Tronc d'un arbre extrany"),
+#             # Objectes Clau
+#             Objectes.ObjecteClau("Pedra Misteriosa", "???"),
+#             Objectes.ObjecteClau("Tronc extrany", "Tronc d'un arbre extrany"),
 
-            # Mes objectes de Combat
-            Objectes.ObjecteCombat("Pocio de Mana Inferior", "Regenera 10 punts de Mana", ["Mana"], 10, 100, True),
-            Objectes.ObjecteCombat("Pocio de Mana", "Descripcio", ["Mana"], 20, 300, True),
-            Objectes.ObjecteCombat("Pocio  de Mana Intermitja", "Descripcio", ["Mana"], 40, 750, True),
-            Objectes.ObjecteCombat("Pocio de Mana Avançada", "Descripcio", ["Mana"], 60, 2000, True),
-            Objectes.ObjecteCombat("Pocio de Mana Completa", "Descripcio", ["Mana"], 100, 4000, True),
-            Objectes.ObjecteCombat("Millora Magica", "Descripcio", ["INT"], 1.3, 300),
-            Objectes.ObjecteCombat("Alta Millora Magica", "Descripcio", ["INT"], 2, 750),
-            Objectes.ObjecteCombat("Super Millora Magica", "Descripcio", ["INT"], 2.5, 2000),
-            ]
+#             # Mes objectes de Combat
+#             Objectes.ObjecteCombat("Pocio de Mana Inferior", "Regenera 10 punts de Mana", ["Mana"], 10, 100, True),
+#             Objectes.ObjecteCombat("Pocio de Mana", "Descripcio", ["Mana"], 20, 300, True),
+#             Objectes.ObjecteCombat("Pocio  de Mana Intermitja", "Descripcio", ["Mana"], 40, 750, True),
+#             Objectes.ObjecteCombat("Pocio de Mana Avançada", "Descripcio", ["Mana"], 60, 2000, True),
+#             Objectes.ObjecteCombat("Pocio de Mana Completa", "Descripcio", ["Mana"], 100, 4000, True),
+#             Objectes.ObjecteCombat("Millora Magica", "Descripcio", ["INT"], 1.3, 300),
+#             Objectes.ObjecteCombat("Alta Millora Magica", "Descripcio", ["INT"], 2, 750),
+#             Objectes.ObjecteCombat("Super Millora Magica", "Descripcio", ["INT"], 2.5, 2000),
+#             ]
 
 
         # Zones
