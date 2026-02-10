@@ -299,13 +299,10 @@ zones[6].AddConnections([zones[0]]) # Bosc del SUd
 
 
 # # Botiga
-# botiga = [objectes[0],
-#           objectes[6],
-#           objectes[9],
-#           objectes[12],
-#           objectes[16],
-#           objectes[21],
-#           ]
+botiga = [Call.CallObject("Pocio Inferior"),
+          Call.CallObject("Pocio"),
+          Call.CallObject("Pocio Intermitja")
+          ]
 
 
 
@@ -550,8 +547,7 @@ team = []
 team.append(jugador)
 
 # # Afegim algun objecte al jugador de base
-# team[0].AfegirObjecte(objectes[0], 2)
-# team[0].AfegirObjecte(objectes[6], 2)
+team[0].AfegirObjecte(Call.CallObject("Pocio Inferior"), 2)
 
 def AccioMenuPrincipal():
     global team, ubicacio
@@ -870,50 +866,38 @@ def ShowMisions(filter, accio):
 #             team[0].AcquiredAchievements.append(i)
 
 
-# def PrepararBotiga(): # Afegir objectes segons nivell
-#     global team
-#     if team[0].Lv > 10:
-#         if [objectes[1], objectes[7], objectes[10], objectes[13]] not in botiga:
-#             botiga.append(objectes[1])
-#             botiga.append(objectes[7])
-#             botiga.append(objectes[10])
-#             botiga.append(objectes[13])
-#     if team[0].Lv > 20:
-#         if [objectes[2], objectes[8], objectes[11], objectes[14]] not in botiga:
-#             botiga.append(objectes[2])
-#             botiga.append(objectes[8])
-#             botiga.append(objectes[11])
-#             botiga.append(objectes[14])
-#     if team[0].Lv > 35:
-#         if [objectes[3], objectes[4], objectes[5]] not in botiga:
-#             botiga.append(objectes[3])
-#             botiga.append(objectes[4])
-#             botiga.append(objectes[5])
+def PrepararBotiga(): # Afegir objectes segons nivell
+    global team
+    if team[0].Lv > 35:
+        print()
+    elif team[0].Lv > 20:
+        print()
+    elif team[0].Lv > 10:
+        print()
 
-# def Botiga():
-#     PrepararBotiga()
-#     res = -1
-#     while res not in (range(0, len(botiga) + 2)):
-#         temp = 0
-#         for i in botiga:
-#             print(f"{temp + 1} -> {i.ObjectName}")
-#             print(f"Preu: {i.Preu} gold\n")
-#             temp += 1
-#             if temp == len(botiga):
-#                 print(f"{temp + 1} -> Sortir")
-#         res = int(input("Que vols comprar: "))
-#         if res not in (range(0, len(botiga) + 2)):
-#             print("Has de dir un dels objectes o el numero equivalent a sortir.")
-#     if res == len(botiga) + 1:
-#         print("Has sortit de la botiga...")
-#     else:
-#         qty = 0
-#         res = res -1
-#         while qty < 1:
-#             qty = int(input(f"\nQuants/es {botiga[res].ObjectName} vols comprar: "))
-#         team[0].AfegirObjecte(botiga[res], qty)
-#         team[0].gold -= botiga[res].Preu * qty
-#         print(f"Has comprat {qty} {botiga[res].ObjectName} per {botiga[res].Preu * qty} gold !")
+def Botiga():
+    res = -1
+    while res not in (range(0, len(botiga) + 2)):
+        temp = 0
+        for i in botiga:
+            print(f"{temp + 1} -> {i.ObjectName}")
+            print(f"Preu: {i.Preu} gold\n")
+            temp += 1
+            if temp == len(botiga):
+                print(f"{temp + 1} -> Sortir")
+        res = int(input("Que vols comprar: "))
+        if res not in (range(0, len(botiga) + 2)):
+            print("Has de dir un dels objectes o el numero equivalent a sortir.")
+    if res == len(botiga) + 1:
+        print("Has sortit de la botiga...")
+    else:
+        qty = 0
+        res = res -1
+        while qty < 1:
+            qty = int(input(f"\nQuants/es {botiga[res].ObjectName} vols comprar: "))
+        team[0].AfegirObjecte(botiga[res], qty)
+        team[0].gold -= botiga[res].Preu * qty
+        print(f"Has comprat {qty} {botiga[res].ObjectName} per {botiga[res].Preu * qty} gold !")
 
 def Posada(free = False):
     global team
@@ -1214,10 +1198,10 @@ def Fugir(enemy):
     print("Has intentat Fugir...")
     teamSPD = 0
     for i in team:
-        teamSPD += i.SPD
+        teamSPD += i.StatsCombat["SPD"]
     enemySPD = 0
     for j in enemy:
-        enemySPD += j.SPD
+        enemySPD += j.StatsCombat["SPD"]
     prob = team[0].fleeProb * (teamSPD / enemySPD)   # fleeProb = 75 de base
    
     # 75% base * resultat de velocitat del jugador entre la del enemic. (75 * (22 / 20) = 1.1) = 82.5)

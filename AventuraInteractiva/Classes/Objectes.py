@@ -53,11 +53,14 @@ class ObjecteCombat(Objecte):
                     else:
                         jugador.StatsCombat[k] += ((jugador.StatsCombat[k] * rec) / 100)
                 else:
+                    cur = k
+                    if k == "HP":
+                        cur = "Cur" + k
                     max = "Max" + k
-                    if jugador.StatsCombat[k] + v > jugador.StatsCombat[max]:
-                        jugador.StatsCombat[k] = jugador.StatsCombat[max]
+                    if jugador.StatsCombat[cur] + v > jugador.StatsCombat[max]:
+                        jugador.StatsCombat[cur] = jugador.StatsCombat[max]
                     else:
-                        jugador.StatsCombat[k] += v
+                        jugador.StatsCombat[cur] += v
             if k == "Flee":
                 print("")
             if k in ["ATK","SPD","DEF","INT"]:

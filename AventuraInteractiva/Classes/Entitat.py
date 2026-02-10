@@ -501,7 +501,7 @@ class Entity():
                                     os.system("cls" if os.name == "nt" else "clear")
                                     targetable = []
                                     for i in team:
-                                        if i.CurHP > 0:
+                                        if i.StatsCombat["CurHP"] > 0:
                                             targetable.append(i)
                                     count = 1
                                     for i in targetable:

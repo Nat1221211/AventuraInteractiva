@@ -1,7 +1,7 @@
 Nom;Tipus;Efectes;ForadeCombat?;Descripcio;Preu
-Pocio Inferior; Combat; Health: 10; True; Cura 10 punts de vida; 50
-Pocio; Combat; Health: 30; True; Cura 30 punts de vida.; 50
-Pocio Intermitja; Combat; Health: 70; True; Cura 70 punts de vida.; 50
-Pocio Alta; Combat; Health: 200; True; Cura 200 punts de vida; 50
-Pocio Complerta; Combat; Health: 100%; True; Cura tota la vida.; 50
-Elixir; Combat; Health: 100%, Mana: 100%; True; Cura tota la vida i el poder magic.; 50
+Pocio Inferior; Combat; HP: 10; True; Cura 10 punts de vida; 50
+Pocio; Combat; HP: 30; True; Cura 30 punts de vida.; 50
+Pocio Intermitja; Combat; HP: 70; True; Cura 70 punts de vida.; 50
+Pocio Alta; Combat; HP: 200; True; Cura 200 punts de vida; 50
+Pocio Complerta; Combat; HP: 100%; True; Cura tota la vida.; 50
+Elixir; Combat; HP: 100%| Mana: 100%; True; Cura tota la vida i el poder magic.; 50
