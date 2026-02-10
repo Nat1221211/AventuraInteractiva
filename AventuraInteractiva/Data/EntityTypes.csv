@@ -1,82 +1,82 @@
 Nom;Descripcio;Vida;Mana;ATK;INT;DEF;SPD;Playable?;XP;Groups;Movements
-Guerrer;;160;100;140;40;130;80;TRUE;50;"Human";Tall: 1,  Tall potent: 3,  Tall Llampeg: 10,  Crit de Guerra: 12,  Bloqueig: 5
-Mag;;80;200;60;180;100;100;TRUE;50;"Human";Cop de Basto: 1,  Bola de Foc: 3,  Fletxa de flames: 6,  Fulla de Vent: 6,  Increment: 10,  Javelina de Glaç: 14,  Gravetat: 20
-Arquer;;120;140;140;100;140;120;TRUE;50;"Human";Dispar de Fletxa: 1,  Fletxa Perforant: 3,  Dispar Rapid: 6,  Fletxa Electrica: 22,  Fletxa de Potencia: 33
-Lladre;;120;120;130;100;120;160;TRUE;50;"Human";Tall: 1,  Assalt Llampeg: 3,  Rafaga de Punyalades: 8,  Agilitat: 12
-Llop;;120;40;120;20;100;140;FALSE;30;"Beast";Mossegada: 1,  Urpada: 5
-Slime;;60;60;60;60;60;60;FALSE;20;"Monster";Cop: 1,  Embestir: 6,  Disolucio: 9
-Sombra;;120;120;120;120;120;120;FALSE;200;"Monster";Mossegada: 1
-Llangardaix de Roca;;160;120;160;50;160;100;FALSE;100;"Monster", "Beast";Mossegada: 1,  Cop de Cua: 3,  Aixafar: 5,  Agulles de Terra: 25
-Driade;;100;230;100;250;100;100;FALSE;400;"Spirit";Mossegada: 1
-Treant;;200;140;150;120;150;100;FALSE;400;"Monster";Mossegada: 1
-Golem;;250;100;160;80;200;60;FALSE;500;"Artificial";Mossegada: 1
-Mag de Flames;Un mag centrat en poderosos atacs destructius;60;250;60;220;50;50;FALSE;50;"Human";Mossegada: 1
-Griu;Una bestia llegendaria, amb cap i ales d'aguila i cos de lleó...;200;200;220;160;160;220;FALSE;1000;"Beast", "Monster";Mossegada: 1
-Expert en Armes;Un expert en diverses armes cos a cos, és molt capaç, és una forma millorada del Guerrer...;160;120;180;100;130;100;FALSE;50;"Human";Mossegada: 1
-Caballer;Un expert especialitzat en la resistencia, tot i això te una capacitat ofensiva considerable.;200;60;100;40;260;60;FALSE;50;"Human";Mossegada: 1
-Aventurer;No especialitzat en cap camp en excés, no destaca en cap camp però tampoc és dolent en cap d'ells...;140;120;140;140;115;115;TRUE;50;"Human";Mossegada: 1
-Porc Senglar;;150;40;150;20;140;80;FALSE;35;"Beast";Cop: 1,  Embestir: 5
-Sacerdot;;120;160;80;120;120;120;TRUE;50;"Human";Mossegada: 1
-Sacerdot Guerrer;;200;160;250;180;150;150;FALSE;150;"Human";Mossegada: 1
-Caballer Magic;Un forma avançada de caballeria i magia...;250;160;200;300;180;160;FALSE;150;"Human";Mossegada: 1
-Sant;Una especialitzacio en curacio per part del sacerdot;200;250;80;200;120;100;FALSE;150;"Human";Mossegada: 1
-Sage;Un Mag que ha entes la veritat de la magia;150;280;80;300;120;150;FALSE;150;"Human";Mossegada: 1
-Atacant Veloç;Una disposicio agil permet a un lladre concentrarse en realitzar multiples atacs i acomular dany gradualment;170;100;150;100;120;250;FALSE;150;"Human";Mossegada: 1
-Atacant de Desventatges;Un lladre centrat en atacar aplicant desventatges en els enemics;170;120;110;150;120;200;FALSE;150;"Human";Mossegada: 1
-Arquer Magic;Un arquer centrat en multiples atacs magics i normals;170;160;200;160;120;200;FALSE;150;"Human";Mossegada: 1
-Arquer Potent;Un arquer centrat en el dany per atac mes que en atacar seguit;180;120;200;100;120;50;FALSE;150;"Human";Mossegada: 1
-Conill Cornut;;100;20;80;20;100;110;FALSE;25;"Beast", "Monster";Embestir: 1,  Mossegada: 5
-Fenrir;;400;400;400;400;400;400;FALSE;4000;"Divine", "Beast";Mossegada: 1
-Wight;;120;100;120;40;120;100;FALSE;50;"Spirit", "Monster";Mossegada: 1
-Lich;;200;300;150;250;200;180;FALSE;800;"Spirit", "Monster";Mossegada: 1
-Vampire;;250;200;250;250;200;180;FALSE;800;"Monster", "Human";Mossegada: 1
-Ghoul;;140;100;140;80;130;110;FALSE;75;"Monster";Mossegada: 1
-Aranya de Bosc;;140;40;140;40;120;120;FALSE;50;"Monster";Cop de Cua: 1,  Embestir: 3,  Bola de Foc: 10,  Agulles de Terra: 30
-Wyrm;;180;120;160;160;140;140;FALSE;75;"Monster";Mossegada: 1,  Picada: 4,  Tela d'aranya: 5,  Tela Corrosiva: 10,  Mossegada Verinosa: 24
-Guivern de Gel;;220;250;200;220;220;180;FALSE;500;"Monster";Mossegada: 1
-Guivern;;220;250;220;200;210;190;FALSE;500;"Monster";Mossegada: 1
-Guivern de Roca;;250;220;200;200;260;150;FALSE;500;"Monster";Mossegada: 1
-Guivern de Vent;;220;250;200;200;190;200;FALSE;500;"Monster";Mossegada: 1
-Gran Tortuga;;200;160;150;150;200;80;FALSE;300;"Monster", "Aquatic";Embestir: 1,  Hydromancia: 5,  Esfera d'aigua: 7
-Tortuga Marina;;150;80;120;120;150;60;FALSE;100;"Monster", "Aquatic";Embestir: 1,  Javelina de Glaç: 24,  Hydromancia: 5,  Esfera d'aigua: 7
-Serp Marina;;150;180;150;180;140;120;FALSE;220;"Monster", "Aquatic";Cop de Cua: 1,  Mossegada: 4,  Javelina de Glaç: 24,  Hydromancia: 5,  Esfera d'aigua: 7
-Leviathan;;420;400;400;420;420;300;FALSE;4000;"Divine", "Aquatic";Mossegada: 1
-Cranc Aberrant;;140;100;150;120;130;100;FALSE;150;"Aquatic", "Monster";Cop: 1,  Aixafar: 4
-Gran Cranc Aberrant;;180;150;180;160;180;120;FALSE;370;"Aquatic", "Monster";Cop: 1,  Aixafar: 4,  Javelina de Glaç: 26,  Hydromancia: 5,  Esfera d'aigua: 7
-Os Monstruos;;160;80;160;80;170;110;FALSE;200;"Monster", "Beast";Urpada: 1,  Mossegada: 4
-Os de Fang;;240;240;240;240;240;200;FALSE;600;"Artificial", "Monster";Urpada: 1,  Mossegada: 4,  Agulles de Terra: 30,  Gravetat: 23
-Aguila Terrorifica;;120;120;120;120;100;150;FALSE;100;"Monster", "Beast";Urpada: 1,  Mossegada: 4,  Fulla de Vent: 10
-Aguila Platejada;;170;170;180;120;130;180;FALSE;400;"Spirit", "Beast";Urpada: 1,  Mossegada: 4,  Fulla de Vent: 10,  Tempesta: 30,  Javelina de Glaç: 25
-Ogre;;140;120;150;120;160;130;FALSE;250;"Monster", "Human";Cop: 1,  Tall potent: 4,  Tall Llampeg: 10,  Revestiment de Flames: 24
-Orc;;120;100;110;100;120;80;FALSE;150;"Monster", "Human";Cop: 1,  Dispar de Fletxa: 4
-Goblin;;80;20;80;20;100;120;FALSE;25;"Monster", "Human";Cop: 1,  Dispar de Fletxa: 4
-Formiga Ogre;;120;120;140;100;130;140;FALSE;200;"Monster";Mossegada: 1
-Caball d'Acer;;150;50;140;50;170;170;FALSE;250;"Monster", "Beast";Mossegada: 1
-Gran Slime;;200;200;200;200;200;200;FALSE;500;"Monster";Mossegada: 1
-Golem d'Oricalc;;400;300;350;300;370;150;FALSE;2000;"Artificial", "Divine";Mossegada: 1
-Slime de Ferro;;170;170;170;170;170;160;FALSE;200;"Artificial", "Monster";Mossegada: 1
-Slime d'Oricalc;;400;400;320;350;340;250;FALSE;3000;"Divine", "Monster";Mossegada: 1
-Basilisc;;260;240;260;250;220;230;FALSE;1000;"Monster";Mossegada: 1
-Quimera;;250;250;250;250;250;200;FALSE;1000;"Artificial", "Monster";Mossegada: 1
-Manticora;;240;240;280;240;250;270;FALSE;1000;"Human";Mossegada: 1
-Cor d'Acer Magic;;300;300;280;250;300;50;FALSE;1200;"Human";Mossegada: 1
-Siren;Un ocell amb cap huma, causa terror entre els mariners...;120;120;130;130;100;160;FALSE;200;"Human";Urpada: 1,  Fulla de Vent: 10,  Torbelli: 14
-Ouroboros;;500;500;400;450;500;250;FALSE;5000;"Divine", "Beast";Mossegada: 1
-Jormungandr;;450;400;400;380;450;200;FALSE;4000;"Divine", "Beast";Mossegada: 1
-Walpurgis;;200;500;200;500;300;350;FALSE;4000;"Divine", "Spirit";Mossegada: 1
-Serafi;;300;300;300;300;300;300;FALSE;3000;"Divine", "Spirit";Mossegada: 1
-Golem de Metall;;300;150;250;150;280;100;FALSE;1000;"Artificial";Mossegada: 1
-Sephirot;;450;450;350;420;420;150;FALSE;3800;"Divine", "Beast";Mossegada: 1
-Anogratch;;140;120;140;120;120;140;FALSE;70;"Monster";Mossegada: 1
-Bagragratch;;170;150;170;150;150;170;FALSE;340;"Monster";Mossegada: 1
-Gran aranya;;200;200;220;170;220;160;FALSE;370;"Monster";Mossegada: 1
-Rey Ogre;;250;200;250;200;250;220;FALSE;750;"Monster", "Human";Mossegada: 1
-Oni;;300;300;350;300;320;300;FALSE;3000;"Divine", "Monster";Mossegada: 1
-Vespa Gegant;;150;120;150;120;100;160;FALSE;120;"Monster";Picada: 1,  Mossegada Verinosa: 4
-Granota Verinosa;;120;100;120;100;100;120;FALSE;100;"Monster";Cop: 1,  Mossegada Verinosa: 4
-Gran Granota Verinosa;;160;160;170;150;150;140;FALSE;300;"Monster";Cop: 1,  Mossegada Verinosa: 4
-Vespa General;;170;120;170;140;120;190;FALSE;300;"Monster";Picada: 1,  Mossegada Verinosa: 4
-Verdader Ancestre Vampir;;420;420;400;400;300;300;FALSE;3000;"Divine", "Spirit";Mossegada: 1
-Oneiros;;400;400;450;450;400;370;FALSE;5000;"Divine", "Beast";Mossegada: 1
-Fada;;80;250;10;200;30;200;FALSE;100;"Spirit";Cop: 1
-Gnom;;150;150;150;100;150;120;FALSE;100;"Spirit", "Beast";Cop: 1
+Guerrer;;160;100;140;40;130;80;True;50;Human;Tall: 1 | Tall potent: 3 | Tall Llampeg: 10 | Crit de Guerra: 12 | Bloqueig: 5
+Mag;;80;200;60;180;100;100;True;50;Human;Cop de Basto: 1 | Bola de Foc: 3 | Fletxa de flames: 6 | Fulla de Vent: 6 | Increment: 10 | Javelina de Glaç: 14 | Gravetat: 20
+Arquer;;120;140;140;100;140;120;True;50;Human;Dispar de Fletxa: 1 | Fletxa Perforant: 3 | Dispar Rapid: 6 | Fletxa Electrica: 22 | Fletxa de Potencia: 33
+Lladre;;120;120;130;100;120;160;True;50;Human;Tall: 1 | Assalt Llampeg: 3 | Rafaga de Punyalades: 8 | Agilitat: 12
+Llop;;120;40;120;20;100;140;False;30;Beast;Mossegada: 1 | Urpada: 5
+Slime;;60;60;60;60;60;60;False;20;Monster;Cop: 1 | Embestir: 6 | Disolucio: 9
+Sombra;;120;120;120;120;120;120;False;200;Monster;Mossegada: 1
+Llangardaix de Roca;;160;120;160;50;160;100;False;100;Monster, Beast;Mossegada: 1 | Cop de Cua: 3 | Aixafar: 5 | Agulles de Terra: 25
+Driade;;100;230;100;250;100;100;False;400;Spirit;Mossegada: 1
+Treant;;200;140;150;120;150;100;False;400;Monster;Mossegada: 1
+Golem;;250;100;160;80;200;60;False;500;Artificial;Mossegada: 1
+Mag de Flames;Un mag centrat en poderosos atacs destructius;60;250;60;220;50;50;False;50;Human;Mossegada: 1
+Griu;Una bestia llegendaria, amb cap i ales d'aguila i cos de lleó...;200;200;220;160;160;220;False;1000;Beast, Monster;Mossegada: 1
+Expert en Armes;Un expert en diverses armes cos a cos, és molt capaç, és una forma millorada del Guerrer...;160;120;180;100;130;100;False;50;Human;Mossegada: 1
+Caballer;Un expert especialitzat en la resistencia, tot i això te una capacitat ofensiva considerable.;200;60;100;40;260;60;False;50;Human;Mossegada: 1
+Aventurer;No especialitzat en cap camp en excés, no destaca en cap camp però tampoc és dolent en cap d'ells...;140;120;140;140;115;115;True;50;Human;Mossegada: 1
+Porc Senglar;;150;40;150;20;140;80;False;35;Beast;Cop: 1 | Embestir: 5
+Sacerdot;;120;160;80;120;120;120;True;50;Human;Mossegada: 1
+Sacerdot Guerrer;;200;160;250;180;150;150;False;150;Human;Mossegada: 1
+Caballer Magic;Un forma avançada de caballeria i magia...;250;160;200;300;180;160;False;150;Human;Mossegada: 1
+Sant;Una especialitzacio en curacio per part del sacerdot;200;250;80;200;120;100;False;150;Human;Mossegada: 1
+Sage;Un Mag que ha entes la veritat de la magia;150;280;80;300;120;150;False;150;Human;Mossegada: 1
+Atacant Veloç;Una disposicio agil permet a un lladre concentrarse en realitzar multiples atacs i acomular dany gradualment;170;100;150;100;120;250;False;150;Human;Mossegada: 1
+Atacant de Desventatges;Un lladre centrat en atacar aplicant desventatges en els enemics;170;120;110;150;120;200;False;150;Human;Mossegada: 1
+Arquer Magic;Un arquer centrat en multiples atacs magics i normals;170;160;200;160;120;200;False;150;Human;Mossegada: 1
+Arquer Potent;Un arquer centrat en el dany per atac mes que en atacar seguit;180;120;200;100;120;50;False;150;Human;Mossegada: 1
+Conill Cornut;;100;20;80;20;100;110;False;25;Beast, Monster;Embestir: 1 | Mossegada: 5
+Fenrir;;400;400;400;400;400;400;False;4000;Divine, Beast;Mossegada: 1
+Wight;;120;100;120;40;120;100;False;50;Spirit, Monster;Mossegada: 1
+Lich;;200;300;150;250;200;180;False;800;Spirit, Monster;Mossegada: 1
+Vampire;;250;200;250;250;200;180;False;800;Monster, Human;Mossegada: 1
+Ghoul;;140;100;140;80;130;110;False;75;Monster;Mossegada: 1
+Aranya de Bosc;;140;40;140;40;120;120;False;50;Monster;Cop de Cua: 1 | Embestir: 3 | Bola de Foc: 10 | Agulles de Terra: 30
+Wyrm;;180;120;160;160;140;140;False;75;Monster;Mossegada: 1 | Picada: 4 | Tela d'aranya: 5 | Tela Corrosiva: 10 | Mossegada Verinosa: 24
+Guivern de Gel;;220;250;200;220;220;180;False;500;Monster;Mossegada: 1
+Guivern;;220;250;220;200;210;190;False;500;Monster;Mossegada: 1
+Guivern de Roca;;250;220;200;200;260;150;False;500;Monster;Mossegada: 1
+Guivern de Vent;;220;250;200;200;190;200;False;500;Monster;Mossegada: 1
+Gran Tortuga;;200;160;150;150;200;80;False;300;Monster, Aquatic;Embestir: 1 | Hydromancia: 5 | Esfera d'aigua: 7
+Tortuga Marina;;150;80;120;120;150;60;False;100;Monster, Aquatic;Embestir: 1 | Javelina de Glaç: 24 | Hydromancia: 5 | Esfera d'aigua: 7
+Serp Marina;;150;180;150;180;140;120;False;220;Monster, Aquatic;Cop de Cua: 1 | Mossegada: 4 | Javelina de Glaç: 24 | Hydromancia: 5 | Esfera d'aigua: 7
+Leviathan;;420;400;400;420;420;300;False;4000;Divine, Aquatic;Mossegada: 1
+Cranc Aberrant;;140;100;150;120;130;100;False;150;Aquatic, Monster;Cop: 1 | Aixafar: 4
+Gran Cranc Aberrant;;180;150;180;160;180;120;False;370;Aquatic, Monster;Cop: 1 | Aixafar: 4 | Javelina de Glaç: 26 | Hydromancia: 5 | Esfera d'aigua: 7
+Os Monstruos;;160;80;160;80;170;110;False;200;Monster, Beast;Urpada: 1 | Mossegada: 4
+Os de Fang;;240;240;240;240;240;200;False;600;Artificial, Monster;Urpada: 1 | Mossegada: 4 | Agulles de Terra: 30 | Gravetat: 23
+Aguila Terrorifica;;120;120;120;120;100;150;False;100;Monster, Beast;Urpada: 1 | Mossegada: 4 | Fulla de Vent: 10
+Aguila Platejada;;170;170;180;120;130;180;False;400;Spirit, Beast;Urpada: 1 | Mossegada: 4 | Fulla de Vent: 10 | Tempesta: 30 | Javelina de Glaç: 25
+Ogre;;140;120;150;120;160;130;False;250;Monster, Human;Cop: 1 | Tall potent: 4 | Tall Llampeg: 10 | Revestiment de Flames: 24
+Orc;;120;100;110;100;120;80;False;150;Monster, Human;Cop: 1 | Dispar de Fletxa: 4
+Goblin;;80;20;80;20;100;120;False;25;Monster, Human;Cop: 1 | Dispar de Fletxa: 4
+Formiga Ogre;;120;120;140;100;130;140;False;200;Monster;Mossegada: 1
+Caball d'Acer;;150;50;140;50;170;170;False;250;Monster;Mossegada: 1
+Gran Slime;;200;200;200;200;200;200;False;500;Monster, Human;Mossegada: 1
+Golem d'Oricalc;;400;300;350;300;370;150;False;2000;Artificial, Divine;Mossegada: 1
+Slime de Ferro;;170;170;170;170;170;160;False;200;Artificial, Monster;Mossegada: 1
+Slime d'Oricalc;;400;400;320;350;340;250;False;3000;Divine, Monster;Mossegada: 1
+Basilisc;;260;240;260;250;220;230;False;1000;Monster;Mossegada: 1
+Quimera;;250;250;250;250;250;200;False;1000;Artificial, "Monster";Mossegada: 1
+Manticora;;240;240;280;240;250;270;False;1000;Human;Mossegada: 1
+Cor d'Acer Magic;;300;300;280;250;300;50;False;1200;Human;Mossegada: 1
+Siren;Un ocell amb cap huma, causa terror entre els mariners...;120;120;130;130;100;160;False;200;Human;Urpada: 1 | Fulla de Vent: 10 | Torbelli: 14
+Ouroboros;;500;500;400;450;500;250;False;5000;Divine, Beast;Mossegada: 1
+Jormungandr;;450;400;400;380;450;200;False;4000;Divine, Beast;Mossegada: 1
+Walpurgis;;200;500;200;500;300;350;False;4000;Divine, Spirit;Mossegada: 1
+Serafi;;300;300;300;300;300;300;False;3000;Divine, Spirit;Mossegada: 1
+Golem de Metall;;300;150;250;150;280;100;False;1000;Artificial;Mossegada: 1
+Sephirot;;450;450;350;420;420;150;False;3800;Divine, Beast;Mossegada: 1
+Anogratch;;140;120;140;120;120;140;False;70;Monster;Mossegada: 1
+Bagragratch;;170;150;170;150;150;170;False;340;Monster;Mossegada: 1
+Gran aranya;;200;200;220;170;220;160;False;370;Monster;Mossegada: 1
+Rey Ogre;;250;200;250;200;250;220;False;750;Monster, Human;Mossegada: 1
+Oni;;300;300;350;300;320;300;False;3000;Divine, Monster;Mossegada: 1
+Vespa Gegant;;150;120;150;120;100;160;False;120;Monster;Picada: 1 | Mossegada Verinosa: 4
+Granota Verinosa;;120;100;120;100;100;120;False;100;Monster;Cop: 1 | Mossegada Verinosa: 4
+Gran Granota Verinosa;;160;160;170;150;150;140;False;300;Monster;Cop: 1 | Mossegada Verinosa: 4
+Vespa General;;170;120;170;140;120;190;False;300;Monster;Picada: 1 | Mossegada Verinosa: 4
+Verdader Ancestre Vampir;;420;420;400;400;300;300;False;3000;Divine, Spirit;Mossegada: 1
+Oneiros;;400;400;450;450;400;370;False;5000;Divine, Beast;Mossegada: 1
+Fada;;80;250;10;200;30;200;False;100;Spirit;Cop: 1
+Gnom;;150;150;150;100;150;120;False;100;Spirit, Beast;Cop: 1

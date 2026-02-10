@@ -15,21 +15,23 @@ class Moves():
     Precision = int()
     Type = False
     Cost = int()
-    StatusEffect = list(tuple())
+    Buff = list(tuple())
+    Debuff = list(tuple())
     MultiTarget = False
     Healing = False
     Protective = False
     AutoDamaging = 0
 
     # Metodes
-    def __init__(self, name, description, power, precision, tipo, cost, efect, multitarget = False, healing = False, protective = False, autodamage = 0):
+    def __init__(self, name, description, power, precision, tipo, cost, buff, debuff, multitarget = False, healing = False, protective = False, autodamage = 0):
         self.Name = name
         self.Description = description
         self.Power = power
         self.Precision = precision
         self.Type = tipo
         self.Cost = cost
-        self.StatusEffect = efect
+        self.Buff = buff
+        self.Debuff = debuff
         self.MultiTarget = multitarget
         self.Healing = healing
         self.Protective = protective
@@ -41,10 +43,11 @@ class Effects():
     
     Name = ""
     Description = ""
-    Blocking = bool() # Si impedeix el moviment
+    Blocking = tuple() # Si impedeix el moviment
     Turns = int() # If = 0 es permanent (posada o objecte per eliminar)
     Damage = int()  # Dany percentual num baix...
     StatEffects = tuple()   # Reduccions d'estadistiques i altres...
+    RemainingTurns = 0
     
     
     # Metodes

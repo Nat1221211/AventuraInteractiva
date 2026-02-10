@@ -34,17 +34,21 @@ def CallCSV(cami):
                 for j in range(len(linia)):
                     linia[j] = linia[j].strip()
                     if caps[j].endswith("?"):
-                        linia[j] = bool(linia[j])
+                        if linia[j] == "TRUE":
+                            linia[j] = "True"
+                        elif linia[j] == "FALSE":
+                            linia[j] = "False"
+                        linia[j] = eval(linia[j])
                     elif linia[j].isnumeric():
                         linia[j] = int(linia[j])
                     elif len(linia[j].split(": ")) > 1:
-                        items = linia[j].split(", ").copy()
+                        items = linia[j].split("| ").copy()
                         linia[j] = dict()
                         for v in items:
                             kv = v.split(": ")
                             linia[j][kv[0]] = float(kv[1]) if not kv[1].endswith("%") else kv[1]
-                    elif len(linia[j].split(", ")) > 1:
-                        linia[j] = linia[j].split(", ")
+                    elif len(linia[j].split("| ")) > 1:
+                        linia[j] = linia[j].split("| ")
                     DictData[caps[j]] = linia[j]
                 Data.append(DictData.copy())
             return Data
@@ -53,41 +57,67 @@ def CallCSV(cami):
     except FileNotFoundError:
         print("Ha ocurregut un error carregant el fitxer...")
 
-def CallEntity(trobar):
+def CallEntity(trobar, isPlayer = False):
     entities = CallCSV("Data/EntityTypes.csv")
+    llista = []
     for i in entities:
-        if i["Nom"] == trobar:
+        if i["Nom"] == trobar or isPlayer == True and i["Playable?"] == True:
+
+            moves = {}
+            for m, n in i["Movements"].items():
+                moves[CallMovement(m)]=n
+
             entitat = EntityType.EntityType(i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
-                                  i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
-    return entitat
+                                  i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
+            if isPlayer == True:
+                llista.append(entitat)
+    if isPlayer == True:
+        return llista
+    else:
+        return entitat
 
 def CallEfect(trobar):
-    entities = CallCSV("Data/effects.csv")
-    for i in entities:
+    effects = CallCSV("Data/effects.csv")
+    for i in effects:
         if i["Nom"] == trobar:
-            entitat = Characteristics.Effects(i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
-                                  i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
+            if i["ImpedeixAccions?"] == True:
+                bloqueig = (i["ImpedeixAccions?"], i["ProbabilitatImpedirAccio"])
+            else:
+                bloqueig = (False, 0)
+            entitat = Characteristics.Effects(i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], i["Dany"],
+                                              i["StatAfected"])
     return entitat
 
 def CallMovement(trobar):
-    entities = CallCSV("Data/Movements.csv")
-    for i in entities:
+    movements = CallCSV("Data/Movements.csv")
+    for i in movements:
         if i["Nom"] == trobar:
-            if i["Tipus"] == "Combat":
-                entitat = Characteristics.Moves(i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
-            elif i["Tipus"] == "Clau":
-                entitat = Objectes.ObjecteCombat(i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
-    return entitat
+            Buff = {}
+            if len(i["Buff"]) > 1 and i["Buff"] == list:
+                for j in range(len(i["Buff"])):
+                    Buff[i["Buff"][j]]=i["ProbEfecteBuff"][j]
+            else:
+                Buff[i["Buff"]]=i["ProbEfecteBuff"]
+
+            Debuff = {}
+            if len(i["Debuff"]) > 1 and i["Debuff"] == list:
+                for j in range(len(i["Debuff"])):
+                    Debuff[i["Debuff"][j]]=i["ProbEfecteDebuff"][j]
+            else:
+                Debuff[i["Debuff"]]=i["ProbEfecteDebuff"]
+            move = Characteristics.Moves(i["Nom"], i["Descripcio"], i["Potencia"], i["Precisio"],  i["Magic?"], 
+                                            i["Cost"], Buff, Debuff, i["MultipleObjectiu?"], i["Cura?"], i["Protegeix?"], i["DanyperProteccio"])
+    return move
 
 def CallObject(trobar):
-    entities = CallCSV("Data/Objects.csv")
-    for i in entities:
+    objects = CallCSV("Data/Objects.csv")
+    for i in objects:
        if i["Nom"] == trobar:
             if i["Tipus"] == "Combat":
-                entitat = Objectes.ObjecteCombat(i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
+                obj = Objectes.ObjecteCombat(i["Nom"], i["Descripcio"], i[""], i[""],  i[""], i[""])
             elif i["Tipus"] == "Clau":
-                entitat = Objectes.ObjecteClau(i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], i["Movements"])
-    return entitat
+                obj = Objectes.ObjecteClau(i["Nom"], i["Descripcio"])
+    return obj
 
 def main():
     print("!! - Joc de Preguntes - !!")

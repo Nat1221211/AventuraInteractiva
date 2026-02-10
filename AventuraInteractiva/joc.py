@@ -91,7 +91,7 @@ zones = [
 
         Zones.Zona("Bosc Obscur",
                    "La zona exterior del bosc obscur, d'on es diu que surjeren els monstres...",
-                   "Bosc", {Call.CallEntity("Llop"): 35, Call.CallEntity("Slime"): 40},
+                   "Bosc", {Call.CallEntity("Llop"): 40, Call.CallEntity("Slime"): 60},
                    # Llista amb probabilitat de cada un dels enemics per ordre d'apareixer en grups de fins a 3.
                    # Cada llista representa un enemic, i cada valor la prob per 1, 2, 3 enemics.
                    [[85, 13, 2], [95, 5], [99, 1]], (8, 14), {"Bronze": [(1, 7), 100]}, True),
@@ -259,21 +259,21 @@ zones = [
 
         # Connexions de cada zona
     # Pobles
-zones[0].AddConnections([zones[1], zones[10]])  # Dawn Viallage
-zones[6].AddConnections([zones[1]])  # Silverhorn
-zones[7].AddConnections([zones[18], zones[20]]) # Faylight
-zones[8].AddConnections([zones[16]]) # Lakestar
-zones[9].AddConnections([zones[12]]) # Knightshire
+zones[0].AddConnections([zones[1], zones[6]])  # Dawn Viallage
+# zones[6].AddConnections([zones[1]])  # Silverhorn
+# zones[7].AddConnections([zones[18], zones[20]]) # Faylight
+# zones[8].AddConnections([zones[16]]) # Lakestar
+# zones[9].AddConnections([zones[12]]) # Knightshire
 
 #     # Salvatge
 # zones[1].AddConnections([zones[0], zones[2]])   # Bosc Obscur
 # zones[2].AddConnections([zones[1], zones[3]])   # Profunditats Bosc Obscur
 # zones[3].AddConnections([zones[2], zones[4]])   # Centre Bosc Obscur
 # zones[4].AddConnections([zones[3], zones[5]])   # Muntanyes Origen
-# zones[5].AddConnections([zones[4]]) # Cavernes del origen
-zones[10].AddConnections([zones[0], zones[11]]) # Bosc del SUd
-zones[11].AddConnections([zones[10], zones[12]])    # Rocklink
-zones[12].AddConnections([zones[11], zones[9], zones[13]])  # Camps de Knightshire
+# # zones[5].AddConnections([zones[4]]) # Cavernes del origen
+zones[6].AddConnections([zones[0]]) # Bosc del SUd
+# zones[11].AddConnections([zones[10], zones[12]])    # Rocklink
+# zones[12].AddConnections([zones[11], zones[9], zones[13]])  # Camps de Knightshire
 # zones[13].AddConnections([zones[12], zones[14]])    # Bosc Estelar
 # zones[14].AddConnections([zones[13], zones[15], zones[17]]) # Muntanyes Estelars
 # zones[15].AddConnections([zones[14], zones[16], zones[21]])    # Cami Rocos
@@ -288,82 +288,57 @@ zones[12].AddConnections([zones[11], zones[9], zones[13]])  # Camps de Knightshi
 
 
 
-# Afegir Objectes per Trobar explorant cada zona
-zones[1].AfegirObjectePerTrobar([
-    [objectes[16], [30, 2]],
-    [objectes[1], [40, 3]],
-    [objectes[17], [30, 3]],
-    ])
+# # Afegir Objectes per Trobar explorant cada zona
+# zones[1].AfegirObjectePerTrobar([
+#     [objectes[16], [30, 2]],
+#     [objectes[1], [40, 3]],
+#     [objectes[17], [30, 3]],
+#     ])
 
 
 
 
-# Botiga
-botiga = [objectes[0],
-          objectes[6],
-          objectes[9],
-          objectes[12],
-          objectes[16],
-          objectes[21],
-          ]
+# # Botiga
+# botiga = [objectes[0],
+#           objectes[6],
+#           objectes[9],
+#           objectes[12],
+#           objectes[16],
+#           objectes[21],
+#           ]
 
 
 
     # Exits (Achievements / Logros)
-achievements = [
-    # Cal tenir en compte El Requisit que són els 3 i 4 apartats, essent tipus i quantitat.
-    # També les recompenses, essent quantitat i a que afecten en cas dels statusExit.
+# achievements = [
+#     # Cal tenir en compte El Requisit que són els 3 i 4 apartats, essent tipus i quantitat.
+#     # També les recompenses, essent quantitat i a que afecten en cas dels statusExit.
 
-    # Exits d'estadistiques
-    Exits.StatusExit("Lv 10", "Arriba al nivell 10", "Lv", 10, 5, "AllStats"),
-    Exits.StatusExit("Lv 20", "Arriba al nivell 10", "Lv", 20, 5, "AllStats"),
-    Exits.StatusExit("Lv 30", "Arriba al nivell 10", "Lv", 30, 5, "AllStats"),
-    Exits.StatusExit("Lv 40", "Arriba al nivell 10", "Lv", 40, 5, "AllStats"),
-    Exits.StatusExit("Lv 50", "Arriba al nivell 10", "Lv", 50, 5, "AllStats"),
-    Exits.StatusExit("ATK 50", "Arriba a 50 ATK", "ATK", 50, 3, "ATK"),
-    Exits.StatusExit("ATK 100", "Arriba a 100 ATK", "ATK", 100, 3, "ATK"),
-    Exits.StatusExit("ATK 150", "Arriba a 150 ATK", "ATK", 150, 3, "ATK"),
-    Exits.StatusExit("ATK 200", "Arriba a 200 ATK", "ATK", 200, 3, "ATK"),
-    Exits.StatusExit("DEF 50", "Arriba a 50 ATK", "DEF", 50, 3, "DEF"),
-    Exits.StatusExit("DEF 100", "Arriba a 100 ATK", "DEF", 100, 3, "DEF"),
-    Exits.StatusExit("DEF 150", "Arriba a 150 ATK", "DEF", 150, 3, "DEF"),
-    Exits.StatusExit("DEF 200", "Arriba a 200 ATK", "DEF", 200, 3, "DEF"),
-    Exits.StatusExit("SPD 50", "Arriba a 50 ATK", "SPD", 50, 3, "SPD"),
-    Exits.StatusExit("SPD 100", "Arriba a 100 ATK", "SPD", 100, 3, "SPD"),
-    Exits.StatusExit("SPD 150", "Arriba a 150 ATK", "SPD", 150, 3, "SPD"),
-    Exits.StatusExit("SPD 200", "Arriba a 200 ATK", "SPD", 200, 3, "SPD"),
-    Exits.StatusExit("HP 50", "Arriba a 50 HP", "HP", 50, 5, "HP"),
-    Exits.StatusExit("HP 100", "Arriba a 100 HP", "HP", 100, 5, "HP"),
-    Exits.StatusExit("HP 150", "Arriba a 150 HP", "HP", 150, 5, "HP"),
-    Exits.StatusExit("HP 200", "Arriba a 200 HP", "HP", 200, 5, "HP"),
-]
+#     # Exits d'estadistiques
+#     Exits.StatusExit("Lv 10", "Arriba al nivell 10", "Lv", 10, 5, "AllStats"),
+#     Exits.StatusExit("Lv 20", "Arriba al nivell 10", "Lv", 20, 5, "AllStats"),
+#     Exits.StatusExit("Lv 30", "Arriba al nivell 10", "Lv", 30, 5, "AllStats"),
+#     Exits.StatusExit("Lv 40", "Arriba al nivell 10", "Lv", 40, 5, "AllStats"),
+#     Exits.StatusExit("Lv 50", "Arriba al nivell 10", "Lv", 50, 5, "AllStats"),
+#     Exits.StatusExit("ATK 50", "Arriba a 50 ATK", "ATK", 50, 3, "ATK"),
+#     Exits.StatusExit("ATK 100", "Arriba a 100 ATK", "ATK", 100, 3, "ATK"),
+#     Exits.StatusExit("ATK 150", "Arriba a 150 ATK", "ATK", 150, 3, "ATK"),
+#     Exits.StatusExit("ATK 200", "Arriba a 200 ATK", "ATK", 200, 3, "ATK"),
+#     Exits.StatusExit("DEF 50", "Arriba a 50 ATK", "DEF", 50, 3, "DEF"),
+#     Exits.StatusExit("DEF 100", "Arriba a 100 ATK", "DEF", 100, 3, "DEF"),
+#     Exits.StatusExit("DEF 150", "Arriba a 150 ATK", "DEF", 150, 3, "DEF"),
+#     Exits.StatusExit("DEF 200", "Arriba a 200 ATK", "DEF", 200, 3, "DEF"),
+#     Exits.StatusExit("SPD 50", "Arriba a 50 ATK", "SPD", 50, 3, "SPD"),
+#     Exits.StatusExit("SPD 100", "Arriba a 100 ATK", "SPD", 100, 3, "SPD"),
+#     Exits.StatusExit("SPD 150", "Arriba a 150 ATK", "SPD", 150, 3, "SPD"),
+#     Exits.StatusExit("SPD 200", "Arriba a 200 ATK", "SPD", 200, 3, "SPD"),
+#     Exits.StatusExit("HP 50", "Arriba a 50 HP", "HP", 50, 5, "HP"),
+#     Exits.StatusExit("HP 100", "Arriba a 100 HP", "HP", 100, 5, "HP"),
+#     Exits.StatusExit("HP 150", "Arriba a 150 HP", "HP", 150, 5, "HP"),
+#     Exits.StatusExit("HP 200", "Arriba a 200 HP", "HP", 200, 5, "HP"),
+# ]
     # En els killexit son els grups que s'ha de derrotar i la quantitat, així com el titul recibit en cas de ser titul la
     # recompensa.
-titles = []
-
-
-def CrearTitolsIKillExits():
-    for i in entityGroups.items():
-        slayer =Titles.Titles(f"{i[0]} Slayer", f"Augmenta el dany causat contra enemics de tipus {i[0]}", i[1], 1.3)
-        anihilator = Titles.Titles(f"{i[0]} Anihilator", f"Augmenta el dany causat contra enemics de tipus {i[0]}", i[1], 1.2)
-        terror = Titles.Titles(f"Terror of the {i[0]}", f"Augmenta el dany causat contra enemics de tipus {i[0]}", i[1], 1.5)
-        
-        achievements.append(
-            Exits.KillExit(f"{i[0]} Slayer", f"Derrota 10 entitats de tipus {i[0]}", i[1], 10, "Title", slayer)
-        )
-        achievements.append(
-            Exits.KillExit(f"{i[0]} Anihilator", f"Derrota 50 entitats de tipus {i[0]}", i[1], 50, "Title", anihilator)
-        )
-        achievements.append(
-            Exits.KillExit(f"Terror of the {i[0]}", f"Derrota 100 entitats de tipus {i[0]}", i[1], 100, "Title", terror)
-        )
-
-        titles.append(slayer)
-        titles.append(anihilator)
-        titles.append(terror)
-CrearTitolsIKillExits()
-
-
 missions = [
     # Missions.KillMission("Eliminant el Perill", 
     #                      "Un perillos golem que amenaça el poble, diuen que s'ha vist recentment per el Bosc Obscur.", 
@@ -574,9 +549,9 @@ team = []
 
 team.append(jugador)
 
-# Afegim algun objecte al jugador de base
-team[0].AfegirObjecte(objectes[0], 2)
-team[0].AfegirObjecte(objectes[6], 2)
+# # Afegim algun objecte al jugador de base
+# team[0].AfegirObjecte(objectes[0], 2)
+# team[0].AfegirObjecte(objectes[6], 2)
 
 def AccioMenuPrincipal():
     global team, ubicacio
@@ -608,7 +583,8 @@ def AccioMenuPrincipal():
     elif menu.get(pos) == "Hostal":
         Posada()
     elif menu.get(pos) == "Botiga":
-        Botiga()
+        #Botiga()
+        print("No implementat")
     elif menu.get(pos) == "Estat":
         VeureEstatus()
     elif menu.get(pos) == "Missions":
@@ -618,7 +594,8 @@ def AccioMenuPrincipal():
     elif menu.get(pos) == "Guardar":
         print("")
     elif menu.get(pos) == "Éxits":
-        MostrarExits()
+        #MostrarExits()
+        print("No actualitxat")
     elif menu.get(pos) == "Motxila":
         team[0].ObjectesMochila(team)
     elif menu.get(pos) == "Gremi":
@@ -870,73 +847,73 @@ def ShowMisions(filter, accio):
     return count, llista
 
 
-def MostrarExits():
-    print("Exits")
-    for i in achievements:
-        if i.Obtained == True:
-            obtingut = "Obtingut"
-        else:
-            obtingut = "No Obtingut"
-        print(f"{i.Name}, {obtingut}")
-        if type(i) != Exits.KillExit:
-            print(f"{i.Description} \n")
-        else:
-            print(f"{i.Description}, \n{i.Count} / {i.Quantity}\n")
-    input("Presiona per a continuar...")
+# def MostrarExits():
+#     print("Exits")
+#     for i in achievements:
+#         if i.Obtained == True:
+#             obtingut = "Obtingut"
+#         else:
+#             obtingut = "No Obtingut"
+#         print(f"{i.Name}, {obtingut}")
+#         if type(i) != Exits.KillExit:
+#             print(f"{i.Description} \n")
+#         else:
+#             print(f"{i.Description}, \n{i.Count} / {i.Quantity}\n")
+#     input("Presiona per a continuar...")
 
-def ComprovarExits(enemy):
-    for i in achievements:
-        if i.Obtained == False:
-            if type(i) == Exits.KillExit:
-                i.IncrementCount(enemy)
-            i.Completed(team[0])
-            team[0].AcquiredAchievements.append(i)
+# def ComprovarExits(enemy):
+#     for i in achievements:
+#         if i.Obtained == False:
+#             if type(i) == Exits.KillExit:
+#                 i.IncrementCount(enemy)
+#             i.Completed(team[0])
+#             team[0].AcquiredAchievements.append(i)
 
 
-def PrepararBotiga(): # Afegir objectes segons nivell
-    global team
-    if team[0].Lv > 10:
-        if [objectes[1], objectes[7], objectes[10], objectes[13]] not in botiga:
-            botiga.append(objectes[1])
-            botiga.append(objectes[7])
-            botiga.append(objectes[10])
-            botiga.append(objectes[13])
-    if team[0].Lv > 20:
-        if [objectes[2], objectes[8], objectes[11], objectes[14]] not in botiga:
-            botiga.append(objectes[2])
-            botiga.append(objectes[8])
-            botiga.append(objectes[11])
-            botiga.append(objectes[14])
-    if team[0].Lv > 35:
-        if [objectes[3], objectes[4], objectes[5]] not in botiga:
-            botiga.append(objectes[3])
-            botiga.append(objectes[4])
-            botiga.append(objectes[5])
+# def PrepararBotiga(): # Afegir objectes segons nivell
+#     global team
+#     if team[0].Lv > 10:
+#         if [objectes[1], objectes[7], objectes[10], objectes[13]] not in botiga:
+#             botiga.append(objectes[1])
+#             botiga.append(objectes[7])
+#             botiga.append(objectes[10])
+#             botiga.append(objectes[13])
+#     if team[0].Lv > 20:
+#         if [objectes[2], objectes[8], objectes[11], objectes[14]] not in botiga:
+#             botiga.append(objectes[2])
+#             botiga.append(objectes[8])
+#             botiga.append(objectes[11])
+#             botiga.append(objectes[14])
+#     if team[0].Lv > 35:
+#         if [objectes[3], objectes[4], objectes[5]] not in botiga:
+#             botiga.append(objectes[3])
+#             botiga.append(objectes[4])
+#             botiga.append(objectes[5])
 
-def Botiga():
-    PrepararBotiga()
-    res = -1
-    while res not in (range(0, len(botiga) + 2)):
-        temp = 0
-        for i in botiga:
-            print(f"{temp + 1} -> {i.ObjectName}")
-            print(f"Preu: {i.Preu} gold\n")
-            temp += 1
-            if temp == len(botiga):
-                print(f"{temp + 1} -> Sortir")
-        res = int(input("Que vols comprar: "))
-        if res not in (range(0, len(botiga) + 2)):
-            print("Has de dir un dels objectes o el numero equivalent a sortir.")
-    if res == len(botiga) + 1:
-        print("Has sortit de la botiga...")
-    else:
-        qty = 0
-        res = res -1
-        while qty < 1:
-            qty = int(input(f"\nQuants/es {botiga[res].ObjectName} vols comprar: "))
-        team[0].AfegirObjecte(botiga[res], qty)
-        team[0].gold -= botiga[res].Preu * qty
-        print(f"Has comprat {qty} {botiga[res].ObjectName} per {botiga[res].Preu * qty} gold !")
+# def Botiga():
+#     PrepararBotiga()
+#     res = -1
+#     while res not in (range(0, len(botiga) + 2)):
+#         temp = 0
+#         for i in botiga:
+#             print(f"{temp + 1} -> {i.ObjectName}")
+#             print(f"Preu: {i.Preu} gold\n")
+#             temp += 1
+#             if temp == len(botiga):
+#                 print(f"{temp + 1} -> Sortir")
+#         res = int(input("Que vols comprar: "))
+#         if res not in (range(0, len(botiga) + 2)):
+#             print("Has de dir un dels objectes o el numero equivalent a sortir.")
+#     if res == len(botiga) + 1:
+#         print("Has sortit de la botiga...")
+#     else:
+#         qty = 0
+#         res = res -1
+#         while qty < 1:
+#             qty = int(input(f"\nQuants/es {botiga[res].ObjectName} vols comprar: "))
+#         team[0].AfegirObjecte(botiga[res], qty)
+#         team[0].gold -= botiga[res].Preu * qty
+#         print(f"Has comprat {qty} {botiga[res].ObjectName} per {botiga[res].Preu * qty} gold !")
 
 def Posada(free = False):
     global team
@@ -954,9 +931,9 @@ def Posada(free = False):
             if free == False:
                 team[0].gold -= 100
             for i in team:
-                i.CurHP = i.MaxHP
-                i.Mana = i.MaxMana
-                i.afected = "None"
+                i.StatsCombat["CurHP"] = i.StatsCombat["MaxHP"]
+                i.StatsCombat["Mana"] = i.StatsCombat["MaxMana"]
+                i.afected = ["None"]
         else:
             print("No tens suficient gold per pagar la posada, has marxat sense poder descansar...")
     else:
@@ -1135,7 +1112,7 @@ def MenuAtacar(jug):
                 print("Has sortit")
             else:
                 use = jug.Moves[res - 1]
-                if use.Cost > jug.Mana:
+                if use.Cost > jug.StatsCombat["Mana"]:
                     print("No tens suficient Mana per a realitzar aquest atac...")
                     input("Presiona per a continuar...")
                     return None
@@ -1187,7 +1164,7 @@ def AccionsLluita(jug, enemy, enemyderr):
                 for i in range(len(team)):
                     if team[i] == target or target == "All":
                         team[i] = jug.MoveProtHeal(team[i], move)
-            jug.Mana -= move.Cost
+            jug.StatsCombat["Mana"] -= move.Cost
         if move == None or target == False:
             turn = True
     elif accio == 2:
@@ -1212,7 +1189,7 @@ def TriarObjectius(list):
         ClearScreen()
         targetable = []
         for i in list:
-            if i.CurHP > 0:
+            if i.StatsCombat["CurHP"] > 0:
                 targetable.append(i)
         count = 1
         for i in targetable:
@@ -1291,60 +1268,63 @@ def GenerarEnemic():
     Lluitar(enemy)
 
 def ComprobarEfectEstat(entitat, derr):
-    if entitat.afected != "None":
-        if entitat.timer <= 0 and entitat.afected.Turns > 0:
-            statsafected = entitat.afected.StatEffects[1][0]
-            efectname = entitat.afected.Name
-            entitat.afected = "None"
-            entitat.BuffTempStats(0, statsafected)
-            print(f"{entitat.nom}, ja no esta afectat per {efectname}, les seves estadistiques han retornat al que eren...")
-        else:
-            if entitat.afected.Damaging == True:
-                damagepereffect = ((entitat.MaxHP / 100) * entitat.afected.Damage)
-                entitat.CurHP -= damagepereffect
-                print(f"{entitat.nom}, ha perdut {damagepereffect} HP degut a la {entitat.afected.Name}.")
-                if entitat.CurHP <= 0:
-                    print(f"{entitat.nom}, ha estat derrotat per {entitat.afected.Name}.")
-                    derr += 1
-            entitat.timer -= 1
+    if entitat.afected[0] != "None":
+        eliminar = []
+        for i in entitat.afected:
+            if i.RemainingTurns <= 0 and i.Turns > 0:
+                statsafected = entitat.afected.StatEffects[1][0]
+                eliminar.append(i)
+                # Regenerar Estadistiques
+                print(f"{entitat.nom}, ja no esta afectat per {i.Name}, les seves estadistiques han retornat al que eren...")
+            else:
+                if i.Damaging == True:
+                    damagepereffect = ((entitat.StatsCombat["MaxHP"] / 100) * i.Damage)
+                    entitat.StatsCombat["CurHP"] -= damagepereffect
+                    print(f"{entitat.nom}, ha perdut {damagepereffect} HP degut a la {i.Name}.")
+                    if entitat.StatsCombat["CurHP"] <= 0:
+                        print(f"{entitat.nom}, ha estat derrotat per {i.Name}.")
+                        derr += 1
+                i.RemainingTurns -= 1
+        for j in eliminar:
+            entitat.afected.remove(j)
     return entitat, derr
 
 def PrioritatInicial(enemy):
-    maxSpeedPlayer = max(team, key=lambda j: j.SPD)
-    maxSpeedEnemies = max(enemy, key=lambda e: e.SPD)
+    maxSpeedPlayer = max(team, key=lambda j: j.StatsCombat["SPD"])
+    maxSpeedEnemies = max(enemy, key=lambda e: e.StatsCombat["SPD"])
 
-    maxSpeed = max(maxSpeedPlayer.SPD, maxSpeedEnemies.SPD)
+    maxSpeed = max(maxSpeedPlayer.StatsCombat["SPD"], maxSpeedEnemies.StatsCombat["SPD"])
 
     for i in range(len(team)):
-        if team[i].SPD == maxSpeed:
+        if team[i].StatsCombat["SPD"] == maxSpeed:
             team[i].Priority = 100
         else:
-            team[i].Priority = (team[i].SPD / maxSpeed) * 100
+            team[i].Priority = (team[i].StatsCombat["SPD"] / maxSpeed) * 100
     
     for j in range(len(enemy)):
-        if enemy[j].SPD == maxSpeed:
+        if enemy[j].StatsCombat["SPD"] == maxSpeed:
             enemy[j].Priority = 100
         else:
-            enemy[j].Priority = (enemy[j].SPD / maxSpeed) * 100
+            enemy[j].Priority = (enemy[j].StatsCombat["SPD"] / maxSpeed) * 100
 
     return enemy
 
 def IncrementarPrioritat(enemy):
     global team
     for i in range(len(team)):
-        if team[i].CurHP > 0:
-            team[i].Priority += team[i].SPD / 300  
+        if team[i].StatsCombat["CurHP"] > 0:
+            team[i].Priority += team[i].StatsCombat["SPD"] / 300  
     
     for j in range(len(enemy)):
-        if enemy[j].CurHP > 0:
-            enemy[j].Priority += enemy[j].SPD / 300
+        if enemy[j].StatsCombat["CurHP"] > 0:
+            enemy[j].Priority += enemy[j].StatsCombat["SPD"] / 300
     return enemy
 
 def BattleScreenShow(teamlist):
     teamlis = teamlist[:]
 
     for i in teamlis:
-        if i.CurHP < 0:
+        if i.StatsCombat["CurHP"] < 0:
             teamlis.remove(i)
 
     for i in teamlis:
@@ -1356,45 +1336,45 @@ def BattleScreenShow(teamlist):
     
     print()
     for i in teamlis:
-        llarg = len(f"HP: {round(i.CurHP, 2)} / {round(i.MaxHP, 2)}")
+        llarg = len(f"HP: {round(i.StatsCombat["CurHP"], 2)} / {round(i.StatsCombat["MaxHP"], 2)}")
         espaiat = ""
         for j in range(30 - llarg):
             espaiat += " "
-        print(f"HP: {round(i.CurHP, 2)} / {round(i.MaxHP, 2)}", end=espaiat)
+        print(f"HP: {round(i.StatsCombat["CurHP"], 2)} / {round(i.StatsCombat["MaxHP"], 2)}", end=espaiat)
     
     saltdeLinia = False
     for i in teamlis:
         if i.isPlayer == True:
             if saltdeLinia == False:
                 print()
-            llarg = len(f"Mana: {round(i.Mana, 2)} / {round(i.MaxMana, 2)}")
+            llarg = len(f"Mana: {round(i.StatsCombat["Mana"], 2)} / {round(i.StatsCombat["MaxMana"], 2)}")
             espaiat = ""
             for j in range(30 - llarg):
                 espaiat += " "
-            print(f"Mana: {round(i.Mana, 2)} / {round(i.MaxMana, 2)}", end=espaiat)
+            print(f"Mana: {round(i.StatsCombat["Mana"], 2)} / {round(i.StatsCombat["MaxMana"], 2)}", end=espaiat)
             saltdeLinia = True
 
-    saltdeLinia = False
-    for i in range(len(teamlis)):
-        if teamlis[i].afected != "None":
-            if saltdeLinia == False:
-                print()
-            llarg = len(f"{teamlis[i].afected.Name}")
-            espaiat = ""
-            for j in range(30 - llarg):
-                espaiat += " "
-            print(f"{teamlis[i].afected.Name}", end=espaiat)
-            saltdeLinia = True
-        else:
-            afectats = False
-            for k in range(i, len(teamlis)):
-                if teamlis[k].afected != "None":
-                    afectats = True
-            if afectats == True:
-                espaiat = ""
-                for j in range(30):
-                    espaiat += " "
-                print(espaiat, end="")
+    # saltdeLinia = False
+    # for i in range(len(teamlis)):
+    #     if teamlis[i].afected != "None":
+    #         if saltdeLinia == False:
+    #             print()
+    #         llarg = len(f"{teamlis[i].afected.Name}")
+    #         espaiat = ""
+    #         for j in range(30 - llarg):
+    #             espaiat += " "
+    #         print(f"{teamlis[i].afected.Name}", end=espaiat)
+    #         saltdeLinia = True
+    #     else:
+    #         afectats = False
+    #         for k in range(i, len(teamlis)):
+    #             if teamlis[k].afected != "None":
+    #                 afectats = True
+    #         if afectats == True:
+    #             espaiat = ""
+    #             for j in range(30):
+    #                 espaiat += " "
+    #             print(espaiat, end="")
     
     print()
     for i in teamlis:
@@ -1406,11 +1386,17 @@ def BattleScreenShow(teamlist):
         saltdeLinia = True
     print("\n")
 
+def PrepararPerCombat():
+    for i in team:
+        i.DefinirCombatStats()
+
 def Lluitar(enemy):
     global team, ubicacio
 
     teamderr = 0
     enemyderr = 0
+
+    PrepararPerCombat()
 
     enemy = PrioritatInicial(enemy)
 
@@ -1439,7 +1425,7 @@ def Lluitar(enemy):
         # Turn Aliat
         
         for i in range(len(team)):
-            if team[i].Priority >= 100 and len(enemy) >= 1 and team[i].CurHP > 0 and combat == True:
+            if team[i].Priority >= 100 and len(enemy) >= 1 and team[i].StatsCombat["CurHP"] > 0 and combat == True:
                 ClearScreen()
                 BattleScreenShow(team)
                 BattleScreenShow(enemy)
@@ -1456,14 +1442,14 @@ def Lluitar(enemy):
 
         # Turn enemic
         for j in range(len(enemy)):
-            if enemy[j].Priority >= 100 and fugir[0] == False and len(team) >= 1 and enemy[j].CurHP > 0 and combat == True:
+            if enemy[j].Priority >= 100 and fugir[0] == False and len(team) >= 1 and enemy[j].StatsCombat["CurHP"] > 0 and combat == True:
                 ClearScreen()
                 BattleScreenShow(team)
                 BattleScreenShow(enemy)
                 enemyMove = random.choice(enemy[j].Moves)
                 targetable = []
                 for e in team:
-                    if e.CurHP > 0:
+                    if e.StatsCombat["CurHP"] > 0:
                         targetable.append(e)
                 target = random.choice(range(len(targetable)))
                 protegitPer = None
@@ -1495,13 +1481,13 @@ def ComprobarFiCombat(combat, enemyderr, enemy, teamderr):
 
 def DescartarDerrotats(p, derr):
     global team
-    if p.CurHP <= 0:
+    if p.StatsCombat["CurHP"] <= 0:
         derr += 1
         if p.isPlayer == False:
             ClearScreen()
             alive = 0
             for i in range(len(team)): 
-                if team[i].CurHP > 0:
+                if team[i].StatsCombat["CurHP"] > 0:
                     team[i].LvlUp(p)
                     alive += 1
             if alive >= 1:
@@ -1514,36 +1500,36 @@ def Comprovacions(enemy):
     for i in missions:
         if type(i) == Missions.KillMission:
             i.IncrementCount(enemy)
-    for i in achievements:
-        if i.Obtained == False:
-            if type(i) == Exits.KillExit:
-                i.IncrementCount(enemy)
-            i.Completed(team[0])
-            team[0].AcquiredAchievements.append(i)
+    # for i in achievements:
+    #     if i.Obtained == False:
+    #         if type(i) == Exits.KillExit:
+    #             i.IncrementCount(enemy)
+    #         i.Completed(team[0])
+    #         team[0].AcquiredAchievements.append(i)
     for i in team:
         i.ComprovarSubClassesDisponibles()
 
 def finalitzarCombat(clon):
     global team
     for i in range(len(team)):
-        team[i].DefinirTempStats()
-        team[i].ResetBuffs()
+        # team[i].DefinirTempStats()
+        # team[i].ResetBuffs()
         if team[i] in clon:
             for j in clon:
                 if j == team[i]:
-                    team[i].CurHP = j.CurHP
-                    team[i].Mana = j.Mana
+                    team[i].StatsCombat["CurHP"] = j.StatsCombat["CurHP"]
+                    team[i].StatsCombat["Mana"] = j.StatsCombat["Mana"]
         else:
-            team[i].CurHP = 0
-            team[i].Mana = 0
+            team[i].StatsCombat["CurHP"] = 0
+            team[i].StatsCombat["Mana"] = 0
 
 
         
 def EntityState(entity):
     print(f"{entity.nom}, LV: {entity.Lv}")
-    print(f"HP: {round(entity.CurHP, 2)} / {round(entity.MaxHP, 2)}", f", Mana: {round(entity.Mana, 2)} / {round(entity.MaxMana, 2)}" if entity.isPlayer == True else "")
-    if entity.afected != "None":
-        print(f"{entity.afected.Name}")
+    print(f"HP: {round(entity.StatsCombat["CurHP"], 2)} / {round(entity.StatsCombat["MaxHP"], 2)}", f", Mana: {round(entity.StatsCombat["Mana"], 2)} / {round(entity.StatsCombat["MaxMana"], 2)}" if entity.isPlayer == True else "")
+    # if entity.afected != "None":
+    #     print(f"{entity.afected.Name}")
     print(f"Prioritat: {round(entity.Priority, 1)}")
     print("")
 
@@ -1558,13 +1544,13 @@ def main():
             AccioMenuPrincipal()
             alive = 0
             for i in team:
-                if i.CurHP > 0:
+                if i.StatsCombat["CurHP"] > 0:
                     alive += 1
         print(f"Has estat derrotat, t'han trobat i ara estas en la posada del ultim poble per el que has passat...")
         Posada(True)
-        if PostGame == False and objectes[15] in team[0].objectes.keys(): # Es pot eliminar aquest easter egg eliminant la funcio EasterEgg() i les 3 linies baix aquesta.
-            PostGame = True   # Faria falta eliminar també el bool Easter dins el main()
-            EasterEgg()
+        # if PostGame == False and objectes[15] in team[0].objectes.keys(): # Es pot eliminar aquest easter egg eliminant la funcio EasterEgg() i les 3 linies baix aquesta.
+        #     PostGame = True   # Faria falta eliminar també el bool Easter dins el main()
+        #     EasterEgg()
 
 def EasterEgg():
     global team
