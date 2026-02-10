@@ -227,66 +227,9 @@ class Entity():
                 self.StatsCombat[k] *= (1 + (v / 100))
 
     
-    # def BuffTempStats(self, buff, statbuffed):
-    #     self.DefinirTempStats()
-    #     basebuff = buff
-    #     for i in statbuffed:
-    #         buff = basebuff
-    #         if buff >= 1:
-    #             buff -= 1
-    #             print(f"La estadistica {i} de {self.nom} s'ha incrementat en {abs(buff * 100)}%")
-    #         else:
-    #             buff = -(abs(buff))
-    #             print(f"La estadistica {i} de {self.nom} s'ha reduit en {abs(buff * 100)}%")
-    #         if i == "ATK":
-    #             self.buffATK += buff
-    #             if self.buffATK < 0.5:
-    #                 self.buffATK = 0.5
-    #             elif self.buffATK > 4:
-    #                 self.buffATK = 4
-    #             self.tempATK *= self.buffATK
-    #         if i == "INT":
-    #             self.buffINT += buff
-    #             if self.buffINT < 0.5:
-    #                 self.buffINT = 0.5
-    #             elif self.buffINT > 4:
-    #                 self.buffINT = 4
-    #             self.tempINT *= self.buffINT
-    #         if i == "SPD":
-    #             self.buffSPD += buff
-    #             if self.buffSPD < 0.5:
-    #                 self.buffSPD = 0.5
-    #             elif self.buffSPD > 4:
-    #                 self.buffSPD = 4
-    #             self.tempSPD *= self.buffSPD
-    #         if i == "DEF":
-    #             self.buffDEF += buff
-    #             if self.buffDEF < 0.5:
-    #                 self.buffDEF = 0.5
-    #             elif self.buffDEF > 4:
-    #                 self.buffDEF = 4
-    #             self.tempDEF *= self.buffDEF
-    #     if self.afected != "None":
-    #         self.StatusEffectStatReduction()
-    
-    # def ResetBuffs(self):
-    #     self.buffATK = 1
-    #     self.buffINT = 1
-    #     self.buffSPD = 1
-    #     self.buffDEF = 1
-    
-    # def StatusEffectStatReduction(self):
-    #     if self.afected.StatEffects[0] != "None":
-    #         for i in self.afected.StatEffects[1][0]:
-    #             if i == "ATK":
-    #                 self.tempATK *= (1 - self.afected.StatEffects[1][1])
-    #             if i == "INT":
-    #                 self.tempINT *= (1 - self.afected.StatEffects[1][1])
-    #             if i == "SPD":
-    #                 self.tempSPD *= (1 - self.afected.StatEffects[1][1])
-    #             if i == "DEF":
-    #                 self.tempDEF *= (1 - self.afected.StatEffects[1][1])
-    #             print(f"La estadistica {i} de {self.nom} s'ha reduit en {abs(self.afected.StatEffects[1][1] * 100)}%")
+    def ChangeCombatStats(self, changes):
+        for k, v in changes.items():
+            self.StatsCombat[k] *= v
     
     
     def ApplyStatusEffects(self, effect, prob):

@@ -114,7 +114,7 @@ def CallObject(trobar):
     for i in objects:
        if i["Nom"] == trobar:
             if i["Tipus"] == "Combat":
-                obj = Objectes.ObjecteCombat(i["Nom"], i["Descripcio"], i[""], i[""],  i[""], i[""])
+                obj = Objectes.ObjecteCombat(i["Nom"], i["Descripcio"], i["Efectes"], i["Preu"],  i["ForadeCombat?"])
             elif i["Tipus"] == "Clau":
                 obj = Objectes.ObjecteClau(i["Nom"], i["Descripcio"])
     return obj

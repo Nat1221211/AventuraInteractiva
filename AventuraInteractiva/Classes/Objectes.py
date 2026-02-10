@@ -31,33 +31,34 @@ class ObjecteClau(Objecte):
 
 class ObjecteCombat(Objecte):
 
-    TypeEffect = [] # Si afecta a curar, augment d'estadistiques, fugida, etc...
-    EffectQuantity = int()  # Quantitat del efecte (curació, augment d'estadistiques, etc. La quantitat)
+    Effects = {}    # Efectes i increment d'aquests...
     Preu = int()
     OutCombat = False
 
     # Metodes
-    def __init__(self, name, description, TypeEffect, effectquantity, price, usableoutcombat = False):
+    def __init__(self, name, description, effects, price, usableoutcombat = False):
         self.ObjectName = name
         self.ObjectDescription = description
-        self.TypeEffect = TypeEffect
-        self.EffectQuantity = effectquantity
+        self.Effects = effects
         self.Preu = price
         self.OutCombat = usableoutcombat
     
     def Utilitzar(self, jugador):
-        for i in self.TypeEffect:
-            if i == "Health":
-                if jugador.CurHP + self.EffectQuantity > jugador.MaxHP:
-                    jugador.CurHP = jugador.MaxHP
+        for k, v in self.Effects.items():
+            if k in ["HP", "Mana"]:
+                if v == str and v.endswith("%"):
+                    rec = int(v.replace("%", ""))
+                    if jugador.StatsCombat[k] + ((jugador.StatsCombat[k] * rec) / 100) > jugador.StatsCombat[max]:
+                        jugador.StatsCombat[k] = jugador.StatsCombat[max]
+                    else:
+                        jugador.StatsCombat[k] += ((jugador.StatsCombat[k] * rec) / 100)
                 else:
-                    jugador.CurHP += self.EffectQuantity
-            if i == "Mana":
-                if jugador.Mana + self.EffectQuantity > jugador.MaxMana:
-                    jugador.Mana = jugador.MaxMana
-                else:
-                    jugador.Mana += self.EffectQuantity
-            if i == "Flee":
+                    max = "Max" + k
+                    if jugador.StatsCombat[k] + v > jugador.StatsCombat[max]:
+                        jugador.StatsCombat[k] = jugador.StatsCombat[max]
+                    else:
+                        jugador.StatsCombat[k] += v
+            if k == "Flee":
                 print("")
-            if i in ["ATK","SPD","DEF","INT"]:
-                jugador.BuffTempStats(self.EffectQuantity, [i])
+            if k in ["ATK","SPD","DEF","INT"]:
+                print()
