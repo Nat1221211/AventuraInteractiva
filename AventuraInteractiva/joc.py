@@ -1426,16 +1426,18 @@ def Lluitar(enemy):
         
         for i in range(len(team)):
             if team[i].Priority >= 100 and len(enemy) >= 1 and team[i].StatsCombat["CurHP"] > 0 and combat == True:
-                ClearScreen()
-                BattleScreenShow(team)
-                BattleScreenShow(enemy)
-                turn = False
-                team[i], enemy, turn, fugir, enemyderr = AccionsLluita(team[i], enemy, enemyderr)
-                if fugir[0] == False:
-                    team[i], teamderr = ComprobarEfectEstat(team[i], teamderr)
-                if turn == False:
-                    team[i].Priority = 0
-                input("\nPresiona per a continuar...")
+                turn = True
+                while turn == True:
+                    ClearScreen()
+                    BattleScreenShow(team)
+                    BattleScreenShow(enemy)
+                    turn = False
+                    team[i], enemy, turn, fugir, enemyderr = AccionsLluita(team[i], enemy, enemyderr)
+                    if fugir[0] == False:
+                        team[i], teamderr = ComprobarEfectEstat(team[i], teamderr)
+                    if turn == False:
+                        team[i].Priority = 0
+                    input("\nPresiona per a continuar...")
                 ClearScreen()
             if combat == True:
                 combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr)
@@ -1548,6 +1550,7 @@ def main():
                     alive += 1
         print(f"Has estat derrotat, t'han trobat i ara estas en la posada del ultim poble per el que has passat...")
         Posada(True)
+        input("Presiona per a continuar...")
         # if PostGame == False and objectes[15] in team[0].objectes.keys(): # Es pot eliminar aquest easter egg eliminant la funcio EasterEgg() i les 3 linies baix aquesta.
         #     PostGame = True   # Faria falta eliminar també el bool Easter dins el main()
         #     EasterEgg()

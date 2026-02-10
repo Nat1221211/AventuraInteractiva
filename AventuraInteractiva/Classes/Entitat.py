@@ -19,41 +19,6 @@ class Entity():
     Lv = int()
     LvLimit = int()
 
-    # Stats
-    StatsBase = {
-        "MaxHP": int(),
-        "CurHP": int(),
-        "MaxMana": int(),
-        "Mana": int(),
-        "ATK": int(),
-        "INT": int(),
-        "DEF": int(),
-        "SPD": int()
-    }
-
-    StatsPermanents = {
-        "MaxHP": {"%": int(), "Flat": int()},
-        "CurHP": {"%": int(), "Flat": int()},
-        "MaxMana": {"%": int(), "Flat": int()},
-        "Mana": {"%": int(), "Flat": int()},
-        "ATK": {"%": int(), "Flat": int()},
-        "INT": {"%": int(), "Flat": int()},
-        "DEF": {"%": int(), "Flat": int()},
-        "SPD": {"%": int(), "Flat": int()},
-    }
-
-    StatsCombat = {
-        "MaxHP": int(),
-        "CurHP": int(),
-        "MaxMana": int(),
-        "Mana": int(),
-        "ATK": int(),
-        "INT": int(),
-        "DEF": int(),
-        "SPD": int()
-    }
-    
-
     # Characteristics
     Moves = list()
     PastClasses = []
@@ -88,7 +53,43 @@ class Entity():
         self.LvLimit = limit
         self.base = BaseEntity
         self.Moves = list()
+
+            # Stats
+        self.StatsBase = {
+            "MaxHP": int(),
+            "CurHP": int(),
+            "MaxMana": int(),
+            "Mana": int(),
+            "ATK": int(),
+            "INT": int(),
+            "DEF": int(),
+            "SPD": int()
+        }
+
+        self.StatsPermanents = {
+            "MaxHP": {"%": int(), "Flat": int()},
+            "CurHP": {"%": int(), "Flat": int()},
+            "MaxMana": {"%": int(), "Flat": int()},
+            "Mana": {"%": int(), "Flat": int()},
+            "ATK": {"%": int(), "Flat": int()},
+            "INT": {"%": int(), "Flat": int()},
+            "DEF": {"%": int(), "Flat": int()},
+            "SPD": {"%": int(), "Flat": int()},
+        }
+
+        self.StatsCombat = {
+            "MaxHP": int(),
+            "CurHP": int(),
+            "MaxMana": int(),
+            "Mana": int(),
+            "ATK": int(),
+            "INT": int(),
+            "DEF": int(),
+            "SPD": int()
+        }
+
         self.DefinirStats()
+        self.DefinirCombatStats()
         if IsPlayer == False:
             if nom == "":
                 if "Human" in self.base.EntityGroup:
@@ -204,7 +205,6 @@ class Entity():
             self.StatsBase["Mana"] = self.StatsBase["MaxMana"]
             self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
             self.afected = ["None"]
-        self.DefinirCombatStats()
         self.DefinirMoves()
     
     def DefinirPermanentStats(self, permanentbuff):
@@ -473,6 +473,7 @@ class Entity():
                 self.Lv += 1
                 print(f"{self.nom} ha pujat de nivell... Ara es nivell {self.Lv}")
                 self.DefinirStats(True)
+                self.DefinirCombatStats()
                 self.Xp -= self.XpRequired
                 self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
                 if self.PostGame == True:
