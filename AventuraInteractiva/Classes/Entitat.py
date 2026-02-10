@@ -5,8 +5,8 @@
 # Creem la classe entitat.
 
 import random
-import EntityType
-import Objectes
+from Classes import EntityType
+from Classes import Objectes
 
 import os
 
@@ -19,37 +19,16 @@ class Entity():
     Lv = int()
     LvLimit = int()
 
-    # Stats
-    MaxHP = int()
-    CurHP = int()
-    MaxMana = int()
-    Mana = int() 
-    ATK = int()
-    INT = int()
-    DEF = int()
-    SPD = int()
-
     # Characteristics
     Moves = list()
-    subclass = None
+    PastClasses = []
     subAcquirable = False
-
-    # temp stats / effects
-    tempATK = int()
-    tempINT = int()
-    tempDEF = int()
-    tempSPD = int()
-    buffATK = 1
-    buffINT = 1
-    buffSPD = 1
-    buffDEF = 1
 
     # Combat Priority Variables
     Priority = int()
     Protected = False
     ProtectedBy = tuple()
-    afected = "None"
-    timer = 0
+    afected = ["None"]
 
     # Xp
     Xp = 0
@@ -67,27 +46,61 @@ class Entity():
     PostGame = False
 
     # Metodes
-    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10, subclass = None, paths = None, post = False):
+    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10, subclass = None, post = False):
         self.nom = nom
         self.Lv = level
         self.isPlayer = IsPlayer
         self.LvLimit = limit
         self.base = BaseEntity
         self.Moves = list()
+
+            # Stats
+        self.StatsBase = {
+            "MaxHP": int(),
+            "CurHP": int(),
+            "MaxMana": int(),
+            "Mana": int(),
+            "ATK": int(),
+            "INT": int(),
+            "DEF": int(),
+            "SPD": int()
+        }
+
+        self.StatsPermanents = {
+            "MaxHP": {"%": int(), "Flat": int()},
+            "CurHP": {"%": int(), "Flat": int()},
+            "MaxMana": {"%": int(), "Flat": int()},
+            "Mana": {"%": int(), "Flat": int()},
+            "ATK": {"%": int(), "Flat": int()},
+            "INT": {"%": int(), "Flat": int()},
+            "DEF": {"%": int(), "Flat": int()},
+            "SPD": {"%": int(), "Flat": int()},
+        }
+
+        self.StatsCombat = {
+            "MaxHP": int(),
+            "CurHP": int(),
+            "MaxMana": int(),
+            "Mana": int(),
+            "ATK": int(),
+            "INT": int(),
+            "DEF": int(),
+            "SPD": int()
+        }
+
         self.DefinirStats()
-        self.CurHP = self.MaxHP
+        self.DefinirCombatStats()
         if IsPlayer == False:
             if nom == "":
                 if "Human" in self.base.EntityGroup:
                     self.nom = "Bandit"
                 else:
                     self.nom = self.base.EntityName
-            self.gold = gold
+        self.gold = gold
         self.objectes = objectes
         self.PostGame = post
-        self.afected = "None"
-        self.subclass = subclass
-        self.paths = paths
+        self.afected = ["None"]
+        self.subclass = [subclass]
     
     def ComprovarSubClassesDisponibles(self):
         for i in self.base.paths.items():
@@ -146,20 +159,22 @@ class Entity():
             print("Pots tornar a accedir-hi desde el menu d'estat...")
             input("Presiona per a continuar...")
         else:
-            self.subclass = disponible[sel - 1]
+            self.PastClasses.append(self.base)
+            self.base = disponible[sel - 1]
             self.subAcquirable = False
             self.DefinirStats(True)
 
 
         
     def DefinirMoves(self):
-        for i in self.base.EntityMoves.items():
-            if i[1] <= self.Lv and i[0] not in self.Moves:
-                self.Moves.append(i[0])
-        if self.subclass != None:
-            for i in self.subclass.EntityMoves.items():
-                if i[1] <= self.Lv and i[0] not in self.Moves:
-                    self.Moves.append(i[0])
+        for k in self.base.EntityMoves.items():
+            if k[1] <= self.Lv and k[0] not in self.Moves:
+                self.Moves.append(k[0])
+        if len(self.PastClasses) > 0:
+            for i in self.PastClasses:
+                for j in i.EntityMoves.items():
+                    if j[1] <= self.Lv and j[0] not in self.Moves:
+                        self.Moves.append(j[0])
 
     def DefinirStats(self,LvOrNot = False):
         baseHealth = self.base.Health / 50
@@ -169,94 +184,52 @@ class Entity():
         baseDefense = self.base.Defense / 50
         baseSpeed = self.base.Speed / 50
         
-        if self.subclass != None:
-            baseHealth += self.subclass.Health / 100
-            baseMagic += self.subclass.Magic / 100
-            baseAttack += self.subclass.Attack / 100
-            baseIntel += self.subclass.Intel / 100
-            baseDefense += self.subclass.Defense / 100
-            baseSpeed += self.subclass.Speed / 100            
+        if len(self.PastClasses) > 0:
+            for i in self.PastClasses:
+                baseHealth += i.Health / 100
+                baseMagic += i.Magic / 100
+                baseAttack += i.Attack / 100
+                baseIntel += i.Intel / 100
+                baseDefense += i.Defense / 100
+                baseSpeed += i.Speed / 100            
 
-        self.MaxHP = 10 + (baseHealth * self.Lv)
-        self.MaxMana = 10 + (baseMagic * self.Lv)
-        self.ATK = 10 + (baseAttack * self.Lv)
-        self.INT = 10 + (baseIntel * self.Lv)
-        self.DEF = 10 + (baseDefense * self.Lv)
-        self.SPD = 10 + (baseSpeed * self.Lv)
+        self.StatsBase["MaxHP"] = 10 + (baseHealth * self.Lv)
+        self.StatsBase["MaxMana"] = 10 + (baseMagic * self.Lv)
+        self.StatsBase["ATK"] = 10 + (baseAttack * self.Lv)
+        self.StatsBase["INT"] = 10 + (baseIntel * self.Lv)
+        self.StatsBase["DEF"] = 10 + (baseDefense * self.Lv)
+        self.StatsBase["SPD"] = 10 + (baseSpeed * self.Lv)
+        
         if LvOrNot == False:
-            self.CurHP = self.MaxHP
-            self.Mana = self.MaxMana
+            self.StatsBase["CurHP"] = self.StatsBase["MaxHP"]
+            self.StatsBase["Mana"] = self.StatsBase["MaxMana"]
             self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
-        self.DefinirTempStats()
+            self.afected = ["None"]
         self.DefinirMoves()
-        self.afected = "None"
     
-    def DefinirTempStats(self):
-        self.tempATK = self.ATK
-        self.tempINT = self.INT
-        self.tempDEF = self.DEF
-        self.tempSPD = self.SPD
+    def DefinirPermanentStats(self, permanentbuff):
+        if "%" in permanentbuff[1]:
+            self.StatsPermanents[permanentbuff[0]]["Type"] += float(permanentbuff[1])
+        else:
+            self.StatsPermanents[permanentbuff[0]]["Type"] += float(permanentbuff[1])
     
-    def BuffTempStats(self, buff, statbuffed):
-        self.DefinirTempStats()
-        basebuff = buff
-        for i in statbuffed:
-            buff = basebuff
-            if buff >= 1:
-                buff -= 1
-                print(f"La estadistica {i} de {self.nom} s'ha incrementat en {abs(buff * 100)}%")
-            else:
-                buff = -(abs(buff))
-                print(f"La estadistica {i} de {self.nom} s'ha reduit en {abs(buff * 100)}%")
-            if i == "ATK":
-                self.buffATK += buff
-                if self.buffATK < 0.5:
-                    self.buffATK = 0.5
-                elif self.buffATK > 4:
-                    self.buffATK = 4
-                self.tempATK *= self.buffATK
-            if i == "INT":
-                self.buffINT += buff
-                if self.buffINT < 0.5:
-                    self.buffINT = 0.5
-                elif self.buffINT > 4:
-                    self.buffINT = 4
-                self.tempINT *= self.buffINT
-            if i == "SPD":
-                self.buffSPD += buff
-                if self.buffSPD < 0.5:
-                    self.buffSPD = 0.5
-                elif self.buffSPD > 4:
-                    self.buffSPD = 4
-                self.tempSPD *= self.buffSPD
-            if i == "DEF":
-                self.buffDEF += buff
-                if self.buffDEF < 0.5:
-                    self.buffDEF = 0.5
-                elif self.buffDEF > 4:
-                    self.buffDEF = 4
-                self.tempDEF *= self.buffDEF
-        if self.afected != "None":
-            self.StatusEffectStatReduction()
+    def DefinirCombatStats(self):
+        for k, v in self.StatsBase.items():
+            PostBuff = v + self.StatsPermanents[k]["Flat"]
+            PostBuff *= (1 + self.StatsPermanents[k]["%"])
+            self.StatsCombat[k] = PostBuff
+        if self.afected[0] != "None":
+            self.AplicarEfectesEstat()
     
-    def ResetBuffs(self):
-        self.buffATK = 1
-        self.buffINT = 1
-        self.buffSPD = 1
-        self.buffDEF = 1
+    def AplicarEfectesEstat(self):
+        for i in self.afected:
+            for k, v in i.StatEffects.items():
+                self.StatsCombat[k] *= (1 + (v / 100))
+
     
-    def StatusEffectStatReduction(self):
-        if self.afected.StatEffects[0] != "None":
-            for i in self.afected.StatEffects[1][0]:
-                if i == "ATK":
-                    self.tempATK *= (1 - self.afected.StatEffects[1][1])
-                if i == "INT":
-                    self.tempINT *= (1 - self.afected.StatEffects[1][1])
-                if i == "SPD":
-                    self.tempSPD *= (1 - self.afected.StatEffects[1][1])
-                if i == "DEF":
-                    self.tempDEF *= (1 - self.afected.StatEffects[1][1])
-                print(f"La estadistica {i} de {self.nom} s'ha reduit en {abs(self.afected.StatEffects[1][1] * 100)}%")
+    def ChangeCombatStats(self, changes):
+        for k, v in changes.items():
+            self.StatsCombat[k] *= v
     
     
     def ApplyStatusEffects(self, effect, prob):
@@ -265,58 +238,55 @@ class Entity():
         else:
             apply = [True]
         if apply[0] == True:
-            if self.afected != effect:
-                if self.afected == "None":
-                    self.afected = effect
-                    self.timer = effect.Turns
-                    print(f"{self.nom} ha estat afectat per {effect.Name}.")
-                    self.StatusEffectStatReduction()
-                else:
-                    print(f"{self.nom} ja esta afectat per {self.afected}")
+            effect.RemainingTurns = effect.Turns
+            self.afected.append(effect)
+            print(f"{self.nom} ha estat afectat per {effect.Name}.")
 
     def CalcularDamage(self, enemy, move):
         # Cridar icrements d'stats en cas de ser necessari
-        for i in move.StatusEffect:
-            if i[0] == "Stat":
-                if i[1][1] > 1:
-                    self.BuffTempStats(i[1][1], i[1][0])
-                    print(f"{i[1][0]} ha incrementat.\n")
-                else:
-                    enemy.BuffTempStats(i[1][1], i[1][0])
+        # for i in move.Buff:
+        #     if i[1][1] > 1:
+        #         self.BuffTempStats(i[1][1], i[1][0])
+        #         print(f"{i[1][0]} ha incrementat.\n")
+        #     else:
+        #         enemy.BuffTempStats(i[1][1], i[1][0])
         
         # Calcul dels danys
         if move.Type == False:
-            dif = self.tempATK / enemy.tempDEF
+            dif = self.StatsCombat["ATK"] / enemy.StatsCombat["DEF"]
         else:
-            dif = self.tempINT / enemy.tempDEF
+            dif = self.StatsCombat["INT"] / enemy.StatsCombat["DEF"]
         damage = (((((self.Lv * 2)/5)+2) * move.Power * dif) / 50) + 2
         crit = random.choices([True, False], cum_weights=[5, 95])
         if crit[0] == True:
             damage *= 1.75
             print("Ha estat un cop critic...")
-        amplify = 1
-        for i in self.Tituls:
-            if enemy.base in i.Afects:
-                amplify += i.DamageAmplify - 1
-        if amplify != 1:
-            print("El dany causat a incrementat a causa dels titols.")
-            damage *= amplify
-        damage *= (random.randint(90,111) / 100)
+        # amplify = 1
+        # for i in self.Tituls:
+        #     if enemy.base in i.Afects:
+        #         amplify += i.DamageAmplify - 1
+        # if amplify != 1:
+        #     print("El dany causat a incrementat a causa dels titols.")
+        #     damage *= amplify
+        # damage *= (random.randint(90,111) / 100)
 
         # Reduim les estadistiques per efectes d'estat despres de calcular el dany.
-        for i in move.StatusEffect:
-            if i[0] == "Effect":
-                enemy.ApplyStatusEffects(i[1][0], i[1][1])
+        # for i in move.StatusEffect:
+        #     if i[0] == "Effect":
+        #         enemy.ApplyStatusEffects(i[1][0], i[1][1])
         return damage
 
     def atacar(self, enemy,  move):
         impedit = [False]
-        if self.afected != "None":
-            if self.afected.Blocking[0] == True:
-                if self.afected.Blocking[1] >= 100:
-                    impedit = [True]
-                else:
-                    impedit = random.choices([True, False], cum_weights=[self.afected.Blocking[1], 100 - self.afected.Blocking[1]])
+        if self.afected[0] != "None":
+            for i in self.afected:
+                if i.Blocking[0] == True and impedit[0] == False:
+                    if i.Blocking[1] >= 100:
+                        impedit = [True]
+                    else:
+                        impedit = random.choices([True, False], cum_weights=[self.afected.Blocking[1], 100 - self.afected.Blocking[1]])
+                        if impedit[0] == True:
+                            impedit[1] = i
         if impedit[0] == False:
             if move.Precision < 100:
                 atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
@@ -329,21 +299,21 @@ class Entity():
                     if enemy.Protected == True:
                         if enemy.ProtectedBy[0] != None:
                             damage = damage * ((100 - enemy.ProtectedBy[1]) / 100)
-                            enemy.ProtectedBy[0].CurHP -= damage
+                            enemy.ProtectedBy[0].StatsCombat["CurHP"] -= damage
                             print(f"{enemy.ProtectedBy[0].nom}, ha entomat el {enemy.ProtectedBy[1]}% del dany...")
                             if enemy.ProtectedBy[0].CurHP < 0:
                                 print(f"{enemy.ProtectedBy[0].nom}, ha estat derrotat...")
                             else:
                                 print(f"{enemy.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
                         else:
-                            enemy.CurHP -= damage
-                            if enemy.CurHP <= 0:
+                            enemy.StatsCombat["CurHP"] -= damage
+                            if enemy.StatsCombat["CurHP"] <= 0:
                                 print(f"{enemy.nom} ha estat derrotat.")
                             else:
                                 print(f"{enemy.nom} ha perdut {damage} punts de vida...")
                     else:
-                        enemy.CurHP -= damage
-                        if enemy.CurHP <= 0:
+                        enemy.StatsCombat["CurHP"] -= damage
+                        if enemy.StatsCombat["CurHP"] <= 0:
                             print(f"{enemy.nom} ha estat derrotat.")
                         else:
                             print(f"{enemy.nom} ha perdut {damage} punts de vida...")
@@ -357,7 +327,7 @@ class Entity():
             if enemy.Protected == True:
                 enemy.Protected = False
         else:
-            print(f"Has estat impedit per {self.afected.Name}")
+            print(f"Has estat impedit per {impedit.Name}")
         return enemy
 
     def MoveProtHeal(self, target, move):
@@ -392,25 +362,25 @@ class Entity():
         print(f"Nom: {self.nom}")
         if self.base.isPlayable == True:
             print(f"Clase: {self.base.EntityName}")
-            if self.subclass != None:
-                print(f"Classe Secundaria: {self.subclass.EntityName}")
+            if len(self.PastClasses) > 0:
+                subclasses = ""
+                for i in self.PastClasses:
+                    if i == self.PastClasses[len(self.PastClasses)]:
+                        subclasses += {i.EntityName}
+                    else:
+                        subclasses += ({i.EntityName} + ", ")
+                print(f"Classe Secundaria: {subclasses}")
         else:
             print(f"Raça: {self.base.EntityName}")
         print(f"Or: {self.gold}")
         print(f"Lv: {self.Lv} / {self.LvLimit}")
         print(f"XP: {self.Xp} / {self.XpRequired}")
-        print(f"HP: {round(self.CurHP, 2)} / {round(self.MaxHP, 2)}")
-        print(f"Mana: {round(self.Mana, 2)} / {round(self.MaxMana, 2)}")
-        if combat == False:
-            print(f"ATK: {round(self.ATK, 2)}")
-            print(f"INT: {round(self.INT, 2)}")
-            print(f"DEF: {round(self.DEF, 2)}")
-            print(f"SPD: {round(self.SPD, 2)}")
-        else:
-            print(f"ATK: {round(self.tempATK, 2)}")
-            print(f"INT: {round(self.tempINT, 2)}")
-            print(f"DEF: {round(self.tempDEF, 2)}")
-            print(f"SPD: {round(self.tempSPD, 2)}")
+        print(f"HP: {round(self.StatsCombat["CurHP"], 2)} / {round(self.StatsCombat["MaxHP"], 2)}")
+        print(f"Mana: {round(self.StatsCombat["Mana"], 2)} / {round(self.StatsCombat["MaxMana"], 2)}")
+        print(f"ATK: {round(self.StatsCombat["ATK"], 2)}")
+        print(f"INT: {round(self.StatsCombat["INT"], 2)}")
+        print(f"DEF: {round(self.StatsCombat["DEF"], 2)}")
+        print(f"SPD: {round(self.StatsCombat["SPD"], 2)}")
         print("\nTitols: ")
         if self.isPlayer == True:
             count = 0
@@ -446,6 +416,7 @@ class Entity():
                 self.Lv += 1
                 print(f"{self.nom} ha pujat de nivell... Ara es nivell {self.Lv}")
                 self.DefinirStats(True)
+                self.DefinirCombatStats()
                 self.Xp -= self.XpRequired
                 self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
                 if self.PostGame == True:
@@ -530,7 +501,7 @@ class Entity():
                                     os.system("cls" if os.name == "nt" else "clear")
                                     targetable = []
                                     for i in team:
-                                        if i.CurHP > 0:
+                                        if i.StatsCombat["CurHP"] > 0:
                                             targetable.append(i)
                                     count = 1
                                     for i in targetable:
