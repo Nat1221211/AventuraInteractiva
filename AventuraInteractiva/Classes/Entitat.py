@@ -6,7 +6,6 @@
 
 import random
 from Classes import EntityType
-from Classes import Objectes
 
 import os
 
@@ -36,14 +35,7 @@ class Entity():
 
     # Other
     isPlayer = bool()
-    gold = 0
-    objectes = {} # Diccionari, objecte i quantitat
     fleeProb = 75
-    Tituls = []
-    AcquiredAchievements = []
-    MisionsAcceptades = []
-    MissionsFinalitzades = []
-    PostGame = False
 
     # Metodes
     def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10, subclass = None, post = False):
@@ -96,8 +88,6 @@ class Entity():
                     self.nom = "Bandit"
                 else:
                     self.nom = self.base.EntityName
-        self.gold = gold
-        self.objectes = objectes
         self.PostGame = post
         self.afected = ["None"]
         self.subclass = [subclass]
@@ -358,7 +348,7 @@ class Entity():
                     target.ApplyStatusEffects(i[1][0], i[1][1])
         return target
 
-    def ShowStatus(self, combat = False):
+    def ShowStatus(self, jugador, combat = False):
         print(f"Nom: {self.nom}")
         if self.base.isPlayable == True:
             print(f"Clase: {self.base.EntityName}")
@@ -384,7 +374,7 @@ class Entity():
         print("\nTitols: ")
         if self.isPlayer == True:
             count = 0
-            for i in self.Tituls:
+            for i in jugador.Titles:
                 if count < 3:
                     print(i.TitleName, end=", ")
                 else:
@@ -437,105 +427,5 @@ class Entity():
                 self.Xp = 0
                 input("Presiona per a continuar...")
     
-    def AfegirObjecte(self, afegit, quantitat):
-        if afegit in self.objectes:
-            self.objectes[afegit] += quantitat
-        else:
-            self.objectes[afegit]=quantitat
     
-    def MostrarObjectes(self):
-        os.system("cls")
-        for i in self.objectes.items():
-            print(f"{i[0].ObjectName}, Qty: {i[1]}")
-            print(f"{i[0].ObjectDescription}")
-            print("\n")
-    
-    def ObjectesMochila(self, team, target = None, combat = bool(False)):
-        res = 0
-        if combat == True:
-            used = False
-        while res != 3:
-            res = 0
-            while res not in [1, 2, 3]:
-                os.system("cls")
-                print("1 -> Veure")
-                print("2 -> Utilitzar")
-                print("3 -> Sortir")
-                try:
-                    res = int(input("\nQue vols fer: "))
-                    if res not in [1, 2, 3]:
-                        print("Has de dir un dels 3 numeros...")
-                except ValueError:
-                    print("Ha ocurregut un error...")
-            if res == 1:
-                os.system("cls")
-                self.MostrarObjectes()
-                input("Presiona per a continuar...")
-            if res == 2:
-                obj = -2
-                objectNames = list(self.objectes.keys())
-                while obj not in range(1, len(objectNames) + 1) and obj != 0:
-                    try:
-                        os.system("cls")
-                        ind = 1
-                        for i in objectNames:
-                            print(f"{ind} - > {i.ObjectName}")
-                            ind += 1
-                        print("Per a sortir de la seleccio escriu 0.")
-                        obj = int(input("\nQuin objecte vols utilitzar: "))
-                        if obj not in range(1, len(objectNames) + 1) and obj != 0:
-                            print("\nHas de dir un dels objectes... o escriure 0")
-                    except ValueError:
-                        print("\nHa ocurregut un error...")
-                        input("\nPresiona per a continuar...")
-                if obj != 0:
-                    if type(objectNames[obj - 1]) != Objectes.ObjecteClau:
-                        if objectNames[obj - 1].OutCombat == False and combat == False:
-                            print("Aquest objecte només es pot utilitzar en combat...")
-                            input("Presiona per a continuar...")
-                        else:
-                            utilitzat = True
-                            if target == None:
-                                res = 0
-                                while res not in range(1, len(team) + 2):
-                                    os.system("cls" if os.name == "nt" else "clear")
-                                    targetable = []
-                                    for i in team:
-                                        if i.StatsCombat["CurHP"] > 0:
-                                            targetable.append(i)
-                                    count = 1
-                                    for i in targetable:
-                                        print(f"{count} -> {i.nom}, Lv: {i.Lv}")
-                                        count += 1
-                                    print(f"{count} -> Sortir")
-                                    try:
-                                        res = int(input("Digues de a qui vols atacar: "))
-                                        if res not in range(1, count + 1):
-                                            print("Has de dir un dels numeros corresponents...")
-                                    except ValueError:
-                                        print("Ha ocurregut un error...")
-                                        input("Presiona per a continuar...")
-                                if res in range(1, count):
-                                    target = targetable[res - 1]
-                                if res == count:
-                                    print("Has deixat d'utilitzar aquest objecte...")
-                                    utilitzat = False
-                            if utilitzat == True:
-                                objectNames[obj - 1].Utilitzar(target)
-                                target.objectes[objectNames[obj - 1]]-= 1
-                                print(f"Has utilitzat: {objectNames[obj - 1].ObjectName}")
-                                if combat == True:
-                                    used = True
-                                    res = 3
-                                if self.objectes[objectNames[obj - 1]] <= 0:
-                                    target.objectes.pop(objectNames[obj - 1])
-                    else:
-                        print("Els objectes clau no es poden utilitzar, son objectes de missio o amb altres finalitats...")
-                        input("Presiona per a continuar")
-                else:
-                    print("Has sortit del menu d'utilització.")
-        if combat == True:
-            return used
-        
-            
-    
+   

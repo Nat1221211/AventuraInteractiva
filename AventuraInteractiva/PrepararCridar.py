@@ -69,6 +69,7 @@ def CallEntity(trobar, isPlayer = False):
 
             entitat = EntityType.EntityType(i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
                                   i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
+            # Podria afegir una linia per als companys del monstre posibles en el csv.
             if isPlayer == True:
                 llista.append(entitat)
     if isPlayer == True:
