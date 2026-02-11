@@ -15,8 +15,8 @@ class Moves():
     Precision = int()
     Type = False
     Cost = int()
-    Buff = list(tuple())
-    Debuff = list(tuple())
+    Buff = {}
+    Debuff = {}
     MultiTarget = False
     Healing = False
     Protective = False

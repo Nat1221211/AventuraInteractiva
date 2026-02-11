@@ -96,16 +96,18 @@ def CallMovement(trobar):
             Buff = {}
             if len(i["Buff"]) > 1 and i["Buff"] == list:
                 for j in range(len(i["Buff"])):
-                    Buff[i["Buff"][j]]=i["ProbEfecteBuff"][j]
-            else:
-                Buff[i["Buff"]]=i["ProbEfecteBuff"]
+                    if i["Buff"][j] != "" and i["ProbEfecteBuff"][j] != "":
+                        Buff[i["Buff"][j]]=int(i["ProbEfecteBuff"][j])
+            elif i["Buff"] != "" and i["ProbEfecteBuff"] != "":
+                Buff[i["Buff"]]=int(i["ProbEfecteBuff"])
 
             Debuff = {}
             if len(i["Debuff"]) > 1 and i["Debuff"] == list:
                 for j in range(len(i["Debuff"])):
-                    Debuff[i["Debuff"][j]]=i["ProbEfecteDebuff"][j]
-            else:
-                Debuff[i["Debuff"]]=i["ProbEfecteDebuff"]
+                    if i["Debuff"][j] != "" and i["ProbEfecteDebuff"][j] != "":
+                        Debuff[i["Debuff"][j]]=int(i["ProbEfecteDebuff"][j])
+            elif i["Debuff"] != "" and i["ProbEfecteDebuff"] != "":
+                Debuff[i["Debuff"]]=int(i["ProbEfecteDebuff"])
             move = Characteristics.Moves(i["Nom"], i["Descripcio"], i["Potencia"], i["Precisio"],  i["Magic?"], 
                                             i["Cost"], Buff, Debuff, i["MultipleObjectiu?"], i["Cura?"], i["Protegeix?"], i["DanyperProteccio"])
     return move

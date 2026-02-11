@@ -2,7 +2,7 @@ Nom;Descripcio;ImpedeixAccions?;ProbabilitatImpedirAccio;Duracio;Dany;StatAfecte
 Cremada;Estar cremat redueix el atac i la defensa i causa dany cada poc temps...;False; 0; 0; 5; ATK: 0.25| DEF: 0.25
 Sangrat;Tens una ferida greu que fa perdre vida constantment...;False;0;0;8;
 Congelacio;Estas congelat durant una certa quantitat de temps...;True;100;3;0;
-Sangrat Greu;Tens una ferida greu que fa perdre vida constantment...;False;0;0;16; ATK: 0.1, DEF: 0.1| SPD: 0.1
+Sangrat Greu;Tens una ferida greu que fa perdre vida constantment...;False;0;0;16; ATK: 0.1| DEF: 0.1| SPD: 0.1
 Terror;Causa una sensació de terror en l'objectiu, impedint actuar amb normalitat...;False;0;4;0; ATK: 0.2| INT: 0.2
 Paralisis;Causa una descarrega electrica al excedir-se...;True;40;0;0;SPD: 0.3
 Veri;Causa una quantitat de dany cada vegada que s'actua...;False;0;0;6;

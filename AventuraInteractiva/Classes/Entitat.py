@@ -6,6 +6,7 @@
 
 import random
 from Classes import EntityType
+import PrepararCridar as Call
 
 import os
 
@@ -27,7 +28,7 @@ class Entity():
     Priority = int()
     Protected = False
     ProtectedBy = tuple()
-    afected = ["None"]
+    afected = []
 
     # Xp
     Xp = 0
@@ -89,7 +90,7 @@ class Entity():
                 else:
                     self.nom = self.base.EntityName
         self.PostGame = post
-        self.afected = ["None"]
+        self.afected = []
         self.subclass = [subclass]
     
     def ComprovarSubClassesDisponibles(self):
@@ -208,14 +209,6 @@ class Entity():
             PostBuff = v + self.StatsPermanents[k]["Flat"]
             PostBuff *= (1 + self.StatsPermanents[k]["%"])
             self.StatsCombat[k] = PostBuff
-        if self.afected[0] != "None":
-            self.AplicarEfectesEstat()
-    
-    def AplicarEfectesEstat(self):
-        for i in self.afected:
-            for k, v in i.StatEffects.items():
-                self.StatsCombat[k] *= (1 + (v / 100))
-
     
     def ChangeCombatStats(self, changes):
         for k, v in changes.items():
@@ -228,18 +221,18 @@ class Entity():
         else:
             apply = [True]
         if apply[0] == True:
-            effect.RemainingTurns = effect.Turns
-            self.afected.append(effect)
-            print(f"{self.nom} ha estat afectat per {effect.Name}.")
+            aplicar = Call.CallEfect(effect)
+            aplicar.RemainingTurns = aplicar.Turns
+            self.afected.append(aplicar)
+            print(f"{self.nom} ha estat afectat per {aplicar.Name}.")
+            for i in self.afected:
+                for k, v in i.StatEffects.items():
+                    self.StatsCombat[k] *= (1 + (v / 100))
 
     def CalcularDamage(self, enemy, move):
         # Cridar icrements d'stats en cas de ser necessari
-        # for i in move.Buff:
-        #     if i[1][1] > 1:
-        #         self.BuffTempStats(i[1][1], i[1][0])
-        #         print(f"{i[1][0]} ha incrementat.\n")
-        #     else:
-        #         enemy.BuffTempStats(i[1][1], i[1][0])
+        for i in move.Buff.items():
+            self.ApplyStatusEffects(i[0], i[1])
         
         # Calcul dels danys
         if move.Type == False:
@@ -261,14 +254,13 @@ class Entity():
         # damage *= (random.randint(90,111) / 100)
 
         # Reduim les estadistiques per efectes d'estat despres de calcular el dany.
-        # for i in move.StatusEffect:
-        #     if i[0] == "Effect":
-        #         enemy.ApplyStatusEffects(i[1][0], i[1][1])
+        for i in move.Debuff.items():
+            enemy.ApplyStatusEffects(i[0], i[1])
         return damage
 
     def atacar(self, enemy,  move):
         impedit = [False]
-        if self.afected[0] != "None":
+        if len(self.afected) > 0:
             for i in self.afected:
                 if i.Blocking[0] == True and impedit[0] == False:
                     if i.Blocking[1] >= 100:
@@ -362,7 +354,7 @@ class Entity():
                 print(f"Classe Secundaria: {subclasses}")
         else:
             print(f"Raça: {self.base.EntityName}")
-        print(f"Or: {self.gold}")
+        print(f"Or: {jugador.Gold}")
         print(f"Lv: {self.Lv} / {self.LvLimit}")
         print(f"XP: {self.Xp} / {self.XpRequired}")
         print(f"HP: {round(self.StatsCombat["CurHP"], 2)} / {round(self.StatsCombat["MaxHP"], 2)}")

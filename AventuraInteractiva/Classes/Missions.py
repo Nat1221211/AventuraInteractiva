@@ -155,11 +155,11 @@ class KillMission(Mission):
     # En referencia a si un enemic generat aleatori compta, en aquest acs seria si
     # si el cas es per exemple un unic enemic, que apareix no com els altres sino per que hauria d'estar alla
     # seria False i el generaria segons el que compte la clase.
-    Enemic = Entitat.Entity
+    Enemic = None
 
     
     # Metodes
-    def __init__(self, name, description, cat, rewards, qty, objective, requisite, place, generic = True, enemy = Entitat.Entity):
+    def __init__(self, name, description, cat, rewards, qty, objective, requisite, place, generic = True, enemy = None):
         self.Name = name
         self.Description = description
         self.Categoria = cat

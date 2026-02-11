@@ -1219,7 +1219,7 @@ def GenerarEnemic():
     Lluitar(enemy)
 
 def ComprobarEfectEstat(entitat, derr):
-    if entitat.afected[0] != "None":
+    if len(entitat.afected) > 0:
         eliminar = []
         for i in entitat.afected:
             if i.RemainingTurns <= 0 and i.Turns > 0:
@@ -1228,7 +1228,7 @@ def ComprobarEfectEstat(entitat, derr):
                 # Regenerar Estadistiques
                 print(f"{entitat.nom}, ja no esta afectat per {i.Name}, les seves estadistiques han retornat al que eren...")
             else:
-                if i.Damaging == True:
+                if i.Damage > 0:
                     damagepereffect = ((entitat.StatsCombat["MaxHP"] / 100) * i.Damage)
                     entitat.StatsCombat["CurHP"] -= damagepereffect
                     print(f"{entitat.nom}, ha perdut {damagepereffect} HP degut a la {i.Name}.")
@@ -1264,11 +1264,11 @@ def IncrementarPrioritat(enemy):
     global jugador
     for i in range(len(jugador.Team)):
         if jugador.Team[i].StatsCombat["CurHP"] > 0:
-            jugador.Team[i].Priority += jugador.Team[i].StatsCombat["SPD"] / 300  
+            jugador.Team[i].Priority += jugador.Team[i].StatsCombat["SPD"] / 100  
     
     for j in range(len(enemy)):
         if enemy[j].StatsCombat["CurHP"] > 0:
-            enemy[j].Priority += enemy[j].StatsCombat["SPD"] / 300
+            enemy[j].Priority += enemy[j].StatsCombat["SPD"] / 100
     return enemy
 
 def BattleScreenShow(teamlist):
@@ -1305,27 +1305,31 @@ def BattleScreenShow(teamlist):
             print(f"Mana: {round(i.StatsCombat["Mana"], 2)} / {round(i.StatsCombat["MaxMana"], 2)}", end=espaiat)
             saltdeLinia = True
 
-    # saltdeLinia = False
-    # for i in range(len(teamlis)):
-    #     if teamlis[i].afected != "None":
-    #         if saltdeLinia == False:
-    #             print()
-    #         llarg = len(f"{teamlis[i].afected.Name}")
-    #         espaiat = ""
-    #         for j in range(30 - llarg):
-    #             espaiat += " "
-    #         print(f"{teamlis[i].afected.Name}", end=espaiat)
-    #         saltdeLinia = True
-    #     else:
-    #         afectats = False
-    #         for k in range(i, len(teamlis)):
-    #             if teamlis[k].afected != "None":
-    #                 afectats = True
-    #         if afectats == True:
-    #             espaiat = ""
-    #             for j in range(30):
-    #                 espaiat += " "
-    #             print(espaiat, end="")
+    saltdeLinia = False
+    for i in range(len(teamlis)):
+        if len(teamlis[i].afected) > 0:
+            if saltdeLinia == False:
+                print()
+            llarg = 0
+            effect = ""
+            for e in teamlis[i].afected:
+                llarg += len(e.Name)
+                effect += e.Name + ", "
+            espaiat = ""
+            for j in range(30 - llarg):
+                espaiat += " "
+            print(f"{effect}", end=espaiat)
+            saltdeLinia = True
+        else:
+            afectats = False
+            for k in range(i, len(teamlis)):
+                if len(teamlis[k].afected) > 0:
+                    afectats = True
+            if afectats == True:
+                espaiat = ""
+                for j in range(30):
+                    espaiat += " "
+                print(espaiat, end="")
     
     print()
     for i in teamlis:
