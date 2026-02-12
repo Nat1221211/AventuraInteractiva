@@ -47,14 +47,16 @@ class Effects():
     Turns = int() # If = 0 es permanent (posada o objecte per eliminar)
     Damage = int()  # Dany percentual num baix...
     StatEffects = tuple()   # Reduccions d'estadistiques i altres...
+    EffectLimit = int()
     RemainingTurns = 0
     
     
     # Metodes
-    def __init__(self, name, description, blocking, turns, damage, statuschanges = "None"):
+    def __init__(self, name, description, blocking, turns, damage, statuschanges = "None", limit = 1):
         self.Name = name
         self.Description = description
         self.Blocking = blocking
         self.Turns = turns
         self.Damage = damage
-        self.StatEffects = statuschanges     
+        self.StatEffects = statuschanges
+        self.EffectLimit = limit   

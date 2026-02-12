@@ -217,13 +217,41 @@ class Entity():
         else:
             apply = [True]
         if apply[0] == True:
-            aplicar = Call.CallEfect(effect)
-            aplicar.RemainingTurns = aplicar.Turns
-            self.afected.append(aplicar)
-            print(f"{self.nom} ha estat afectat per {aplicar.Name}.")
+            efectNames = []
             for i in self.afected:
-                for k, v in i.StatEffects.items():
-                    self.StatsCombat[k] *= (1 + (v / 100))
+                efectNames.append(i.Name)
+            
+            aplicable = True
+            if effect in efectNames:
+                effectCount = 0
+                for i in self.afected:
+                    if effect == i.Name:
+                        effectCount += 1
+                        limit = i.EffectLimit
+                if effectCount + 1 > limit and limit != 0:
+                    aplicable = False
+                    print(f"{self.nom} ha arribat al limit d'aplicacions de l'efecte {effect}")
+
+            aplicar = Call.CallEfect(effect)
+            if aplicable == True:
+                aplicar.RemainingTurns = aplicar.Turns
+                self.afected.append(aplicar)
+                print(f"{self.nom} ha estat afectat per {aplicar.Name}.")
+
+                StatChanges = {}
+
+                for i in self.afected:
+                    for k, v in i.StatEffects.items():
+                        if v < 1:
+                            value = 1 - v
+                        else:
+                            value = v
+                        if k in StatChanges.keys():
+                            StatChanges[k]+=value
+                        else:
+                            StatChanges[k]=value
+                for k, v in StatChanges.items():
+                    self.StatsCombat[k] *= v
 
     def CalcularDamage(self, enemy, move):
         # Cridar icrements d'stats en cas de ser necessari
@@ -306,6 +334,7 @@ class Entity():
                 enemy.Protected = False
         else:
             print(f"Has estat impedit per {impedit.Name}")
+        input("Presiona per a continuar...")
         return enemy
 
     def MoveProtHeal(self, target, move):
@@ -352,7 +381,7 @@ class Entity():
             print(f"Raça: {self.base.EntityName}")
         print(f"Or: {jugador.Gold}")
         print(f"Lv: {self.Lv} / {self.LvLimit}")
-        print(f"XP: {self.Xp} / {self.XpRequired}")
+        print(f"XP: {round(self.Xp, 2)} / {round(self.XpRequired, 2)}")
         print(f"HP: {round(self.StatsCombat["CurHP"], 2)} / {round(self.StatsCombat["MaxHP"], 2)}")
         print(f"Mana: {round(self.StatsCombat["Mana"], 2)} / {round(self.StatsCombat["MaxMana"], 2)}")
         print(f"ATK: {round(self.StatsCombat["ATK"], 2)}")
@@ -375,8 +404,8 @@ class Entity():
                 self.ShowStatus()
             if res == 2:
                 self.DefinirSubClass()
-        elif combat == False:
-            input("Presiona per a continuar...")
+        # elif combat == False:
+        input("Presiona per a continuar...")
 
     def LvlUp(self, enemy = None, XP = None):
         if self.Lv < self.LvLimit:

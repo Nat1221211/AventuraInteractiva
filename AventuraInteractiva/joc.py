@@ -1236,7 +1236,7 @@ def ComprobarEfectEstat(entitat, derr):
                 if i.Damage > 0:
                     damagepereffect = ((entitat.StatsCombat["MaxHP"] / 100) * i.Damage)
                     entitat.StatsCombat["CurHP"] -= damagepereffect
-                    print(f"{entitat.nom}, ha perdut {damagepereffect} HP degut a la {i.Name}.")
+                    print(f"{entitat.nom}, ha perdut {round(damagepereffect, 2)} HP degut a la {i.Name}.")
                     if entitat.StatsCombat["CurHP"] <= 0:
                         print(f"{entitat.nom}, ha estat derrotat per {i.Name}.")
                         derr = DescartarDerrotats(entitat, derr)
@@ -1468,8 +1468,7 @@ def Comprovacions(enemy):
 def finalitzarCombat(clon):
     global jugador
     for i in range(len(jugador.Team)):
-        # team[i].DefinirTempStats()
-        # team[i].ResetBuffs()
+        
         if jugador.Team[i] in clon:
             for j in clon:
                 if j == jugador.Team[i]:
@@ -1478,6 +1477,8 @@ def finalitzarCombat(clon):
         else:
             jugador.Team[i].StatsCombat["CurHP"] = 0
             jugador.Team[i].StatsCombat["Mana"] = 0
+        jugador.Team[i].afected = []
+        jugador.Team[i].DefinirCombatStats()
 
 
         

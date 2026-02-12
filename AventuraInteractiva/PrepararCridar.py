@@ -86,7 +86,7 @@ def CallEfect(trobar):
             else:
                 bloqueig = (False, 0)
             entitat = Characteristics.Effects(i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], i["Dany"],
-                                              i["StatAfected"])
+                                              i["StatAfected"], i["Limit"])
     return entitat
 
 def CallMovement(trobar):
