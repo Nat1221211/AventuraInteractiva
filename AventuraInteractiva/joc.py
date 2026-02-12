@@ -884,7 +884,7 @@ def Posada(free = False):
             for i in jugador.Team:
                 i.StatsCombat["CurHP"] = i.StatsCombat["MaxHP"]
                 i.StatsCombat["Mana"] = i.StatsCombat["MaxMana"]
-                i.afected = ["None"]
+                i.afected = []
         else:
             print("No tens suficient gold per pagar la posada, has marxat sense poder descansar...")
     else:
@@ -913,6 +913,7 @@ def Mapa():
         print("Ha decidit quedar-se on es...")
     else:
         jugador.Ubicacio = disponibles[pos - 1]    # Canviem la zona i la retornem
+        jugador.ActualitzarUltimPobleVisitat()
         for i in jugador.MisionsAcceptades:
             if type(i) == Missions.PlaceMission:
                 if i.Objective == ubicacio:
@@ -1227,7 +1228,7 @@ def ComprobarEfectEstat(entitat, derr):
                 eliminar.append(i)
                 # Regenerar Estadistiques
                 print(f"{entitat.nom}, ja no esta afectat per {i.Name}, les seves estadistiques han retornat al que eren...")
-            else:
+            elif entitat.StatsCombat["CurHP"] > 0:
                 if i.Damage > 0:
                     damagepereffect = ((entitat.StatsCombat["MaxHP"] / 100) * i.Damage)
                     entitat.StatsCombat["CurHP"] -= damagepereffect
@@ -1457,12 +1458,6 @@ def Comprovacions(enemy):
     for i in missions:
         if type(i) == Missions.KillMission:
             i.IncrementCount(enemy)
-    # for i in achievements:
-    #     if i.Obtained == False:
-    #         if type(i) == Exits.KillExit:
-    #             i.IncrementCount(enemy)
-    #         i.Completed(jugador)
-    #         jugador.AcquiredAchievements.append(i)
     for i in jugador.Team:
         i.ComprovarSubClassesDisponibles()
 
@@ -1504,6 +1499,7 @@ def main():
                 if i.StatsCombat["CurHP"] > 0:
                     alive += 1
         print(f"Has estat derrotat, t'han trobat i ara estas en la posada del ultim poble per el que has passat...")
+        jugador.Ubicacio = jugador.UltimPobleVisitat
         Posada(True)
         input("Presiona per a continuar...")
         # if PostGame == False and objectes[15] in jugador.objectes.keys(): # Es pot eliminar aquest easter egg eliminant la funcio EasterEgg() i les 3 linies baix aquesta.

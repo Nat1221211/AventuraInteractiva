@@ -50,9 +50,7 @@ class Entity():
             # Stats
         self.StatsBase = {
             "MaxHP": int(),
-            "CurHP": int(),
             "MaxMana": int(),
-            "Mana": int(),
             "ATK": int(),
             "INT": int(),
             "DEF": int(),
@@ -61,9 +59,7 @@ class Entity():
 
         self.StatsPermanents = {
             "MaxHP": {"%": int(), "Flat": int()},
-            "CurHP": {"%": int(), "Flat": int()},
             "MaxMana": {"%": int(), "Flat": int()},
-            "Mana": {"%": int(), "Flat": int()},
             "ATK": {"%": int(), "Flat": int()},
             "INT": {"%": int(), "Flat": int()},
             "DEF": {"%": int(), "Flat": int()},
@@ -192,10 +188,10 @@ class Entity():
         self.StatsBase["SPD"] = 10 + (baseSpeed * self.Lv)
         
         if LvOrNot == False:
-            self.StatsBase["CurHP"] = self.StatsBase["MaxHP"]
-            self.StatsBase["Mana"] = self.StatsBase["MaxMana"]
+            self.StatsCombat["CurHP"] = self.StatsBase["MaxHP"]
+            self.StatsCombat["Mana"] = self.StatsBase["MaxMana"]
             self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
-            self.afected = ["None"]
+            self.afected = []
         self.DefinirMoves()
     
     def DefinirPermanentStats(self, permanentbuff):

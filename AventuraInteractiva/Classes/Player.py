@@ -21,6 +21,7 @@ class Player():
         self.MissionsFinalitzades = []
         self.objectes = {} # Diccionari, objecte(nom/id en csv) = clau i quantitat = valor
         self.Titles = []
+        self.UltimPobleVisitat = self.Ubicacio
 
 
     
@@ -30,7 +31,10 @@ class Player():
         else:
             self.objectes[afegit]=quantitat
     
-    
+    def ActualitzarUltimPobleVisitat(self):
+        if self.Ubicacio.ZoneType == "Poble":
+            self.UltimPobleVisitat = self.Ubicacio
+
     def MostrarObjectes(self):
         os.system("cls")
         for i in self.objectes.items():
@@ -110,13 +114,13 @@ class Player():
                                         utilitzat = False
                                 if utilitzat == True:
                                     objectNames[obj - 1].Utilitzar(target)
-                                    target.objectes[objectNames[obj - 1]]-= 1
+                                    self.objectes[objectNames[obj - 1]]-= 1
                                     print(f"Has utilitzat: {objectNames[obj - 1].ObjectName}")
                                     if combat == True:
                                         used = True
                                         res = 3
                                     if self.objectes[objectNames[obj - 1]] <= 0:
-                                        target.objectes.pop(objectNames[obj - 1])
+                                        self.objectes.pop(objectNames[obj - 1])
                         else:
                             print("Els objectes clau no es poden utilitzar, son objectes de missio o amb altres finalitats...")
                             input("Presiona per a continuar")
