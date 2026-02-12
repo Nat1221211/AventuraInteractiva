@@ -122,6 +122,18 @@ def CallObject(trobar):
                 obj = Objectes.ObjecteClau(i["Nom"], i["Descripcio"])
     return obj
 
+def CallAchievements(Individual = True):
+    objects = CallCSV("Data/Achievements.csv")
+    for i in objects:
+        requisits = {}
+        if Individual == True:
+            if i["Tipus de Requisit"] == "Kill":
+                requisits[i["Nom"]]={"Type&Amt": (i["Requisit"], i["Quantitat"]), "Qty": 0}
+        else:
+            if i["Tipus de Requisit"] != "Kill":
+                requisits[i["Nom"]]={"Type&Amt": (i["Requisit"], i["Quantitat"]), "Qty": 0}
+    return requisits
+
 def main():
     print("!! - Joc de Preguntes - !!")
     

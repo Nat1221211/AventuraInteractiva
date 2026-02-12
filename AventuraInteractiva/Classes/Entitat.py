@@ -29,6 +29,7 @@ class Entity():
     Protected = False
     ProtectedBy = tuple()
     afected = []
+    
 
     # Xp
     Xp = 0
@@ -37,6 +38,9 @@ class Entity():
     # Other
     isPlayer = bool()
     fleeProb = 75
+    IndivAchievments = {}
+    Titles = []
+    CountForTitle = {}
 
     # Metodes
     def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10, subclass = None, post = False):
@@ -88,6 +92,8 @@ class Entity():
         self.PostGame = post
         self.afected = []
         self.subclass = [subclass]
+        self.CountForTitle = {}
+        self.Titles = []
     
     def ComprovarSubClassesDisponibles(self):
         for i in self.base.paths.items():
@@ -195,10 +201,10 @@ class Entity():
         self.DefinirMoves()
     
     def DefinirPermanentStats(self, permanentbuff):
-        if "%" in permanentbuff[1]:
-            self.StatsPermanents[permanentbuff[0]]["Type"] += float(permanentbuff[1])
+        if "%" in permanentbuff:
+            self.StatsPermanents[permanentbuff[0]]["%"] += float(permanentbuff[1])
         else:
-            self.StatsPermanents[permanentbuff[0]]["Type"] += float(permanentbuff[1])
+            self.StatsPermanents[permanentbuff[0]]["Flat"] += float(permanentbuff[1])
     
     def DefinirCombatStats(self):
         for k, v in self.StatsBase.items():

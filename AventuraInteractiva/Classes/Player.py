@@ -20,13 +20,23 @@ class Player():
         self.MisionsAcceptades = []
         self.MissionsFinalitzades = []
         self.objectes = {} # Diccionari, objecte(nom/id en csv) = clau i quantitat = valor
-        self.Titles = []
         self.UltimPobleVisitat = self.Ubicacio
         self.LlocsVisitats = ["Dawn Village"]
         self.LlocsTrobats = ["Bosc del Sud", "Bosc Obscur"]
 
+        self.StatIncrement = {
+            "MaxHP": {"%": int(), "Flat": int()},
+            "MaxMana": {"%": int(), "Flat": int()},
+            "ATK": {"%": int(), "Flat": int()},
+            "INT": {"%": int(), "Flat": int()},
+            "DEF": {"%": int(), "Flat": int()},
+            "SPD": {"%": int(), "Flat": int()},
+        }
 
-    
+    def AplicarStatsGenerals(self):
+        for i in self.Team:
+            print()
+
     def AfegirObjecte(self, afegit, quantitat):
         if afegit in self.objectes:
             self.objectes[afegit] += quantitat
