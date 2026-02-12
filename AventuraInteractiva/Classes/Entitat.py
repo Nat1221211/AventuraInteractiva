@@ -313,13 +313,13 @@ class Entity():
                                 print(f"{enemy.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
                         else:
                             enemy.StatsCombat["CurHP"] -= damage
-                            if enemy.StatsCombat["CurHP"] <= 0:
+                            if enemy.StatsCombat["CurHP"] < 0.1:
                                 print(f"{enemy.nom} ha estat derrotat.")
                             else:
                                 print(f"{enemy.nom} ha perdut {damage} punts de vida...")
                     else:
                         enemy.StatsCombat["CurHP"] -= damage
-                        if enemy.StatsCombat["CurHP"] <= 0:
+                        if enemy.StatsCombat["CurHP"] < 0.1:
                             print(f"{enemy.nom} ha estat derrotat.")
                         else:
                             print(f"{enemy.nom} ha perdut {damage} punts de vida...")
