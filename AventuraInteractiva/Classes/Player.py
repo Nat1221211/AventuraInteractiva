@@ -22,6 +22,7 @@ class Player():
         self.objectes = {} # Diccionari, objecte(nom/id en csv) = clau i quantitat = valor
         self.Titles = []
         self.UltimPobleVisitat = self.Ubicacio
+        self.LlocsVisitats = []
 
 
     

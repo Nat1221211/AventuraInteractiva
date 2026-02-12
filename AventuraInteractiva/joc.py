@@ -546,7 +546,7 @@ def AccioMenuPrincipal():
     elif menu.get(pos) == "Hostal":
         Posada()
     elif menu.get(pos) == "Botiga":
-        #Botiga()
+        Botiga()
         print("No implementat")
     elif menu.get(pos) == "Estat":
         VeureEstatus()
@@ -894,11 +894,10 @@ def Mapa():
     global jugador
     count = 1
     disponibles = []
-    print(f"VOsté és a {jugador.Ubicacio.NameZone}.\n")
+    print(f"Vosté és a {jugador.Ubicacio.NameZone}.\n")
     for i in jugador.Ubicacio.Connections:  # Mostrem ubicacions disponibles
-        if i.Trobada == True:
+        if i.NameZone in jugador.LlocsVisitats:
             print(f"{count} -> {i.NameZone}")
-            print(f"{i.Description}")
             count += 1
             disponibles.append(i)
     if count > len(disponibles):
