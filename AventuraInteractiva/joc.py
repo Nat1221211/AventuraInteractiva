@@ -1080,8 +1080,9 @@ def AccionsLluita(jug, enemy, enemyderr):
     print("2 -> Fugir")
     print("3 -> Objectes")
     print("4 -> Estat jugador")
+    print("5 -> Pasar Torn")
     accio = 0
-    while accio not in [1, 2, 3, 4]:
+    while accio not in [1, 2, 3, 4, 5]:
         try:
             accio = int(input("Que vols fer: "))
         except ValueError:
@@ -1129,6 +1130,9 @@ def AccionsLluita(jug, enemy, enemyderr):
         ClearScreen()
         VeureEstatus(True)
         turn = True
+    elif accio == 4:
+        print("Has decidit pasar torn...")
+        input("Presiona per a continuar...")
     
     return jug, enemy, turn, fugir, enemyderr
 
@@ -1235,7 +1239,7 @@ def ComprobarEfectEstat(entitat, derr):
                     print(f"{entitat.nom}, ha perdut {damagepereffect} HP degut a la {i.Name}.")
                     if entitat.StatsCombat["CurHP"] <= 0:
                         print(f"{entitat.nom}, ha estat derrotat per {i.Name}.")
-                        derr += 1
+                        derr = DescartarDerrotats(entitat, derr)
                 i.RemainingTurns -= 1
         for j in eliminar:
             entitat.afected.remove(j)
@@ -1381,7 +1385,7 @@ def Lluitar(enemy):
         # Turn Aliat
         
         for i in range(len(jugador.Team)):
-            if jugador.Team[i].Priority >= 100 and len(enemy) >= 1 and jugador.Team[i].StatsCombat["CurHP"] > 0 and combat == True:
+            if jugador.Team[i].Priority >= 100 and len(enemy) >= 1 and jugador.Team[i].StatsCombat["CurHP"] > 0.1 and combat == True:
                 turn = True
                 while turn == True:
                     ClearScreen()
@@ -1393,14 +1397,13 @@ def Lluitar(enemy):
                         jugador.Team[i], teamderr = ComprobarEfectEstat(jugador.Team[i], teamderr)
                     if turn == False:
                         jugador.Team[i].Priority = 0
-                    input("\nPresiona per a continuar...")
                 ClearScreen()
             if combat == True:
                 combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr)
 
         # Turn enemic
         for j in range(len(enemy)):
-            if enemy[j].Priority >= 100 and fugir[0] == False and len(jugador.Team) >= 1 and enemy[j].StatsCombat["CurHP"] > 0 and combat == True:
+            if enemy[j].Priority >= 100 and fugir[0] == False and len(jugador.Team) >= 1 and enemy[j].StatsCombat["CurHP"] > 0.1 and combat == True:
                 ClearScreen()
                 BattleScreenShow(jugador.Team)
                 BattleScreenShow(enemy)
@@ -1420,7 +1423,6 @@ def Lluitar(enemy):
                 teamderr = DescartarDerrotats(jugador.Team[target], teamderr)
                 if protegitPer != None:
                     teamderr = DescartarDerrotats(protegitPer, teamderr)
-                input("\nPresiona per a continuar...")
                 ClearScreen()
             if combat == True:
                 combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr)
@@ -1430,16 +1432,16 @@ def Lluitar(enemy):
 
 def ComprobarFiCombat(combat, enemyderr, enemy, teamderr):
     if enemyderr == len(enemy) or teamderr == len(jugador.Team):
-            combat = False
-            if len(enemy) == enemyderr:
-                ClearScreen()
-                print("Tos els enemics han estat derrotats !!")
-                input("Presiona per a continuar")
+        combat = False
+        if len(enemy) == enemyderr:
+            ClearScreen()
+            print("Tos els enemics han estat derrotats !!")
+            input("Presiona per a continuar")
     return combat
 
 def DescartarDerrotats(p, derr):
     global jugador
-    if p.StatsCombat["CurHP"] <= 0:
+    if p.StatsCombat["CurHP"] <= 0.1:
         derr += 1
         if p.isPlayer == False:
             ClearScreen()
@@ -1451,7 +1453,9 @@ def DescartarDerrotats(p, derr):
             if alive >= 1:
                 jugador.Gold += p.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
                 print(f"Has guanyat {p.Lv * 10} gold.")
+                input("Presiona per a continuar...")
             Comprovacions(p)
+
     return derr
 
 def Comprovacions(enemy):
