@@ -307,7 +307,7 @@ class Entity():
                             damage = damage * ((100 - enemy.ProtectedBy[1]) / 100)
                             enemy.ProtectedBy[0].StatsCombat["CurHP"] -= damage
                             print(f"{enemy.ProtectedBy[0].nom}, ha entomat el {enemy.ProtectedBy[1]}% del dany...")
-                            if enemy.ProtectedBy[0].CurHP < 0:
+                            if enemy.ProtectedBy[0].StatsCombat["CurHP"] < 0.1:
                                 print(f"{enemy.ProtectedBy[0].nom}, ha estat derrotat...")
                             else:
                                 print(f"{enemy.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
@@ -339,17 +339,14 @@ class Entity():
 
     def MoveProtHeal(self, target, move):
         if move.Healing == True:
-            if (target.CurHP + (move.Power * (self.INT / 100))) > target.MaxHP:
-                target.CurHP = target.MaxHP
+            if (target.StatsCombat["CurHP"] + (move.Power * (self.StatsCombat["INT"] / 100))) > target.StatsCombat["MaxHP"]:
+                target.StatsCombat["CurHP"] = target.StatsCombat["MaxHP"]
                 print(f"{target.nom} ha recuperat vida fins al seu limit...")
             else:
-                target.CurHP += (move.Power * (self.INT / 100))
-                print(f"{target.nom} ha recuperat {move.Power * (self.INT / 100)} punts de vida...")
-            for i in move.StatusEffect:
-                if i[0] == "Stat":
-                    target.BuffTempStats(i[1][1], i[1][0])
-                if i[0] == "Effect":
-                    target.ApplyStatusEffects(i[1][0], i[1][1])
+                target.StatsCombat["CurHP"] += (move.Power * (self.StatsCombat["INT"] / 100))
+                print(f"{target.nom} ha recuperat {move.Power * (self.StatsCombat["INT"] / 100)} punts de vida...")
+            for i in move.Buff.items():
+                target.ApplyStatusEffects(i[0], i[1])
         if move.Protective == True:
             target.Protected = True
             if self == target:
@@ -358,11 +355,10 @@ class Entity():
                 print(f"{self.nom} s'ha preparat per protegir a {target.nom}")
             if move.AutoDamaging > 0:
                 target.ProtectedBy = (self, move.AutoDamaging)
-            for i in move.StatusEffect:
-                if i[0] == "Stat":
-                    target.BuffTempStats(i[1][1], i[1][0])
-                if i[0] == "Effect":
-                    target.ApplyStatusEffects(i[1][0], i[1][1])
+                
+            for i in move.Buff.items():
+                target.ApplyStatusEffects(i[0], i[1])
+        input("Presiona per a continuar...")
         return target
 
     def ShowStatus(self, jugador, combat = False):

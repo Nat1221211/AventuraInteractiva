@@ -16,7 +16,7 @@ Expert en Armes;Un expert en diverses armes cos a cos, és molt capaç, és una 
 Caballer;Un expert especialitzat en la resistencia, tot i això te una capacitat ofensiva considerable.;200;60;100;40;260;60;False;50;Human;Mossegada: 1
 Aventurer;No especialitzat en cap camp en excés, no destaca en cap camp però tampoc és dolent en cap d'ells...;140;120;140;140;115;115;True;50;Human;Mossegada: 1
 Porc Senglar;;150;40;150;20;140;80;False;35;Beast;Cop: 1 | Embestir: 5
-Sacerdot;;120;160;80;120;120;120;True;50;Human;Mossegada: 1
+Sacerdot;;120;160;80;120;120;120;True;50;Human;Cura: 1 | Santuari: 5 | Cop: 1
 Sacerdot Guerrer;;200;160;250;180;150;150;False;150;Human;Mossegada: 1
 Caballer Magic;Un forma avançada de caballeria i magia...;250;160;200;300;180;160;False;150;Human;Mossegada: 1
 Sant;Una especialitzacio en curacio per part del sacerdot;200;250;80;200;120;100;False;150;Human;Mossegada: 1
