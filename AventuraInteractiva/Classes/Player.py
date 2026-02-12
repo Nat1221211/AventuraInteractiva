@@ -22,7 +22,8 @@ class Player():
         self.objectes = {} # Diccionari, objecte(nom/id en csv) = clau i quantitat = valor
         self.Titles = []
         self.UltimPobleVisitat = self.Ubicacio
-        self.LlocsVisitats = []
+        self.LlocsVisitats = ["Dawn Village"]
+        self.LlocsTrobats = ["Bosc del Sud", "Bosc Obscur"]
 
 
     
@@ -35,6 +36,7 @@ class Player():
     def ActualitzarUltimPobleVisitat(self):
         if self.Ubicacio.ZoneType == "Poble":
             self.UltimPobleVisitat = self.Ubicacio
+        self.LlocsVisitats.append(self.Ubicacio.NameZone)
 
     def MostrarObjectes(self):
         os.system("cls")

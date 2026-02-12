@@ -896,7 +896,7 @@ def Mapa():
     disponibles = []
     print(f"Vosté és a {jugador.Ubicacio.NameZone}.\n")
     for i in jugador.Ubicacio.Connections:  # Mostrem ubicacions disponibles
-        if i.NameZone in jugador.LlocsVisitats:
+        if i.NameZone in jugador.LlocsTrobats:
             print(f"{count} -> {i.NameZone}")
             count += 1
             disponibles.append(i)
@@ -997,6 +997,7 @@ def TrobarSeguentZona():
     posiblesRutesATrobar = []
     rutesTrobades = []
     for i in jugador.Ubicacio.Connections:
+        
         complert = i.ComprobarCondicio(jugador.Team)
         if complert == True and i.Trobada == False:
             posiblesRutesATrobar.append(i)
