@@ -221,7 +221,7 @@ zones[0].AddConnections([zones[1], zones[6]])  # Dawn Viallage
 # zones[9].AddConnections([zones[12]]) # Knightshire
 
 #     # Salvatge
-# zones[1].AddConnections([zones[0], zones[2]])   # Bosc Obscur
+zones[1].AddConnections([zones[0]])   # Bosc Obscur
 # zones[2].AddConnections([zones[1], zones[3]])   # Profunditats Bosc Obscur
 # zones[3].AddConnections([zones[2], zones[4]])   # Centre Bosc Obscur
 # zones[4].AddConnections([zones[3], zones[5]])   # Muntanyes Origen

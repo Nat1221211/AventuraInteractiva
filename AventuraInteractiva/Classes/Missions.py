@@ -38,7 +38,7 @@ class Mission():
                 for i in self.Requisite:
                     if type(i) == tuple:
                         if i[0] == "Lv":
-                            if jugador.team[0].Lv < i[1]:
+                            if jugador.Team[0].Lv < i[1]:
                                 reqcompleted = False
                     elif type(i) in [Mission, FindMission, ObjectMission, KillMission, PlaceMission]:
                         if i.Status != "Completed":
@@ -80,10 +80,10 @@ class Mission():
                         jugador.AfegirObjecte(i[0], i[1])
                         print(f"Has obtingut {i[1]} {i[0].ObjectName}")
                     elif i[0] == "Gold":
-                        jugador.gold += i[1]
+                        jugador.Gold += i[1]
                         print(f"Has obtingut {i[1]} gold.")
                     elif i[0] == "XP":
-                        for t in jugador.team:
+                        for t in jugador.Team:
                             t.LvlUp(None, i[1])
             self.Finished = True
             jugador.MissionsFinalitzades.append(self)
