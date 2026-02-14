@@ -24,8 +24,9 @@ def ClearScreen():
 
 
 Objects = Call.CallObject()
-Movements = Call.CallMovement()
-Entities = Call.CallEntity()
+Effects = Call.CallEfect()
+Movements = Call.CallMovement(Effects)
+Entities = Call.CallEntity(Movements)
 
 
 
@@ -253,9 +254,9 @@ zones[6].AddConnections([zones[0]]) # Bosc del SUd
 
 
 # # Botiga
-botiga = [Call.CallObject("Pocio Inferior"),
-          Call.CallObject("Pocio"),
-          Call.CallObject("Pocio Intermitja")
+botiga = [Objects["Combat"]["Pocio Inferior"],
+          Objects["Combat"]["Pocio"],
+          Objects["Combat"]["Pocio Intermitja"]
           ]
 
 
@@ -466,30 +467,22 @@ def CrearJugador():
         except ValueError:
             print("Ha ocurregut un error...")
     clase = ""
-    clases = []
     nomclases = []
     print("")
-    for i in Entities:
-        if i["Playable?"] == True:
-            clases.append(i)
-            nomclases.append(i.EntityName.lower())
+    for i in Entities.items():
+        if i[1].isPlayable == True:
+            nomclases.append(i[0].lower())
     while clase not in nomclases:
         try:
-            for i in clases:
-                print(f"{i.EntityName}, {i.EntityDescription}.")
+            for i in nomclases:
+                i = i.capitalize()
+                print(f"{Entities[i].EntityName}, {Entities[i].EntityDescription}.")
             clase = input("\nDigues una de les clases mostrades anteriorment: ").lower()
             if clase not in nomclases:
                 print(f"Has de dir una de les clases anteriors: {nomclases}")
         except ValueError:
             print("Ha ocurregut un error...")
-    
-    playableentity = None
-    temp = 0
-    while playableentity == None:
-        if clases[temp].EntityName.lower() == clase:
-            playableentity = Entitat.Entity(nom, 5, True, clases[temp])
-        temp += 1
-
+    playableentity = Entitat.Entity(nom, 5, True, Entities[clase.capitalize()])
     return playableentity
 
 # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
@@ -502,7 +495,7 @@ jugador = Player.Player(personatge.nom, team, ubicacio)
 
 
 # # Afegim algun objecte al jugador de base
-jugador.AfegirObjecte(Call.CallObject("Pocio Inferior"), 2)
+jugador.AfegirObjecte(Objects["Combat"]["Pocio Inferior"], 2)
 
 def AccioMenuPrincipal():
     global jugador

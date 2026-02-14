@@ -58,16 +58,16 @@ def CallCSV(cami):
         print("Ha ocurregut un error carregant el fitxer...")
 
 def CallEntity(movements):
-    entities = CallCSV("Data/EntityTypes.csv")
+    entitats = CallCSV("Data/EntityTypes.csv")
     entities = {}
-    for i in entities:
+    for i in entitats:
         moves = {}
         for m, n in i["Movements"].items():
-            moves[m]=n
+            moves[movements[m]]=n
 
         entitat = EntityType.EntityType(i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
                                         i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
-        entities.update(entitat.EntityName, entitat)
+        entities.update({entitat.EntityName: entitat})
     return entities
 
 def CallEfect():
@@ -80,8 +80,8 @@ def CallEfect():
             bloqueig = (False, 0)
         efecte = Characteristics.Effects(i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], 
                                             i["Dany"], i["StatAfected"], i["Limit"])
-        efectes.update(efecte.Name, efecte)
-    return effects
+        efectes.update({efecte.Name: efecte})
+    return efectes
 
 def CallMovement(effects):
     movements = CallCSV("Data/Movements.csv")
@@ -91,38 +91,36 @@ def CallMovement(effects):
         if len(i["Buff"]) > 1 and i["Buff"] == list:
             for j in range(len(i["Buff"])):
                 if i["Buff"][j] != "" and i["ProbEfecteBuff"][j] != "":
-                    Buff[i["Buff"][j]]=int(i["ProbEfecteBuff"][j])
+                    Buff[effects[i["Buff"][j]]]=int(i["ProbEfecteBuff"][j])
         elif i["Buff"] != "" and i["ProbEfecteBuff"] != "":
-            Buff[i["Buff"]]=int(i["ProbEfecteBuff"])
+            Buff[effects[i["Buff"]]]=int(i["ProbEfecteBuff"])
 
         Debuff = {}
         if len(i["Debuff"]) > 1 and i["Debuff"] == list:
             for j in range(len(i["Debuff"])):
                 if i["Debuff"][j] != "" and i["ProbEfecteDebuff"][j] != "":
-                    Debuff[i["Debuff"][j]]=int(i["ProbEfecteDebuff"][j])
+                    Debuff[effects[i["Debuff"][j]]]=int(i["ProbEfecteDebuff"][j])
         elif i["Debuff"] != "" and i["ProbEfecteDebuff"] != "":
-            Debuff[i["Debuff"]]=int(i["ProbEfecteDebuff"])
+            Debuff[effects[i["Debuff"]]]=int(i["ProbEfecteDebuff"])
         move = Characteristics.Moves(i["Nom"], i["Descripcio"], i["Potencia"], i["Precisio"],  i["Magic?"], 
                                         i["Cost"], Buff, Debuff, i["MultipleObjectiu?"], i["Cura?"], i["Protegeix?"], i["DanyperProteccio"])
-        moves.update(move.Name, move)
-    return movements
+        moves.update({move.Name: move})
+    return moves
 
-def CallObject(trobar = ""):
+def CallObject():
     objects = CallCSV("Data/Objects.csv")
     objectes = {
         "Combat": {},
         "Clau": {},
     }
-    if trobar != "":
-        for i in objects:
-            if i["Nom"] == trobar:
-                if i["Tipus"] == "Combat":
-                    obj = Objectes.ObjecteCombat(i["Nom"], i["Descripcio"], i["Efectes"], i["Preu"],  i["ForadeCombat?"])
-                    objectes["Combat"].update(obj.ObjectName, obj)
-                elif i["Tipus"] == "Clau":
-                    obj = Objectes.ObjecteClau(i["Nom"], i["Descripcio"])
-                    objectes["Clau"].update(obj.ObjectName, obj)    
-    return objects
+    for i in objects:
+        if i["Tipus"] == "Combat":
+            obj = Objectes.ObjecteCombat(i["Nom"], i["Descripcio"], i["Efectes"], i["Preu"],  i["ForadeCombat?"])
+            objectes["Combat"].update({obj.ObjectName: obj})
+        elif i["Tipus"] == "Clau":
+            obj = Objectes.ObjecteClau(i["Nom"], i["Descripcio"])
+            objectes["Clau"].update({obj.ObjectName: obj})    
+    return objectes
 
 def CallAchievements(Individual = True):
     objects = CallCSV("Data/Achievements.csv")

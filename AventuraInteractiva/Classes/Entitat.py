@@ -393,7 +393,7 @@ class Entity():
         print("\nTitols: ")
         if self.isPlayer == True:
             count = 0
-            for i in jugador.Titles:
+            for i in self.Titles:
                 if count < 3:
                     print(i.TitleName, end=", ")
                 else:
