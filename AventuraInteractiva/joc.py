@@ -23,21 +23,9 @@ def ClearScreen():
     os.system("cls" if os.name == "nt" else "clear")
 
 
-# # Afegint Paths (Posibles SUbclasses)
-# entityTypes[1].AddPaths({entityTypes[11]: [[("Lv", 30), ("Stat", [("Mana", 120)])], False]})
-
-
-# # Afegint monstres que poden apareixer conjuntament amb un altre.
-# entityTypes[43].AddCompanions({entityTypes[42]: 99, entityTypes[43]: 1})    # Gran Cranc Abberrant
-# entityTypes[38].AddCompanions({entityTypes[39]: 99, entityTypes[38]: 1})    # Gran Toruga Marina
-# entityTypes[34].AddCompanions({entityTypes[33]: 100})   # Guiverns els 4 d'aball
-# entityTypes[35].AddCompanions({entityTypes[33]: 100})
-# entityTypes[36].AddCompanions({entityTypes[33]: 100})
-# entityTypes[37].AddCompanions({entityTypes[33]: 100})
-# entityTypes[53].AddCompanions({entityTypes[5]: 99, entityTypes[53]: 1}) # Gran Slime
-# entityTypes[69].AddCompanions({entityTypes[68]: 100})   # Bagragratch
-# entityTypes[75].AddCompanions({entityTypes[74]: 95, entityTypes[75]: 5})    # Granota
-# entityTypes[76].AddCompanions({entityTypes[73]: 95, entityTypes[76]: 5})    # Vespa
+Objects = Call.CallObject()
+Movements = Call.CallMovement()
+Entities = Call.CallEntity()
 
 
 
@@ -481,10 +469,10 @@ def CrearJugador():
     clases = []
     nomclases = []
     print("")
-    lista = Call.CallEntity("", True)
-    for i in lista:
-        clases.append(i)
-        nomclases.append(i.EntityName.lower())
+    for i in Entities:
+        if i["Playable?"] == True:
+            clases.append(i)
+            nomclases.append(i.EntityName.lower())
     while clase not in nomclases:
         try:
             for i in clases:

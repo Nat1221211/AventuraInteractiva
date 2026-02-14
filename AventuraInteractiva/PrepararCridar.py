@@ -57,70 +57,72 @@ def CallCSV(cami):
     except FileNotFoundError:
         print("Ha ocurregut un error carregant el fitxer...")
 
-def CallEntity(trobar, isPlayer = False):
+def CallEntity(movements):
     entities = CallCSV("Data/EntityTypes.csv")
-    llista = []
+    entities = {}
     for i in entities:
-        if i["Nom"] == trobar or isPlayer == True and i["Playable?"] == True:
+        moves = {}
+        for m, n in i["Movements"].items():
+            moves[m]=n
 
-            moves = {}
-            for m, n in i["Movements"].items():
-                moves[CallMovement(m)]=n
+        entitat = EntityType.EntityType(i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
+                                        i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
+        entities.update(entitat.EntityName, entitat)
+    return entities
 
-            entitat = EntityType.EntityType(i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
-                                  i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
-            # Podria afegir una linia per als companys del monstre posibles en el csv.
-            if isPlayer == True:
-                llista.append(entitat)
-    if isPlayer == True:
-        return llista
-    else:
-        return entitat
-
-def CallEfect(trobar):
+def CallEfect():
     effects = CallCSV("Data/effects.csv")
+    efectes = {}
     for i in effects:
-        if i["Nom"] == trobar:
-            if i["ImpedeixAccions?"] == True:
-                bloqueig = (i["ImpedeixAccions?"], i["ProbabilitatImpedirAccio"])
-            else:
-                bloqueig = (False, 0)
-            entitat = Characteristics.Effects(i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], i["Dany"],
-                                              i["StatAfected"], i["Limit"])
-    return entitat
+        if i["ImpedeixAccions?"] == True:
+            bloqueig = (i["ImpedeixAccions?"], i["ProbabilitatImpedirAccio"])
+        else:
+            bloqueig = (False, 0)
+        efecte = Characteristics.Effects(i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], 
+                                            i["Dany"], i["StatAfected"], i["Limit"])
+        efectes.update(efecte.Name, efecte)
+    return effects
 
-def CallMovement(trobar):
+def CallMovement(effects):
     movements = CallCSV("Data/Movements.csv")
+    moves = {}
     for i in movements:
-        if i["Nom"] == trobar:
-            Buff = {}
-            if len(i["Buff"]) > 1 and i["Buff"] == list:
-                for j in range(len(i["Buff"])):
-                    if i["Buff"][j] != "" and i["ProbEfecteBuff"][j] != "":
-                        Buff[i["Buff"][j]]=int(i["ProbEfecteBuff"][j])
-            elif i["Buff"] != "" and i["ProbEfecteBuff"] != "":
-                Buff[i["Buff"]]=int(i["ProbEfecteBuff"])
+        Buff = {}
+        if len(i["Buff"]) > 1 and i["Buff"] == list:
+            for j in range(len(i["Buff"])):
+                if i["Buff"][j] != "" and i["ProbEfecteBuff"][j] != "":
+                    Buff[i["Buff"][j]]=int(i["ProbEfecteBuff"][j])
+        elif i["Buff"] != "" and i["ProbEfecteBuff"] != "":
+            Buff[i["Buff"]]=int(i["ProbEfecteBuff"])
 
-            Debuff = {}
-            if len(i["Debuff"]) > 1 and i["Debuff"] == list:
-                for j in range(len(i["Debuff"])):
-                    if i["Debuff"][j] != "" and i["ProbEfecteDebuff"][j] != "":
-                        Debuff[i["Debuff"][j]]=int(i["ProbEfecteDebuff"][j])
-            elif i["Debuff"] != "" and i["ProbEfecteDebuff"] != "":
-                Debuff[i["Debuff"]]=int(i["ProbEfecteDebuff"])
-            move = Characteristics.Moves(i["Nom"], i["Descripcio"], i["Potencia"], i["Precisio"],  i["Magic?"], 
-                                            i["Cost"], Buff, Debuff, i["MultipleObjectiu?"], i["Cura?"], i["Protegeix?"], i["DanyperProteccio"])
-    return move
+        Debuff = {}
+        if len(i["Debuff"]) > 1 and i["Debuff"] == list:
+            for j in range(len(i["Debuff"])):
+                if i["Debuff"][j] != "" and i["ProbEfecteDebuff"][j] != "":
+                    Debuff[i["Debuff"][j]]=int(i["ProbEfecteDebuff"][j])
+        elif i["Debuff"] != "" and i["ProbEfecteDebuff"] != "":
+            Debuff[i["Debuff"]]=int(i["ProbEfecteDebuff"])
+        move = Characteristics.Moves(i["Nom"], i["Descripcio"], i["Potencia"], i["Precisio"],  i["Magic?"], 
+                                        i["Cost"], Buff, Debuff, i["MultipleObjectiu?"], i["Cura?"], i["Protegeix?"], i["DanyperProteccio"])
+        moves.update(move.Name, move)
+    return movements
 
-def CallObject(trobar):
+def CallObject(trobar = ""):
     objects = CallCSV("Data/Objects.csv")
-    for i in objects:
-       if i["Nom"] == trobar:
-            if i["Tipus"] == "Combat":
-                obj = Objectes.ObjecteCombat(i["Nom"], i["Descripcio"], i["Efectes"], i["Preu"],  i["ForadeCombat?"])
-            elif i["Tipus"] == "Clau":
-                obj = Objectes.ObjecteClau(i["Nom"], i["Descripcio"])
-    return obj
+    objectes = {
+        "Combat": {},
+        "Clau": {},
+    }
+    if trobar != "":
+        for i in objects:
+            if i["Nom"] == trobar:
+                if i["Tipus"] == "Combat":
+                    obj = Objectes.ObjecteCombat(i["Nom"], i["Descripcio"], i["Efectes"], i["Preu"],  i["ForadeCombat?"])
+                    objectes["Combat"].update(obj.ObjectName, obj)
+                elif i["Tipus"] == "Clau":
+                    obj = Objectes.ObjecteClau(i["Nom"], i["Descripcio"])
+                    objectes["Clau"].update(obj.ObjectName, obj)    
+    return objects
 
 def CallAchievements(Individual = True):
     objects = CallCSV("Data/Achievements.csv")
@@ -128,7 +130,7 @@ def CallAchievements(Individual = True):
         requisits = {}
         if Individual == True:
             if i["Tipus de Requisit"] == "Kill":
-                requisits[i["Nom"]]={"Type&Amt": (i["Requisit"], i["Quantitat"]), "Qty": 0}
+                Exits.KillExit(i["Nom"], i["Descripcio"], i["Requisit"], i["Quantitat"], i["Recompensa"])
         else:
             if i["Tipus de Requisit"] != "Kill":
                 requisits[i["Nom"]]={"Type&Amt": (i["Requisit"], i["Quantitat"]), "Qty": 0}

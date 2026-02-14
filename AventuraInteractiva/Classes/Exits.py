@@ -77,16 +77,15 @@ class KillExit(Exits):
     Rewards = None
     RewType = ""
 
-    def __init__(self, name, description, entities, quantity, reward, rewardtype):
+    def __init__(self, name, description, entities, quantity, reward):
         self.Name = name
         self.Description = description
         self.Entities = entities
         self.Quantity = quantity
         self.Rewards = reward
-        self.RewType = rewardtype
 
     def IncrementCount(self, enemy):
-        if enemy.base in self.Entities:
+        if enemy.base.EntityName in self.Entities:
             self.Count += 1
     
     def Completed(self, team):
