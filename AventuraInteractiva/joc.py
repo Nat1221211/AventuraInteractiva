@@ -1183,23 +1183,21 @@ def GenerarEnemic():
     qty = random.choices(num, prob)
     enemy = []
 
-    generar = Call.CallEntity(seleccio[0])
-    enemy.append(Entitat.Entity("", random.randrange(jugador.Ubicacio.LevelRange[0], jugador.Ubicacio.LevelRange[1] + 1), False, generar))
+    enemy.append(Entitat.Entity("", random.randrange(jugador.Ubicacio.LevelRange[0], jugador.Ubicacio.LevelRange[1] + 1), False, Entities[seleccio[0]]))
 
     probs = []
     opcionsPosib = []
 
-    for v in generar.Companions.items():
+    for v in Entities[seleccio[0]].Companions.items():
         probs.append(v[1])
         opcionsPosib.append(v[0])
 
 
     if qty[0] > 1:
         for l in range(qty[0] - 1):
-            if len(generar.Companions.keys()) >= 1:
+            if len(Entities[seleccio[0]].Companions.keys()) >= 1:
                 apareix = random.choices(opcionsPosib, probs)
-                generar = Call.CallEntity(apareix)
-            entitat = Entitat.Entity("", random.randrange(jugador.Ubicacio.LevelRange[0] - 2, enemy[0].Lv), False, generar)
+            entitat = Entitat.Entity("", random.randrange(jugador.Ubicacio.LevelRange[0] - 2, enemy[0].Lv), False, Entities[apareix])
             enemy.append(entitat)
     
     Lluitar(enemy)

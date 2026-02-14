@@ -238,11 +238,10 @@ class Entity():
                     aplicable = False
                     print(f"{self.nom} ha arribat al limit d'aplicacions de l'efecte {effect}")
 
-            aplicar = Call.CallEfect(effect)
             if aplicable == True:
-                aplicar.RemainingTurns = aplicar.Turns
-                self.afected.append(aplicar)
-                print(f"{self.nom} ha estat afectat per {aplicar.Name}.")
+                effect.RemainingTurns = effect.Turns
+                self.afected.append(effect)
+                print(f"{self.nom} ha estat afectat per {effect.Name}.")
 
                 StatChanges = {}
 
