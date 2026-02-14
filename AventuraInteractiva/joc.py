@@ -939,7 +939,7 @@ def Explorar():
     elif prob > 20 and prob <= 70:  # Res / Missions / Ocurrencies
         llista = []
         for i in missions:
-            if i.Status == "Accepted" and i.Place == ubicacio:
+            if i.Status == "Accepted" and i.Place == jugador.Ubicacio:
                 if type(i) == Missions.KillMission:
                     if i.Generic == False:
                         llista.append(i)
@@ -1197,6 +1197,8 @@ def GenerarEnemic():
         for l in range(qty[0] - 1):
             if len(Entities[seleccio[0]].Companions.keys()) >= 1:
                 apareix = random.choices(opcionsPosib, probs)
+            else:
+                apareix = seleccio[0]
             entitat = Entitat.Entity("", random.randrange(jugador.Ubicacio.LevelRange[0] - 2, enemy[0].Lv), False, Entities[apareix])
             enemy.append(entitat)
     
