@@ -7,6 +7,7 @@
 
 # Altres Imports
 import os
+import json
 
 # Moduls
 from Classes import Characteristics
@@ -133,6 +134,25 @@ def CallAchievements(Individual = True):
             if i["Tipus de Requisit"] != "Kill":
                 requisits[i["Nom"]]={"Type&Amt": (i["Requisit"], i["Quantitat"]), "Qty": 0}
     return requisits
+
+def CallZones():
+    rutabase = os.path.dirname(__file__)
+    ruta = os.path.join(rutabase, "Data/zones.json")
+    with open(ruta, "r", encoding="utf-8") as f:
+        zona = json.load(f)
+
+        places = {}
+        for i in zona.items():
+
+            place = Zones.Zona(i[1]["id"], i[1]["name"], i[1]["description"], i[1]["zone_type"], i[1]["enemies"], 
+                               i[1]["monedes"])
+            
+            place.AddConnections(i[1]["connections"])
+            place.AfegirCondicio(i[1]["unlock_condition"])
+
+
+            places.update({i[1]["id"]: place})
+    return places
 
 def main():
     print("!! - Joc de Preguntes - !!")

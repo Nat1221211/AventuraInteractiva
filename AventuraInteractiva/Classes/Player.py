@@ -21,8 +21,8 @@ class Player():
         self.MissionsFinalitzades = []
         self.objectes = {} # Diccionari, objecte(nom/id en csv) = clau i quantitat = valor
         self.UltimPobleVisitat = self.Ubicacio
-        self.LlocsVisitats = ["Dawn Village"]
-        self.LlocsTrobats = ["Dawn Village", "Bosc del Sud", "Bosc Obscur"]
+        self.LlocsVisitats = ["dawn_village"]
+        self.LlocsTrobats = ["dawn_village", "south_forest"]
 
         self.StatIncrement = {
             "MaxHP": {"%": int(), "Flat": int()},

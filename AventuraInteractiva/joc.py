@@ -36,222 +36,7 @@ Entities = Call.CallEntity(Movements)
 entityGroups = {""}
 
         # Zones
-zones = [
-    # Diccionari per a les entitats en la zona, essent la entitat i la probabilitat de que apareixi.
-    # Altre diccionari per a les monedes, essent la moneda, una tupla amb els dos valors limits (min, max), i 
-    # la probabilitat de que surtin al explorar la zona.  
-        Zones.Zona("Dawn Village",
-                   "Un poble que representa l'inici, es diu que és el poble on va neixer l'heroi de les llegendes...",
-                   "Poble", {}, [], (1, 5), {}, True),
-
-        Zones.Zona("Bosc Obscur",
-                   "La zona exterior del bosc obscur, d'on es diu que surjeren els monstres...",
-                   "Bosc", {"Llop": 40, "Slime": 60},
-                   # Llista amb probabilitat de cada un dels enemics per ordre d'apareixer en grups de fins a 3.
-                   # Cada llista representa un enemic, i cada valor la prob per 1, 2, 3 enemics.
-                   [[85, 13, 2], [95, 5]], (8, 14), {"Bronze": [(1, 7), 100]}, True),
-        
-        # Zones.Zona("Profunditats del Bosc Obscur",
-        #            "Les profunditats del bosc obscur, una perillosa zona de la que és diu que qui hi entra no en surt...",
-        #            "Bosc", {entityTypes[4]: 32, entityTypes[5]: 40, entityTypes[6]: 20, entityTypes[8]: 5, entityTypes[9]: 3}, 
-        #            [[85, 13, 2], [95, 5], [99, 1], [99, 1], [99, 1]], (37, 45), {"Plata": [(15, 25), 100]}),
-        
-        # Zones.Zona("Centre del Bosc Obscur",
-        #            "La zona central del bosc obscur, hi habiten monstres desconeguts, ningú ha tornat mai d'aquest lloc...",
-        #            "Bosc", {entityTypes[6]: 30, entityTypes[8]: 30, entityTypes[9]: 40}, 
-        #             [[85, 13, 2], [95, 5], [99, 1]], (43, 52), {"Or": [(1, 10), 40], "Plata": [(20, 40), 60]}),
-        
-        # Zones.Zona("Muntanyes del Origen",
-        #            "Unes muntanyes només conegudes per llegendes, es diu que són el primer lloc en ser creat d'aquest món...",
-        #            "Muntanya", {entityTypes[7]: 50, entityTypes[8]: 20, entityTypes[9]: 20, entityTypes[10]: 10}, 
-        #            [[85, 13, 2], [95, 5], [99, 1], [99, 1]], (50, 55), {"Or": [(6, 15), 90], "Or Platejat": [(1, 3), 10]}),
-        
-        # Zones.Zona("Cavernes del Origen",
-        #            "Les cavernes de les muntanyes del origen, no és te coneixement de la existencia d'aquestes...",
-        #            "Cavernes", {entityTypes[6]: 40, entityTypes[7]: 30, entityTypes[10]: 30}, 
-        #             [[85, 13, 2], [95, 5], [99, 1]], (52, 57), {"Or Platejat": [(2, 5), 100]}),
-        # Pobles
-        Zones.Zona("Silverhorn",
-                   "Un poble envoltat de munatanyes, del que ningú coneix la existencia...",
-                   "Poble", {}, [], (1, 5), {}, False),
-        Zones.Zona("Faylight",
-                   "Un poble enmig d'un gran bosc molt lluminos...",
-                   "Poble", {}, [], (1, 5), {}, False),
-        Zones.Zona("Lakestar",
-                   "Un pobla al costat d'un gran llac, és diu que en el llac s'hi amaga una estrella...",
-                   "Poble", {}, [], (1, 5), {}, False),
-        Zones.Zona("Knightshire",
-                   "La capital del regne, una gran terra de caballers...",
-                   "Poble", {}, [], (1, 5), {}, False),
-        
-        # Camins i zones
-            # Cami de Dawn Village a Knightshire
-        Zones.Zona("Bosc del Sud",
-                   "Un bosc ubicat al sud de Dawn Village, un bosc relativament segur...",
-                   "Bosc", {"Llop": 8, "Slime": 30, "Conill Cornut": 47}, 
-                   [[15, 83, 2], [93, 5, 2], [95, 5]], 
-                   (3, 5), {"Bronze": [(1, 5), 100]}, True),
-
-        # Zones.Zona("Rocklink",
-        #            "Unes muntanyes que presenten el cami cap a la capital del regne...",
-        #            "Muntanya", {entityTypes[4]: 40, entityTypes[33]: 20, entityTypes[7]: 30, 
-        #                     entityTypes[0]: 3, entityTypes[2]: 3, entityTypes[3]: 4}, 
-        #            [[20, 75, 5], [100], [95, 5], [50, 40], [50, 40], [50, 40]], 
-        #            (5, 9), {"Bronze": [(10, 20), 90], "Plata": [(2, 5), 10]}, False),
-
-        # Zones.Zona("Camps de Knightshire",
-        #            "Els camps a les afores de knightshire, aquestes \"afores\" son bastant grans...",
-        #            "Camps", {entityTypes[5]: 90, entityTypes[4]: 10, entityTypes[26]: 50}, 
-        #            [[95, 5], [40, 55, 5], [95, 5]], (3, 5), {"Bronze": [(1, 5), 100]}, False),
-            
-            # Cami de Knightshire a Lakestar o Faylight (Pasant per Muntayes Estelars)
-        
-#         Zones.Zona("Bosc Estelar",
-#                    "Un bosc que guia cap a les muntanyes estelars...",
-#                    "Bosc", {entityTypes[26]: 50, entityTypes[32]: 50, entityTypes[28]: 50}, 
-#                    [], 
-#                    (8, 13), {"Bronze": [(12, 25), 70], "Plata": [(4, 9), 30]}, False),
-        
-#         Zones.Zona("Muntanyes Estelars",
-#                    "Unes muntanyes de les que es diu que les estrelles guien a les persones que hi passen...",
-#                    "Muntanya", {entityTypes[4]: 30, entityTypes[5]: 40, entityTypes[7]: 35, entityTypes[44]: 8, 
-#                                 entityTypes[1]: 1, entityTypes[0]: 2, entityTypes[2]: 2, entityTypes[3]: 2}, 
-#                    [[82, 15, 3],[92, 6, 2], [98,2], [100], [30, 50, 20], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
-#                    (12, 17), {"Bronze": [(16, 25), 70], "Plata": [(7, 9), 30]}, False),
-        
-#         Zones.Zona("Cami de Roca",
-#                    "Un cami rocos que guia cap a la platja de Lakestar.",
-#                    "Muntanya i Platja", {entityTypes[4]: 50, entityTypes[46]: 20, entityTypes[7]: 18, 
-#                                          entityTypes[1]: 3, entityTypes[0]: 4, entityTypes[2]: 3, entityTypes[3]: 3}, 
-#                    [[82, 15, 3],[92, 6, 2], [98,2], [30, 50, 20], [30, 50, 20], [30, 50, 20], [30, 50, 20]], 
-#                    (15, 17), {"Bronze": [(16, 25), 70], "Plata": [(7, 9), 30]}, False),
-        
-#         Zones.Zona("Platja de Lakestar",
-#                    "La platja del Gran llac Lakestar...",
-#                    "Platja", {entityTypes[46]: 32, entityTypes[38]: 2, entityTypes[39]: 30, entityTypes[40]: 15,
-#                               entityTypes[42]: 20, entityTypes[43]: 1}, 
-#                    [[95, 5], [100], [95, 5], [100], [95, 5], [100]], 
-#                    (10, 15), {"Bronze": [(10, 20), 100]}, False)
- ]
-
-# # Cami de Lakestar a Faylight o (Pendent)
-# zones.append(
-# Zones.Zona(
-#     "Serra del Bosc de Llum",
-#     "Una gran serra que bloqueja el pas cap el Gran Bosc de llum, si hi vols arribar, has de passar per aquestes...",
-#     "Muntanya", {entityTypes[33]: 22, entityTypes[7]: 25, entityTypes[48]: 5, entityTypes[49]: 8,
-#                  entityTypes[44]: 10, entityTypes[50]: 30}, 
-#     [[90, 10], [95, 5], [100], [95, 5], [100], [40, 55, 5]],
-#     (15, 20), {"Plata": [(10, 15), 100]}, False, (("Ubicacio", [zones[8]]))),
-# )
-
-            
-# zones.append(
-# Zones.Zona(
-#     "Gran Bosc de Llum",
-#     "Un Bosc on la llum no desapareix ni tant sols durant la nit, d'aqui el seu nou...",
-#     "Bosc", {entityTypes[50]: 30, entityTypes[32]: 40, entityTypes[70]: 2, entityTypes[73]: 14, entityTypes[74]: 14}, 
-#     [[30, 65, 5], [80, 20], [100], [90, 10], [90, 10]], 
-#     (18, 23), {"Plata": [(10, 15), 100]}, False)
-# )      
-
-# zones.append(
-# Zones.Zona(
-#     "Bosc de les Fades",
-#     "Un bosc que quasi ningu coneix, encara que esta dins d'un bosc molt conegut...",
-#     "Bosc", {entityTypes[79]: 80, entityTypes[80]: 20}, [[100], [100]],
-#     (21, 26), {"Plata": [(10, 15), 100]}, False))
-
-# # Cami de Faylight a Silverhorn
-# zones.append(
-# Zones.Zona(
-#     "Grans Muntanyes Blanques",
-#     "Una gran serralada blanca, és diu que en aquestes muntanyes hi ha un poble llegendari...",
-#     "Muntanya", {entityTypes[7]: 40, entityTypes[31]: 15, entityTypes[33]: 30, entityTypes[34]: 15, entityTypes[35]: 15,
-#                 entityTypes[36]: 15, entityTypes[37]: 15, entityTypes[44]: 15, entityTypes[45]: 7, entityTypes[47]: 20, 
-#                 entityTypes[48]: 20, entityTypes[51]: 20, entityTypes[52]: 20, entityTypes[68]: 7, entityTypes[69]: 7,
-#                 entityTypes[46]: 20, entityTypes[27]: 1},
-#                 [[90, 10], [100], [100], [100], [100], [100], [100], [95, 5], [100], [100], [95, 5], [88, 10, 2], [95, 5], [70, 25, 5], [100], [60, 35, 5], [100]], 
-#     (24, 29), {"Plata": [(10, 15), 100]}, 
-#     False, None, 20)
-#     )
-                
-# zones.append(
-# # Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
-# Zones.Zona( 
-#     "Profunditats de Lakestar",
-#     "Un cami subterrani que avança dins el Gran llac, normalment ningú en sabria la existencia...",
-#     "Cavernes", {entityTypes[68]: 20, entityTypes[69]: 5, entityTypes[42]: 20, entityTypes[43]: 5, 
-#                  entityTypes[39]: 20, entityTypes[38]: 5, entityTypes[74]: 20, entityTypes[75]: 5},
-#     [[75, 25], [98, 2], [75, 25], [98, 2], [75, 25], [98, 2], [75, 25], [98, 2]], 
-#     (30, 35), {"Plata": [(20, 25), 100]}, False,
-#     (("Ubicacio", [zones[6]])), 25)
-#     )
-
-# zones.append(
-# # Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
-# Zones.Zona( 
-#     "Mon Subterrani",
-#     "Un mon subterrani sota el Gran Llac, aquest lloc sembla donar sentit a la historia de la estrella...",
-#     "Cavernes", {entityTypes[68]: 50, entityTypes[69]: 15, entityTypes[51]: 30, entityTypes[53]: 10,
-#                  entityTypes[42]: 50, entityTypes[43]: 15, entityTypes[74]: 30, entityTypes[75]: 10, entityTypes[57]: 1},
-#     [[40, 40, 20], [80, 20], [50, 40, 10], [60, 35, 5], [40, 40, 20], [60, 35, 5], [40, 40, 20], [80, 20], [100]],
-#     (35, 40), {"Plata": [(30, 45), 100]}, False)
-#     )
-
-# zones.append(
-# # Conectat a lakestar mitjançant el llac, necessita haber trobat silverhorn i cert objecte per trobar la zona...
-# Zones.Zona( 
-#     "Illa estelar",
-#     "Es pot veure l'estrella en el crater d'aquesta illa..., rodejada per un munt de monstres marins.",
-#     "Cavernes", {entityTypes[40]: 50, entityTypes[41]: 1, entityTypes[42]: 50, entityTypes[43]: 15,
-#                  entityTypes[39]: 50, entityTypes[38]: 15, entityTypes[53]: 15},
-#     [[40, 40, 20], [100], [50, 40, 10], [60, 35, 5], [40, 40, 20], [60, 35, 5], [60, 35, 5]],
-#     (35, 40), {"Plata": [(35, 45), 100]}, False)
-#     )
-
-
-
-        # Connexions de cada zona
-    # Pobles
-zones[0].AddConnections([zones[1], zones[6]])  # Dawn Viallage
-# zones[6].AddConnections([zones[1]])  # Silverhorn
-# zones[7].AddConnections([zones[18], zones[20]]) # Faylight
-# zones[8].AddConnections([zones[16]]) # Lakestar
-# zones[9].AddConnections([zones[12]]) # Knightshire
-
-#     # Salvatge
-zones[1].AddConnections([zones[0]])   # Bosc Obscur
-# zones[2].AddConnections([zones[1], zones[3]])   # Profunditats Bosc Obscur
-# zones[3].AddConnections([zones[2], zones[4]])   # Centre Bosc Obscur
-# zones[4].AddConnections([zones[3], zones[5]])   # Muntanyes Origen
-# # zones[5].AddConnections([zones[4]]) # Cavernes del origen
-zones[6].AddConnections([zones[0]]) # Bosc del SUd
-# zones[11].AddConnections([zones[10], zones[12]])    # Rocklink
-# zones[12].AddConnections([zones[11], zones[9], zones[13]])  # Camps de Knightshire
-# zones[13].AddConnections([zones[12], zones[14]])    # Bosc Estelar
-# zones[14].AddConnections([zones[13], zones[15], zones[17]]) # Muntanyes Estelars
-# zones[15].AddConnections([zones[14], zones[16], zones[21]])    # Cami Rocos
-# zones[16].AddConnections([zones[15], zones[8]]) # Platja de Lakestar
-# zones[17].AddConnections([zones[14], zones[18]]) # Serra del Bosc de Llum
-# zones[18].AddConnections([zones[17], zones[19]]) # Gran Bosc de Llum
-# zones[19].AddConnections([zones[18], zones[7]]) # Bosc de Fades
-# zones[20].AddConnections([zones[7], zones[6]]) # Grans Muntanyes Blanques
-# zones[21].AddConnections([zones[15], zones[22]]) # Profunditats de Lakestar
-# zones[22].AddConnections([zones[21], zones[23]]) # Mon Subterrani
-# zones[23].AddConnections([zones[22]]) # Illa Estelar
-
-
-
-# # Afegir Objectes per Trobar explorant cada zona
-# zones[1].AfegirObjectePerTrobar([
-#     [objectes[16], [30, 2]],
-#     [objectes[1], [40, 3]],
-#     [objectes[17], [30, 3]],
-#     ])
-
-
-
+zones = Call.CallZones()
 
 # # Botiga
 botiga = [Objects["Combat"]["Pocio Inferior"],
@@ -454,7 +239,7 @@ missions.append(
     Missions.FindMission("Troba a en Jack", 
     "Un nen del pobla s'ha perdut, és diu Jack, creuen que s'ha endinsat massa en el bosc obscur...",
     "Secundaria", [("XP", 500), ("Gold", 2000)], "Jack", 
-    [("Lv", 5)], zones[1])
+    [("Lv", 5)], zones["south_forest"])
 )
 
 
@@ -487,7 +272,7 @@ def CrearJugador():
 
 # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
 personatge = CrearJugador()
-ubicacio = zones[0]
+ubicacio = zones["dawn_village"]
 team = []
 team.append(personatge)
 
@@ -877,8 +662,8 @@ def Mapa():
     disponibles = []
     print(f"Vosté és a {jugador.Ubicacio.NameZone}.\n")
     for i in jugador.Ubicacio.Connections:  # Mostrem ubicacions disponibles
-        if i.NameZone in jugador.LlocsTrobats:
-            print(f"{count} -> {i.NameZone}")
+        if i in jugador.LlocsTrobats:
+            print(f"{count} -> {zones[i].NameZone}")
             count += 1
             disponibles.append(i)
     if count > len(disponibles):
@@ -892,7 +677,7 @@ def Mapa():
     if pos == count:
         print("Ha decidit quedar-se on es...")
     else:
-        jugador.Ubicacio = disponibles[pos - 1]    # Canviem la zona i la retornem
+        jugador.Ubicacio = zones[disponibles[pos -1]]    # Canviem la zona i la retornem
         jugador.ActualitzarUltimPobleVisitat()
         for i in jugador.MisionsAcceptades:
             if type(i) == Missions.PlaceMission:
