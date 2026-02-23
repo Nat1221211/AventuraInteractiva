@@ -36,7 +36,7 @@ Entities = Call.CallEntity(Movements)
 entityGroups = {""}
 
         # Zones
-zones = Call.CallZones()
+zones = Call.CallZones(Entities)
 
 # # Botiga
 botiga = [Objects["Combat"]["Pocio Inferior"],

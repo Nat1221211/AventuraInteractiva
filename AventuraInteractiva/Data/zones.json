@@ -17,7 +17,7 @@
             "zone_type": "bosc",
             
             "enemies": {
-                "llop": {
+                "wolf": {
                     "prob": 40,
                     "group_probs": [40, 50, 10],
                     "companions": {},
