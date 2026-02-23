@@ -47,9 +47,10 @@
                     "level_range": [1, 5]
                 }
             },
-            "connections": ["dawn_village", ""],
+            "connections": ["dawn_village"],
             "monedes": {
                 "Bronze": {
+                    "type": "Bronze",
                     "amount_range": [1, 5],
                     "prob": 100
                 }

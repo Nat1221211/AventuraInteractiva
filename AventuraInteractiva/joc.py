@@ -700,12 +700,12 @@ def OcurrenciaMisio(misio):
 
 def ExplorarTrobaroNo():
     global jugador
-    perTrobar = len(ubicacio.ObjectesPerTrobar)
+    perTrobar = len(ubicacio.Objectes)
     if perTrobar >= 1:
         choice = random.choices(["res", "objecte"], [10, 90])
         if choice == ["objecte"]:
-            objectes = list(ubicacio.ObjectesPerTrobar.keys())
-            probabilitat = [j[0] for j in ubicacio.ObjectesPerTrobar.values()]
+            objectes = list(ubicacio.Objectes.keys())
+            probabilitat = [j[0] for j in ubicacio.Objectes.values()]
             trobat = random.choices(objectes, probabilitat)
             ubicacio.ObjecteTrobat(trobat[0])
             print(f"Has trobat un/a {trobat[0].ObjectName}.")
@@ -720,7 +720,7 @@ def Explorar():
     prob = random.randrange(1, 100)
     choice = [""]
     if prob <= 20:  # Or
-        TrobarOr(jugador.Ubicacio.Or.keys())
+        TrobarOr(jugador.Ubicacio.Or)
     elif prob > 20 and prob <= 70:  # Res / Missions / Ocurrencies
         llista = []
         for i in missions:
@@ -737,23 +737,23 @@ def Explorar():
                 OcurrenciaMisio(misio)
         if len(llista) == 0 or choice == ["res"]:
             ExplorarTrobaroNo()
-    elif prob > 70 and prob <= 95:  # Lluitar
-        GenerarEnemic()
+    # elif prob > 70 and prob <= 95:  # Lluitar
+    #     GenerarEnemic()
     elif prob > 95 and prob <= 100: # Seguent ruta
         TrobarSeguentZona()
         
     jugador.Ubicacio.ExplorarCount += 1
     rutaTrobada = False
     for i in jugador.Ubicacio.Connections:
-        if i.ZoneType == "Poble":
-            if i.Trobada == False:
-                i.Trobada = True
-                print(f"Has trobat un cami a {i.NameZone}")
+        if zones[i].ZoneType == "Poble":
+            if i not in jugador.LlocsTrobats:
+                jugador.LlocsTrobats.append(i)
+                print(f"Has trobat un cami a {zones[i].NameZone}")
                 rutaTrobada = True
         else:
-            if jugador.Ubicacio.ExplorarCount >= i.IntentsPerTrobar and i.Trobada != True:
-                i.Trobada = True
-                print(f"Has trobat un cami a {i.NameZone}")
+            if jugador.Ubicacio.ExplorarCount >= zones[i].IntentsPerTrobar and i not in jugador.LlocsTrobats:
+                jugador.LlocsTrobats.append(i)
+                print(f"Has trobat un cami a {zones[i].NameZone}")
                 rutaTrobada = True
     if choice[0] != "missio" and prob < 70 or rutaTrobada == True:
         input("Presiona per a continuar...")
@@ -763,11 +763,10 @@ def TrobarSeguentZona():
     posiblesRutesATrobar = []
     rutesTrobades = []
     for i in jugador.Ubicacio.Connections:
-        
-        complert = i.ComprobarCondicio(jugador.Team)
-        if complert == True and i.Trobada == False:
+        complert = zones[i].ComprobarCondicio(jugador.Team)
+        if complert == True and i not in jugador.LlocsTrobats:
             posiblesRutesATrobar.append(i)
-        if i.Trobada == True:
+        if i in jugador.LlocsTrobats:
             rutesTrobades.append(i)
     if len(posiblesRutesATrobar) == 0:
         if len(rutesTrobades) == len(jugador.Ubicacio.Connections):
@@ -776,38 +775,35 @@ def TrobarSeguentZona():
             print("No sembla haber-hi cap altre ruta...")
     else:
         trobat = random.choice(jugador.Ubicacio.Connections)
-        print(f"Has trobat una ruta a {trobat.NameZone}.")
-        trobat.Trobada = True
+        print(f"Has trobat una ruta a {zones[trobat].NameZone}.")
+        jugador.LlocsTrobats.append(trobat)
     input("Presiona per a continuar...")
 
     
 
 def TrobarOr(moneda):
     global jugador
-    moneda = list(moneda)
-    mult = 10
-    if len(moneda) < 2:
-        found = random.randint(jugador.Ubicacio.Or[moneda[0]][0][0], jugador.Ubicacio.Or[moneda[0]][0][1])
-        print(f"Has trobat {found} monedes de {moneda[0]}")
+    mult = {"Bronze": 10, "Plata": 100, "Or": 1000, "Or Platejat": 10000}
+    
+    monedaTrobada = []
+    
+    claus = []
+    weight = []
+    for i in jugador.Ubicacio.Or.values():
+        weight.append(i["prob"])
+        claus.append(i["type"])
+    if len(moneda.keys()) > 1:
+        monedaTrobada = random.choices(claus, weights=weight)
     else:
-        weight = []
-        for i in jugador.Ubicacio.Or.values():
-            weight.append(i[1])
-        moneda = random.choices(moneda, weight)
-        found = random.randint(jugador.Ubicacio.Or[moneda[0]][0][0], jugador.Ubicacio.Or[moneda[0]][0][1])
-        if moneda[0] == "Bronze":
-            mult = 10
-            print(f"Has trobat {found} monedes de {moneda[0]}.")
-        elif moneda[0] == "Plata":
-            mult = 100
-            print(f"Has trobat {found} monedes de {moneda[0]}.")
-        elif moneda[0] == "Or":
-            mult = 1000
-            print(f"Has trobat {found} monedes d'{moneda[0]}.")
-        elif moneda[0] == "Or Platejat":
-            mult = 10000
-            print(f"Has trobat {found} monedes d'{moneda[0]}.")
-    jugador.Gold += found * mult
+        monedaTrobada = [claus[0]]
+
+    found = random.randint(jugador.Ubicacio.Or[monedaTrobada[0]]["amount_range"][0], jugador.Ubicacio.Or[monedaTrobada[0]]["amount_range"][1])
+    
+    jugador.Gold += found * mult[monedaTrobada[0]]
+    if monedaTrobada[0] in ["Bronze", "Plata"]:
+        print(f"Has trobat {found} monedes de {monedaTrobada[0]}")
+    else:
+        print(f"Has trobat {found} monedes d'{monedaTrobada[0]}")
     
 
 def MenuAtacar(personatge):
