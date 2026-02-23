@@ -737,8 +737,8 @@ def Explorar():
                 OcurrenciaMisio(misio)
         if len(llista) == 0 or choice == ["res"]:
             ExplorarTrobaroNo()
-    # elif prob > 70 and prob <= 95:  # Lluitar
-    #     GenerarEnemic()
+    elif prob > 70 and prob <= 95:  # Lluitar
+        GenerarEnemic()
     elif prob > 95 and prob <= 100: # Seguent ruta
         TrobarSeguentZona()
         
@@ -951,11 +951,15 @@ def Fugir(enemy):
     
 def GenerarEnemic():
     global jugador
+
+    pesos = []
+    for j in jugador.Ubicacio.Enemies.values():
+        pesos.append(j["prob"])
     opcions = list(jugador.Ubicacio.Enemies.keys())
-    seleccio = random.choices(opcions, jugador.Ubicacio.Enemies.values())
-    for j in range(len(opcions)):
-        if opcions[j] == seleccio[0]:
-            prob = jugador.Ubicacio.ProbOfMultiple[j]
+    seleccio = random.choices(opcions, pesos)
+    
+    prob = jugador.Ubicacio.Enemies[seleccio[0]]["group_probs"]
+    
     num = []
     count = 1
     for i in prob:
@@ -964,23 +968,23 @@ def GenerarEnemic():
     qty = random.choices(num, prob)
     enemy = []
 
-    enemy.append(Entitat.Entity("", random.randrange(jugador.Ubicacio.LevelRange[0], jugador.Ubicacio.LevelRange[1] + 1), False, Entities[seleccio[0]]))
+    enemy.append(Entitat.Entity("", random.randrange(jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0], jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][1] + 1), False, Entities[seleccio[0]]))
 
     probs = []
     opcionsPosib = []
 
-    for v in Entities[seleccio[0]].Companions.items():
+    for v in jugador.Ubicacio.Enemies[seleccio[0]]["companions"]:
         probs.append(v[1])
         opcionsPosib.append(v[0])
 
 
     if qty[0] > 1:
         for l in range(qty[0] - 1):
-            if len(Entities[seleccio[0]].Companions.keys()) >= 1:
+            if len(probs) >= 1:
                 apareix = random.choices(opcionsPosib, probs)
             else:
                 apareix = seleccio[0]
-            entitat = Entitat.Entity("", random.randrange(jugador.Ubicacio.LevelRange[0] - 2, enemy[0].Lv), False, Entities[apareix])
+            entitat = Entitat.Entity("", random.randrange(jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0] - 2, enemy[0].Lv), False, Entities[apareix])
             enemy.append(entitat)
     
     Lluitar(enemy)
