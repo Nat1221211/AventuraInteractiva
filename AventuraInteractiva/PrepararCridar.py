@@ -66,9 +66,9 @@ def CallEntity(movements):
         for m, n in i["Movements"].items():
             moves[movements[m]]=n
 
-        entitat = EntityType.EntityType(i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
+        entitat = EntityType.EntityType(i["id"], i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
                                         i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
-        entities.update({entitat.EntityName: entitat})
+        entities.update({i["id"]: entitat})
     return entities
 
 def CallEfect():

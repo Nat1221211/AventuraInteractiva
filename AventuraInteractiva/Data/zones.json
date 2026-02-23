@@ -29,7 +29,7 @@
 
                 "slime": {
                     "prob": 30,
-                    "group_prbs": [80, 20],
+                    "group_probs": [80, 20],
                     "companions": {},
                     "drops": {
 

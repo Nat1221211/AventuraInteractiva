@@ -251,23 +251,25 @@ def CrearJugador():
             nom = input("Digues el nom del personatge: ")
         except ValueError:
             print("Ha ocurregut un error...")
-    clase = ""
     nomclases = []
     print("")
     for i in Entities.items():
         if i[1].isPlayable == True:
             nomclases.append(i[0].lower())
-    while clase not in nomclases:
+    pos = -1
+    while pos not in range(len(nomclases)):
         try:
+            num = 0
             for i in nomclases:
-                i = i.capitalize()
-                print(f"{Entities[i].EntityName}, {Entities[i].EntityDescription}.")
-            clase = input("\nDigues una de les clases mostrades anteriorment: ").lower()
-            if clase not in nomclases:
-                print(f"Has de dir una de les clases anteriors: {nomclases}")
+                print(f"{num} -> {Entities[i].EntityName}\n{Entities[i].EntityDescription}.\n")
+                num += 1
+            pos = int(input("\nDigues una de les clases mostrades anteriorment: "))
+            if pos not in range(len(nomclases)):
+                print(f"Has de dir una de les clases anteriors...")
+                input("Presiona per a reintentar...")
         except ValueError:
             print("Ha ocurregut un error...")
-    playableentity = Entitat.Entity(nom, 5, True, Entities[clase.capitalize()])
+    playableentity = Entitat.Entity(nom, 5, True, Entities[nomclases[pos]])
     return playableentity
 
 # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
