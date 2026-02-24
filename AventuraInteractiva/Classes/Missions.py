@@ -95,14 +95,14 @@ class FindMission(Mission):
     Objective = ""
     
     # Metodes
-    def __init__(self, name, description, cat, rewards, objective, requisite, place):
+    def __init__(self, iden, name, description, cat, rewards, objective, requisite):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Categoria = cat
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
-        self.Place = place
         
     
     def Completed(self):
@@ -114,14 +114,14 @@ class ObjectMission(Mission):
     Objective = Objectes.ObjecteClau
     
     # Metodes
-    def __init__(self, name, description, cat, rewards, objective, requisite, place):
+    def __init__(self, iden, name, description, cat, rewards, objective, requisite):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Categoria = cat
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
-        self.Place = place
    
     def Completed(self):
         print(f"Has completat la missio {self.Name}.")
@@ -132,7 +132,8 @@ class PlaceMission(Mission):
     Objective = Zones.Zona
     
     # Metodes
-    def __init__(self, name, description, cat, rewards, objective, requisite):
+    def __init__(self, iden, name, description, cat, rewards, objective, requisite):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Categoria = cat
@@ -159,18 +160,14 @@ class KillMission(Mission):
 
     
     # Metodes
-    def __init__(self, name, description, cat, rewards, qty, objective, requisite, place, generic = True, enemy = None):
+    def __init__(self, iden, name, description, cat, rewards, objective, requisite):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Categoria = cat
         self.Rewards = rewards
-        self.Quantity = qty
         self.Objective = objective
         self.Requisite = requisite
-        self.Place = place
-        self.Generic = generic
-        if self.Generic == False:
-            self.Enemic = enemy
 
     def IncrementCount(self, enemy):
         if self.Generic == True:

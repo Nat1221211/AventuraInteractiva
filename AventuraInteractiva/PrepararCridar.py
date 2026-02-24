@@ -135,7 +135,7 @@ def CallAchievements(Individual = True):
                 requisits[i["Nom"]]={"Type&Amt": (i["Requisit"], i["Quantitat"]), "Qty": 0}
     return requisits
 
-def CallZones(Entitats):
+def CallZones():
     rutabase = os.path.dirname(__file__)
     ruta = os.path.join(rutabase, "Data/Zones/")
 
@@ -154,6 +154,32 @@ def CallZones(Entitats):
 
             places.update({i["id"]: place})
     return places
+
+def CallZones():
+    rutabase = os.path.dirname(__file__)
+    ruta = os.path.join(rutabase, "Data/Missions/")
+
+    missions = {}
+    for j in os.listdir(ruta):
+        ruta_file = os.path.join(ruta, j)
+        with open(ruta_file, "r", encoding="utf-8") as f:
+            i = json.load(f)
+
+            if i["type"] == "Place":
+                mision = Missions.PlaceMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
+                                              i["objective"], i["requisites"])
+            elif i["type"] == "Kill":
+                mision = Missions.KillMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
+                                             i["objective"], i["requisites"])
+            elif i["type"] == "Find":
+                mision = Missions.FindMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
+                                              i["objective"], i["requisites"])
+            elif i["type"] == "Object":
+                mision = Missions.ObjectMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
+                                              i["objective"], i["requisites"])
+
+            missions.update({i["id"]: mision})
+    return missions
 
 def main():
     print("!! - Joc de Preguntes - !!")

@@ -43,7 +43,7 @@ class Entity():
     CountForTitle = {}
 
     # Metodes
-    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10, subclass = None, post = False):
+    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100):
         self.nom = nom
         self.Lv = level
         self.isPlayer = IsPlayer
@@ -62,12 +62,12 @@ class Entity():
         }
 
         self.StatsPermanents = {
-            "MaxHP": {"%": int(), "Flat": int()},
-            "MaxMana": {"%": int(), "Flat": int()},
-            "ATK": {"%": int(), "Flat": int()},
-            "INT": {"%": int(), "Flat": int()},
-            "DEF": {"%": int(), "Flat": int()},
-            "SPD": {"%": int(), "Flat": int()},
+            "MaxHP": {"%": float(), "Flat": int()},
+            "MaxMana": {"%": float(), "Flat": int()},
+            "ATK": {"%": float(), "Flat": int()},
+            "INT": {"%": float(), "Flat": int()},
+            "DEF": {"%": float(), "Flat": int()},
+            "SPD": {"%": float(), "Flat": int()},
         }
 
         self.StatsCombat = {
@@ -89,11 +89,18 @@ class Entity():
                     self.nom = "Bandit"
                 else:
                     self.nom = self.base.EntityName
-        self.PostGame = post
         self.afected = []
-        self.subclass = [subclass]
+        self.subclass = []
         self.CountForTitle = {}
         self.Titles = []
+        self.Equipment = {
+            "Weapon": "",
+            "Armor": "",
+            "Helmet": "",
+            "Boots": "",
+            "Accesory_1": "",
+            "Accesory_2": "",
+        }
     
     def ComprovarSubClassesDisponibles(self):
         for i in self.base.paths.items():
@@ -200,11 +207,12 @@ class Entity():
             self.afected = []
         self.DefinirMoves()
     
-    def DefinirPermanentStats(self, permanentbuff):
-        if "%" in permanentbuff:
-            self.StatsPermanents[permanentbuff[0]]["%"] += float(permanentbuff[1])
-        else:
-            self.StatsPermanents[permanentbuff[0]]["Flat"] += float(permanentbuff[1])
+    def DefinirPermanentStats(self):
+        # if "%" in permanentbuff:
+        #     self.StatsPermanents[permanentbuff[0]]["%"] += float(permanentbuff[1])
+        # else:
+        #     self.StatsPermanents[permanentbuff[0]]["Flat"] += float(permanentbuff[1])
+        print()
     
     def DefinirCombatStats(self):
         for k, v in self.StatsBase.items():

@@ -23,6 +23,7 @@ class Player():
         self.UltimPobleVisitat = self.Ubicacio
         self.LlocsVisitats = ["dawn_village"]
         self.LlocsTrobats = ["dawn_village", "south_forest"]
+        self.PostGame = False
 
         self.StatIncrement = {
             "MaxHP": {"%": int(), "Flat": int()},
@@ -35,7 +36,10 @@ class Player():
 
     def AplicarStatsGenerals(self):
         for i in self.Team:
-            print()
+            for j in self.StatIncrement.items():
+                i.StatPermanent[j[0]]["%"] = j[1]["%"]
+                i.StatPermanent[j[0]]["Flat"] = j[1]["Flat"]
+            i.DefinirPermanentStats()
 
     def AfegirObjecte(self, afegit, quantitat):
         if afegit in self.objectes:
