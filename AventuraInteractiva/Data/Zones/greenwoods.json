@@ -45,12 +45,17 @@
             "level_range": [3, 7]
         }
     },
-    "connections": ["south_forest"],
+    "connections": ["south_forest", "knightshire"],
     "monedes": {
         "Bronze": {
             "type": "Bronze",
-            "amount_range": [1, 5],
-            "prob": 100
+            "amount_range": [3, 8],
+            "prob": 90
+        },
+        "Plata": {
+            "type": "Plata",
+            "amount_range": [1, 1],
+            "prob": 10
         }
     },
     "objects": {
