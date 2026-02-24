@@ -1,0 +1,11 @@
+{
+    "id": "dawn_village",
+    "name": "Dawn Village",
+    "description": "Un poble que representa l'inici, es diu que és el poble on va neixer l'heroi de les llegendes...",
+    "zone_type": "Poble",
+    "enemies": {},
+    "connections": ["south_forest"],
+    "monedes": {},
+    "objects": {},
+    "unlock_condition": {}
+}

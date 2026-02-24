@@ -137,20 +137,23 @@ def CallAchievements(Individual = True):
 
 def CallZones(Entitats):
     rutabase = os.path.dirname(__file__)
-    ruta = os.path.join(rutabase, "Data/zones.json")
-    with open(ruta, "r", encoding="utf-8") as f:
-        zona = json.load(f)
+    ruta = os.path.join(rutabase, "Data/Zones/")
 
-        places = {}
-        for i in zona.items():
-            place = Zones.Zona(i[1]["id"], i[1]["name"], i[1]["description"], i[1]["zone_type"], i[1]["enemies"], 
-                            i[1]["monedes"])
+    places = {}
+    for j in os.listdir(ruta):
+        ruta_file = os.path.join(ruta, j)
+        print(j)
+        with open(ruta_file, "r", encoding="utf-8") as f:
+            i = json.load(f)
+
+            place = Zones.Zona(i["id"], i["name"], i["description"], i["zone_type"], i["enemies"], 
+                            i["monedes"])
             
-            place.AddConnections(i[1]["connections"])
-            place.AfegirCondicio(i[1]["unlock_condition"])
+            place.AddConnections(i["connections"])
+            place.AfegirCondicio(i["unlock_condition"])
 
 
-            places.update({i[1]["id"]: place})
+            places.update({i["id"]: place})
     return places
 
 def main():
