@@ -19,30 +19,15 @@ class Exits():
         self.Name = name
         self.Description = description
     
-    def Obtain(self, team, reward, rewtype):
+    def Obtain(self, jugador):
         self.Obtained = True
-        for i in team:
-            if rewtype == "AllStats":
-                i.MaxHP += reward
-                i.ATK += reward
-                i.DEF += reward
-                i.SPD += reward
-                print(f"{i.nom} ha obtingut {reward} punts a totes les estadistiques.")
-            elif rewtype == "HP":
-                i.MaxHP += reward
-                print(f"{i.nom} ha obtingut {reward} punts de Vida.")
-            elif rewtype == "ATK":
-                i.ATK += reward
-                print(f"{i.nom} ha obtingut {reward} punts de'Atac.")
-            elif rewtype == "DEF":
-                i.DEF += reward
-                print(f"{i.nom} ha obtingut {reward} punts de Defensa.")
-            elif rewtype == "SPD":
-                i.SPD += reward
-                print(f"{i.nom} ha obtingut {reward} punts de Velocitat.")
-        if rewtype == "Title":
-            team[0].Tituls.append(reward)
-            print(f"Has obtingut el titol {reward.TitleName}.")
+        for i in jugador.Team:
+            for k in self.rewtype:
+                i.DefinirPermanentStats(())
+                
+        if self.rewtype == "Title":
+            jugador.Tituls.append(self.reward)
+            print(f"Has obtingut el titol {self.reward.TitleName}.")
         
 
 class StatusExit(Exits):
@@ -53,45 +38,33 @@ class StatusExit(Exits):
     RewType = ""
 
 
-    def __init__(self, name, description, RequisitStat, reqnumber, reward, rewardtype):
+    def __init__(self, name, description, RequisitStat, reqnumber, reward):
         self.Name = name
         self.Description = description
         self.RequisitStat = RequisitStat
         self.RequisitNumber = reqnumber
         self.Rewards = reward
-        self.RewType = rewardtype
 
     def Completed(self, jugador):
-        if self.RequisitStat == "Lv":
-            if jugador.Lv >= self.RequisitNumber:
-                self.Obtain(jugador, self.Rewards, self.RewType)
-        elif self.RequisitStat == "ATK Stat":
-            if jugador.ATK >= self.RequisitNumber:
-                self.Obtain(jugador, self.Rewards, self.RewType)
-        elif self.RequisitStat == "HP Stat":
-            if jugador.MaxHP >= self.RequisitNumber:
-                self.Obtain(jugador, self.Rewards, self.RewType)
-        elif self.RequisitStat == "DEF Stat":
-            if jugador.DEF >= self.RequisitNumber:
-                self.Obtain(jugador, self.Rewards, self.RewType)
-        elif self.RequisitStat == "SPD Stat":
-            if jugador.SPD >= self.RequisitNumber:
-                self.Obtain(jugador, self.Rewards, self.RewType)
+        for i in jugador.Team:
+            if self.RequisitStat == "Lv":
+                if jugador.Lv >= self.RequisitNumber:
+                    self.Obtain(jugador, self.Rewards)
+            elif jugador.CombatStats[self.RequisitStat] >= self.RequisitNumber:
+                    self.Obtain(jugador, self.Rewards)
 
 class ObjectExit(Exits):
 
     ObjectRequired = []
     Quantity = int()
-    Rewards = None
-    RewType = ""
+    Rewards = {}
 
-    def __init__(self, name, description, ObjectRequired, Quantity, reward, rewardtype):
+    def __init__(self, name, description, ObjectRequired, Quantity, reward):
         self.Name = name
         self.Description = description
         self.ObjectRequired = ObjectRequired
         self.Quantity = Quantity
         self.Rewards = reward
-        self.RewType = rewardtype
     
     def Completed(self, jugador):
         print("")
@@ -104,16 +77,15 @@ class KillExit(Exits):
     Rewards = None
     RewType = ""
 
-    def __init__(self, name, description, entities, quantity, reward, rewardtype):
+    def __init__(self, name, description, entities, quantity, reward):
         self.Name = name
         self.Description = description
         self.Entities = entities
         self.Quantity = quantity
         self.Rewards = reward
-        self.RewType = rewardtype
 
     def IncrementCount(self, enemy):
-        if enemy.base in self.Entities:
+        if enemy.base.EntityName in self.Entities:
             self.Count += 1
     
     def Completed(self, team):

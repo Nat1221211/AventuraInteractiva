@@ -6,7 +6,7 @@
 
 import random
 from Classes import EntityType
-from Classes import Objectes
+import PrepararCridar as Call
 
 import os
 
@@ -28,7 +28,8 @@ class Entity():
     Priority = int()
     Protected = False
     ProtectedBy = tuple()
-    afected = ["None"]
+    afected = []
+    
 
     # Xp
     Xp = 0
@@ -36,14 +37,10 @@ class Entity():
 
     # Other
     isPlayer = bool()
-    gold = 0
-    objectes = {} # Diccionari, objecte i quantitat
     fleeProb = 75
-    Tituls = []
-    AcquiredAchievements = []
-    MisionsAcceptades = []
-    MissionsFinalitzades = []
-    PostGame = False
+    IndivAchievments = {}
+    Titles = []
+    CountForTitle = {}
 
     # Metodes
     def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100, objectes = {}, gold = 10, subclass = None, post = False):
@@ -57,9 +54,7 @@ class Entity():
             # Stats
         self.StatsBase = {
             "MaxHP": int(),
-            "CurHP": int(),
             "MaxMana": int(),
-            "Mana": int(),
             "ATK": int(),
             "INT": int(),
             "DEF": int(),
@@ -68,9 +63,7 @@ class Entity():
 
         self.StatsPermanents = {
             "MaxHP": {"%": int(), "Flat": int()},
-            "CurHP": {"%": int(), "Flat": int()},
             "MaxMana": {"%": int(), "Flat": int()},
-            "Mana": {"%": int(), "Flat": int()},
             "ATK": {"%": int(), "Flat": int()},
             "INT": {"%": int(), "Flat": int()},
             "DEF": {"%": int(), "Flat": int()},
@@ -96,11 +89,11 @@ class Entity():
                     self.nom = "Bandit"
                 else:
                     self.nom = self.base.EntityName
-        self.gold = gold
-        self.objectes = objectes
         self.PostGame = post
-        self.afected = ["None"]
+        self.afected = []
         self.subclass = [subclass]
+        self.CountForTitle = {}
+        self.Titles = []
     
     def ComprovarSubClassesDisponibles(self):
         for i in self.base.paths.items():
@@ -201,31 +194,23 @@ class Entity():
         self.StatsBase["SPD"] = 10 + (baseSpeed * self.Lv)
         
         if LvOrNot == False:
-            self.StatsBase["CurHP"] = self.StatsBase["MaxHP"]
-            self.StatsBase["Mana"] = self.StatsBase["MaxMana"]
+            self.StatsCombat["CurHP"] = self.StatsBase["MaxHP"]
+            self.StatsCombat["Mana"] = self.StatsBase["MaxMana"]
             self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
-            self.afected = ["None"]
+            self.afected = []
         self.DefinirMoves()
     
     def DefinirPermanentStats(self, permanentbuff):
-        if "%" in permanentbuff[1]:
-            self.StatsPermanents[permanentbuff[0]]["Type"] += float(permanentbuff[1])
+        if "%" in permanentbuff:
+            self.StatsPermanents[permanentbuff[0]]["%"] += float(permanentbuff[1])
         else:
-            self.StatsPermanents[permanentbuff[0]]["Type"] += float(permanentbuff[1])
+            self.StatsPermanents[permanentbuff[0]]["Flat"] += float(permanentbuff[1])
     
     def DefinirCombatStats(self):
         for k, v in self.StatsBase.items():
             PostBuff = v + self.StatsPermanents[k]["Flat"]
             PostBuff *= (1 + self.StatsPermanents[k]["%"])
             self.StatsCombat[k] = PostBuff
-        if self.afected[0] != "None":
-            self.AplicarEfectesEstat()
-    
-    def AplicarEfectesEstat(self):
-        for i in self.afected:
-            for k, v in i.StatEffects.items():
-                self.StatsCombat[k] *= (1 + (v / 100))
-
     
     def ChangeCombatStats(self, changes):
         for k, v in changes.items():
@@ -238,18 +223,45 @@ class Entity():
         else:
             apply = [True]
         if apply[0] == True:
-            effect.RemainingTurns = effect.Turns
-            self.afected.append(effect)
-            print(f"{self.nom} ha estat afectat per {effect.Name}.")
+            efectNames = []
+            for i in self.afected:
+                efectNames.append(i.Name)
+            
+            aplicable = True
+            if effect in efectNames:
+                effectCount = 0
+                for i in self.afected:
+                    if effect == i.Name:
+                        effectCount += 1
+                        limit = i.EffectLimit
+                if effectCount + 1 > limit and limit != 0:
+                    aplicable = False
+                    print(f"{self.nom} ha arribat al limit d'aplicacions de l'efecte {effect}")
+
+            if aplicable == True:
+                effect.RemainingTurns = effect.Turns
+                self.afected.append(effect)
+                print(f"{self.nom} ha estat afectat per {effect.Name}.")
+
+                StatChanges = {}
+
+                for i in self.afected:
+                    for k, v in i.StatEffects.items():
+                        if v < 1:
+                            value = 1 - v
+                        else:
+                            value = v
+                        if k in StatChanges.keys():
+                            StatChanges[k]+=value
+                        else:
+                            StatChanges[k]=value
+                for k, v in StatChanges.items():
+                    self.StatsCombat[k] *= v
 
     def CalcularDamage(self, enemy, move):
         # Cridar icrements d'stats en cas de ser necessari
-        # for i in move.Buff:
-        #     if i[1][1] > 1:
-        #         self.BuffTempStats(i[1][1], i[1][0])
-        #         print(f"{i[1][0]} ha incrementat.\n")
-        #     else:
-        #         enemy.BuffTempStats(i[1][1], i[1][0])
+        for i in move.Buff.items():
+            self.ApplyStatusEffects(i[0], i[1])
         
         # Calcul dels danys
         if move.Type == False:
@@ -271,14 +283,13 @@ class Entity():
         # damage *= (random.randint(90,111) / 100)
 
         # Reduim les estadistiques per efectes d'estat despres de calcular el dany.
-        # for i in move.StatusEffect:
-        #     if i[0] == "Effect":
-        #         enemy.ApplyStatusEffects(i[1][0], i[1][1])
+        for i in move.Debuff.items():
+            enemy.ApplyStatusEffects(i[0], i[1])
         return damage
 
     def atacar(self, enemy,  move):
         impedit = [False]
-        if self.afected[0] != "None":
+        if len(self.afected) > 0:
             for i in self.afected:
                 if i.Blocking[0] == True and impedit[0] == False:
                     if i.Blocking[1] >= 100:
@@ -301,19 +312,19 @@ class Entity():
                             damage = damage * ((100 - enemy.ProtectedBy[1]) / 100)
                             enemy.ProtectedBy[0].StatsCombat["CurHP"] -= damage
                             print(f"{enemy.ProtectedBy[0].nom}, ha entomat el {enemy.ProtectedBy[1]}% del dany...")
-                            if enemy.ProtectedBy[0].CurHP < 0:
+                            if enemy.ProtectedBy[0].StatsCombat["CurHP"] < 0.1:
                                 print(f"{enemy.ProtectedBy[0].nom}, ha estat derrotat...")
                             else:
                                 print(f"{enemy.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
                         else:
                             enemy.StatsCombat["CurHP"] -= damage
-                            if enemy.StatsCombat["CurHP"] <= 0:
+                            if enemy.StatsCombat["CurHP"] < 0.1:
                                 print(f"{enemy.nom} ha estat derrotat.")
                             else:
                                 print(f"{enemy.nom} ha perdut {damage} punts de vida...")
                     else:
                         enemy.StatsCombat["CurHP"] -= damage
-                        if enemy.StatsCombat["CurHP"] <= 0:
+                        if enemy.StatsCombat["CurHP"] < 0.1:
                             print(f"{enemy.nom} ha estat derrotat.")
                         else:
                             print(f"{enemy.nom} ha perdut {damage} punts de vida...")
@@ -328,21 +339,19 @@ class Entity():
                 enemy.Protected = False
         else:
             print(f"Has estat impedit per {impedit.Name}")
+        input("Presiona per a continuar...")
         return enemy
 
     def MoveProtHeal(self, target, move):
         if move.Healing == True:
-            if (target.CurHP + (move.Power * (self.INT / 100))) > target.MaxHP:
-                target.CurHP = target.MaxHP
+            if (target.StatsCombat["CurHP"] + (move.Power * (self.StatsCombat["INT"] / 100))) > target.StatsCombat["MaxHP"]:
+                target.StatsCombat["CurHP"] = target.StatsCombat["MaxHP"]
                 print(f"{target.nom} ha recuperat vida fins al seu limit...")
             else:
-                target.CurHP += (move.Power * (self.INT / 100))
-                print(f"{target.nom} ha recuperat {move.Power * (self.INT / 100)} punts de vida...")
-            for i in move.StatusEffect:
-                if i[0] == "Stat":
-                    target.BuffTempStats(i[1][1], i[1][0])
-                if i[0] == "Effect":
-                    target.ApplyStatusEffects(i[1][0], i[1][1])
+                target.StatsCombat["CurHP"] += (move.Power * (self.StatsCombat["INT"] / 100))
+                print(f"{target.nom} ha recuperat {move.Power * (self.StatsCombat["INT"] / 100)} punts de vida...")
+            for i in move.Buff.items():
+                target.ApplyStatusEffects(i[0], i[1])
         if move.Protective == True:
             target.Protected = True
             if self == target:
@@ -351,14 +360,13 @@ class Entity():
                 print(f"{self.nom} s'ha preparat per protegir a {target.nom}")
             if move.AutoDamaging > 0:
                 target.ProtectedBy = (self, move.AutoDamaging)
-            for i in move.StatusEffect:
-                if i[0] == "Stat":
-                    target.BuffTempStats(i[1][1], i[1][0])
-                if i[0] == "Effect":
-                    target.ApplyStatusEffects(i[1][0], i[1][1])
+                
+            for i in move.Buff.items():
+                target.ApplyStatusEffects(i[0], i[1])
+        input("Presiona per a continuar...")
         return target
 
-    def ShowStatus(self, combat = False):
+    def ShowStatus(self, jugador, combat = False):
         print(f"Nom: {self.nom}")
         if self.base.isPlayable == True:
             print(f"Clase: {self.base.EntityName}")
@@ -372,9 +380,9 @@ class Entity():
                 print(f"Classe Secundaria: {subclasses}")
         else:
             print(f"Raça: {self.base.EntityName}")
-        print(f"Or: {self.gold}")
+        print(f"Or: {jugador.Gold}")
         print(f"Lv: {self.Lv} / {self.LvLimit}")
-        print(f"XP: {self.Xp} / {self.XpRequired}")
+        print(f"XP: {round(self.Xp, 2)} / {round(self.XpRequired, 2)}")
         print(f"HP: {round(self.StatsCombat["CurHP"], 2)} / {round(self.StatsCombat["MaxHP"], 2)}")
         print(f"Mana: {round(self.StatsCombat["Mana"], 2)} / {round(self.StatsCombat["MaxMana"], 2)}")
         print(f"ATK: {round(self.StatsCombat["ATK"], 2)}")
@@ -384,7 +392,7 @@ class Entity():
         print("\nTitols: ")
         if self.isPlayer == True:
             count = 0
-            for i in self.Tituls:
+            for i in self.Titles:
                 if count < 3:
                     print(i.TitleName, end=", ")
                 else:
@@ -397,8 +405,8 @@ class Entity():
                 self.ShowStatus()
             if res == 2:
                 self.DefinirSubClass()
-        elif combat == False:
-            input("Presiona per a continuar...")
+        # elif combat == False:
+        input("Presiona per a continuar...")
 
     def LvlUp(self, enemy = None, XP = None):
         if self.Lv < self.LvLimit:
@@ -437,105 +445,5 @@ class Entity():
                 self.Xp = 0
                 input("Presiona per a continuar...")
     
-    def AfegirObjecte(self, afegit, quantitat):
-        if afegit in self.objectes:
-            self.objectes[afegit] += quantitat
-        else:
-            self.objectes[afegit]=quantitat
     
-    def MostrarObjectes(self):
-        os.system("cls")
-        for i in self.objectes.items():
-            print(f"{i[0].ObjectName}, Qty: {i[1]}")
-            print(f"{i[0].ObjectDescription}")
-            print("\n")
-    
-    def ObjectesMochila(self, team, target = None, combat = bool(False)):
-        res = 0
-        if combat == True:
-            used = False
-        while res != 3:
-            res = 0
-            while res not in [1, 2, 3]:
-                os.system("cls")
-                print("1 -> Veure")
-                print("2 -> Utilitzar")
-                print("3 -> Sortir")
-                try:
-                    res = int(input("\nQue vols fer: "))
-                    if res not in [1, 2, 3]:
-                        print("Has de dir un dels 3 numeros...")
-                except ValueError:
-                    print("Ha ocurregut un error...")
-            if res == 1:
-                os.system("cls")
-                self.MostrarObjectes()
-                input("Presiona per a continuar...")
-            if res == 2:
-                obj = -2
-                objectNames = list(self.objectes.keys())
-                while obj not in range(1, len(objectNames) + 1) and obj != 0:
-                    try:
-                        os.system("cls")
-                        ind = 1
-                        for i in objectNames:
-                            print(f"{ind} - > {i.ObjectName}")
-                            ind += 1
-                        print("Per a sortir de la seleccio escriu 0.")
-                        obj = int(input("\nQuin objecte vols utilitzar: "))
-                        if obj not in range(1, len(objectNames) + 1) and obj != 0:
-                            print("\nHas de dir un dels objectes... o escriure 0")
-                    except ValueError:
-                        print("\nHa ocurregut un error...")
-                        input("\nPresiona per a continuar...")
-                if obj != 0:
-                    if type(objectNames[obj - 1]) != Objectes.ObjecteClau:
-                        if objectNames[obj - 1].OutCombat == False and combat == False:
-                            print("Aquest objecte només es pot utilitzar en combat...")
-                            input("Presiona per a continuar...")
-                        else:
-                            utilitzat = True
-                            if target == None:
-                                res = 0
-                                while res not in range(1, len(team) + 2):
-                                    os.system("cls" if os.name == "nt" else "clear")
-                                    targetable = []
-                                    for i in team:
-                                        if i.StatsCombat["CurHP"] > 0:
-                                            targetable.append(i)
-                                    count = 1
-                                    for i in targetable:
-                                        print(f"{count} -> {i.nom}, Lv: {i.Lv}")
-                                        count += 1
-                                    print(f"{count} -> Sortir")
-                                    try:
-                                        res = int(input("Digues de a qui vols atacar: "))
-                                        if res not in range(1, count + 1):
-                                            print("Has de dir un dels numeros corresponents...")
-                                    except ValueError:
-                                        print("Ha ocurregut un error...")
-                                        input("Presiona per a continuar...")
-                                if res in range(1, count):
-                                    target = targetable[res - 1]
-                                if res == count:
-                                    print("Has deixat d'utilitzar aquest objecte...")
-                                    utilitzat = False
-                            if utilitzat == True:
-                                objectNames[obj - 1].Utilitzar(target)
-                                target.objectes[objectNames[obj - 1]]-= 1
-                                print(f"Has utilitzat: {objectNames[obj - 1].ObjectName}")
-                                if combat == True:
-                                    used = True
-                                    res = 3
-                                if self.objectes[objectNames[obj - 1]] <= 0:
-                                    target.objectes.pop(objectNames[obj - 1])
-                    else:
-                        print("Els objectes clau no es poden utilitzar, son objectes de missio o amb altres finalitats...")
-                        input("Presiona per a continuar")
-                else:
-                    print("Has sortit del menu d'utilització.")
-        if combat == True:
-            return used
-        
-            
-    
+   

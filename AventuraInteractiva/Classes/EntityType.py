@@ -24,7 +24,8 @@ class EntityType():
     Companions = dict()
 
     # Metodes
-    def __init__(self, name, playable, hp, magi, atk, intel, defs, spd, xp, group, description, moves):
+    def __init__(self, iden, name, playable, hp, magi, atk, intel, defs, spd, xp, group, description, moves):
+        self.id = iden
         self.EntityName = name
         self.Health = hp
         self.Magic = magi

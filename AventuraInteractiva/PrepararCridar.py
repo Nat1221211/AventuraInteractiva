@@ -7,6 +7,7 @@
 
 # Altres Imports
 import os
+import json
 
 # Moduls
 from Classes import Characteristics
@@ -57,67 +58,102 @@ def CallCSV(cami):
     except FileNotFoundError:
         print("Ha ocurregut un error carregant el fitxer...")
 
-def CallEntity(trobar, isPlayer = False):
-    entities = CallCSV("Data/EntityTypes.csv")
-    llista = []
-    for i in entities:
-        if i["Nom"] == trobar or isPlayer == True and i["Playable?"] == True:
+def CallEntity(movements):
+    entitats = CallCSV("Data/EntityTypes.csv")
+    entities = {}
+    for i in entitats:
+        moves = {}
+        for m, n in i["Movements"].items():
+            moves[movements[m]]=n
 
-            moves = {}
-            for m, n in i["Movements"].items():
-                moves[CallMovement(m)]=n
+        entitat = EntityType.EntityType(i["id"], i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
+                                        i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
+        entities.update({i["id"]: entitat})
+    return entities
 
-            entitat = EntityType.EntityType(i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
-                                  i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
-            if isPlayer == True:
-                llista.append(entitat)
-    if isPlayer == True:
-        return llista
-    else:
-        return entitat
-
-def CallEfect(trobar):
+def CallEfect():
     effects = CallCSV("Data/effects.csv")
+    efectes = {}
     for i in effects:
-        if i["Nom"] == trobar:
-            if i["ImpedeixAccions?"] == True:
-                bloqueig = (i["ImpedeixAccions?"], i["ProbabilitatImpedirAccio"])
-            else:
-                bloqueig = (False, 0)
-            entitat = Characteristics.Effects(i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], i["Dany"],
-                                              i["StatAfected"])
-    return entitat
+        if i["ImpedeixAccions?"] == True:
+            bloqueig = (i["ImpedeixAccions?"], i["ProbabilitatImpedirAccio"])
+        else:
+            bloqueig = (False, 0)
+        efecte = Characteristics.Effects(i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], 
+                                            i["Dany"], i["StatAfected"], i["Limit"])
+        efectes.update({efecte.Name: efecte})
+    return efectes
 
-def CallMovement(trobar):
+def CallMovement(effects):
     movements = CallCSV("Data/Movements.csv")
+    moves = {}
     for i in movements:
-        if i["Nom"] == trobar:
-            Buff = {}
-            if len(i["Buff"]) > 1 and i["Buff"] == list:
-                for j in range(len(i["Buff"])):
-                    Buff[i["Buff"][j]]=i["ProbEfecteBuff"][j]
-            else:
-                Buff[i["Buff"]]=i["ProbEfecteBuff"]
+        Buff = {}
+        if len(i["Buff"]) > 1 and i["Buff"] == list:
+            for j in range(len(i["Buff"])):
+                if i["Buff"][j] != "" and i["ProbEfecteBuff"][j] != "":
+                    Buff[effects[i["Buff"][j]]]=int(i["ProbEfecteBuff"][j])
+        elif i["Buff"] != "" and i["ProbEfecteBuff"] != "":
+            Buff[effects[i["Buff"]]]=int(i["ProbEfecteBuff"])
 
-            Debuff = {}
-            if len(i["Debuff"]) > 1 and i["Debuff"] == list:
-                for j in range(len(i["Debuff"])):
-                    Debuff[i["Debuff"][j]]=i["ProbEfecteDebuff"][j]
-            else:
-                Debuff[i["Debuff"]]=i["ProbEfecteDebuff"]
-            move = Characteristics.Moves(i["Nom"], i["Descripcio"], i["Potencia"], i["Precisio"],  i["Magic?"], 
-                                            i["Cost"], Buff, Debuff, i["MultipleObjectiu?"], i["Cura?"], i["Protegeix?"], i["DanyperProteccio"])
-    return move
+        Debuff = {}
+        if len(i["Debuff"]) > 1 and i["Debuff"] == list:
+            for j in range(len(i["Debuff"])):
+                if i["Debuff"][j] != "" and i["ProbEfecteDebuff"][j] != "":
+                    Debuff[effects[i["Debuff"][j]]]=int(i["ProbEfecteDebuff"][j])
+        elif i["Debuff"] != "" and i["ProbEfecteDebuff"] != "":
+            Debuff[effects[i["Debuff"]]]=int(i["ProbEfecteDebuff"])
+        move = Characteristics.Moves(i["Nom"], i["Descripcio"], i["Potencia"], i["Precisio"],  i["Magic?"], 
+                                        i["Cost"], Buff, Debuff, i["MultipleObjectiu?"], i["Cura?"], i["Protegeix?"], i["DanyperProteccio"])
+        moves.update({move.Name: move})
+    return moves
 
-def CallObject(trobar):
+def CallObject():
     objects = CallCSV("Data/Objects.csv")
+    objectes = {
+        "Combat": {},
+        "Clau": {},
+    }
     for i in objects:
-       if i["Nom"] == trobar:
-            if i["Tipus"] == "Combat":
-                obj = Objectes.ObjecteCombat(i["Nom"], i["Descripcio"], i["Efectes"], i["Preu"],  i["ForadeCombat?"])
-            elif i["Tipus"] == "Clau":
-                obj = Objectes.ObjecteClau(i["Nom"], i["Descripcio"])
-    return obj
+        if i["Tipus"] == "Combat":
+            obj = Objectes.ObjecteCombat(i["Nom"], i["Descripcio"], i["Efectes"], i["Preu"],  i["ForadeCombat?"])
+            objectes["Combat"].update({obj.ObjectName: obj})
+        elif i["Tipus"] == "Clau":
+            obj = Objectes.ObjecteClau(i["Nom"], i["Descripcio"])
+            objectes["Clau"].update({obj.ObjectName: obj})    
+    return objectes
+
+def CallAchievements(Individual = True):
+    objects = CallCSV("Data/Achievements.csv")
+    for i in objects:
+        requisits = {}
+        if Individual == True:
+            if i["Tipus de Requisit"] == "Kill":
+                Exits.KillExit(i["Nom"], i["Descripcio"], i["Requisit"], i["Quantitat"], i["Recompensa"])
+        else:
+            if i["Tipus de Requisit"] != "Kill":
+                requisits[i["Nom"]]={"Type&Amt": (i["Requisit"], i["Quantitat"]), "Qty": 0}
+    return requisits
+
+def CallZones(Entitats):
+    rutabase = os.path.dirname(__file__)
+    ruta = os.path.join(rutabase, "Data/Zones/")
+
+    places = {}
+    for j in os.listdir(ruta):
+        ruta_file = os.path.join(ruta, j)
+        with open(ruta_file, "r", encoding="utf-8") as f:
+            i = json.load(f)
+
+            place = Zones.Zona(i["id"], i["name"], i["description"], i["zone_type"], i["enemies"], 
+                            i["monedes"])
+            
+            place.AddConnections(i["connections"])
+            place.AfegirCondicio(i["unlock_condition"])
+
+
+            places.update({i["id"]: place})
+    return places
 
 def main():
     print("!! - Joc de Preguntes - !!")

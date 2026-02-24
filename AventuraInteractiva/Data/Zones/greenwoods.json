@@ -1,0 +1,60 @@
+{
+    "id": "greenwoods",
+    "name": "Bosc de Fusta Verda",
+    "description": "Al atravesar el bosc ubicat al sud de Dawn Village, entres als boscs de fusta verda, t'apropes a la capital...",
+    "zone_type": "bosc",
+    
+    "enemies": {
+        "wolf": {
+            "prob": 40,
+            "group_probs": [40, 50, 10],
+            "companions": {},
+            "drops": {
+
+            },
+            "level_range": [3, 7]
+        },
+
+        "slime": {
+            "prob": 30,
+            "group_probs": [80, 20],
+            "companions": {},
+            "drops": {
+
+            },
+            "level_range": [3, 7]
+        },
+
+        "conill": {
+            "prob": 30,
+            "group_probs": [90, 10],
+            "companions": {},
+            "drops": {
+
+            },
+            "level_range": [3, 7]
+        },
+
+        "jabali": {
+            "prob": 30,
+            "group_probs": [90, 10],
+            "companions": {},
+            "drops": {
+
+            },
+            "level_range": [3, 7]
+        }
+    },
+    "connections": ["south_forest"],
+    "monedes": {
+        "Bronze": {
+            "type": "Bronze",
+            "amount_range": [1, 5],
+            "prob": 100
+        }
+    },
+    "objects": {
+        
+    },
+    "unlock_condition": {}
+}

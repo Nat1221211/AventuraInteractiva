@@ -12,30 +12,22 @@ class Zona():
     Description = ""
     ZoneType = ""
     Enemies = {}
-    ProbOfMultiple = []
-    # Enemics disponibles en aquesta zona
-    Connections = []
-    # Zones accessibles des d'aquesta
-    LevelRange = tuple()
-    Trobada = False
-    Or = {"": [tuple(), 100]}
-    ObjectesPerTrobar = {}
+    Or = {}
+    Objectes = {}
     ExplorarCount = 0
-    CondicioPerTrobarRuta = tuple()
+    CondicioPerTrobarRuta = {}
     IntentsPerTrobar = 10
 
 
     # Metodes
-    def __init__(self, name, description, tipus, enemies, probmultiple, lvlrange, gol = {"Bronze": [(1, 7), 100]}, trobada = False, condicio = None, intents = 5):
+    def __init__(self, id, name, description, tipus, enemies, gol, intents = 5):
+        self.id = id
         self.NameZone = name
         self.Description = description
         self.ZoneType = tipus
         self.Enemies = enemies
-        self.ProbOfMultiple = probmultiple
-        self.LevelRange = lvlrange
         self.Or = gol
-        self.Trobada = trobada
-        self.CondicioPerTrobarRuta = condicio
+        self.CondicioPerTrobarRuta = {}
         self.IntentsPerTrobar = intents
     
     def AddConnections(self, connections):

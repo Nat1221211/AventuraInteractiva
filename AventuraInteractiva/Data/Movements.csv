@@ -1,5 +1,5 @@
 Nom;Descripcio;Potencia;Precisio;Cost;Magic?;Buff;Debuff;ProbEfecteBuff;ProbEfecteDebuff;MultipleObjectiu?;Cura?;Protegeix?;DanyperProteccio
-Bola de Foc;Una bola de flames d'alta temperatura;40;100;5;TRUE;Cremada;;30;;FALSE;FALSE;FALSE;0
+Bola de Foc;Una bola de flames d'alta temperatura;40;100;5;TRUE;Inteligencia;Cremada;100;90;FALSE;FALSE;FALSE;0
 Fletxa Perforant;Descripció;50;100;5;FALSE;;;;;FALSE;FALSE;FALSE;0
 Assalt Llampeg;Descripció;30;100;5;FALSE;;;;;FALSE;FALSE;FALSE;0
 Tall potent;Descripció;50;100;5;FALSE;;;;;FALSE;FALSE;FALSE;0

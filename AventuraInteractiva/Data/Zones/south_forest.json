@@ -1,0 +1,50 @@
+{
+    "id": "south_forest",
+    "name": "Bosc del Sud",
+    "description": "Un bosc ubicat al sud de Dawn Village, un bosc relativament segur...",
+    "zone_type": "bosc",
+    
+    "enemies": {
+        "wolf": {
+            "prob": 40,
+            "group_probs": [40, 50, 10],
+            "companions": {},
+            "drops": {
+
+            },
+            "level_range": [1, 5]
+        },
+
+        "slime": {
+            "prob": 30,
+            "group_probs": [80, 20],
+            "companions": {},
+            "drops": {
+
+            },
+            "level_range": [1, 5]
+        },
+
+        "conill": {
+            "prob": 30,
+            "group_probs": [90, 10],
+            "companions": {},
+            "drops": {
+
+            },
+            "level_range": [1, 5]
+        }
+    },
+    "connections": ["dawn_village", "greenwoods"],
+    "monedes": {
+        "Bronze": {
+            "type": "Bronze",
+            "amount_range": [1, 5],
+            "prob": 100
+        }
+    },
+    "objects": {
+        
+    },
+    "unlock_condition": {}
+}
