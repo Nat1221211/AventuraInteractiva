@@ -142,7 +142,6 @@ def CallZones(Entitats):
     places = {}
     for j in os.listdir(ruta):
         ruta_file = os.path.join(ruta, j)
-        print(j)
         with open(ruta_file, "r", encoding="utf-8") as f:
             i = json.load(f)
 

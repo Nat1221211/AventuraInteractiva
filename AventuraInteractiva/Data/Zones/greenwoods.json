@@ -1,7 +1,7 @@
 {
-    "id": "south_forest",
-    "name": "Bosc del Sud",
-    "description": "Un bosc ubicat al sud de Dawn Village, un bosc relativament segur...",
+    "id": "greenwoods",
+    "name": "Bosc de Fusta Verda",
+    "description": "Al atravesar el bosc ubicat al sud de Dawn Village, entres als boscs de fusta verda, t'apropes a la capital...",
     "zone_type": "bosc",
     
     "enemies": {
@@ -12,7 +12,7 @@
             "drops": {
 
             },
-            "level_range": [1, 5]
+            "level_range": [3, 7]
         },
 
         "slime": {
@@ -22,7 +22,7 @@
             "drops": {
 
             },
-            "level_range": [1, 5]
+            "level_range": [3, 7]
         },
 
         "conill": {
@@ -32,10 +32,20 @@
             "drops": {
 
             },
-            "level_range": [1, 5]
+            "level_range": [3, 7]
+        },
+
+        "jabali": {
+            "prob": 30,
+            "group_probs": [90, 10],
+            "companions": {},
+            "drops": {
+
+            },
+            "level_range": [3, 7]
         }
     },
-    "connections": ["dawn_village", "greenwoods"],
+    "connections": ["south_forest"],
     "monedes": {
         "Bronze": {
             "type": "Bronze",
