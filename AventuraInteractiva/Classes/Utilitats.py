@@ -21,7 +21,7 @@ class Menu():
     def SeleccionarOpcio(self):
         opcio = self.Opcions[self.Cursor]
         if opcio.Habilitat == True:
-            return opcio.Nom
+            return opcio.id
         return None
 
     def OpcionsVisible(self):
@@ -31,7 +31,8 @@ class Menu():
         return self.Opcions[inici:fi], inici
 
 class OpcioMenu():
-    def __init__(self, nom, habilitat, descripcio):
+    def __init__(self,iden, nom, habilitat, descripcio):
+        self.id = iden
         self.Nom = nom
         self.Descripcio = descripcio
         self.Habilitat = habilitat
@@ -43,11 +44,11 @@ class MostrarMenu():
 
         for i, opcio in enumerate(opcions):
             index = inici + i
-            cursor = "->" if index == Menu.Cursor else "  "
+            cursor = "->" if index == Menu.Cursor else ""
             estat = "" if opcio.Habilitat == True else "(Bloquejat)"
 
             print(f"{cursor} {opcio.Nom} {estat}")
         
-        print(f"\nDescripció: {opcions[Menu.Cursor].Descripcio}")
+        print(f"\nDescripció: \n{opcions[Menu.Cursor].Descripcio}")
 
     

@@ -46,59 +46,20 @@ achievements = []
 
 missions = Call.CallMissions()
 
-def CrearJugador():
-    nom = ""
-    while nom == "":
-        try:
-            nom = input("Digues el nom del personatge: ")
-        except ValueError:
-            print("Ha ocurregut un error...")
-    nomclases = []
-    print("")
-    for i in Entities.items():
-        if i[1].isPlayable == True:
-            nomclases.append(i[0].lower())
-    pos = -1
-    while pos not in range(len(nomclases)):
-        try:
-            num = 0
-            for i in nomclases:
-                print(f"{num} -> {Entities[i].EntityName}\n{Entities[i].EntityDescription}.\n")
-                num += 1
-            pos = int(input("\nDigues una de les clases mostrades anteriorment: "))
-            if pos not in range(len(nomclases)):
-                print(f"Has de dir una de les clases anteriors...")
-                input("Presiona per a reintentar...")
-        except ValueError:
-            print("Ha ocurregut un error...")
-    playableentity = Entitat.Entity(nom, 5, True, Entities[nomclases[pos]])
-    return playableentity
-
-# Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
-personatge = CrearJugador()
-ubicacio = zones["dawn_village"]
-team = []
-team.append(personatge)
-
-jugador = Player.Player(personatge.nom, team, ubicacio)
-
-
-# # Afegim algun objecte al jugador de base
-jugador.AfegirObjecte(Objects["Combat"]["Pocio Inferior"], 2)
 
 Menus = {
     "Menu Poble": Utilitats.Menu(
         "Menu Principal",
         [
-            Utilitats.OpcioMenu("Mapa", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Motxila", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Hostal", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Botiga", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Estat", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Missions", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Éxits", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Gremi", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Guardar", True, "Veure el Mapa i Canviar de Zona")
+            Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("motxila", "Motxila", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("hostal", "Hostal", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("botiga", "Botiga", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("estat", "Estat", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("missions", "Missions", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("exits", "Éxits", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("gremi","Gremi", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("guardar", "Guardar", True, "Veure el Mapa i Canviar de Zona")
         ],
         9
     ),
@@ -106,18 +67,17 @@ Menus = {
     "Menu Wild": Utilitats.Menu(
         "Menu Principal",
         [
-            Utilitats.OpcioMenu("Mapa", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Motxila", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Explorar", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Lluitar", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Estat", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Missions", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Éxits", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("Guardar", True, "Veure el Mapa i Canviar de Zona")
+            Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("motxila","Motxila", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("explorar","Explorar", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("lluitar","Lluitar", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("estat","Estat", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("missions","Missions", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("exits","Éxits", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("guardar","Guardar", True, "Veure el Mapa i Canviar de Zona")
         ],
         8
     )
-
 }
 
 def MostrarMenus(Menu):
@@ -142,6 +102,46 @@ def MostrarMenus(Menu):
             print("Ha ocurregut un error...")
 
 
+def CrearJugador():
+    nom = ""
+    while nom == "":
+        try:
+            nom = input("Digues el nom del personatge: ")
+        except ValueError:
+            print("Ha ocurregut un error...")
+    
+    options = []
+    for i in Entities.items():
+        if i[1].isPlayable == True:
+            options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription),)
+    
+    Menus.update({"Menu Seleccio Inicial": Utilitats.Menu(
+                "Menu Seleccio Personatge",
+                options,
+                7
+            )
+        }
+    )
+    
+    identifier = MostrarMenus(Menus["Menu Seleccio Inicial"])
+
+    playableentity = Entitat.Entity(nom, 5, True, Entities[identifier])
+
+    return playableentity
+
+# Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
+personatge = CrearJugador()
+ubicacio = zones["dawn_village"]
+team = []
+team.append(personatge)
+
+jugador = Player.Player(personatge.nom, team, ubicacio)
+
+
+# # Afegim algun objecte al jugador de base
+jugador.AfegirObjecte(Objects["Combat"]["Pocio Inferior"], 2)
+
+
 def AccioMenuPrincipal():
     global jugador
     
@@ -157,28 +157,28 @@ def AccioMenuPrincipal():
 
     ClearScreen()
     # Executem acció seleccionada
-    if accio == "Mapa":
+    if accio == "mapa":
         Mapa()
-    elif accio == "Explorar":
+    elif accio == "explorar":
         Explorar()
-    elif accio == "Hostal":
+    elif accio == "hostal":
         Posada()
-    elif accio == "Botiga":
+    elif accio == "botiga":
         Botiga()
-    elif accio == "Estat":
+    elif accio == "estat":
         VeureEstatus()
-    elif accio == "Missions":
+    elif accio == "missions":
         MenuMisions()
-    elif accio == "Lluitar":
+    elif accio == "lluitar":
         GenerarEnemic()
-    elif accio == "Guardar":
+    elif accio == "guardar":
         print("")
-    elif accio == "Éxits":
+    elif accio == "exits":
         #MostrarExits()
         print("No actualitxat")
-    elif accio == "Motxila":
+    elif accio == "motxila":
         jugador.ObjectesMochila(jugador.Team)
-    elif accio == "Gremi":
+    elif accio == "gremi":
         Gremi()
 
 
