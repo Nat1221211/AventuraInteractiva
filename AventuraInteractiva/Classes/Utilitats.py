@@ -49,6 +49,7 @@ class MostrarMenu():
 
             print(f"{cursor} {opcio.Nom} {estat}")
         
-        print(f"\nDescripció: \n{opcions[i].Descripcio}")
+        posicio = Menu.Cursor % len(opcions)
+        print(f"\nDescripció: \n{opcions[posicio].Descripcio}")
 
     

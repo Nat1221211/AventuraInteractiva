@@ -1,7 +1,7 @@
 id;Nom;Descripcio;Vida;Mana;ATK;INT;DEF;SPD;Playable?;XP;Groups;Movements
-warrior;Guerrer;;160;100;140;40;130;80;True;50;Human;Tall: 1 | Tall potent: 3 | Tall Llampeg: 10 | Crit de Guerra: 12 | Bloqueig: 5
-mage;Mag;;80;200;60;180;100;100;True;50;Human;Cop de Basto: 1 | Bola de Foc: 3 | Fletxa de flames: 6 | Fulla de Vent: 6 | Increment: 10 | Javelina de Glaç: 14 | Gravetat: 20
-archer;Arquer;;120;140;140;100;140;120;True;50;Human;Dispar de Fletxa: 1 | Fletxa Perforant: 3 | Dispar Rapid: 6 | Fletxa Electrica: 22 | Fletxa de Potencia: 33
+warrior;Guerrer;Un habil lluitador cos a cos...;160;100;140;40;130;80;True;50;Human;Tall: 1 | Tall potent: 3 | Tall Llampeg: 10 | Crit de Guerra: 12 | Bloqueig: 5
+mage;Mag;Qui ha iniciat el seu cami per a descobrir les veritats del mon...;80;200;60;180;100;100;True;50;Human;Cop de Basto: 1 | Bola de Foc: 3 | Fletxa de flames: 6 | Fulla de Vent: 6 | Increment: 10 | Javelina de Glaç: 14 | Gravetat: 20
+archer;Arquer;Una persona amb bon ull, capaç d'apuntar a essers en moviment i acertar-los...;120;140;140;100;140;120;True;50;Human;Dispar de Fletxa: 1 | Fletxa Perforant: 3 | Dispar Rapid: 6 | Fletxa Electrica: 22 | Fletxa de Potencia: 33
 thief;Lladre;;120;120;130;100;120;160;True;50;Human;Tall: 1 | Assalt Llampeg: 3 | Rafaga de Punyalades: 8 | Agilitat: 12
 wolf;Llop;;120;40;120;20;100;140;False;30;Beast;Mossegada: 1 | Urpada: 5
 slime;Slime;;60;60;60;60;60;60;False;20;Monster;Cop: 1 | Embestir: 6 | Disolucio: 9
@@ -16,7 +16,7 @@ expert;Expert en Armes;Un expert en diverses armes cos a cos, és molt capaç, �
 knight;Caballer;Un expert especialitzat en la resistencia, tot i això te una capacitat ofensiva considerable.;200;60;100;40;260;60;False;50;Human;Mossegada: 1
 adventurer;Aventurer;No especialitzat en cap camp en excés, no destaca en cap camp però tampoc és dolent en cap d'ells...;140;120;140;140;115;115;True;50;Human;Mossegada: 1
 jabali;Porc Senglar;;150;40;150;20;140;80;False;35;Beast;Cop: 1 | Embestir: 5
-id1;Sacerdot;;120;160;80;120;120;120;True;50;Human;Cura: 1 | Santuari: 5 | Cop: 1
+priest;Sacerdot;Una persona de religio, amb la capacitat de curar...;120;160;80;120;120;120;True;50;Human;Cura: 1 | Santuari: 5 | Cop: 1
 id1;Sacerdot Guerrer;;200;160;250;180;150;150;False;150;Human;Mossegada: 1
 id1;Caballer Magic;Un forma avançada de caballeria i magia...;250;160;200;300;180;160;False;150;Human;Mossegada: 1
 id1;Sant;Una especialitzacio en curacio per part del sacerdot;200;250;80;200;120;100;False;150;Human;Mossegada: 1
