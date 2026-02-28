@@ -1,6 +1,6 @@
 id;Nom;Descripcio;Vida;Mana;ATK;INT;DEF;SPD;Playable?;XP;Groups;Movements
-warrior;Guerrer;Un habil lluitador cos a cos...;160;100;140;40;130;80;True;50;Human;fire_ball: 1 | fire_ball: 3 | fire_ball: 10 | fire_ball: 12 | fire_ball: 5
-mage;Mag;Qui ha iniciat el seu cami per a descobrir les veritats del mon...;80;200;60;180;100;100;True;50;Human;fire_ball: 1 | fire_ball: 3 | fire_ball: 6 | fire_ball: 6 | fire_ball: 10 | fire_ball: 14 | fire_ball: 20
+warrior;Guerrer;Un habil lluitador cos a cos...;160;100;140;40;130;80;True;50;Human;fire_ball: 1 
+mage;Mag;Qui ha iniciat el seu cami per a descobrir les veritats del mon...;80;200;60;180;100;100;True;50;Human;cop_basto: 1 | fire_ball: 3
 archer;Arquer;Una persona amb bon ull, capaç d'apuntar a essers en moviment i acertar-los...;120;140;140;100;140;120;True;50;Human;bite: 1
 thief;Lladre;;120;120;130;100;120;160;True;50;Human;bite: 1
 wolf;Llop;;120;40;120;20;100;140;False;30;Beast;bite: 1

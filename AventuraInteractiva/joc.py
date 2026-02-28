@@ -322,18 +322,16 @@ contractatsAnteriorment = []
 
 
 def VeureEstatus(combat = False):
-    res = 0
-    while res not in range(1, len(jugador.Team) + 2):
-        Call.ClearScreen()
-        CrearMenu(jugador.Team.items(), "Seleccio Equip", "")
+    Call.ClearScreen()
+    CrearMenu(jugador.Team.items(), "Seleccio Equip", "")
 
-        seleccio = MostrarMenus(Menus["Seleccio Equip"])
+    seleccio = MostrarMenus(Menus["Seleccio Equip"])
 
-        if seleccio != None:
-            if combat == False:
-                jugador.Team[seleccio].ShowStatus(jugador)
-            else:
-                jugador.Team[seleccio].ShowStatus(jugador, True)
+    if seleccio != None:
+        if combat == False:
+            jugador.Team[seleccio].ShowStatus(jugador)
+        else:
+            jugador.Team[seleccio].ShowStatus(jugador, True)
     else:
         input("Has sortit del menu d'estatus...")
 
@@ -1008,8 +1006,8 @@ def Lluitar(enemy):
                 Call.ClearScreen()
                 BattleScreenShow(jugador.Team.values())
                 BattleScreenShow(enemy)
-                enemyMove = random.choice(enemy[j].Moves)
-                targetable = [e.id for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
+                enemyMove = random.choice([e for e in enemy[j].Moves.values()])
+                targetable = [e.nom for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
                 # for e in jugador.Team.values():
                 #     if e.StatsCombat["CurHP"] > 0:
                 #         targetable.append(e)

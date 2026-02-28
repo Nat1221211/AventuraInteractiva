@@ -12,7 +12,7 @@
             "drops": {
 
             },
-            "level_range": [1, 5]
+            "level_range": [3, 5]
         },
 
         "slime": {
@@ -22,7 +22,7 @@
             "drops": {
 
             },
-            "level_range": [1, 5]
+            "level_range": [3, 5]
         },
 
         "conill": {
@@ -32,7 +32,7 @@
             "drops": {
 
             },
-            "level_range": [1, 5]
+            "level_range": [3, 5]
         }
     },
     "connections": ["dawn_village", "greenwoods"],

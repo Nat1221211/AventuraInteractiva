@@ -73,7 +73,7 @@ def CallEntity(movements):
                     "Move": movements[m],
                     "Lv": n
                 }
-                moves.update({movements[m].id: dictio})
+                moves.update({m: dictio})
 
         entitat = EntityType.EntityType(i["id"], i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
                                         i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)

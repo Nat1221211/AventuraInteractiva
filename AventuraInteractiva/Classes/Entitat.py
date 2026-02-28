@@ -436,9 +436,6 @@ class Entity():
                 self.DefinirCombatStats()
                 self.Xp -= self.XpRequired
                 self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
-                if self.PostGame == True:
-                    self.XpRequired /= 2
-                    self.XpRequired = round(self.XpRequired, 2)
             input("Presiona per a continuar...")
     
     def AddXP(self, xpadded):
