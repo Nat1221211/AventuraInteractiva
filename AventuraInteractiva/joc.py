@@ -16,6 +16,7 @@ from Classes import Missions
 from Classes import Titles
 from Classes import Zones
 from Classes import Player
+from Classes import Utilitats
 import PrepararCridar as Call
 
 
@@ -33,7 +34,7 @@ Entities = Call.CallEntity(Movements)
 entityGroups = {""}
 
         # Zones
-zones = Call.CallZones(Entities)
+zones = Call.CallZones()
 
 # # Botiga
 botiga = [Objects["Combat"]["Pocio Inferior"],
@@ -43,7 +44,7 @@ botiga = [Objects["Combat"]["Pocio Inferior"],
 
 achievements = []
 
-missions = []
+missions = Call.CallMissions()
 
 def CrearJugador():
     nom = ""
@@ -85,52 +86,99 @@ jugador = Player.Player(personatge.nom, team, ubicacio)
 # # Afegim algun objecte al jugador de base
 jugador.AfegirObjecte(Objects["Combat"]["Pocio Inferior"], 2)
 
+Menus = {
+    "Menu Poble": Utilitats.Menu(
+        "Menu Principal",
+        [
+            Utilitats.OpcioMenu("Mapa", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Motxila", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Hostal", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Botiga", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Estat", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Missions", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Éxits", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Gremi", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Guardar", True, "Veure el Mapa i Canviar de Zona")
+        ],
+        9
+    ),
+
+    "Menu Wild": Utilitats.Menu(
+        "Menu Principal",
+        [
+            Utilitats.OpcioMenu("Mapa", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Motxila", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Explorar", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Lluitar", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Estat", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Missions", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Éxits", True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("Guardar", True, "Veure el Mapa i Canviar de Zona")
+        ],
+        8
+    )
+
+}
+
+def MostrarMenus(Menu):
+    while True:
+        ClearScreen()
+        Utilitats.MostrarMenu.Mostrar(Menu)
+
+        print("\n W/S moures, ENTER seleccionar, Q sortir")
+        try:
+            entrada = input("-> ").lower()
+
+            if entrada == "w":
+                Menu.MoureCursor(-1)
+            elif entrada == "s":
+                Menu.MoureCursor(1)
+            elif entrada == "":
+                return Menu.SeleccionarOpcio()
+            elif entrada == "q":
+                return None
+            
+        except ValueError:
+            print("Ha ocurregut un error...")
+
+
 def AccioMenuPrincipal():
     global jugador
     
     pos = 0
 
-    # Seleccionem el menu
-    if jugador.Ubicacio.ZoneType == "Poble":
-        menu = {1: "Mapa", 2: "Motxila", 3: "Hostal", 4: "Botiga", 5: "Estat", 6: "Missions", 7: "Éxits", 8: "Gremi", 9: "Guardar"}
-    elif jugador.Ubicacio.ZoneType != "Poble":
-        menu = {1: "Mapa", 2: "Motxila", 3: "Explorar", 4: "Lluitar", 5: "Estat", 6: "Missions", 7: "Éxits", 8: "Guardar"}
-
     print(f"Vostè es troba a {jugador.Ubicacio.NameZone}")
-    while pos not in menu.keys():   # Generem la llista del menu
-        for i in menu.keys():
-            print(f"{i} -> {menu.get(i)}")
-        try:
-            pos = int(input("Digues quina acció vols fer: "))   # Demanem accio del menu
-        except ValueError:
-            print("Ha ocurregut un error...")
-            input("Presiona per a continuar...")
-        ClearScreen()
 
+    # Seleccionem la accio
+    if jugador.Ubicacio.ZoneType == "Poble":
+        accio = MostrarMenus(Menus["Menu Poble"])
+    elif jugador.Ubicacio.ZoneType != "Poble":
+        accio = MostrarMenus(Menus["Menu Wild"])
+
+    ClearScreen()
     # Executem acció seleccionada
-    if menu.get(pos) == "Mapa":
+    if accio == "Mapa":
         Mapa()
-    elif menu.get(pos) == "Explorar":
+    elif accio == "Explorar":
         Explorar()
-    elif menu.get(pos) == "Hostal":
+    elif accio == "Hostal":
         Posada()
-    elif menu.get(pos) == "Botiga":
+    elif accio == "Botiga":
         Botiga()
-        print("No implementat")
-    elif menu.get(pos) == "Estat":
+    elif accio == "Estat":
         VeureEstatus()
-    elif menu.get(pos) == "Missions":
+    elif accio == "Missions":
         MenuMisions()
-    elif menu.get(pos) == "Lluitar":
+    elif accio == "Lluitar":
         GenerarEnemic()
-    elif menu.get(pos) == "Guardar":
+    elif accio == "Guardar":
         print("")
-    elif menu.get(pos) == "Éxits":
+    elif accio == "Éxits":
         #MostrarExits()
         print("No actualitxat")
-    elif menu.get(pos) == "Motxila":
+    elif accio == "Motxila":
         jugador.ObjectesMochila(jugador.Team)
-    elif menu.get(pos) == "Gremi":
+    elif accio == "Gremi":
         Gremi()
 
 
@@ -269,6 +317,8 @@ def VeureEstatus(combat = False):
     else:
         input("Has sortit del menu d'estatus...")
 
+
+
 def MenuMisions():
     res = 0
     while res not in [1, 2, 3, 4]:
@@ -282,59 +332,55 @@ def MenuMisions():
             res = int(input("Digues el numero segons el que vols fer: "))
             if res not in [1, 2, 3, 4]:
                 print("Has de dir un dels numeros segons el que vols fer...")
-            if res in [2, 3] and ubicacio.ZoneType != "Poble":
+            if res in [2, 3] and jugador.Ubicacio.ZoneType != "Poble":
                 print(f"Per acceptar o reclamar missions has d'estar en un Poblat.")
             else:
                 if res == 1:
                     filtrar = 0
                     while filtrar not in [1, 2, 3, 4, 5]:
                         ClearScreen()
-                        print("1 -> Totes")
-                        print("2 -> Aceptades")
-                        print("3 -> Requisits Complerts per aceptar")
-                        print("4 -> Completades")
-                        print("5 -> Sortir")
+                        print("1 -> Aceptades")
+                        print("2 -> Per aceptar")
+                        print("3 -> Completades")
+                        print("4 -> Sortir")
                         try:
                             filtrar = int(input("Digues que vols fer: "))
-                            if filtrar not in [1, 2, 3, 4, 5]:
+                            if filtrar not in [1, 2, 3, 4]:
                                 print("Has de dir un dels numeros segons el que vols fer...")
                         except ValueError:
                             print("Ha ocurregut un error...")
-                    if filtrar in [1, 3, 4] and ubicacio.ZoneType != "Poble":
+                    if filtrar in [2] and jugador.Ubicacio.ZoneType != "Poble":
                         print(f"Per revisar aquestes missions hauries d'estar en una zona segura (Poble).")
                     else:
-                        if filtrar == 2:
-                            count, reclamar = ShowMisions("Accepted", "Res")
-                        elif filtrar == 4:
-                            count, reclamar = ShowMisions("Completed", "Res")
+                        if filtrar == 1:
+                            count, reclamar = ShowMisions("Accepted", "Res", jugador.MisionsAcceptades)
                         elif filtrar == 3:
-                            count, reclamar  = ShowMisions("Requisites", "Res")
-                        elif filtrar == 1:
-                            count, reclamar  = ShowMisions("Totes", "Res")
+                            count, reclamar = ShowMisions("Completed", "Res", jugador.MissionsFinalitzades)
+                        elif filtrar == 2:
+                            count, reclamar  = ShowMisions("Requisites", "Res", missions)
                         if len(reclamar) == 0:
                             print("No hi ha cap missio en aquest apartat...")
                 elif res == 2:
-                    count, reclamar  = ShowMisions("Requisites", "Aceptar")
+                    count, reclamar  = ShowMisions("Requisites", "Aceptar", missions)
                     aceptar = 0
                     while aceptar not in range(1, count + 1):
                         ClearScreen()
-                        count, reclamar  = ShowMisions("Requisites", "Aceptar")
+                        count, reclamar = ShowMisions("Requisites", "Aceptar", missions)
                         try:
                             aceptar = int(input("Digues quina misio vols aceptar: "))
                             if aceptar < count + 1 and aceptar > 0:
                                 if aceptar == count:
                                     print("Has sortit")
                                 else:
-                                    reclamar[aceptar - 1].Aceptar(jugador)
                                     jugador.MisionsAcceptades.append(reclamar[aceptar - 1])
                         except ValueError:
                             print("Ha ocurregut un error...")
                 elif res == 3:
-                    count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar")
+                    count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar", jugador.MisionsAcceptades)
                     aceptar = 0
                     while aceptar not in range(1, count + 1):
                         ClearScreen()
-                        count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar")
+                        count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar", jugador.MisionsAcceptades)
                         try:
                             aceptar = int(input("Digues quina misio vols reclamar: "))
                             if aceptar < count + 1 and aceptar > 0:
@@ -354,26 +400,18 @@ def MenuMisions():
         
         input("Presiona per a continuar...")
     
-def ShowMisions(filter, accio):
+def ShowMisions(filter, accio, mision):
     count = 1
+    if mision.keys():
+        mision = [i for i in mision.keys()]
     llista = []
-    for i in missions:
-        i.RequisitesCompleted(jugador)
-        if i.Status == filter:
-            print(f"\n{count} -> {i.Name}")
-            print(f"Categoria: {i.Categoria}")
-            print(f"Estat: {i.Status}")
-            print(f"{i.Description}")
-            if type(i) == Missions.KillMission:
-                print(f"{i.Count} / {i.Quantity}")
-            count += 1
-            llista.append(i)
-            if filter == "Requisites":
-                i.ShowRequisites()
-        if filter == "Totes":
-            print(f"\n{count} -> {i.Name}")
-            print(f"Estat: {i.Status}\n")
-            count += 1
+    for i in mision:
+        if accio != "res":
+            print(f"{count} ->", end=" ")
+        print(f"{missions[i].Name}")
+        print(f"{missions[i].Description}\n")
+        llista.append(missions[i])
+        count += 1
     if accio != "Res":
         print(f"{count} -> Sortir")
     return count, llista

@@ -65,3 +65,17 @@ class ObjecteCombat(Objecte):
                 print("")
             if k in ["ATK","SPD","DEF","INT"]:
                 print()
+
+class ObjecteEquipment(Objecte):
+
+    # Metodes
+    def __init__(self, name, description, price, stats, effects):
+        self.ObjectName = name
+        self.ObjectDescription = description
+        self.Preu = price
+        self.Stats = {
+
+        }
+        self.Effects = {
+
+        }

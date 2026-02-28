@@ -155,7 +155,7 @@ def CallZones():
             places.update({i["id"]: place})
     return places
 
-def CallZones():
+def CallMissions():
     rutabase = os.path.dirname(__file__)
     ruta = os.path.join(rutabase, "Data/Missions/")
 
