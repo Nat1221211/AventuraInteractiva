@@ -47,7 +47,7 @@ class Zona():
             if self.ObjectesPerTrobar[trobat][1] <= 0:
                 self.ObjectesPerTrobar.pop(trobat)
     
-    def ComprobarCondicio(self, team):
+    def ComprobarCondicio(self, player):
         if self.CondicioPerTrobarRuta != None:
             trobada = True
             for j in self.CondicioPerTrobarRuta:
@@ -57,7 +57,7 @@ class Zona():
                             trobada = False
                 if j[0] == "Objecte":
                     for v in j[1]:
-                        if v not in team[0].objectes.keys():
+                        if v not in player.objectes.keys():
                             trobada = False
                 if j[0] == "Missio":
                     for m in j[1]:

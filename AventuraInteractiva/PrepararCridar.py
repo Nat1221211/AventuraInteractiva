@@ -68,7 +68,12 @@ def CallEntity(movements):
     for i in entitats:
         moves = {}
         for m, n in i["Movements"].items():
-            moves[movements[m]]=n
+            if m not in moves.keys():
+                dictio = {
+                    "Move": movements[m],
+                    "Lv": n
+                }
+                moves.update({movements[m].id: dictio})
 
         entitat = EntityType.EntityType(i["id"], i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
                                         i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
@@ -107,9 +112,9 @@ def CallMovement(effects):
                     Debuff[effects[i["Debuff"][j]]]=int(i["ProbEfecteDebuff"][j])
         elif i["Debuff"] != "" and i["ProbEfecteDebuff"] != "":
             Debuff[effects[i["Debuff"]]]=int(i["ProbEfecteDebuff"])
-        move = Characteristics.Moves(i["Nom"], i["Descripcio"], i["Potencia"], i["Precisio"],  i["Magic?"], 
-                                        i["Cost"], Buff, Debuff, i["MultipleObjectiu?"], i["Cura?"], i["Protegeix?"], i["DanyperProteccio"])
-        moves.update({move.Name: move})
+        move = Characteristics.Moves(i["id"], i["Nom"], i["Descripcio"], i["Potencia"], i["Precisio"],  i["Magic?"], 
+                                    i["Cost"], Buff, Debuff, i["MultipleObjectiu?"], i["Cura?"], i["Protegeix?"], i["DanyperProteccio"])
+        moves.update({move.id: move})
     return moves
 
 def CallObject():

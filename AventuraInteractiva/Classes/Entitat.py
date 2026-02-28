@@ -49,7 +49,7 @@ class Entity():
         self.isPlayer = IsPlayer
         self.LvLimit = limit
         self.base = BaseEntity
-        self.Moves = list()
+        self.Moves = {}
 
             # Stats
         self.StatsBase = {
@@ -168,13 +168,13 @@ class Entity():
         
     def DefinirMoves(self):
         for k in self.base.EntityMoves.items():
-            if k[1] <= self.Lv and k[0] not in self.Moves:
-                self.Moves.append(k[0])
+            if k[1]["Lv"] <= self.Lv and k[0] not in self.Moves.keys():
+                self.Moves.update({k[0]: k[1]["Move"]})
         if len(self.PastClasses) > 0:
             for i in self.PastClasses:
                 for j in i.EntityMoves.items():
-                    if j[1] <= self.Lv and j[0] not in self.Moves:
-                        self.Moves.append(j[0])
+                    if j[1]["Lv"] <= self.Lv and j[0] not in self.Moves.keys():
+                        self.Moves.update({j[0]: j[1]["Move"]})
 
     def DefinirStats(self,LvOrNot = False):
         baseHealth = self.base.Health / 50

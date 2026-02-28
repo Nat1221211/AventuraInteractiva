@@ -34,6 +34,8 @@ class Player():
             "SPD": {"%": int(), "Flat": int()},
         }
 
+        self.fleeProb = 75
+
     def AplicarStatsGenerals(self):
         for i in self.Team:
             for j in self.StatIncrement.items():
@@ -109,7 +111,7 @@ class Player():
                                     while res not in range(1, len(team) + 2):
                                         os.system("cls" if os.name == "nt" else "clear")
                                         targetable = []
-                                        for i in team:
+                                        for i in team.values():
                                             if i.StatsCombat["CurHP"] > 0:
                                                 targetable.append(i)
                                         count = 1
