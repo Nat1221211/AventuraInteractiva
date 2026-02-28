@@ -101,6 +101,14 @@ def MostrarMenus(Menu):
         except ValueError:
             print("Ha ocurregut un error...")
 
+def CrearMenu(llista, tipus = "Entitats", filtre = "Playables"):
+    options = []
+    if tipus == "Entitats":
+        for i in llista:
+            if filtre == "Playables" and i[1].isPlayable != True:
+                continue
+            options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription))
+    return options
 
 def CrearJugador():
     nom = ""
@@ -110,10 +118,7 @@ def CrearJugador():
         except ValueError:
             print("Ha ocurregut un error...")
     
-    options = []
-    for i in Entities.items():
-        if i[1].isPlayable == True:
-            options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription),)
+    options = CrearMenu(Entities.items())
     
     Menus.update({"Menu Seleccio Inicial": Utilitats.Menu(
                 "Menu Seleccio Personatge",
