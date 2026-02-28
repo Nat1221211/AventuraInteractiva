@@ -375,6 +375,7 @@ class Entity():
         return target
 
     def ShowStatus(self, jugador, combat = False):
+        Call.ClearScreen()
         print(f"Nom: {self.nom}")
         if self.base.isPlayable == True:
             print(f"Clase: {self.base.EntityName}")

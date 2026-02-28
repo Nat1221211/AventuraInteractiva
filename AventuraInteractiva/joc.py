@@ -12,17 +12,13 @@ import tkinter
 from Classes import Objectes
 from Classes import Exits
 from Classes import Entitat
+from Classes import EntityType
 from Classes import Missions
 from Classes import Titles
 from Classes import Zones
 from Classes import Player
 from Classes import Utilitats
 import PrepararCridar as Call
-
-
-def ClearScreen():
-    os.system("cls" if os.name == "nt" else "clear")
-
 
 Objects = Call.CallObject()
 Effects = Call.CallEfect()
@@ -82,7 +78,7 @@ Menus = {
 
 def MostrarMenus(Menu):
     while True:
-        ClearScreen()
+        Call.Call.ClearScreen()
         Utilitats.MostrarMenu.Mostrar(Menu)
 
         print("\n W/S moures, ENTER seleccionar, Q sortir")
@@ -101,14 +97,25 @@ def MostrarMenus(Menu):
         except ValueError:
             print("Ha ocurregut un error...")
 
-def CrearMenu(llista, tipus = "Entitats", filtre = "Playables"):
+def CrearMenu(llista, NomMenu, filtre = "Playables"):
     options = []
-    if tipus == "Entitats":
-        for i in llista:
+    for i in llista:
+        if isinstance(i[1], EntityType.EntityType):
             if filtre == "Playables" and i[1].isPlayable != True:
                 continue
             options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription))
-    return options
+        elif isinstance(i[1], Entitat.Entity):
+            options.append(Utilitats.OpcioMenu(i[1].nom, i[1].nom, True, i[1].base.EntityDescription))
+    
+    
+    
+    Menus.update({NomMenu: Utilitats.Menu(
+                NomMenu,
+                options,
+                3
+            )
+        }
+    )
 
 def CrearJugador():
     nom = ""
@@ -118,15 +125,7 @@ def CrearJugador():
         except ValueError:
             print("Ha ocurregut un error...")
     
-    options = CrearMenu(Entities.items())
-    
-    Menus.update({"Menu Seleccio Inicial": Utilitats.Menu(
-                "Menu Seleccio Personatge",
-                options,
-                3
-            )
-        }
-    )
+    CrearMenu(Entities.items(), "Menu Seleccio Inicial")
     
     identifier = MostrarMenus(Menus["Menu Seleccio Inicial"])
 
@@ -137,8 +136,8 @@ def CrearJugador():
 # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
 personatge = CrearJugador()
 ubicacio = zones["dawn_village"]
-team = []
-team.append(personatge)
+team = {}
+team.update({personatge.nom: personatge})
 
 jugador = Player.Player(personatge.nom, team, ubicacio)
 
@@ -160,7 +159,7 @@ def AccioMenuPrincipal():
     elif jugador.Ubicacio.ZoneType != "Poble":
         accio = MostrarMenus(Menus["Menu Wild"])
 
-    ClearScreen()
+    Call.Call.ClearScreen()
     # Executem acció seleccionada
     if accio == "mapa":
         Mapa()
@@ -184,141 +183,135 @@ def AccioMenuPrincipal():
     elif accio == "motxila":
         jugador.ObjectesMochila(jugador.Team)
     elif accio == "gremi":
-        Gremi()
+        # Gremi()
+        print("Desactivat")
 
 
 
 contractatsAnteriorment = []
-def Gremi():
-    res = 0
-    while res not in [1, 2, 3]:
-        ClearScreen()
-        print("- Gremi d'Aventurers -")
-        print("1 -> Descontractar Aventurer")
-        print("2 -> Contractar Aventurer")
-        print(f"3 -> Sortir")
-        res = int(input("Digues una de les opcions: "))
-        if res not in [1, 2, 3]:
-            print("Has de dir un dels numeros corresponents...")
-    if res in [1, 2, 3]:
-        ClearScreen()
-        if res == 3:
-            print("Has sortit del gremi d'aventurers")
-        elif res == 1:
-            if len(jugador.Team) > 1:
-                print(" - Separem els nostres camins - ")
-                count = 1
-                for i in range(len(jugador.Team)):
-                    if jugador.Team[i] != jugador:
-                        print(f"{count} -> {jugador.Team[i].nom}, Lv: {jugador.Team[i].Lv}")
-                        count += 1
-                print(f"{count} -> Sortir")
-                try:
-                    sel = int(input("Digues amb qui vols separar camins: "))
-                    if sel not in range(len(jugador.Team)):
-                        print("Has de dir un dels personatges seleccionables...")
-                    contractatsAnteriorment.append(jugador.Team[sel])
-                    print(f"Has decidit separar camins amb {jugador.Team[sel].nom}...")
-                    jugador.Team.remove(jugador.Team[sel])
-                except ValueError:
-                    print("Ha ocurrgut un error...")
-            else:
-                print("No tens cap company del que separarte...")
-        elif res == 2:
-            res2 = 0
-            while res2 not in [1, 2, 3]:
-                ClearScreen()
-                print("- Contractació - Gremi d'Aventurers -")
-                print("1 -> Nou Aventurer")
-                print("2 -> Antic Company")
-                print(f"3 -> Sortir")
-                res2 = int(input("Digues una de les opcions: "))
-                if res2 not in [1, 2, 3]:
-                    print("Has de dir un dels numeros corresponents...")
-            if res2 in [1, 2, 3]:
-                ClearScreen()
-                if res2 == 3:
-                    print("Has sortit del menu de contractació...")
-                elif res2 == 1:
-                    if len(jugador.Team) < 3:
-                        cost = ((len(contractatsAnteriorment)) + (len(jugador.Team))) * 5000
-                        if jugador.Gold >= cost:
-                            crear = ""
-                            while crear not in ["s", "n"]:
-                                ClearScreen()
-                                print(f"Contractar un aventurer costara {cost} gold...")
-                                crear = input(f"Contractaras a un nou aventurer tot i això: S / N\n").lower()
-                                if crear not in ["s", "n"]:
-                                    print("Has de dir una de les opcions...")
-                            if crear == "s":
-                                aventurer = CrearJugador()
-                                jugador.Team.append(aventurer)
-                                jugador.Team[0].Gold -= cost
-                            else:
-                                print("Has sortit del menu de contractació...")
-                        else:
-                            print(f"No tens suficient gold per a contractar a un aventurer...")
-                            print(f"Costa {cost} gold...")
-                    else:
-                        print("Tens massa persones al equip...")
-                    res = 0
-                elif res2 == 2:
-                    if len(contractatsAnteriorment) > 0:
-                        if len(jugador.Team) < 3: 
-                            sel = -1
-                            while sel not in range(len(contractatsAnteriorment) + 1):
-                                ClearScreen()
-                                count = 1
-                                for i in range(len(contractatsAnteriorment)):
-                                    print(f"{count} -> {contractatsAnteriorment[i].nom}, Lv: {contractatsAnteriorment[i].Lv}")
-                                    print(f"Classe: {contractatsAnteriorment[i].base.EntityName}")
-                                    if contractatsAnteriorment[i].subclass != None:
-                                        print(f"Segona Classe: {contractatsAnteriorment[i].subclass}")
-                                    print()
-                                    count += 1
-                                print(f"{count} -> Sortir")
-                                try:
-                                    sel = int(input("Digues a qui vols reclutar de nou: "))
-                                except ValueError:
-                                    print("Ha ocurregut un error...")
-                            if sel not in range(len(contractatsAnteriorment) + 1):
-                                print("Has de dir un dels numeros...")
-                            else:
-                                if sel == count:
-                                    print("Has sortit del menu de contractació...")
-                                else:
-                                    aventurer = contractatsAnteriorment[sel - 1]
-                                    jugador.Team.append(aventurer)
-                                    contractatsAnteriorment.remove(aventurer)
-                                    sel = 1
-                                    print(f"Has començat de nou un viatge amb {aventurer.nom}...")
-                        else:
-                            print("Tens massa persones al equip...")
-                    else:
-                        print("No has separat camins amb ningu...")
-                    res = 0
-    input("\nPresiona per a continuar...")
+# def Gremi():
+#     res = 0
+#     while res not in [1, 2, 3]:
+#         ClearScreen()
+#         print("- Gremi d'Aventurers -")
+#         print("1 -> Descontractar Aventurer")
+#         print("2 -> Contractar Aventurer")
+#         print(f"3 -> Sortir")
+#         res = int(input("Digues una de les opcions: "))
+#         if res not in [1, 2, 3]:
+#             print("Has de dir un dels numeros corresponents...")
+#     if res in [1, 2, 3]:
+#         ClearScreen()
+#         if res == 3:
+#             print("Has sortit del gremi d'aventurers")
+#         elif res == 1:
+#             if len(jugador.Team) > 1:
+#                 print(" - Separem els nostres camins - ")
+#                 count = 1
+#                 for i in range(len(jugador.Team)):
+#                     if jugador.Team[i] != jugador:
+#                         print(f"{count} -> {jugador.Team[i].nom}, Lv: {jugador.Team[i].Lv}")
+#                         count += 1
+#                 print(f"{count} -> Sortir")
+#                 try:
+#                     sel = int(input("Digues amb qui vols separar camins: "))
+#                     if sel not in range(len(jugador.Team)):
+#                         print("Has de dir un dels personatges seleccionables...")
+#                     contractatsAnteriorment.append(jugador.Team[sel])
+#                     print(f"Has decidit separar camins amb {jugador.Team[sel].nom}...")
+#                     jugador.Team.pop(jugador.Team[sel])
+#                 except ValueError:
+#                     print("Ha ocurrgut un error...")
+#             else:
+#                 print("No tens cap company del que separarte...")
+#         elif res == 2:
+#             res2 = 0
+#             while res2 not in [1, 2, 3]:
+#                 ClearScreen()
+#                 print("- Contractació - Gremi d'Aventurers -")
+#                 print("1 -> Nou Aventurer")
+#                 print("2 -> Antic Company")
+#                 print(f"3 -> Sortir")
+#                 res2 = int(input("Digues una de les opcions: "))
+#                 if res2 not in [1, 2, 3]:
+#                     print("Has de dir un dels numeros corresponents...")
+#             if res2 in [1, 2, 3]:
+#                 ClearScreen()
+#                 if res2 == 3:
+#                     print("Has sortit del menu de contractació...")
+#                 elif res2 == 1:
+#                     if len(jugador.Team) < 3:
+#                         cost = ((len(contractatsAnteriorment)) + (len(jugador.Team))) * 5000
+#                         if jugador.Gold >= cost:
+#                             crear = ""
+#                             while crear not in ["s", "n"]:
+#                                 ClearScreen()
+#                                 print(f"Contractar un aventurer costara {cost} gold...")
+#                                 crear = input(f"Contractaras a un nou aventurer tot i això: S / N\n").lower()
+#                                 if crear not in ["s", "n"]:
+#                                     print("Has de dir una de les opcions...")
+#                             if crear == "s":
+#                                 aventurer = CrearJugador()
+#                                 jugador.Team.append(aventurer)
+#                                 jugador.Team[0].Gold -= cost
+#                             else:
+#                                 print("Has sortit del menu de contractació...")
+#                         else:
+#                             print(f"No tens suficient gold per a contractar a un aventurer...")
+#                             print(f"Costa {cost} gold...")
+#                     else:
+#                         print("Tens massa persones al equip...")
+#                     res = 0
+#                 elif res2 == 2:
+#                     if len(contractatsAnteriorment) > 0:
+#                         if len(jugador.Team) < 3: 
+#                             sel = -1
+#                             while sel not in range(len(contractatsAnteriorment) + 1):
+#                                 ClearScreen()
+#                                 count = 1
+#                                 for i in range(len(contractatsAnteriorment)):
+#                                     print(f"{count} -> {contractatsAnteriorment[i].nom}, Lv: {contractatsAnteriorment[i].Lv}")
+#                                     print(f"Classe: {contractatsAnteriorment[i].base.EntityName}")
+#                                     if contractatsAnteriorment[i].subclass != None:
+#                                         print(f"Segona Classe: {contractatsAnteriorment[i].subclass}")
+#                                     print()
+#                                     count += 1
+#                                 print(f"{count} -> Sortir")
+#                                 try:
+#                                     sel = int(input("Digues a qui vols reclutar de nou: "))
+#                                 except ValueError:
+#                                     print("Ha ocurregut un error...")
+#                             if sel not in range(len(contractatsAnteriorment) + 1):
+#                                 print("Has de dir un dels numeros...")
+#                             else:
+#                                 if sel == count:
+#                                     print("Has sortit del menu de contractació...")
+#                                 else:
+#                                     aventurer = contractatsAnteriorment[sel - 1]
+#                                     jugador.Team.append(aventurer)
+#                                     contractatsAnteriorment.remove(aventurer)
+#                                     sel = 1
+#                                     print(f"Has començat de nou un viatge amb {aventurer.nom}...")
+#                         else:
+#                             print("Tens massa persones al equip...")
+#                     else:
+#                         print("No has separat camins amb ningu...")
+#                     res = 0
+#     input("\nPresiona per a continuar...")
 
 
 def VeureEstatus(combat = False):
     res = 0
     while res not in range(1, len(jugador.Team) + 2):
-        ClearScreen()
-        print("- De Qui vols veure les estadistiques -")
-        count = 1
-        for i in jugador.Team:
-            print(f"{count} -> {i.nom}")
-            count += 1
-        print(f"{count} -> Sortir")
-        res = int(input("Digues de qui vols veure l'estat: "))
-        if res not in range(1, count + 1):
-            print("Has de dir un dels numeros corresponents...")
-    if res in range(1, count):
-        ClearScreen()
+        Call.ClearScreen()
+        CrearMenu(jugador.Team.items(), "Seleccio Equip", "")
+
+        seleccio = MostrarMenus(Menus["Seleccio Equip"])
+
         if combat == False:
-            jugador.Team[res - 1].ShowStatus(jugador)
+            jugador.Team[seleccio].ShowStatus(jugador)
         else:
-            jugador.Team[res - 1].ShowStatus(jugador, True)
+            jugador.Team[seleccio].ShowStatus(jugador, True)
     else:
         input("Has sortit del menu d'estatus...")
 
@@ -328,7 +321,7 @@ def MenuMisions():
     res = 0
     while res not in [1, 2, 3, 4]:
         res = 0
-        ClearScreen()
+        Call.ClearScreen()
         print("1 -> Veure Misions")
         print("2 -> Acceptar Misions")
         print("3 -> Reclamar Misions")
@@ -343,7 +336,7 @@ def MenuMisions():
                 if res == 1:
                     filtrar = 0
                     while filtrar not in [1, 2, 3, 4, 5]:
-                        ClearScreen()
+                        Call.ClearScreen()
                         print("1 -> Aceptades")
                         print("2 -> Per aceptar")
                         print("3 -> Completades")
@@ -369,7 +362,7 @@ def MenuMisions():
                     count, reclamar  = ShowMisions("Requisites", "Aceptar", missions)
                     aceptar = 0
                     while aceptar not in range(1, count + 1):
-                        ClearScreen()
+                        Call.ClearScreen()
                         count, reclamar = ShowMisions("Requisites", "Aceptar", missions)
                         try:
                             aceptar = int(input("Digues quina misio vols aceptar: "))
@@ -384,7 +377,7 @@ def MenuMisions():
                     count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar", jugador.MisionsAcceptades)
                     aceptar = 0
                     while aceptar not in range(1, count + 1):
-                        ClearScreen()
+                        Call.ClearScreen()
                         count, reclamar  = ShowMisions("Rewards Unclaimed", "Aceptar", jugador.MisionsAcceptades)
                         try:
                             aceptar = int(input("Digues quina misio vols reclamar: "))
@@ -483,7 +476,7 @@ def Posada(free = False):
     res = ""
     if free == False:
         while res not in ["S", "N"]:
-            ClearScreen()
+            Call.ClearScreen()
             try:
                 res = input("\nVols descansar? Costa 100 gold (S / N): ").capitalize()
             except ValueError:
@@ -656,7 +649,7 @@ def MenuAtacar(personatge):
     global jugador
     res = 0
     while res not in range(1, len(personatge.Moves) + 2):
-        ClearScreen()
+        Call.ClearScreen()
         count = 1
         for i in personatge.Moves:
             print(f"{count} -> {i.Name}")
@@ -697,14 +690,14 @@ def AccionsLluita(jug, enemy, enemyderr):
             print("Ha ocurregut un error...")
     turn = False
     fugir = [False]
-    ClearScreen()
+    Call.ClearScreen()
     BattleScreenShow(jugador.Team)
     BattleScreenShow(enemy)
     print("\n")
     if accio == 1:
         move = MenuAtacar(jug)
         target = None
-        ClearScreen()
+        Call.ClearScreen()
         BattleScreenShow(jugador.Team)
         BattleScreenShow(enemy)
         print("\n")
@@ -735,7 +728,7 @@ def AccionsLluita(jug, enemy, enemyderr):
         if used == False:
             turn = True
     elif accio == 4:
-        ClearScreen()
+        Call.ClearScreen()
         VeureEstatus(True)
         turn = True
     elif accio == 4:
@@ -750,7 +743,7 @@ def TriarObjectius(list):
     while res not in range(1, len(list) + 2):
         BattleScreenShow(jugador.Team)
         BattleScreenShow(list)
-        ClearScreen()
+        Call.ClearScreen()
         targetable = []
         for i in list:
             if i.StatsCombat["CurHP"] > 0:
@@ -1000,7 +993,7 @@ def Lluitar(enemy):
             if jugador.Team[i].Priority >= 100 and len(enemy) >= 1 and jugador.Team[i].StatsCombat["CurHP"] > 0.1 and combat == True:
                 turn = True
                 while turn == True:
-                    ClearScreen()
+                    Call.ClearScreen()
                     BattleScreenShow(jugador.Team)
                     BattleScreenShow(enemy)
                     turn = False
@@ -1009,14 +1002,14 @@ def Lluitar(enemy):
                         jugador.Team[i], teamderr = ComprobarEfectEstat(jugador.Team[i], teamderr)
                     if turn == False:
                         jugador.Team[i].Priority = 0
-                ClearScreen()
+                Call.ClearScreen()
             if combat == True:
                 combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr)
 
         # Turn enemic
         for j in range(len(enemy)):
             if enemy[j].Priority >= 100 and fugir[0] == False and len(jugador.Team) >= 1 and enemy[j].StatsCombat["CurHP"] > 0.1 and combat == True:
-                ClearScreen()
+                Call.ClearScreen()
                 BattleScreenShow(jugador.Team)
                 BattleScreenShow(enemy)
                 enemyMove = random.choice(enemy[j].Moves)
@@ -1035,7 +1028,7 @@ def Lluitar(enemy):
                 teamderr = DescartarDerrotats(jugador.Team[target], teamderr)
                 if protegitPer != None:
                     teamderr = DescartarDerrotats(protegitPer, teamderr)
-                ClearScreen()
+                Call.ClearScreen()
             if combat == True:
                 combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr)
         
@@ -1046,7 +1039,7 @@ def ComprobarFiCombat(combat, enemyderr, enemy, teamderr):
     if enemyderr == len(enemy) or teamderr == len(jugador.Team):
         combat = False
         if len(enemy) == enemyderr:
-            ClearScreen()
+            Call.ClearScreen()
             print("Tos els enemics han estat derrotats !!")
             input("Presiona per a continuar")
     return combat
@@ -1056,7 +1049,7 @@ def DescartarDerrotats(p, derr):
     if p.StatsCombat["CurHP"] <= 0.1:
         derr += 1
         if p.isPlayer == False:
-            ClearScreen()
+            Call.ClearScreen()
             alive = 0
             for i in range(len(jugador.Team)): 
                 if jugador.Team[i].StatsCombat["CurHP"] > 0:
@@ -1109,7 +1102,7 @@ def main():
     while True:
         alive = 1
         while alive > 0:
-            ClearScreen()
+            Call.ClearScreen()
             AccioMenuPrincipal()
             alive = 0
             for i in jugador.Team:

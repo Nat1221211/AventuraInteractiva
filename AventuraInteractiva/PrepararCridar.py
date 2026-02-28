@@ -19,6 +19,10 @@ from Classes import Objectes
 from Classes import Titles
 from Classes import Zones
 
+
+def ClearScreen():
+    os.system("cls" if os.name == "nt" else "clear")
+
 def CallCSV(cami):
     try:
         base_path = os.path.dirname(__file__)
