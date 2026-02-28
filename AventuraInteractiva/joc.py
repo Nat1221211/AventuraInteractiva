@@ -118,7 +118,7 @@ def CrearJugador():
     Menus.update({"Menu Seleccio Inicial": Utilitats.Menu(
                 "Menu Seleccio Personatge",
                 options,
-                7
+                3
             )
         }
     )
