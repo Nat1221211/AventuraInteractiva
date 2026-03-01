@@ -80,10 +80,10 @@ Menus = {
         "Seleccio d'Accions",
         [
             Utilitats.OpcioMenu("atacar", "Atacar", True, "Seleccionar un atac entre els poseits per atacar l'objectiu..."),
-            Utilitats.OpcioMenu("motxila", "Motxila", True, ""),
-            Utilitats.OpcioMenu("status", "Veure Estat", True, "Seleccionar un atac entre els poseits per atacar l'objectiu..."),
-            Utilitats.OpcioMenu("fugir", "Fugir", True, "Seleccionar un atac entre els poseits per atacar l'objectiu..."),
-            Utilitats.OpcioMenu("pasar", "Pasar Torn", True, "Seleccionar un atac entre els poseits per atacar l'objectiu...")
+            Utilitats.OpcioMenu("motxila", "Motxila", True, "Obre La motxila i utilitza o revisa el que hi tens..."),
+            Utilitats.OpcioMenu("status", "Veure Estat", True, "veure l'estat d'un dels jugadors de l'equip.."),
+            Utilitats.OpcioMenu("fugir", "Fugir", True, "Intentar fugir del enemic..."),
+            Utilitats.OpcioMenu("pasar", "Pasar Torn", True, "Deixar pasar el torn sense fer res...")
         ],
         5
     )
@@ -718,16 +718,16 @@ def AccionsLluita(jug, enemy, enemyderr):
             jug.StatsCombat["Mana"] -= move.Cost
         if move == None or target == False:
             turn = True
-    elif seleccio == 2:
+    elif seleccio == "fugir":
         fugir = Fugir(enemy)
-    elif seleccio == 3:
+    elif seleccio == "motxila":
         used = jugador.ObjectesMochila(jugador.Team, jug, True)
         if used == False:
             turn = True
-    elif seleccio == 4:
+    elif seleccio == "status":
         VeureEstatus(True)
         turn = True
-    elif seleccio == 4:
+    elif seleccio == "pasar":
         print("Has decidit pasar torn...")
         input("Presiona per a continuar...")
     
