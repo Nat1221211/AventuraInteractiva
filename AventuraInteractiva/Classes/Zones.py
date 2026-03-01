@@ -29,6 +29,7 @@ class Zona():
         self.Or = gol
         self.CondicioPerTrobarRuta = {}
         self.IntentsPerTrobar = intents
+        self.Connections = None
     
     def AddConnections(self, connections):
         self.Connections = connections

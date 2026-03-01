@@ -39,7 +39,9 @@ class OpcioMenu():
         self.Habilitat = habilitat
 
 class MostrarMenu():
-    def Mostrar(Menu):
+    def Mostrar(Menu, textextra = ""):
+        if textextra != "":
+            print(f"\n{textextra}")
         print("\n" + Menu.Titol)
         opcions, inici, pagina, total = Menu.OpcionsVisible()
 
