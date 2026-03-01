@@ -107,7 +107,10 @@ def MostrarMenus(Menu, sortir = True, combat = False, enemy = None, TextExtra = 
             elif entrada == "s":
                 Menu.MoureCursor(1)
             elif entrada == "":
-                return Menu.SeleccionarOpcio()
+                accio = Menu.SeleccionarOpcio()
+                if accio == None:
+                    return "bloquejat"
+                return accio
             elif entrada == "q":
                 return None
             
@@ -433,10 +436,13 @@ def Mapa():
 
     seleccio = MostrarMenus(Menus["Mapa"], True, False, None, f"Ubicació: {jugador.Ubicacio.NameZone}")
 
-    if seleccio != None:
+    if seleccio == "bloquejat":
+        print("Opcio Bloquejada!")
+        input("Presiona per a continuar...")
+    elif seleccio != None:
         jugador.Ubicacio = zones[seleccio]    # Canviem la zona i la retornem
         jugador.ActualitzarUltimPobleVisitat()
-    else:
+    elif seleccio == None:
         input("Has sortit del mapa... (Presiona per a continuar)")
 
 def OcurrenciaMisio(misio):
