@@ -115,28 +115,32 @@ def MostrarMenus(Menu, sortir = True, combat = False, enemy = None, TextExtra = 
         if combat == True:
             BattleScreenShow(jugador.Team.values())
             BattleScreenShow(enemy)
-        Utilitats.MostrarMenu.Mostrar(Menu, TextExtra)
+        if len(Menu.Opcions) >= 1:
+            Utilitats.MostrarMenu.Mostrar(Menu, TextExtra)
 
-        print("\n W/S moures", end="")
-        print(", Enter seleccionar" if seleccionar == True else "", end="")
-        print(", Q sortir" if sortir == True else "")
-        try:
-            entrada = input("-> ").lower()
+            print("\n W/S moures", end="")
+            print(", Enter seleccionar" if seleccionar == True else "", end="")
+            print(", Q sortir" if sortir == True else "")
+            try:
+                entrada = input("-> ").lower()
 
-            if entrada == "w":
-                Menu.MoureCursor(-1)
-            elif entrada == "s":
-                Menu.MoureCursor(1)
-            elif entrada == "" and seleccionar == True:
-                accio = Menu.SeleccionarOpcio()
-                if accio == None:
-                    return "bloquejat"
-                return accio
-            elif entrada == "q":
-                return None
+                if entrada == "w":
+                    Menu.MoureCursor(-1)
+                elif entrada == "s":
+                    Menu.MoureCursor(1)
+                elif entrada == "" and seleccionar == True:
+                    accio = Menu.SeleccionarOpcio()
+                    if accio == None:
+                        return "bloquejat"
+                    return accio
+                elif entrada == "q":
+                    return None
             
-        except ValueError:
-            print("Ha ocurregut un error...")
+            except ValueError:
+                print("Ha ocurregut un error...")
+        else:
+            print("No hi ha opcions...")
+            input("Presiona per a continuar...")
 
 def CrearMenu(llista, NomMenu, filtre = "Playables", opcionsvisibles = 3):
     options = []
@@ -411,10 +415,10 @@ def MenuMisions():
         res = MostrarMenus(Menus["Veure Missions"])
         if res == "disponibles":
             CrearMenuMissions(missions, "Missions Disponibles", jugador.MissionsDisponibles, None, 6)
-        
+            res = MostrarMenus(Menus["Missions Disponibles"], True, False, None, "", False)
         elif res == "completades":
             CrearMenuMissions(missions, "Missions Completades", jugador.MissionsFinalitzades, None, 6)
-        
+            res = MostrarMenus(Menus["Missions Completades"], True, False, None, "", False)
         elif res == "acceptades":
             CrearMenuMissions(missions, "Missions Acceptades", jugador.MisionsAcceptades, None, 6)
             res = MostrarMenus(Menus["Missions Acceptades"], True, False, None, "", False)
