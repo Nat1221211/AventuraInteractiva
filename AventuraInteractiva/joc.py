@@ -110,12 +110,13 @@ Menus = {
 }
 
 def MostrarMenus(Menu, sortir = True, combat = False, enemy = None, TextExtra = "", seleccionar = True):
-    while True:
-        Call.ClearScreen()
-        if combat == True:
-            BattleScreenShow(jugador.Team.values())
-            BattleScreenShow(enemy)
-        if len(Menu.Opcions) >= 1:
+    if len(Menu.Opcions) >= 1:
+        while True:
+            Call.ClearScreen()
+            if combat == True:
+                BattleScreenShow(jugador.Team.values())
+                BattleScreenShow(enemy)
+            
             Utilitats.MostrarMenu.Mostrar(Menu, TextExtra)
 
             print("\n W/S moures", end="")
@@ -138,9 +139,9 @@ def MostrarMenus(Menu, sortir = True, combat = False, enemy = None, TextExtra = 
             
             except ValueError:
                 print("Ha ocurregut un error...")
-        else:
-            print("No hi ha opcions...")
-            input("Presiona per a continuar...")
+    else:
+        print("No hi ha opcions...")
+        input("Presiona per a continuar...")
 
 def CrearMenu(llista, NomMenu, filtre = "Playables", opcionsvisibles = 3):
     options = []
@@ -562,13 +563,14 @@ def Explorar():
         TrobarOr(jugador.Ubicacio.Or)
     elif prob > 20 and prob <= 70:  # Res / Missions / Ocurrencies
         llista = []
-        for i in missions:
-            if i.Status == "Accepted" and i.Place == jugador.Ubicacio:
-                if type(i) == Missions.KillMission:
-                    if i.Generic == False:
-                        llista.append(i)
-                else:
-                    llista.append(i)
+        for i, v in missions.items():
+            for id, value in v.items():
+                if value.Status == "Accepted" and value.Place == jugador.Ubicacio:
+                    if type(i) == Missions.KillMission:
+                        if value.Generic == False:
+                            llista.append(id)
+                    else:
+                        llista.append(id)
         if len(llista) > 0:
             choice = random.choices(["res", "missio"], [80, 20])
             if choice[0] == "missio":
