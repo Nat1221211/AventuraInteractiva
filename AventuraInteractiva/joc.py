@@ -86,6 +86,26 @@ Menus = {
             Utilitats.OpcioMenu("pasar", "Pasar Torn", True, "Deixar pasar el torn sense fer res...")
         ],
         5
+    ),
+
+    "Missions": Utilitats.Menu(
+        "Menu Missions",
+        [
+            Utilitats.OpcioMenu("aceptar", "Aceptar Missio", True, "Aceptar una nova missio disponible"),
+            Utilitats.OpcioMenu("veure", "Veure Missio", True, "Veure les missions (disponibles, aceptades, completades)."),
+            Utilitats.OpcioMenu("reclamar", "Reclamar Missio", True, "Reclamar una missio completada."),
+        ],
+        3
+    ),
+
+    "Veure Missions": Utilitats.Menu(
+        "Veure Missions",
+        [
+            Utilitats.OpcioMenu("disponible", "Veure Missions Disponibles", True, "Veure les missions que estan per aceptar."),
+            Utilitats.OpcioMenu("completada", "Veure Missions Compleatdes", True, "Veure les missions que estan completades."),
+            Utilitats.OpcioMenu("aceptada", "Veure Missions Acceptades", True, "Veure les missions acceptades."),
+        ],
+        3
     )
 }
 
@@ -133,8 +153,7 @@ def CrearMenu(llista, NomMenu, filtre = "Playables", opcionsvisibles = 3):
             options.append(Utilitats.OpcioMenu(i[1].nom, i[1].nom, True, i[1].base.EntityDescription))
         elif isinstance(i[1], Characteristics.Moves):
             options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, i[1].Description))
-    
-    
+        
     Menus.update({NomMenu: Utilitats.Menu(
                 NomMenu,
                 options,
@@ -142,6 +161,25 @@ def CrearMenu(llista, NomMenu, filtre = "Playables", opcionsvisibles = 3):
             )
         }
     )
+
+def CrearMenuMissions(llistamissions, NomMenu, filtre, estat = None, opcionsvisibles = 6):
+    opcions = []
+    for i in llistamissions.items():
+        for j in i[1].items():
+            if j[0] in filtre:
+                if estat != None and j[1].Status == estat:
+                    opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description))
+                else:
+                    opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description))
+
+    Menus.update({NomMenu: Utilitats.Menu(
+                NomMenu,
+                opcions,
+                opcionsvisibles
+            )
+        }
+    )
+
 
 def CrearJugador():
     nom = ""
@@ -174,6 +212,18 @@ jugador = Player.Player(personatge.nom, team, ubicacio)
 # # Afegim algun objecte al jugador de base
 jugador.AfegirObjecte(Objects["Combat"]["Pocio Inferior"], 2)
 
+
+def ComprovarMissionsDisponibles(tipus = None):
+    if tipus == None:
+        for i, v in missions.items():
+            for id, value in v.items():
+                res = value.RequisitesCompleted(jugador)
+                if res == True:
+                    jugador.MissionsDisponibles.append(id)
+    else:
+        print()
+
+ComprovarMissionsDisponibles()
 
 def AccioMenuPrincipal():
     global jugador
@@ -346,8 +396,26 @@ def VeureEstatus(combat = False):
 
 
 def MenuMisions():
-    print()
- 
+    sel = MostrarMenus(Menus["Missions"])
+
+    if sel == "aceptar":
+        CrearMenuMissions(missions, "Aceptar Missions", jugador.MissionsDisponibles, None, 4)
+        res = MostrarMenus(Menus["Aceptar Missions"])
+        input(f"Resposta = {res}")
+    elif sel == "veure":
+        res = MostrarMenus(Menus["Veure Missions"])
+        if res == "disponibles":
+            CrearMenuMissions(missions, "Missions Disponibles", jugador.MissionsDisponibles, None, 6)
+        
+        elif res == "completades":
+            CrearMenuMissions(missions, "Missions Completades", jugador.MissionsFinalitzades, None, 6)
+        
+        elif res == "acceptades":
+            CrearMenuMissions(missions, "Missions Acceptades", jugador.MisionsAcceptades, None, 6)
+    
+    elif sel == "reclamar":
+        CrearMenuMissions(missions, "Reclamar Missions", jugador.MisionsAcceptades, "Completed", 4)
+        res = MostrarMenus(Menus["Reclamar Missions"])
 
 # def MostrarExits():
 #     print("Exits")

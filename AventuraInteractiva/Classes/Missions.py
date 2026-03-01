@@ -16,7 +16,7 @@ class Mission():
     
     Name = ""
     Description = ""
-    Status = "Unacceped"
+    Status = "Bloquejada"
     Rewards = {}
     Requisite = []
     Place = Zones.Zona
@@ -32,19 +32,13 @@ class Mission():
         self.Categoria = cat
     
     def RequisitesCompleted(self, jugador):
-        if self.Status not in ["Accepted", "Requisites", "Completed", "Rewards Unclaimed"]:
+        if self.Status == "Bloquejada":
             reqcompleted = True
-            if len(self.Requisite) > 0:
-                for i in self.Requisite:
-                    if type(i) == tuple:
-                        if i[0] == "Lv":
-                            if jugador.Team[0].Lv < i[1]:
-                                reqcompleted = False
-                    elif type(i) in [Mission, FindMission, ObjectMission, KillMission, PlaceMission]:
-                        if i.Status != "Completed":
-                            reqcompleted = False
+            print()
             if reqcompleted == True:
                 self.Status = "Requisites"
+                return True
+            return False
 
     def ShowRequisites(self):
         if len(self.Requisite) > 0:

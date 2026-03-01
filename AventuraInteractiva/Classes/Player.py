@@ -19,6 +19,7 @@ class Player():
         self.AcquiredAchievements = []  # En aquests tres s'indicara l'id o nom de la misio dins del csv corresponent.
         self.MisionsAcceptades = []
         self.MissionsFinalitzades = []
+        self.MissionsDisponibles = []
         self.objectes = {} # Diccionari, objecte(nom/id en csv) = clau i quantitat = valor
         self.UltimPobleVisitat = self.Ubicacio
         self.LlocsVisitats = ["dawn_village"]
