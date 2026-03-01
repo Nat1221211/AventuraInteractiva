@@ -101,15 +101,15 @@ Menus = {
     "Veure Missions": Utilitats.Menu(
         "Veure Missions",
         [
-            Utilitats.OpcioMenu("disponible", "Veure Missions Disponibles", True, "Veure les missions que estan per aceptar."),
-            Utilitats.OpcioMenu("completada", "Veure Missions Compleatdes", True, "Veure les missions que estan completades."),
-            Utilitats.OpcioMenu("aceptada", "Veure Missions Acceptades", True, "Veure les missions acceptades."),
+            Utilitats.OpcioMenu("disponibles", "Veure Missions Disponibles", True, "Veure les missions que estan per aceptar."),
+            Utilitats.OpcioMenu("completades", "Veure Missions Compleatdes", True, "Veure les missions que estan completades."),
+            Utilitats.OpcioMenu("acceptades", "Veure Missions Acceptades", True, "Veure les missions acceptades."),
         ],
         3
     )
 }
 
-def MostrarMenus(Menu, sortir = True, combat = False, enemy = None, TextExtra = ""):
+def MostrarMenus(Menu, sortir = True, combat = False, enemy = None, TextExtra = "", seleccionar = True):
     while True:
         Call.ClearScreen()
         if combat == True:
@@ -117,8 +117,9 @@ def MostrarMenus(Menu, sortir = True, combat = False, enemy = None, TextExtra = 
             BattleScreenShow(enemy)
         Utilitats.MostrarMenu.Mostrar(Menu, TextExtra)
 
-        print("\n W/S moures, ENTER seleccionar", end=" ")
-        print("Q sortir" if sortir == True else "")
+        print("\n W/S moures", end="")
+        print(", Enter seleccionar" if seleccionar == True else "", end="")
+        print(", Q sortir" if sortir == True else "")
         try:
             entrada = input("-> ").lower()
 
@@ -126,7 +127,7 @@ def MostrarMenus(Menu, sortir = True, combat = False, enemy = None, TextExtra = 
                 Menu.MoureCursor(-1)
             elif entrada == "s":
                 Menu.MoureCursor(1)
-            elif entrada == "":
+            elif entrada == "" and seleccionar == True:
                 accio = Menu.SeleccionarOpcio()
                 if accio == None:
                     return "bloquejat"
@@ -401,7 +402,11 @@ def MenuMisions():
     if sel == "aceptar":
         CrearMenuMissions(missions, "Aceptar Missions", jugador.MissionsDisponibles, None, 4)
         res = MostrarMenus(Menus["Aceptar Missions"])
-        input(f"Resposta = {res}")
+        if res != None:
+            jugador.MisionsAcceptades.append(res)
+        else:
+            print("Has sortit del Menu")
+            input("Presiona per a continuar...")
     elif sel == "veure":
         res = MostrarMenus(Menus["Veure Missions"])
         if res == "disponibles":
@@ -412,6 +417,7 @@ def MenuMisions():
         
         elif res == "acceptades":
             CrearMenuMissions(missions, "Missions Acceptades", jugador.MisionsAcceptades, None, 6)
+            res = MostrarMenus(Menus["Missions Acceptades"], True, False, None, "", False)
     
     elif sel == "reclamar":
         CrearMenuMissions(missions, "Reclamar Missions", jugador.MisionsAcceptades, "Completed", 4)
