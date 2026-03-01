@@ -1066,18 +1066,15 @@ def Comprovacions(enemy):
 
 def finalitzarCombat(clon):
     global jugador
-    for i in jugador.Team.values():
-        
-        if i in clon:
-            for j in clon:
-                if j == i:
-                    i.StatsCombat["CurHP"] = j.StatsCombat["CurHP"]
-                    i.StatsCombat["Mana"] = j.StatsCombat["Mana"]
+    for i in jugador.Team.keys(): 
+        if i in clon.keys():
+            jugador.Team[i].StatsCombat["CurHP"] = clon[i].StatsCombat["CurHP"]
+            jugador.Team[i].StatsCombat["Mana"] = clon[i].StatsCombat["Mana"]
         else:
             i.StatsCombat["CurHP"] = 0
             i.StatsCombat["Mana"] = 0
-        i.afected = []
-        i.DefinirCombatStats()
+        jugador.Team[i].afected = []
+        jugador.Team[i].DefinirCombatStats()
 
 
         

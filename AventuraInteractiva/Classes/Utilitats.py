@@ -28,7 +28,8 @@ class Menu():
         pagina = self.Cursor // self.OpcionsPagina
         inici = pagina * self.OpcionsPagina
         fi = inici + self.OpcionsPagina
-        return self.Opcions[inici:fi], inici
+        totalpag = len(self.Opcions) // self.OpcionsPagina
+        return self.Opcions[inici:fi], inici, pagina, totalpag
 
 class OpcioMenu():
     def __init__(self,iden, nom, habilitat, descripcio):
@@ -40,7 +41,7 @@ class OpcioMenu():
 class MostrarMenu():
     def Mostrar(Menu):
         print("\n" + Menu.Titol)
-        opcions, inici = Menu.OpcionsVisible()
+        opcions, inici, pagina, total = Menu.OpcionsVisible()
 
         for i, opcio in enumerate(opcions):
             index = inici + i
@@ -49,6 +50,9 @@ class MostrarMenu():
 
             print(f"{cursor} {opcio.Nom} {estat}")
         
+        if total > 1:
+            print(f"\nPagina: {pagina + 1} de {total}")
+
         posicio = Menu.Cursor % len(opcions)
         print(f"\nDescripció: \n{opcions[posicio].Descripcio}")
 
