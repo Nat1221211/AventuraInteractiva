@@ -43,7 +43,8 @@ class Entity():
     CountForTitle = {}
 
     # Metodes
-    def __init__(self, nom, level, IsPlayer, BaseEntity, limit = 100):
+    def __init__(self, iden, nom, level, IsPlayer, BaseEntity, limit = 100):
+        self.id = iden
         self.nom = nom
         self.Lv = level
         self.isPlayer = IsPlayer
