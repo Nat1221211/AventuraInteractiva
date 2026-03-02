@@ -875,7 +875,7 @@ def BattleScreenShow(teamlis):
 
 
     for i in teamlis:
-        if i.StatsCombat["CurHP"] < 0:
+        if i.StatsCombat["CurHP"] > 0:
             llarg = len(f"{i.nom}, LV: {i.Lv}")
             espaiat = ""
             for j in range(30 - llarg):
@@ -884,7 +884,7 @@ def BattleScreenShow(teamlis):
     
     print()
     for i in teamlis:
-        if i.StatsCombat["CurHP"] < 0:
+        if i.StatsCombat["CurHP"] > 0:
             llarg = len(f"HP: {round(i.StatsCombat["CurHP"], 2)} / {round(i.StatsCombat["MaxHP"], 2)}")
             espaiat = ""
             for j in range(30 - llarg):
@@ -893,7 +893,7 @@ def BattleScreenShow(teamlis):
     
     saltdeLinia = False
     for i in teamlis:
-        if i.StatsCombat["CurHP"] < 0:
+        if i.StatsCombat["CurHP"] > 0:
             if i.isPlayer == True:
                 if saltdeLinia == False:
                     print()
@@ -906,7 +906,7 @@ def BattleScreenShow(teamlis):
 
     saltdeLinia = False
     for i in teamlis:
-        if i.StatsCombat["CurHP"] < 0:
+        if i.StatsCombat["CurHP"] > 0:
             if len(i.afected) > 0:
                 if saltdeLinia == False:
                     print()
@@ -933,7 +933,7 @@ def BattleScreenShow(teamlis):
     
     print()
     for i in teamlis:
-        if i.StatsCombat["CurHP"] < 0:
+        if i.StatsCombat["CurHP"] > 0:
             llarg = len(f"Prioritat: {round(i.Priority, 1)}")
             espaiat = ""
             for j in range(30 - llarg):
