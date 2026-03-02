@@ -115,7 +115,7 @@ def MostrarMenus(Menu, sortir = True, combat = False, enemy = None, TextExtra = 
             Call.ClearScreen()
             if combat == True:
                 BattleScreenShow(jugador.Team.values())
-                BattleScreenShow(enemy)
+                BattleScreenShow(enemy.values())
             
             Utilitats.MostrarMenu.Mostrar(Menu, TextExtra)
 
@@ -678,21 +678,21 @@ def AccionsLluita(jug, enemy, enemyderr):
         target = None
         Call.ClearScreen()
         BattleScreenShow(jugador.Team.values())
-        BattleScreenShow(enemy)
+        BattleScreenShow(enemy.values())
         print("\n")
         if move != None:
             if move.MultiTarget == False:
                 if move.Healing == False and move.Protective == False:
-                    target = TriarObjectius(enemy)
+                    target = TriarObjectius(enemy.values())
                 else:
                     target = TriarObjectius(jugador.Team.values())
             else:
                 target = "All"
             if move.Healing == False and move.Protective == False:
-                for i in range(len(enemy)):
-                    if enemy[i] == target or target == "All":
-                        enemy[i] = jug.atacar(enemy[i], move)
-                        enemyderr = DescartarDerrotats(enemy[i], enemyderr)
+                for i in enemy.values():
+                    if i == target or target == "All":
+                        i = jug.atacar(i, move)
+                        enemyderr = DescartarDerrotats(i, enemyderr)
             else:
                 for i in jugador.Team.values():
                     if i == target or target == "All":
@@ -751,7 +751,7 @@ def Fugir(enemy):
     for i in jugador.Team.values():
         teamSPD += i.StatsCombat["SPD"]
     enemySPD = 0
-    for j in enemy:
+    for j in enemy.values():
         enemySPD += j.StatsCombat["SPD"]
     prob = jugador.fleeProb * (teamSPD / enemySPD)   # fleeProb = 75 de base
    
@@ -783,9 +783,15 @@ def GenerarEnemic():
         num.append(count)
         count += 1
     qty = random.choices(num, prob)
-    enemy = []
+    enemy = {}
 
-    enemy.append(Entitat.Entity("", random.randrange(jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0], jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][1] + 1), False, Entities[seleccio[0]]))
+    enemy.update({
+        Entities[seleccio[0]].EntityName:
+        Entitat.Entity("", random.randrange(
+            jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0], 
+            jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][1] + 1), 
+            False, 
+            Entities[seleccio[0]])})
 
     probs = []
     opcionsPosib = []
@@ -801,8 +807,14 @@ def GenerarEnemic():
                 apareix = random.choices(opcionsPosib, probs)
             else:
                 apareix = seleccio[0]
-            entitat = Entitat.Entity("", random.randrange(jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0] - 2, enemy[0].Lv), False, Entities[apareix])
-            enemy.append(entitat)
+            entitat = Entitat.Entity("", 
+                        random.randrange(
+                            jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0] - 2, 
+                            enemy[Entities[seleccio[0]].EntityName].Lv), 
+                            False, 
+                            Entities[apareix])
+            
+            enemy.update({entitat.nom: entitat})
     
     Lluitar(enemy)
 
@@ -830,7 +842,7 @@ def ComprobarEfectEstat(entitat, derr):
 
 def PrioritatInicial(enemy):
     maxSpeedPlayer = max(jugador.Team.values(), key=lambda j: j.StatsCombat["SPD"])
-    maxSpeedEnemies = max(enemy, key=lambda e: e.StatsCombat["SPD"])
+    maxSpeedEnemies = max(enemy.values(), key=lambda e: e.StatsCombat["SPD"])
 
     maxSpeed = max(maxSpeedPlayer.StatsCombat["SPD"], maxSpeedEnemies.StatsCombat["SPD"])
 
@@ -840,11 +852,11 @@ def PrioritatInicial(enemy):
         else:
             i.Priority = (i.StatsCombat["SPD"] / maxSpeed) * 100
     
-    for j in range(len(enemy)):
-        if enemy[j].StatsCombat["SPD"] == maxSpeed:
-            enemy[j].Priority = 100
+    for j in enemy.values():
+        if j.StatsCombat["SPD"] == maxSpeed:
+            j.Priority = 100
         else:
-            enemy[j].Priority = (enemy[j].StatsCombat["SPD"] / maxSpeed) * 100
+            j.Priority = (j.StatsCombat["SPD"] / maxSpeed) * 100
 
     return enemy
 
@@ -854,82 +866,90 @@ def IncrementarPrioritat(enemy):
         if i.StatsCombat["CurHP"] > 0:
             i.Priority += i.StatsCombat["SPD"] / 100  
     
-    for j in range(len(enemy)):
-        if enemy[j].StatsCombat["CurHP"] > 0:
-            enemy[j].Priority += enemy[j].StatsCombat["SPD"] / 100
+    for j in enemy.values():
+        if j.StatsCombat["CurHP"] > 0:
+            j.Priority += j.StatsCombat["SPD"] / 100
     return enemy
 
 def BattleScreenShow(teamlis):
+
+
     for i in teamlis:
         if i.StatsCombat["CurHP"] < 0:
-            teamlis.remove(i)
-
-    for i in teamlis:
-        llarg = len(f"{i.nom}, LV: {i.Lv}")
-        espaiat = ""
-        for j in range(30 - llarg):
-            espaiat += " "
-        print(f"{i.nom}, LV: {i.Lv}", end=espaiat)
+            llarg = len(f"{i.nom}, LV: {i.Lv}")
+            espaiat = ""
+            for j in range(30 - llarg):
+                espaiat += " "
+            print(f"{i.nom}, LV: {i.Lv}", end=espaiat)
     
     print()
     for i in teamlis:
-        llarg = len(f"HP: {round(i.StatsCombat["CurHP"], 2)} / {round(i.StatsCombat["MaxHP"], 2)}")
-        espaiat = ""
-        for j in range(30 - llarg):
-            espaiat += " "
-        print(f"HP: {round(i.StatsCombat["CurHP"], 2)} / {round(i.StatsCombat["MaxHP"], 2)}", end=espaiat)
+        if i.StatsCombat["CurHP"] < 0:
+            llarg = len(f"HP: {round(i.StatsCombat["CurHP"], 2)} / {round(i.StatsCombat["MaxHP"], 2)}")
+            espaiat = ""
+            for j in range(30 - llarg):
+                espaiat += " "
+            print(f"HP: {round(i.StatsCombat["CurHP"], 2)} / {round(i.StatsCombat["MaxHP"], 2)}", end=espaiat)
     
     saltdeLinia = False
     for i in teamlis:
-        if i.isPlayer == True:
-            if saltdeLinia == False:
-                print()
-            llarg = len(f"Mana: {round(i.StatsCombat["Mana"], 2)} / {round(i.StatsCombat["MaxMana"], 2)}")
-            espaiat = ""
-            for j in range(30 - llarg):
-                espaiat += " "
-            print(f"Mana: {round(i.StatsCombat["Mana"], 2)} / {round(i.StatsCombat["MaxMana"], 2)}", end=espaiat)
-            saltdeLinia = True
-
-    saltdeLinia = False
-    for i in teamlis:
-        if len(i.afected) > 0:
-            if saltdeLinia == False:
-                print()
-            llarg = 0
-            effect = ""
-            for e in i.afected:
-                llarg += len(e.Name)
-                effect += e.Name + ", "
-            espaiat = ""
-            for j in range(30 - llarg):
-                espaiat += " "
-            print(f"{effect}", end=espaiat)
-            saltdeLinia = True
-        else:
-            afectats = False
-            for k in teamlis:
-                if k != i  and len(k.afected) > 0:
-                    afectats = True
-            if afectats == True:
+        if i.StatsCombat["CurHP"] < 0:
+            if i.isPlayer == True:
+                if saltdeLinia == False:
+                    print()
+                llarg = len(f"Mana: {round(i.StatsCombat["Mana"], 2)} / {round(i.StatsCombat["MaxMana"], 2)}")
                 espaiat = ""
-                for j in range(30):
+                for j in range(30 - llarg):
                     espaiat += " "
-                print(espaiat, end="")
+                print(f"Mana: {round(i.StatsCombat["Mana"], 2)} / {round(i.StatsCombat["MaxMana"], 2)}", end=espaiat)
+                saltdeLinia = True
+
+    saltdeLinia = False
+    for i in teamlis:
+        if i.StatsCombat["CurHP"] < 0:
+            if len(i.afected) > 0:
+                if saltdeLinia == False:
+                    print()
+                llarg = 0
+                effect = ""
+                for e in i.afected:
+                    llarg += len(e.Name)
+                    effect += e.Name + ", "
+                espaiat = ""
+                for j in range(30 - llarg):
+                    espaiat += " "
+                print(f"{effect}", end=espaiat)
+                saltdeLinia = True
+            else:
+                afectats = False
+                for k in teamlis:
+                    if k != i  and len(k.afected) > 0:
+                        afectats = True
+                if afectats == True:
+                    espaiat = ""
+                    for j in range(30):
+                        espaiat += " "
+                    print(espaiat, end="")
     
     print()
     for i in teamlis:
-        llarg = len(f"Prioritat: {round(i.Priority, 1)}")
-        espaiat = ""
-        for j in range(30 - llarg):
-            espaiat += " "
-        print(f"Prioritat: {round(i.Priority, 1)}", end=espaiat)
-        saltdeLinia = True
+        if i.StatsCombat["CurHP"] < 0:
+            llarg = len(f"Prioritat: {round(i.Priority, 1)}")
+            espaiat = ""
+            for j in range(30 - llarg):
+                espaiat += " "
+            print(f"Prioritat: {round(i.Priority, 1)}", end=espaiat)
+            saltdeLinia = True
     print("\n")
 
-def PrepararPerCombat():
+def PrepararPerCombat(enemy):
     for i in jugador.Team.values():
         i.DefinirCombatStats()
+    
+    for j in enemy.values():
+        j.DefinirCombatStats()
+    
+    return enemy
 
 def Lluitar(enemy):
     global jugador
@@ -937,7 +957,7 @@ def Lluitar(enemy):
     teamderr = 0
     enemyderr = 0
 
-    PrepararPerCombat()
+    enemy = PrepararPerCombat(enemy)
 
     enemy = PrioritatInicial(enemy)
 
@@ -946,20 +966,11 @@ def Lluitar(enemy):
         if i.Priority >= 100:
             primer = True
     
-
     if primer == False:
-        if len(enemy) == 1:
-            print(f"Has estat emboscat per {len(enemy)+1} {enemy[0].nom}s.")
-        elif len(enemy) > 1:
-            print(f"Has estat emboscat per un {enemy[0].nom}.")
-            input("Pressiona per a continuar...")
+        print(f"Has estat emboscat per {enemy.keys()}s.")
     else:
-        if len(enemy) == 1:
-            print(f"Han aparegut {len(enemy)+1} {enemy[0].nom}s.")
-        elif len(enemy) > 1:
-            print(f"Ha aparegut un {enemy[0].nom}.")
-            input("Pressiona per a continuar...")
-
+        print(f"Han aparegut {enemy.keys()}s.")
+        
     fugir = [False]
     combat = True
     while combat == True and fugir[0] == False: 
@@ -971,7 +982,7 @@ def Lluitar(enemy):
                 while turn == True:
                     Call.ClearScreen()
                     BattleScreenShow(jugador.Team.values())
-                    BattleScreenShow(enemy)
+                    BattleScreenShow(enemy.values())
                     turn = False
                     i, enemy, turn, fugir, enemyderr = AccionsLluita(i, enemy, enemyderr)
                     if fugir[0] == False:
@@ -983,12 +994,12 @@ def Lluitar(enemy):
                 combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr)
 
         # Turn enemic
-        for j in range(len(enemy)):
-            if enemy[j].Priority >= 100 and fugir[0] == False and len(jugador.Team) >= 1 and enemy[j].StatsCombat["CurHP"] > 0.1 and combat == True:
+        for j in enemy.values():
+            if j.Priority >= 100 and fugir[0] == False and len(jugador.Team) >= 1 and j.StatsCombat["CurHP"] > 0.1 and combat == True:
                 Call.ClearScreen()
                 BattleScreenShow(jugador.Team.values())
-                BattleScreenShow(enemy)
-                enemyMove = random.choice([e for e in enemy[j].Moves.values()])
+                BattleScreenShow(enemy.values())
+                enemyMove = random.choice([e for e in j.Moves.values()])
                 targetable = [e.nom for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
                 # for e in jugador.Team.values():
                 #     if e.StatsCombat["CurHP"] > 0:
@@ -998,9 +1009,9 @@ def Lluitar(enemy):
                 if jugador.Team[target].Protected == True:
                     if jugador.Team[target].ProtectedBy[0] != None:
                         protegitPer = jugador.Team[target].ProtectedBy[0]
-                enemy[j].atacar(jugador.Team[target], enemyMove)
-                enemy[j].Priority = 0
-                enemy[j], enemyderr = ComprobarEfectEstat(enemy[j], enemyderr)
+                j.atacar(jugador.Team[target], enemyMove)
+                j.Priority = 0
+                j, enemyderr = ComprobarEfectEstat(j, enemyderr)
                 teamderr = DescartarDerrotats(jugador.Team[target], teamderr)
                 if protegitPer != None:
                     teamderr = DescartarDerrotats(protegitPer, teamderr)
