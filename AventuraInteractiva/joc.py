@@ -812,10 +812,8 @@ def GenerarEnemic():
                 apareix = seleccio[0]
             entitat = Entitat.Entity(f"enemy_{l+1}","", 
                         random.randrange(
-                            jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0] - 2, 
-                            enemy[seleccio[0].id].Lv), 
-                            False, 
-                            Entities[apareix])
+                            jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0] - 2, enemy["enemy_0"].Lv), 
+                            False, Entities[apareix])
             
             enemy.update({entitat.id: entitat})
     
