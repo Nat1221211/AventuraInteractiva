@@ -114,8 +114,8 @@ def MostrarMenus(Menu, sortir = True, combat = False, enemy = None, TextExtra = 
         while True:
             Call.ClearScreen()
             if combat == True:
-                BattleScreenShow(jugador.Team.values())
-                BattleScreenShow(enemy.values())
+                BattleScreenShow(jugador.Team)
+                BattleScreenShow(enemy)
             
             Utilitats.MostrarMenu.Mostrar(Menu, TextExtra)
 
@@ -530,8 +530,8 @@ def AccionsLluita(jug, enemy, enemyderr):
         move = MenuAtacar(jug)
         target = None
         Call.ClearScreen()
-        BattleScreenShow(jugador.Team.values())
-        BattleScreenShow(enemy.values())
+        BattleScreenShow(jugador.Team)
+        BattleScreenShow(enemy)
         print("\n")
         if move != None:
             if move.MultiTarget == False:
@@ -570,16 +570,13 @@ def AccionsLluita(jug, enemy, enemyderr):
 
 def TriarObjectius(list):
     global jugador
-    res = 0
-    while res not in range(1, len(list) + 2):
-        BattleScreenShow(jugador.Team.values())
-        BattleScreenShow(list)
-        Call.ClearScreen()
-        targetable = [i for i in list if i.StatsCombat["CurHP"] > 0]
-        
-        CrearMenu(targetable, "Qui Vols Atacar?")
 
-        target = MostrarMenus("Qui Vols Atacar?", True)
+    Call.ClearScreen()
+    targetable = [i for i in list.items() if i[1].StatsCombat["CurHP"] > 0]
+    
+    CrearMenu(targetable, "Qui Vols Atacar?")
+
+    target = MostrarMenus(Menus["Qui Vols Atacar?"], True)
         
     return target
         
@@ -711,17 +708,17 @@ def IncrementarPrioritat(enemy):
 
 def BattleScreenShow(teamlis):
 
-    for id, ent in teamlis:
+    for id, ent in teamlis.items():
         if ent.StatsCombat["CurHP"] > 0:
             llarg = len(f"{ent.nom}, LV: {ent.Lv}")
             espaiat = ""
             for j in range(30 - llarg):
                 espaiat += " "
-            print(f"{i.nom}, LV: {i.Lv}", end=espaiat)
+            print(f"{ent.nom}, LV: {ent.Lv}", end=espaiat)
     
     print()
-    for id, ent in teamlis:
-        if i.StatsCombat["CurHP"] > 0:
+    for id, ent in teamlis.items():
+        if ent.StatsCombat["CurHP"] > 0:
             llarg = len(f"HP: {round(ent.StatsCombat["CurHP"], 2)} / {round(ent.StatsCombat["MaxHP"], 2)}")
             espaiat = ""
             for j in range(30 - llarg):
@@ -729,7 +726,7 @@ def BattleScreenShow(teamlis):
             print(f"HP: {round(ent.StatsCombat["CurHP"], 2)} / {round(ent.StatsCombat["MaxHP"], 2)}", end=espaiat)
     
     saltdeLinia = False
-    for id, ent in teamlis:
+    for id, ent in teamlis.items():
         if ent.StatsCombat["CurHP"] > 0:
             if ent.isPlayer == True:
                 if saltdeLinia == False:
@@ -742,7 +739,7 @@ def BattleScreenShow(teamlis):
                 saltdeLinia = True
 
     saltdeLinia = False
-    for id, ent in teamlis:
+    for id, ent in teamlis.items():
         if ent.StatsCombat["CurHP"] > 0:
             if len(ent.afected) > 0:
                 if saltdeLinia == False:
@@ -769,7 +766,7 @@ def BattleScreenShow(teamlis):
                     print(espaiat, end="")
     
     print()
-    for id, ent in teamlis:
+    for id, ent in teamlis.items():
         if ent.StatsCombat["CurHP"] > 0:
             llarg = len(f"Prioritat: {round(ent.Priority, 1)}")
             espaiat = ""
@@ -818,8 +815,8 @@ def Lluitar(enemy):
                 turn = True
                 while turn == True:
                     Call.ClearScreen()
-                    BattleScreenShow(jugador.Team.values())
-                    BattleScreenShow(enemy.values())
+                    BattleScreenShow(jugador.Team)
+                    BattleScreenShow(enemy)
                     turn = False
                     i, enemy, turn, fugir, enemyderr = AccionsLluita(i, enemy, enemyderr)
                     if fugir[0] == False:
@@ -834,8 +831,8 @@ def Lluitar(enemy):
         for j in enemy.values():
             if j.Priority >= 100 and fugir[0] == False and len(jugador.Team) >= 1 and j.StatsCombat["CurHP"] > 0.1 and combat == True:
                 Call.ClearScreen()
-                BattleScreenShow(jugador.Team.values())
-                BattleScreenShow(enemy.values())
+                BattleScreenShow(jugador.Team)
+                BattleScreenShow(enemy)
                 enemyMove = random.choice([e for e in j.Moves.values()])
                 targetable = [e.id for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
                 # for e in jugador.Team.values():
