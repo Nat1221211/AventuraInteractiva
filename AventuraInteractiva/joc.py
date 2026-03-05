@@ -20,6 +20,7 @@ from Classes import Player
 from Classes import Utilitats
 from Classes import Characteristics
 import PrepararCridar as Call
+from Controladors import ControladorMissions
 
 Objects = Call.CallObject()
 Effects = Call.CallEfect()
@@ -39,152 +40,6 @@ botiga = [Objects["Combat"]["Pocio Inferior"],
           Objects["Combat"]["Pocio Intermitja"]
           ]
 
-achievements = []
-
-missions = Call.CallMissions()
-
-
-Menus = {
-    "Menu Poble": Utilitats.Menu(
-        "Menu Principal",
-        [
-            Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("motxila", "Motxila", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("hostal", "Hostal", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("botiga", "Botiga", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("estat", "Estat", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("missions", "Missions", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("exits", "Éxits", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("gremi","Gremi", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("guardar", "Guardar", True, "Veure el Mapa i Canviar de Zona")
-        ],
-        9
-    ),
-
-    "Menu Wild": Utilitats.Menu(
-        "Menu Principal",
-        [
-            Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("motxila","Motxila", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("explorar","Explorar", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("lluitar","Lluitar", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("estat","Estat", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("missions","Missions", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("exits","Éxits", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("guardar","Guardar", True, "Veure el Mapa i Canviar de Zona")
-        ],
-        8
-    ),
-
-    "Accions Lluita": Utilitats.Menu(
-        "Seleccio d'Accions",
-        [
-            Utilitats.OpcioMenu("atacar", "Atacar", True, "Seleccionar un atac entre els poseits per atacar l'objectiu..."),
-            Utilitats.OpcioMenu("motxila", "Motxila", True, "Obre La motxila i utilitza o revisa el que hi tens..."),
-            Utilitats.OpcioMenu("status", "Veure Estat", True, "veure l'estat d'un dels jugadors de l'equip.."),
-            Utilitats.OpcioMenu("fugir", "Fugir", True, "Intentar fugir del enemic..."),
-            Utilitats.OpcioMenu("pasar", "Pasar Torn", True, "Deixar pasar el torn sense fer res...")
-        ],
-        5
-    ),
-
-    "Missions": Utilitats.Menu(
-        "Menu Missions",
-        [
-            Utilitats.OpcioMenu("aceptar", "Aceptar Missio", True, "Aceptar una nova missio disponible"),
-            Utilitats.OpcioMenu("veure", "Veure Missio", True, "Veure les missions (disponibles, aceptades, completades)."),
-            Utilitats.OpcioMenu("reclamar", "Reclamar Missio", True, "Reclamar una missio completada."),
-        ],
-        3
-    ),
-
-    "Veure Missions": Utilitats.Menu(
-        "Veure Missions",
-        [
-            Utilitats.OpcioMenu("disponibles", "Veure Missions Disponibles", True, "Veure les missions que estan per aceptar."),
-            Utilitats.OpcioMenu("completades", "Veure Missions Compleatdes", True, "Veure les missions que estan completades."),
-            Utilitats.OpcioMenu("acceptades", "Veure Missions Acceptades", True, "Veure les missions acceptades."),
-        ],
-        3
-    )
-}
-
-def MostrarMenus(Menu, sortir = True, combat = False, enemy = None, TextExtra = "", seleccionar = True):
-    if len(Menu.Opcions) >= 1:
-        while True:
-            Call.ClearScreen()
-            if combat == True:
-                BattleScreenShow(jugador.Team.values())
-                BattleScreenShow(enemy.values())
-            
-            Utilitats.MostrarMenu.Mostrar(Menu, TextExtra)
-
-            print("\n W/S moures", end="")
-            print(", Enter seleccionar" if seleccionar == True else "", end="")
-            print(", Q sortir" if sortir == True else "")
-            try:
-                entrada = input("-> ").lower()
-
-                if entrada == "w":
-                    Menu.MoureCursor(-1)
-                elif entrada == "s":
-                    Menu.MoureCursor(1)
-                elif entrada == "" and seleccionar == True:
-                    accio = Menu.SeleccionarOpcio()
-                    if accio == None:
-                        return "bloquejat"
-                    return accio
-                elif entrada == "q":
-                    return None
-            
-            except ValueError:
-                print("Ha ocurregut un error...")
-    else:
-        print("No hi ha opcions...")
-        input("Presiona per a continuar...")
-
-def CrearMenu(llista, NomMenu, filtre = "Playables", opcionsvisibles = 3):
-    options = []
-    for i in llista:
-        if isinstance(i, str) and i in zones.keys():
-            if i in jugador.LlocsTrobats:
-                options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, True, zones[i].Description))
-            else:
-                options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, False, zones[i].Description))
-        elif isinstance(i[1], EntityType.EntityType):
-            if filtre == "Playables" and i[1].isPlayable != True:
-                continue
-            options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription))
-        elif isinstance(i[1], Entitat.Entity):
-            options.append(Utilitats.OpcioMenu(i[1].id, i[1].nom, True, i[1].base.EntityDescription))
-        elif isinstance(i[1], Characteristics.Moves):
-            options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, i[1].Description))
-        
-    Menus.update({NomMenu: Utilitats.Menu(
-                NomMenu,
-                options,
-                opcionsvisibles
-            )
-        }
-    )
-
-def CrearMenuMissions(llistamissions, NomMenu, filtre, estat = None, opcionsvisibles = 6):
-    opcions = []
-    for i in llistamissions.items():
-        for j in i[1].items():
-            if j[0] in filtre:
-                if estat != None and j[1].Status == estat:
-                    opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description))
-                else:
-                    opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description))
-
-    Menus.update({NomMenu: Utilitats.Menu(
-                NomMenu,
-                opcions,
-                opcionsvisibles
-            )
-        }
-    )
 
 
 def CrearJugador(first = False):
@@ -195,10 +50,10 @@ def CrearJugador(first = False):
         except ValueError:
             print("Ha ocurregut un error...")
     
-    CrearMenu(Entities.items(), "Menu Seleccio Inicial")
+    Call.CrearMenu(Entities.items(), "Menu Seleccio Inicial")
     identifier = None
     while identifier == None:
-        identifier = MostrarMenus(Menus["Menu Seleccio Inicial"], False)
+        identifier = Call.MostrarMenus(Call.Menus["Menu Seleccio Inicial"], False)
         if identifier == None:
             print("Has de seleccionar una de les opcions")
     if first == True:
@@ -221,19 +76,6 @@ jugador = Player.Player(personatge.nom, team, ubicacio)
 # # Afegim algun objecte al jugador de base
 jugador.AfegirObjecte(Objects["Combat"]["Pocio Inferior"], 2)
 
-
-def ComprovarMissionsDisponibles(tipus = None):
-    if tipus == None:
-        for i, v in missions.items():
-            for id, value in v.items():
-                res = value.RequisitesCompleted(jugador)
-                if res == True:
-                    jugador.MissionsDisponibles.append(id)
-    else:
-        print()
-
-ComprovarMissionsDisponibles()
-
 def AccioMenuPrincipal():
     global jugador
     
@@ -243,9 +85,9 @@ def AccioMenuPrincipal():
 
     # Seleccionem la accio
     if jugador.Ubicacio.ZoneType == "Poble":
-        accio = MostrarMenus(Menus["Menu Poble"], False)
+        accio = Call.MostrarMenus(Call.Menus["Menu Poble"], False)
     elif jugador.Ubicacio.ZoneType != "Poble":
-        accio = MostrarMenus(Menus["Menu Wild"], False)
+        accio = Call.MostrarMenus(Call.Menus["Menu Wild"], False)
 
     Call.ClearScreen()
     # Executem acció seleccionada
@@ -260,7 +102,7 @@ def AccioMenuPrincipal():
     elif accio == "estat":
         VeureEstatus()
     elif accio == "missions":
-        MenuMisions()
+        ControladorMissions.MenuMisions()
     elif accio == "lluitar":
         GenerarEnemic()
     elif accio == "guardar":
@@ -390,9 +232,9 @@ contractatsAnteriorment = []
 
 def VeureEstatus(combat = False):
     Call.ClearScreen()
-    CrearMenu(jugador.Team.items(), "Seleccio Equip", "")
+    Call.CrearMenu(jugador.Team.items(), "Seleccio Equip", "")
 
-    seleccio = MostrarMenus(Menus["Seleccio Equip"])
+    seleccio = Call.MostrarMenus(Call.Menus["Seleccio Equip"])
 
     if seleccio != None:
         if combat == False:
@@ -404,32 +246,7 @@ def VeureEstatus(combat = False):
 
 
 
-def MenuMisions():
-    sel = MostrarMenus(Menus["Missions"])
 
-    if sel == "aceptar":
-        CrearMenuMissions(missions, "Aceptar Missions", jugador.MissionsDisponibles, None, 4)
-        res = MostrarMenus(Menus["Aceptar Missions"])
-        if res != None:
-            jugador.MisionsAcceptades.append(res)
-        else:
-            print("Has sortit del Menu")
-            input("Presiona per a continuar...")
-    elif sel == "veure":
-        res = MostrarMenus(Menus["Veure Missions"])
-        if res == "disponibles":
-            CrearMenuMissions(missions, "Missions Disponibles", jugador.MissionsDisponibles, None, 6)
-            res = MostrarMenus(Menus["Missions Disponibles"], True, False, None, "", False)
-        elif res == "completades":
-            CrearMenuMissions(missions, "Missions Completades", jugador.MissionsFinalitzades, None, 6)
-            res = MostrarMenus(Menus["Missions Completades"], True, False, None, "", False)
-        elif res == "acceptades":
-            CrearMenuMissions(missions, "Missions Acceptades", jugador.MisionsAcceptades, None, 6)
-            res = MostrarMenus(Menus["Missions Acceptades"], True, False, None, "", False)
-    
-    elif sel == "reclamar":
-        CrearMenuMissions(missions, "Reclamar Missions", jugador.MisionsAcceptades, "Completed", 4)
-        res = MostrarMenus(Menus["Reclamar Missions"])
 
 # def MostrarExits():
 #     print("Exits")
@@ -514,9 +331,9 @@ def Posada(free = False):
 def Mapa():
     global jugador    
     
-    CrearMenu(jugador.Ubicacio.Connections, "Mapa", None, 4)
+    Call.CrearMenu(jugador.Ubicacio.Connections, "Mapa", None, 4)
 
-    seleccio = MostrarMenus(Menus["Mapa"], True, False, None, f"Ubicació: {jugador.Ubicacio.NameZone}")
+    seleccio = Call.MostrarMenus(Call.Menus["Mapa"], True, False, None, f"Ubicació: {jugador.Ubicacio.NameZone}")
 
     if seleccio == "bloquejat":
         print("Opcio Bloquejada!")
@@ -566,7 +383,7 @@ def Explorar():
         TrobarOr(jugador.Ubicacio.Or)
     elif prob > 20 and prob <= 70:  # Res / Missions / Ocurrencies
         llista = []
-        for i, v in missions.items():
+        for i, v in ControladorMissions.missions.items():
             for id, value in v.items():
                 if value.Status == "Accepted" and value.Place == jugador.Ubicacio:
                     if type(i) == Missions.KillMission:
@@ -654,9 +471,9 @@ def MenuAtacar(personatge):
     global jugador
     Call.ClearScreen()
     
-    CrearMenu(personatge.Moves.items(), "Moviments", "")
+    Call.CrearMenu(personatge.Moves.items(), "Moviments", "")
 
-    sel = MostrarMenus(Menus["Moviments"])
+    sel = Call.MostrarMenus(Call.Menus["Moviments"])
 
     use = personatge.Moves[sel]
     if use.Cost > personatge.StatsCombat["Mana"]:
@@ -670,7 +487,7 @@ def AccionsLluita(jug, enemy, enemyderr):
     global jugador
     print(f"És el torn de {jug.nom}")
     
-    seleccio = MostrarMenus(Menus["Accions Lluita"], False, True, enemy)
+    seleccio = Call.MostrarMenus(Call.Menus["Accions Lluita"], False, True, enemy)
     
     turn = False
     fugir = [False]
@@ -1052,7 +869,7 @@ def DescartarDerrotats(p, derr):
     return derr
 
 def Comprovacions(enemy):
-    for i in missions:
+    for i in ControladorMissions.missions:
         if type(i) == Missions.KillMission:
             i.IncrementCount(enemy)
     for i in jugador.Team.values():
@@ -1069,17 +886,6 @@ def finalitzarCombat(clon):
             i.StatsCombat["Mana"] = 0
         jugador.Team[i].afected = []
         jugador.Team[i].DefinirCombatStats()
-
-
-        
-def EntityState(entity):
-    print(f"{entity.nom}, LV: {entity.Lv}")
-    print(f"HP: {round(entity.StatsCombat["CurHP"], 2)} / {round(entity.StatsCombat["MaxHP"], 2)}", f", Mana: {round(entity.StatsCombat["Mana"], 2)} / {round(entity.StatsCombat["MaxMana"], 2)}" if entity.isPlayer == True else "")
-    # if entity.afected != "None":
-    #     print(f"{entity.afected.Name}")
-    print(f"Prioritat: {round(entity.Priority, 1)}")
-    print("")
-
 
 def main():
     print("!! - Joc Interactiu - !!")

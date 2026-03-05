@@ -25,20 +25,12 @@ class Mission():
 
 
     # Metodes
-    def __init__(self, name, description, rewards, cat):
+    def __init__(self, iden, name, description, rewards, cat):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Rewards = rewards
         self.Categoria = cat
-    
-    def RequisitesCompleted(self, jugador):
-        if self.Status == "Bloquejada":
-            reqcompleted = True
-            print()
-            if reqcompleted == True:
-                self.Status = "Requisites"
-                return True
-            return False
 
     def ShowRequisites(self):
         if len(self.Requisite) > 0:
@@ -60,29 +52,21 @@ class Mission():
         else:
             print("No compleixes amb els requisits per a la missio...")
     
-    def Completed(self):
-        self.Status = "Rewards Unclaimed"
-
-    def ClaimedRewards(self, jugador):
-        if self.Status == "Rewards Unclaimed":
-            self.Status = "Completed"
-            for i in self.Rewards:
-                if type(i) == str:
-                    jugador.Tituls.append(i)
-                elif type(i) == tuple:
-                    if type(i[0]) == Objectes.ObjecteCombat:
-                        jugador.AfegirObjecte(i[0], i[1])
-                        print(f"Has obtingut {i[1]} {i[0].ObjectName}")
-                    elif i[0] == "Gold":
-                        jugador.Gold += i[1]
-                        print(f"Has obtingut {i[1]} gold.")
-                    elif i[0] == "XP":
-                        for t in jugador.Team:
-                            t.LvlUp(None, i[1])
-            self.Finished = True
-            jugador.MissionsFinalitzades.append(self)
-        else:
-            print("Encara no has complert la missio...")
+    def Reclamar(self, jugador):
+        if self.Status == "Pendent Reclamar":
+            for id, value in self.Rewards.items():
+                if id == "XP":
+                    for id, ent in jugador.Team.items():
+                        ent.LvlUp(None, value)
+                elif id == "Gold":
+                    ent.Gold += value
+                elif id == "Objects":
+                    for id_obj, amt in value.items():
+                        jugador.AfegirObjecte(id_obj, amt)
+                elif id == "Title":
+                    jugador.Titles.append(value)
+            self.Status = "Completada"
+            jugador.MissionsFinalitzades.append(self.id)
 
 class FindMission(Mission):
     

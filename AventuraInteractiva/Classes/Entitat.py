@@ -421,14 +421,14 @@ class Entity():
     def LvlUp(self, enemy = None, XP = None):
         if self.Lv < self.LvLimit:
             if XP == None and enemy != None:
-                obtainedXP = float(round(5 + enemy.base.baseXP * (enemy.Lv * 0.2), 2))
-                print(f"{self.nom} ha guanyat {obtainedXP} punts d'experiencia.")
-                self.Xp += obtainedXP
+                XP = float(round(5 + enemy.base.baseXP * (enemy.Lv * 0.2), 2))
+                self.Xp += XP
                 self.Xp = float(round(self.Xp, 2))
             elif XP != None and enemy == None:
                 self.Xp += XP
                 self.Xp = float(round(self.Xp, 2))
-                print(f"{self.nom} ha guanyat {XP} punts d'experiencia.")
+            
+            print(f"{self.nom} ha guanyat {XP} punts d'experiencia.")
 
             while self.Xp > self.XpRequired:
                 self.Lv += 1
@@ -438,19 +438,6 @@ class Entity():
                 self.Xp -= self.XpRequired
                 self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
             input("Presiona per a continuar...")
-    
-    def AddXP(self, xpadded):
-        if self.Lv < self.LvLimit:
-            print(f"Has guanyat {xpadded}.")
-            self.Xp += xpadded
-            self.Xp = float(round(self.Xp, 2))
-            if self.Xp > self.XpRequired:
-                self.Lv += 1
-                print(f"Has pujat de nivell... Ara ets nivell {self.Lv}")
-                self.DefinirStats(True)
-                self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
-                self.Xp = 0
-                input("Presiona per a continuar...")
     
     
    

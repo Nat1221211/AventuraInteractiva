@@ -30,6 +30,7 @@ class Player():
         self.UltimPobleVisitat = self.Ubicacio
         self.PostGame = False
         self.Companys = {}
+        self.Titles = []
 
         self.StatIncrement = {
             "MaxHP": {"%": int(), "Flat": int()},
