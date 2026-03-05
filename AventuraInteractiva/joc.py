@@ -542,14 +542,14 @@ def AccionsLluita(jug, enemy, enemyderr):
             else:
                 target = "All"
             if move.Healing == False and move.Protective == False:
-                for i in enemy.values():
-                    if i == target or target == "All":
-                        i = jug.atacar(i, move)
-                        enemyderr = DescartarDerrotats(i, enemyderr)
+                for id, ent in enemy.items():
+                    if id == target or target == "All":
+                        ent = jug.atacar(ent, move)
+                        enemyderr = DescartarDerrotats(ent, enemyderr)
             else:
-                for i in jugador.Team.values():
-                    if i == target or target == "All":
-                        i = jug.MoveProtHeal(i, move)
+                for id, ent in jugador.Team.values():
+                    if id == target or target == "All":
+                        ent = jug.MoveProtHeal(ent, move)
             jug.StatsCombat["Mana"] -= move.Cost
         if move == None or target == False:
             turn = True
