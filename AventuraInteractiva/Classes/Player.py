@@ -21,7 +21,7 @@ class Player():
         self.AcquiredAchievements = []  # En aquests tres s'indicara l'id o nom de la misio dins del csv corresponent.
         self.MisionsAcceptades = []
         self.MissionsFinalitzades = []
-        self.MissionsDisponibles = []
+        self.MissionsDisponibles = ["first_adventure"]
         self.LlocsTrobats = ["dawn_village", "south_forest"]
         self.LlocsVisitats = ["dawn_village"]
 

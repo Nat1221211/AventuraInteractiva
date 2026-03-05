@@ -19,7 +19,10 @@ from Classes import Zones
 from Classes import Player
 from Classes import Utilitats
 from Classes import Characteristics
+from Classes import Events
 import PrepararCridar as Call
+
+from Controladors import ControladorMissions
 
 Objects = Call.CallObject()
 Effects = Call.CallEfect()
@@ -43,6 +46,10 @@ achievements = []
 
 missions = Call.CallMissions()
 
+event = Events.ControladorEvents()
+
+event.NouEvent("Derrotar Enemic", ControladorMissions.sistemaMissionsDerrota)
+event.NouEvent("Lloc Visitat", ControladorMissions.sistemaMissionsVisita)
 
 Menus = {
     "Menu Poble": Utilitats.Menu(
@@ -374,6 +381,7 @@ def Mapa():
     elif seleccio != None:
         jugador.Ubicacio = zones[seleccio]    # Canviem la zona i la retornem
         jugador.ActualitzarUltimPobleVisitat()
+        event.CridarEvent("Lloc Visitat", jugador.Ubicacio.id)
     elif seleccio == None:
         input("Has sortit del mapa... (Presiona per a continuar)")
 

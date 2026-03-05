@@ -9,7 +9,7 @@ import random
 class ControladorEvents():
     
     # Metodes
-    def __init__(self, name, description, afects, amplify):
+    def __init__(self):
         self.Events = {} # Clau: Event, Valor: Llista d'Acció (Funció)
     
     def NouEvent(self, event, accio):

@@ -18,8 +18,6 @@ from Classes import Utilitats
 from Classes import Characteristics
 import PrepararCridar as Call
 
-missions = Call.CallMissions()
-
 def sistemaMissionsDerrota(dada, jugador):
     for id in jugador.self.MisionsAcceptades:
         if id in missions["Kill"].keys() and isinstance(dada, Entitat):
@@ -38,4 +36,5 @@ def sistemaMissionsVisita(dada, jugador):
 
 def ReclamarMissio(missio):
     missio.Status = "Pendent Reclamar"
+    print("Has reclamat una missio")
 
