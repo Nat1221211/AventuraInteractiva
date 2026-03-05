@@ -59,7 +59,7 @@ class Mission():
                     for id, ent in jugador.Team.items():
                         ent.LvlUp(None, value)
                 elif id == "Gold":
-                    ent.Gold += value
+                    jugador.Gold += value
                 elif id == "Objects":
                     for id_obj, amt in value.items():
                         jugador.AfegirObjecte(id_obj, amt)
