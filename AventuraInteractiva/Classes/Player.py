@@ -16,15 +16,20 @@ class Player():
         self.Team = team
         self.Ubicacio = place 
         self.Gold = 2000
+
+        # Seguiment
         self.AcquiredAchievements = []  # En aquests tres s'indicara l'id o nom de la misio dins del csv corresponent.
         self.MisionsAcceptades = []
         self.MissionsFinalitzades = []
         self.MissionsDisponibles = []
+        self.LlocsTrobats = ["dawn_village", "south_forest"]
+        self.LlocsVisitats = ["dawn_village"]
+
+        # Objectes i Altres
         self.objectes = {} # Diccionari, objecte(nom/id en csv) = clau i quantitat = valor
         self.UltimPobleVisitat = self.Ubicacio
-        self.LlocsVisitats = ["dawn_village"]
-        self.LlocsTrobats = ["dawn_village", "south_forest"]
         self.PostGame = False
+        self.Companys = {}
 
         self.StatIncrement = {
             "MaxHP": {"%": int(), "Flat": int()},

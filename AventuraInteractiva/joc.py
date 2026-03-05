@@ -156,7 +156,7 @@ def CrearMenu(llista, NomMenu, filtre = "Playables", opcionsvisibles = 3):
                 continue
             options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription))
         elif isinstance(i[1], Entitat.Entity):
-            options.append(Utilitats.OpcioMenu(i[1].nom, i[1].nom, True, i[1].base.EntityDescription))
+            options.append(Utilitats.OpcioMenu(i[1].id, i[1].nom, True, i[1].base.EntityDescription))
         elif isinstance(i[1], Characteristics.Moves):
             options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, i[1].Description))
         
@@ -187,7 +187,7 @@ def CrearMenuMissions(llistamissions, NomMenu, filtre, estat = None, opcionsvisi
     )
 
 
-def CrearJugador():
+def CrearJugador(first = False):
     nom = ""
     while nom == "":
         try:
@@ -201,16 +201,19 @@ def CrearJugador():
         identifier = MostrarMenus(Menus["Menu Seleccio Inicial"], False)
         if identifier == None:
             print("Has de seleccionar una de les opcions")
-
-    playableentity = Entitat.Entity(nom, 5, True, Entities[identifier])
+    if first == True:
+        id = "Player"
+    else:
+        id = f"ally_{len(jugador.Team)}"
+    playableentity = Entitat.Entity(id, nom, 5, True, Entities[identifier])
 
     return playableentity
 
 # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
-personatge = CrearJugador()
+personatge = CrearJugador(True)
 ubicacio = zones["dawn_village"]
 team = {}
-team.update({personatge.nom: personatge})
+team.update({"Player": personatge})
 
 jugador = Player.Player(personatge.nom, team, ubicacio)
 
@@ -786,8 +789,8 @@ def GenerarEnemic():
     enemy = {}
 
     enemy.update({
-        Entities[seleccio[0]].EntityName:
-        Entitat.Entity("", random.randrange(
+        "enemy_0":
+        Entitat.Entity("enemy_0", "", random.randrange(
             jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0], 
             jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][1] + 1), 
             False, 
@@ -807,14 +810,14 @@ def GenerarEnemic():
                 apareix = random.choices(opcionsPosib, probs)
             else:
                 apareix = seleccio[0]
-            entitat = Entitat.Entity("", 
+            entitat = Entitat.Entity(f"enemy_{l+1}","", 
                         random.randrange(
                             jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0] - 2, 
-                            enemy[Entities[seleccio[0]].EntityName].Lv), 
+                            enemy[seleccio[0].id].Lv), 
                             False, 
                             Entities[apareix])
             
-            enemy.update({entitat.nom: entitat})
+            enemy.update({entitat.id: entitat})
     
     Lluitar(enemy)
 
@@ -1000,7 +1003,7 @@ def Lluitar(enemy):
                 BattleScreenShow(jugador.Team.values())
                 BattleScreenShow(enemy.values())
                 enemyMove = random.choice([e for e in j.Moves.values()])
-                targetable = [e.nom for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
+                targetable = [e.id for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
                 # for e in jugador.Team.values():
                 #     if e.StatsCombat["CurHP"] > 0:
                 #         targetable.append(e)
