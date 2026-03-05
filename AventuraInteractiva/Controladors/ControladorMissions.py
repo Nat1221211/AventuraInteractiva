@@ -17,7 +17,6 @@ from Classes import Player
 from Classes import Utilitats
 from Classes import Characteristics
 import PrepararCridar as Call
-import joc as Joc
 
 missions = Call.CallMissions()
 
@@ -40,29 +39,3 @@ def sistemaMissionsVisita(dada, jugador):
 def ReclamarMissio(missio):
     missio.Status = "Pendent Reclamar"
 
-def MenuMisions():
-    sel = Joc.MostrarMenus(Joc.Menus["Missions"])
-
-    if sel == "aceptar":
-        Joc.CrearMenuMissions(missions, "Aceptar Missions", Joc.jugador.MissionsDisponibles, None, 4)
-        res = Joc.MostrarMenus(Joc.Menus["Aceptar Missions"])
-        if res != None:
-            Joc.jugador.MisionsAcceptades.append(res)
-        else:
-            print("Has sortit del Menu")
-            input("Presiona per a continuar...")
-    elif sel == "veure":
-        res = Joc.MostrarMenus(Joc.Menus["Veure Missions"])
-        if res == "disponibles":
-            Joc.CrearMenuMissions(missions, "Missions Disponibles", Joc.jugador.MissionsDisponibles, None, 6)
-            res = Joc.MostrarMenus(Joc.Menus["Missions Disponibles"], True, False, None, "", False)
-        elif res == "completades":
-            Joc.CrearMenuMissions(missions, "Missions Completades", Joc.jugador.MissionsFinalitzades, None, 6)
-            res = Joc.MostrarMenus(Joc.Menus["Missions Completades"], True, False, None, "", False)
-        elif res == "acceptades":
-            Joc.CrearMenuMissions(missions, "Missions Acceptades", Joc.jugador.MisionsAcceptades, None, 6)
-            res = Joc.MostrarMenus(Joc.Menus["Missions Acceptades"], True, False, None, "", False)
-    
-    elif sel == "reclamar":
-        Joc.CrearMenuMissions(missions, "Reclamar Missions", Joc.jugador.MisionsAcceptades, "Completed", 4)
-        res = Joc.MostrarMenus(Joc.Menus["Reclamar Missions"])
