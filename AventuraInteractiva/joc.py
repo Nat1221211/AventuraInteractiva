@@ -261,120 +261,6 @@ def AccioMenuPrincipal():
         # Gremi()
         print("Desactivat")
 
-
-
-contractatsAnteriorment = []
-# def Gremi():
-#     res = 0
-#     while res not in [1, 2, 3]:
-#         ClearScreen()
-#         print("- Gremi d'Aventurers -")
-#         print("1 -> Descontractar Aventurer")
-#         print("2 -> Contractar Aventurer")
-#         print(f"3 -> Sortir")
-#         res = int(input("Digues una de les opcions: "))
-#         if res not in [1, 2, 3]:
-#             print("Has de dir un dels numeros corresponents...")
-#     if res in [1, 2, 3]:
-#         ClearScreen()
-#         if res == 3:
-#             print("Has sortit del gremi d'aventurers")
-#         elif res == 1:
-#             if len(jugador.Team) > 1:
-#                 print(" - Separem els nostres camins - ")
-#                 count = 1
-#                 for i in range(len(jugador.Team)):
-#                     if jugador.Team[i] != jugador:
-#                         print(f"{count} -> {jugador.Team[i].nom}, Lv: {jugador.Team[i].Lv}")
-#                         count += 1
-#                 print(f"{count} -> Sortir")
-#                 try:
-#                     sel = int(input("Digues amb qui vols separar camins: "))
-#                     if sel not in range(len(jugador.Team)):
-#                         print("Has de dir un dels personatges seleccionables...")
-#                     contractatsAnteriorment.append(jugador.Team[sel])
-#                     print(f"Has decidit separar camins amb {jugador.Team[sel].nom}...")
-#                     jugador.Team.pop(jugador.Team[sel])
-#                 except ValueError:
-#                     print("Ha ocurrgut un error...")
-#             else:
-#                 print("No tens cap company del que separarte...")
-#         elif res == 2:
-#             res2 = 0
-#             while res2 not in [1, 2, 3]:
-#                 ClearScreen()
-#                 print("- Contractació - Gremi d'Aventurers -")
-#                 print("1 -> Nou Aventurer")
-#                 print("2 -> Antic Company")
-#                 print(f"3 -> Sortir")
-#                 res2 = int(input("Digues una de les opcions: "))
-#                 if res2 not in [1, 2, 3]:
-#                     print("Has de dir un dels numeros corresponents...")
-#             if res2 in [1, 2, 3]:
-#                 ClearScreen()
-#                 if res2 == 3:
-#                     print("Has sortit del menu de contractació...")
-#                 elif res2 == 1:
-#                     if len(jugador.Team) < 3:
-#                         cost = ((len(contractatsAnteriorment)) + (len(jugador.Team))) * 5000
-#                         if jugador.Gold >= cost:
-#                             crear = ""
-#                             while crear not in ["s", "n"]:
-#                                 ClearScreen()
-#                                 print(f"Contractar un aventurer costara {cost} gold...")
-#                                 crear = input(f"Contractaras a un nou aventurer tot i això: S / N\n").lower()
-#                                 if crear not in ["s", "n"]:
-#                                     print("Has de dir una de les opcions...")
-#                             if crear == "s":
-#                                 aventurer = CrearJugador()
-#                                 jugador.Team.append(aventurer)
-#                                 jugador.Team[0].Gold -= cost
-#                             else:
-#                                 print("Has sortit del menu de contractació...")
-#                         else:
-#                             print(f"No tens suficient gold per a contractar a un aventurer...")
-#                             print(f"Costa {cost} gold...")
-#                     else:
-#                         print("Tens massa persones al equip...")
-#                     res = 0
-#                 elif res2 == 2:
-#                     if len(contractatsAnteriorment) > 0:
-#                         if len(jugador.Team) < 3: 
-#                             sel = -1
-#                             while sel not in range(len(contractatsAnteriorment) + 1):
-#                                 ClearScreen()
-#                                 count = 1
-#                                 for i in range(len(contractatsAnteriorment)):
-#                                     print(f"{count} -> {contractatsAnteriorment[i].nom}, Lv: {contractatsAnteriorment[i].Lv}")
-#                                     print(f"Classe: {contractatsAnteriorment[i].base.EntityName}")
-#                                     if contractatsAnteriorment[i].subclass != None:
-#                                         print(f"Segona Classe: {contractatsAnteriorment[i].subclass}")
-#                                     print()
-#                                     count += 1
-#                                 print(f"{count} -> Sortir")
-#                                 try:
-#                                     sel = int(input("Digues a qui vols reclutar de nou: "))
-#                                 except ValueError:
-#                                     print("Ha ocurregut un error...")
-#                             if sel not in range(len(contractatsAnteriorment) + 1):
-#                                 print("Has de dir un dels numeros...")
-#                             else:
-#                                 if sel == count:
-#                                     print("Has sortit del menu de contractació...")
-#                                 else:
-#                                     aventurer = contractatsAnteriorment[sel - 1]
-#                                     jugador.Team.append(aventurer)
-#                                     contractatsAnteriorment.remove(aventurer)
-#                                     sel = 1
-#                                     print(f"Has començat de nou un viatge amb {aventurer.nom}...")
-#                         else:
-#                             print("Tens massa persones al equip...")
-#                     else:
-#                         print("No has separat camins amb ningu...")
-#                     res = 0
-#     input("\nPresiona per a continuar...")
-
-
 def VeureEstatus(combat = False):
     Call.ClearScreen()
     CrearMenu(jugador.Team.items(), "Seleccio Equip", "")
@@ -417,29 +303,6 @@ def MenuMisions():
     elif sel == "reclamar":
         CrearMenuMissions(missions, "Reclamar Missions", jugador.MisionsAcceptades, "Completed", 4)
         res = MostrarMenus(Menus["Reclamar Missions"])
-
-# def MostrarExits():
-#     print("Exits")
-#     for i in achievements:
-#         if i.Obtained == True:
-#             obtingut = "Obtingut"
-#         else:
-#             obtingut = "No Obtingut"
-#         print(f"{i.Name}, {obtingut}")
-#         if type(i) != Exits.KillExit:
-#             print(f"{i.Description} \n")
-#         else:
-#             print(f"{i.Description}, \n{i.Count} / {i.Quantity}\n")
-#     input("Presiona per a continuar...")
-
-# def ComprovarExits(enemy):
-#     for i in achievements:
-#         if i.Obtained == False:
-#             if type(i) == Exits.KillExit:
-#                 i.IncrementCount(enemy)
-#             i.Completed(team[0])
-#             team[0].AcquiredAchievements.append(i)
-
 
 def PrepararBotiga(): # Afegir objectes segons nivell
     global jugador
@@ -673,9 +536,9 @@ def AccionsLluita(jug, enemy, enemyderr):
         if move != None:
             if move.MultiTarget == False:
                 if move.Healing == False and move.Protective == False:
-                    target = TriarObjectius(enemy.values())
+                    target = TriarObjectius(enemy)
                 else:
-                    target = TriarObjectius(jugador.Team.values())
+                    target = TriarObjectius(jugador.Team)
             else:
                 target = "All"
             if move.Healing == False and move.Protective == False:
@@ -712,25 +575,12 @@ def TriarObjectius(list):
         BattleScreenShow(jugador.Team.values())
         BattleScreenShow(list)
         Call.ClearScreen()
-        targetable = []
-        for i in list:
-            if i.StatsCombat["CurHP"] > 0:
-                targetable.append(i)
-        count = 1
-        for i in targetable:
-            print(f"{count} -> {i.nom}, Lv: {i.Lv}")
-            count += 1
-        print(f"{count} -> Sortir")
-        try:
-            res = int(input("Digues de a qui vols atacar: "))
-            if res not in range(1, count + 1):
-                print("Has de dir un dels numeros corresponents...")
-        except ValueError:
-            print("Ha ocurregut un error...")
-            input("Presiona per a continuar...")
-    target = False
-    if res in range(1, count):
-        target = targetable[res - 1]
+        targetable = [i for i in list if i.StatsCombat["CurHP"] > 0]
+        
+        CrearMenu(targetable, "Qui Vols Atacar?")
+
+        target = MostrarMenus("Qui Vols Atacar?", True)
+        
     return target
         
 
@@ -861,46 +711,45 @@ def IncrementarPrioritat(enemy):
 
 def BattleScreenShow(teamlis):
 
-
-    for i in teamlis:
-        if i.StatsCombat["CurHP"] > 0:
-            llarg = len(f"{i.nom}, LV: {i.Lv}")
+    for id, ent in teamlis:
+        if ent.StatsCombat["CurHP"] > 0:
+            llarg = len(f"{ent.nom}, LV: {ent.Lv}")
             espaiat = ""
             for j in range(30 - llarg):
                 espaiat += " "
             print(f"{i.nom}, LV: {i.Lv}", end=espaiat)
     
     print()
-    for i in teamlis:
+    for id, ent in teamlis:
         if i.StatsCombat["CurHP"] > 0:
-            llarg = len(f"HP: {round(i.StatsCombat["CurHP"], 2)} / {round(i.StatsCombat["MaxHP"], 2)}")
+            llarg = len(f"HP: {round(ent.StatsCombat["CurHP"], 2)} / {round(ent.StatsCombat["MaxHP"], 2)}")
             espaiat = ""
             for j in range(30 - llarg):
                 espaiat += " "
-            print(f"HP: {round(i.StatsCombat["CurHP"], 2)} / {round(i.StatsCombat["MaxHP"], 2)}", end=espaiat)
+            print(f"HP: {round(ent.StatsCombat["CurHP"], 2)} / {round(ent.StatsCombat["MaxHP"], 2)}", end=espaiat)
     
     saltdeLinia = False
-    for i in teamlis:
-        if i.StatsCombat["CurHP"] > 0:
-            if i.isPlayer == True:
+    for id, ent in teamlis:
+        if ent.StatsCombat["CurHP"] > 0:
+            if ent.isPlayer == True:
                 if saltdeLinia == False:
                     print()
-                llarg = len(f"Mana: {round(i.StatsCombat["Mana"], 2)} / {round(i.StatsCombat["MaxMana"], 2)}")
+                llarg = len(f"Mana: {round(ent.StatsCombat["Mana"], 2)} / {round(ent.StatsCombat["MaxMana"], 2)}")
                 espaiat = ""
                 for j in range(30 - llarg):
                     espaiat += " "
-                print(f"Mana: {round(i.StatsCombat["Mana"], 2)} / {round(i.StatsCombat["MaxMana"], 2)}", end=espaiat)
+                print(f"Mana: {round(ent.StatsCombat["Mana"], 2)} / {round(ent.StatsCombat["MaxMana"], 2)}", end=espaiat)
                 saltdeLinia = True
 
     saltdeLinia = False
-    for i in teamlis:
-        if i.StatsCombat["CurHP"] > 0:
-            if len(i.afected) > 0:
+    for id, ent in teamlis:
+        if ent.StatsCombat["CurHP"] > 0:
+            if len(ent.afected) > 0:
                 if saltdeLinia == False:
                     print()
                 llarg = 0
                 effect = ""
-                for e in i.afected:
+                for e in ent.afected:
                     llarg += len(e.Name)
                     effect += e.Name + ", "
                 espaiat = ""
@@ -910,8 +759,8 @@ def BattleScreenShow(teamlis):
                 saltdeLinia = True
             else:
                 afectats = False
-                for k in teamlis:
-                    if k != i  and len(k.afected) > 0:
+                for k in teamlis.values():
+                    if k != ent  and len(k.afected) > 0:
                         afectats = True
                 if afectats == True:
                     espaiat = ""
@@ -920,13 +769,13 @@ def BattleScreenShow(teamlis):
                     print(espaiat, end="")
     
     print()
-    for i in teamlis:
-        if i.StatsCombat["CurHP"] > 0:
-            llarg = len(f"Prioritat: {round(i.Priority, 1)}")
+    for id, ent in teamlis:
+        if ent.StatsCombat["CurHP"] > 0:
+            llarg = len(f"Prioritat: {round(ent.Priority, 1)}")
             espaiat = ""
             for j in range(30 - llarg):
                 espaiat += " "
-            print(f"Prioritat: {round(i.Priority, 1)}", end=espaiat)
+            print(f"Prioritat: {round(ent.Priority, 1)}", end=espaiat)
             saltdeLinia = True
     print("\n")
 
