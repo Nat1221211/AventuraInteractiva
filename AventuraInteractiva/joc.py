@@ -292,6 +292,7 @@ def MenuMisions():
         res = MostrarMenus(Menus["Aceptar Missions"])
         if res != None:
             jugador.MisionsAcceptades.append(res)
+            jugador.MissionsDisponibles.remove(res)
         else:
             print("Has sortit del Menu")
             input("Presiona per a continuar...")
@@ -308,8 +309,12 @@ def MenuMisions():
             res = MostrarMenus(Menus["Missions Acceptades"], True, False, None, "", False)
     
     elif sel == "reclamar":
-        CrearMenuMissions(missions, "Reclamar Missions", jugador.MisionsAcceptades, "Completed", 4)
+        CrearMenuMissions(missions, "Reclamar Missions", jugador.MisionsAcceptades, "Pendent Reclamar", 4)
         res = MostrarMenus(Menus["Reclamar Missions"])
+        if res != None:
+            missions["Place"][res].Reclamar(jugador)
+        else:
+            input("Has sortit del menu missions...")
 
 def PrepararBotiga(): # Afegir objectes segons nivell
     global jugador
@@ -381,7 +386,7 @@ def Mapa():
     elif seleccio != None:
         jugador.Ubicacio = zones[seleccio]    # Canviem la zona i la retornem
         jugador.ActualitzarUltimPobleVisitat()
-        event.CridarEvent("Lloc Visitat", jugador.Ubicacio.id)
+        event.CridarEvent("Lloc Visitat", jugador.Ubicacio.id, jugador, missions)
     elif seleccio == None:
         input("Has sortit del mapa... (Presiona per a continuar)")
 

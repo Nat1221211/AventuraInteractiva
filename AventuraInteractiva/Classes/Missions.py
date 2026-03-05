@@ -67,6 +67,7 @@ class Mission():
                     jugador.Titles.append(value)
             self.Status = "Completada"
             jugador.MissionsFinalitzades.append(self.id)
+            jugador.MissionsAcceptades.remove(self.id)
 
 class FindMission(Mission):
     

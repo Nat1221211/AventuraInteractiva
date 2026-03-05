@@ -18,7 +18,7 @@ from Classes import Utilitats
 from Classes import Characteristics
 import PrepararCridar as Call
 
-def sistemaMissionsDerrota(dada, jugador):
+def sistemaMissionsDerrota(dada, jugador, missions):
     for id in jugador.self.MisionsAcceptades:
         if id in missions["Kill"].keys() and isinstance(dada, Entitat):
             if dada.base.id in missions["Kill"][id].Objective:
@@ -27,10 +27,10 @@ def sistemaMissionsDerrota(dada, jugador):
                 if missions["Kill"][id].Count >= missions["Kill"][id].Quantity:
                     ReclamarMissio(missions["Kill"][id])
 
-def sistemaMissionsVisita(dada, jugador):
-    for id in jugador.self.MisionsAcceptades:
+def sistemaMissionsVisita(dada, jugador, missions):
+    for id in jugador.MisionsAcceptades:
         if id in missions["Place"].keys() and isinstance(dada, str):
-            if dada in missions["Place"][id].Objective:
+            if dada == missions["Place"][id].Objective["place"]:
                 ReclamarMissio(missions["Place"][id])
 
 
