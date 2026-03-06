@@ -46,6 +46,8 @@ achievements = []
 
 missions = Call.CallMissions()
 
+missions["Place"]["first_adventure"].Status = "Disponible"
+
 event = Events.ControladorEvents()
 
 event.NouEvent("Derrotar Enemic", ControladorMissions.sistemaMissionsDerrota)
@@ -182,9 +184,7 @@ def CrearMenuMissions(llistamissions, NomMenu, filtre, estat = None, opcionsvisi
             if j[0] in filtre:
                 if estat != None and j[1].Status == estat:
                     opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description))
-                else:
-                    opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description))
-
+                
     Menus.update({NomMenu: Utilitats.Menu(
                 NomMenu,
                 opcions,
@@ -288,7 +288,7 @@ def MenuMisions():
     sel = MostrarMenus(Menus["Missions"])
 
     if sel == "aceptar":
-        CrearMenuMissions(missions, "Aceptar Missions", jugador.MissionsDisponibles, None, 4)
+        CrearMenuMissions(missions, "Aceptar Missions", jugador.MissionsDisponibles, "Disponible", 4)
         res = MostrarMenus(Menus["Aceptar Missions"])
         if res != None:
             jugador.MisionsAcceptades.append(res)
@@ -299,13 +299,13 @@ def MenuMisions():
     elif sel == "veure":
         res = MostrarMenus(Menus["Veure Missions"])
         if res == "disponibles":
-            CrearMenuMissions(missions, "Missions Disponibles", jugador.MissionsDisponibles, None, 6)
+            CrearMenuMissions(missions, "Missions Disponibles", jugador.MissionsDisponibles, "Disponible", 6)
             res = MostrarMenus(Menus["Missions Disponibles"], True, False, None, "", False)
         elif res == "completades":
-            CrearMenuMissions(missions, "Missions Completades", jugador.MissionsFinalitzades, None, 6)
+            CrearMenuMissions(missions, "Missions Completades", jugador.MissionsFinalitzades, "Completada", 6)
             res = MostrarMenus(Menus["Missions Completades"], True, False, None, "", False)
         elif res == "acceptades":
-            CrearMenuMissions(missions, "Missions Acceptades", jugador.MisionsAcceptades, None, 6)
+            CrearMenuMissions(missions, "Missions Acceptades", jugador.MisionsAcceptades, "Acceptada", 6)
             res = MostrarMenus(Menus["Missions Acceptades"], True, False, None, "", False)
     
     elif sel == "reclamar":

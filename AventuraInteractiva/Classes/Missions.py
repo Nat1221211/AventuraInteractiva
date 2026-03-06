@@ -61,8 +61,8 @@ class Mission():
                 elif id == "Gold":
                     jugador.Gold += value
                 elif id == "Objects":
-                    for id_obj, amt in value.items():
-                        jugador.AfegirObjecte(id_obj, amt)
+                    for obj in value:
+                        jugador.AfegirObjecte(obj["id"], obj["Amount"])
                 elif id == "Title":
                     jugador.Titles.append(value)
             self.Status = "Completada"
