@@ -4,6 +4,7 @@
     "description": "T'encarreguen que derrotis a un slime extrany que ha apregut",
     "class": "Principal",
     "type": "Kill",
+    "generic": "False",
     "objective":{
         "Place": "greenwoods", 
         "enemy": [
@@ -12,7 +13,8 @@
             "level": 10,
             "name": "Great Slime"
             }
-        ]
+        ],
+        "Amount": 1
     },
     "rewards": {
         "XP": 500,

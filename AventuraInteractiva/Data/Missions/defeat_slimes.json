@@ -6,12 +6,8 @@
     "type": "Kill",
     "objective":{
         "Place": "greenwoods", 
-        "enemy": [
-            {
-            "entity": "slime",
-            "Amount": 3
-            }
-        ]
+        "enemy": ["slime"],
+        "Amount": 3
     },
     "rewards": {
         "XP": 300,

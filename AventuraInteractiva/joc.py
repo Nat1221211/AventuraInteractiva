@@ -878,6 +878,8 @@ def ComprobarFiCombat(combat, enemyderr, enemy, teamderr):
             Call.ClearScreen()
             print("Tos els enemics han estat derrotats !!")
             input("Presiona per a continuar")
+            for id, val in enemy.items():
+                event.CridarEvent("Derrotar Enemic", val, jugador, missions)
     return combat
 
 def DescartarDerrotats(p, derr):
