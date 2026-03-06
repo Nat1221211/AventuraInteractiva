@@ -55,15 +55,15 @@ Menus = {
     "Menu Poble": Utilitats.Menu(
         "Menu Principal",
         [
-            Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("motxila", "Motxila", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("hostal", "Hostal", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("botiga", "Botiga", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("estat", "Estat", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("missions", "Missions", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("exits", "Éxits", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("gremi","Gremi", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("guardar", "Guardar", True, "Veure el Mapa i Canviar de Zona")
+            Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona."),
+            Utilitats.OpcioMenu("motxila", "Motxila", True, "Veure els objectes i utilitzar-los."),
+            Utilitats.OpcioMenu("hostal", "Hostal", True, "Anar al hostal a descansar (Recuperar Salut i altres...)"),
+            Utilitats.OpcioMenu("botiga", "Botiga", True, "Comprar Objectes."),
+            Utilitats.OpcioMenu("estat", "Estat", True, "Veure el estat dels personatges del jugador..."),
+            Utilitats.OpcioMenu("missions", "Missions", True, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
+            Utilitats.OpcioMenu("exits", "Éxits", True, "Veure els exits que pots i has adquirit..."),
+            Utilitats.OpcioMenu("gremi","Gremi", True, "Anar al gremi a contractar companys..."),
+            Utilitats.OpcioMenu("guardar", "Guardar", True, "Guardar la Partida.")
         ],
         9
     ),
@@ -72,13 +72,13 @@ Menus = {
         "Menu Principal",
         [
             Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("motxila","Motxila", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("explorar","Explorar", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("lluitar","Lluitar", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("estat","Estat", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("missions","Missions", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("exits","Éxits", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("guardar","Guardar", True, "Veure el Mapa i Canviar de Zona")
+            Utilitats.OpcioMenu("motxila","Motxila", True, "Veure els objectes i utilitzar-los."),
+            Utilitats.OpcioMenu("explorar","Explorar", True, "Anar a explorar la zona, pots trobar or, enemics i involucrar-te en missions..."),
+            Utilitats.OpcioMenu("lluitar","Lluitar", True, "Entrar forçosament en combat amb un dels enemcis de la zona..."),
+            Utilitats.OpcioMenu("estat","Estat", True, "Veure el estat dels personatges del jugador..."),
+            Utilitats.OpcioMenu("missions", "Missions", True, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
+            Utilitats.OpcioMenu("exits", "Éxits", True, "Veure els exits que pots i has adquirit..."),
+            Utilitats.OpcioMenu("guardar", "Guardar", True, "Guardar la Partida.")
         ],
         8
     ),
