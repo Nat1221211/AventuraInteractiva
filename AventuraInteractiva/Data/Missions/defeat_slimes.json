@@ -4,6 +4,7 @@
     "description": "T'encarreguen que derrotis uns quants slimes com a proba de que pots lluitar...",
     "class": "Principal",
     "type": "Kill",
+    "generic": "True",
     "objective":{
         "Place": "greenwoods", 
         "enemy": ["slime"],

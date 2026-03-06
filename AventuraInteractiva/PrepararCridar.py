@@ -180,7 +180,7 @@ def CallMissions():
                                               i["objective"], i["requisites"])
             elif i["type"] == "Kill":
                 mision = Missions.KillMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
-                                             i["objective"], i["requisites"])
+                                             i["objective"], i["requisites"], i["generic"])
             elif i["type"] == "Find":
                 mision = Missions.FindMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
                                               i["objective"], i["requisites"])
