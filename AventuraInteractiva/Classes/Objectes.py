@@ -22,7 +22,8 @@ class Objecte():
 class ObjecteClau(Objecte):
 
     # Metodes
-    def __init__(self, name, description):
+    def __init__(self, iden, name, description):
+        self.id = iden
         self.ObjectName = name
         self.ObjectDescription = description
     
@@ -36,7 +37,8 @@ class ObjecteCombat(Objecte):
     OutCombat = False
 
     # Metodes
-    def __init__(self, name, description, effects, price, usableoutcombat = False):
+    def __init__(self, iden, name, description, effects, price, usableoutcombat = False):
+        self.id = iden
         self.ObjectName = name
         self.ObjectDescription = description
         self.Effects = effects

@@ -43,6 +43,18 @@ class Mission():
                     print(f"    {i.Name} Completed")
             print("\n")
 
+    def MissioDesbloquejable(self, jugador):
+        resultat = True
+        for key, value in self.Requisite.items():
+            if key == "Lv":
+                if jugador.Team["Player"].Lv < value:
+                    resultat = False
+            elif key == "Mission":
+                for id in jugador.MissionsFinalitzades:
+                    if id not in []:
+                        resultat = False
+        
+        return resultat
 
     def Aceptar(self, jugador):
         self.RequisitesCompleted(jugador)
@@ -67,7 +79,7 @@ class Mission():
                     jugador.Titles.append(value)
             self.Status = "Completada"
             jugador.MissionsFinalitzades.append(self.id)
-            jugador.MissionsAcceptades.remove(self.id)
+            jugador.MisionsAcceptades.remove(self.id)
 
 class FindMission(Mission):
     
@@ -129,17 +141,10 @@ class PlaceMission(Mission):
 class KillMission(Mission):
     
     Objective = []
-    Quantity = int()
     Count = 0
-    Generic = True 
-    # En referencia a si un enemic generat aleatori compta, en aquest acs seria si
-    # si el cas es per exemple un unic enemic, que apareix no com els altres sino per que hauria d'estar alla
-    # seria False i el generaria segons el que compte la clase.
-    Enemic = None
-
     
     # Metodes
-    def __init__(self, iden, name, description, cat, rewards, objective, requisite):
+    def __init__(self, iden, name, description, cat, rewards, objective, requisite, generic = True):
         self.id = iden
         self.Name = name
         self.Description = description
@@ -147,6 +152,11 @@ class KillMission(Mission):
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
+        self.Generic = generic
+        if self.Generic == False:
+            for i in self.Objective:
+                self.Enemic = Entitat.Entity("missions_enemy", self.Objective["entity"], self.Objective["name"],
+                                             False, self.Objective["level"])
 
     def IncrementCount(self, enemy):
         if self.Generic == True:

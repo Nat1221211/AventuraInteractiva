@@ -24,7 +24,7 @@ def sistemaMissionsDerrota(dada, jugador, missions):
             if dada.base.id in missions["Kill"][id].Objective:
                 missions["Kill"][id].Count += 1
 
-                if missions["Kill"][id].Count >= missions["Kill"][id].Quantity:
+                if missions["Kill"][id].Count >= missions["Kill"][id].Objective["Amount"]:
                     ReclamarMissio(missions["Kill"][id])
 
 def sistemaMissionsVisita(dada, jugador, missions):
@@ -36,5 +36,11 @@ def sistemaMissionsVisita(dada, jugador, missions):
 
 def ReclamarMissio(missio):
     missio.Status = "Pendent Reclamar"
-    print("Has reclamat una missio")
+    input(f"Has completat la missio {missio.Name}.\nPensa a Reclamar-la...")
 
+
+def DesbloquejarMissio(dada, jugador, missions):
+    for id, misions in missions.items():    # Aquest fa referencia a Kill Place, etc. els tipus de missions
+        for id2, misio in misions.items():  # Aquest a cada mission en si.
+            if "Mission" in misio.Requisite.keys() and dada in misio.Requisite["Mission"]:
+                misio.MissioDesbloquejable(jugador)

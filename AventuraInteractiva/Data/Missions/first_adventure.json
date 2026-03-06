@@ -8,21 +8,20 @@
         "place": "knightshire"
     },
     "rewards": {
-        "XP": 500,
+        "XP": 200,
         "Gold": 3000,
         "Objects": [
             {
-                "id": "",
+                "id": "inferior_potion",
                 "Amount": 1
             },
             {
-                "id": "",
+                "id": "potion",
                 "Amount": 1
             }
         ]
     },
     "requisites": {
         "Lv": 5
-    },
-    "": ""
+    }
 }

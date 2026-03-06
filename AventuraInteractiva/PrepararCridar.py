@@ -126,11 +126,11 @@ def CallObject():
     }
     for i in objects:
         if i["Tipus"] == "Combat":
-            obj = Objectes.ObjecteCombat(i["Nom"], i["Descripcio"], i["Efectes"], i["Preu"],  i["ForadeCombat?"])
-            objectes["Combat"].update({obj.ObjectName: obj})
+            obj = Objectes.ObjecteCombat(i["id"] ,i["Nom"], i["Descripcio"], i["Efectes"], i["Preu"],  i["ForadeCombat?"])
+            objectes["Combat"].update({obj.id: obj})
         elif i["Tipus"] == "Clau":
-            obj = Objectes.ObjecteClau(i["Nom"], i["Descripcio"])
-            objectes["Clau"].update({obj.ObjectName: obj})    
+            obj = Objectes.ObjecteClau(i["id"], i["Nom"], i["Descripcio"])
+            objectes["Clau"].update({obj.id: obj})    
     return objectes
 
 def CallAchievements(Individual = True):

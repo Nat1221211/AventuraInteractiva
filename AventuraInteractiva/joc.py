@@ -37,9 +37,9 @@ entityGroups = {""}
 zones = Call.CallZones()
 
 # # Botiga
-botiga = [Objects["Combat"]["Pocio Inferior"],
-          Objects["Combat"]["Pocio"],
-          Objects["Combat"]["Pocio Intermitja"]
+botiga = [Objects["Combat"]["inferior_potion"],
+          Objects["Combat"]["potion"],
+          Objects["Combat"]["intermediate_potion"]
           ]
 
 achievements = []
@@ -52,6 +52,7 @@ event = Events.ControladorEvents()
 
 event.NouEvent("Derrotar Enemic", ControladorMissions.sistemaMissionsDerrota)
 event.NouEvent("Lloc Visitat", ControladorMissions.sistemaMissionsVisita)
+event.NouEvent("Missio Finalitzada", ControladorMissions.DesbloquejarMissio)
 
 Menus = {
     "Menu Poble": Utilitats.Menu(
@@ -226,7 +227,7 @@ jugador = Player.Player(personatge.nom, team, ubicacio)
 
 
 # # Afegim algun objecte al jugador de base
-jugador.AfegirObjecte(Objects["Combat"]["Pocio Inferior"], 2)
+jugador.AfegirObjecte(Objects["Combat"]["inferior_potion"], 2)
 
 def AccioMenuPrincipal():
     global jugador
@@ -313,6 +314,7 @@ def MenuMisions():
         res = MostrarMenus(Menus["Reclamar Missions"])
         if res != None:
             missions["Place"][res].Reclamar(jugador)
+            event.CridarEvent("Missio Finalitzada", res, jugador, missions)
         else:
             input("Has sortit del menu missions...")
 

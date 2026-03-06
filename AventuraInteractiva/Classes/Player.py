@@ -32,6 +32,11 @@ class Player():
         self.Companys = {}
         self.Titles = []
 
+        self.Estadistiques = {  # Estadistiques Generiques, hem refereixio a missionsCompletades, enemics derrotats etc...
+            "": 0,
+
+        }
+
         self.StatIncrement = {
             "MaxHP": {"%": int(), "Flat": int()},
             "MaxMana": {"%": int(), "Flat": int()},

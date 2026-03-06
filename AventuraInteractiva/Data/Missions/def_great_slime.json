@@ -1,0 +1,35 @@
+{
+    "id": "def_great_slime",
+    "name": "Derrotant al Slime",
+    "description": "T'encarreguen que derrotis a un slime extrany que ha apregut",
+    "class": "Principal",
+    "type": "Kill",
+    "objective":{
+        "Place": "greenwoods", 
+        "enemy": [
+            {
+            "entity": "slime",
+            "level": 10,
+            "name": "Great Slime"
+            }
+        ]
+    },
+    "rewards": {
+        "XP": 500,
+        "Gold": 3000,
+        "Objects": [
+            {
+                "id": "",
+                "Amount": 1
+            },
+            {
+                "id": "",
+                "Amount": 1
+            }
+        ]
+    },
+    "requisites": {
+        "Lv": 5,
+        "Mission": ["defeat_slimes"]
+    }
+}
