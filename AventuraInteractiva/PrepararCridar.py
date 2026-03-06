@@ -179,6 +179,8 @@ def CallMissions():
                 mision = Missions.PlaceMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
                                               i["objective"], i["requisites"])
             elif i["type"] == "Kill":
+                if i["generic"] == "True":
+                    i["generic"] = True
                 mision = Missions.KillMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
                                              i["objective"], i["requisites"], i["generic"])
             elif i["type"] == "Find":
