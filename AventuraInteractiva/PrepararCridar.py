@@ -188,7 +188,10 @@ def CallMissions():
                 mision = Missions.ObjectMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
                                               i["objective"], i["requisites"])
 
-            missions.update({i["type"]: {i["id"]: mision}})
+            if i["type"] in missions.keys():
+                missions[i["type"]].update({i["id"]: mision})
+            else:
+                missions.update({i["type"]: {i["id"]: mision}})
     return missions
 
 def main():

@@ -51,7 +51,7 @@ class Mission():
                     resultat = False
             elif key == "Mission":
                 for id in jugador.MissionsFinalitzades:
-                    if id not in []:
+                    if id not in self.Requisite["Mission"]:
                         resultat = False
         
         return resultat

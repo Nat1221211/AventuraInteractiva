@@ -26,6 +26,5 @@
     "requisites": {
         "Lv": 5,
         "Mission": ["first_adventure"]
-    },
-    "": ""
+    }
 }

@@ -43,4 +43,7 @@ def DesbloquejarMissio(dada, jugador, missions):
     for id, misions in missions.items():    # Aquest fa referencia a Kill Place, etc. els tipus de missions
         for id2, misio in misions.items():  # Aquest a cada mission en si.
             if "Mission" in misio.Requisite.keys() and dada in misio.Requisite["Mission"]:
-                misio.MissioDesbloquejable(jugador)
+                res = misio.MissioDesbloquejable(jugador)
+                if res == True:
+                    misio.Status = "Disponible"
+                    jugador.MissionsDisponibles.append(id2)
