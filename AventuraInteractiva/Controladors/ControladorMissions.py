@@ -31,8 +31,8 @@ def sistemaMissionsDerrota(dada, jugador, missions):
                             if obj["level"] == dada.level:
                                 missions["Kill"][id].Count += 1
 
-                if missions["Kill"][id].Count >= missions["Kill"][id].Objective["Amount"]:
-                    ReclamarMissio(missions["Kill"][id])
+            if missions["Kill"][id].Count >= missions["Kill"][id].Objective["Amount"]:
+                ReclamarMissio(missions["Kill"][id])
 
 def sistemaMissionsVisita(dada, jugador, missions):
     for id in jugador.MisionsAcceptades:
