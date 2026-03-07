@@ -153,6 +153,7 @@ class KillMission(Mission):
         self.Objective = objective
         self.Requisite = requisite
         self.Generic = generic
+        self.Count = 0
         if self.Generic == False:
             for i in self.Objective:
                 self.Enemic = Entitat.Entity("missions_enemy", self.Objective["entity"], self.Objective["name"],

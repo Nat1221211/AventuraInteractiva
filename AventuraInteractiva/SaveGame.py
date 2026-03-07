@@ -8,6 +8,11 @@ import csv
 import json
 import os
 
+# Importar Classes
+from Classes import Entitat
+from Classes import Player
+
+
 def GuardarPartida(jugador, missions):
     dades = {
         # Detalls Generals
@@ -17,7 +22,7 @@ def GuardarPartida(jugador, missions):
         "Ultim_Visitat": jugador.UltimPobleVisitat.id,
         
         # Seguiment
-        "Missions_Acceptades": jugador.MisionsAcceptades,
+        "Missions_Acceptades": {},
         "Missions_Finalitzades": jugador.MissionsFinalitzades,
         "Missions_Disponibles": jugador.MissionsDisponibles,
         "Llocs_Trobats": jugador.LlocsTrobats,
@@ -37,11 +42,63 @@ def GuardarPartida(jugador, missions):
         "Companys": []
     }
     dades["Team"]=GuardarPersonatges(jugador.Team)
+    dades["Inventari"]=GuardarInventari(jugador)
+    dades["Missions_Acceptades"]=GuardarMissionsAcceptades(jugador, missions)
     
     ruta = os.path.dirname(__file__)
     ruta_final = os.path.join(ruta, "Saves/save.json")
     with open(ruta_final, "w", encoding="utf-8") as save:
-         json.dump()
+         json.dump(dades, save, indent=4, ensure_ascii=False)
+
+def CarregarPartida(partida, missions, objectes, zones, entitats):
+    with open(partida, "r", encoding="utf-8") as save:
+        dades = json.load(save)
+
+    equip = {}
+    for i in dades[""]:
+        equip.update({
+                i["id"]:
+                Entitat.Entity(i[""], i[""], i[""], True,
+                               entitats[i[""]], i[""])
+            }
+        )
+    
+    ubicacio = zones[dades[""]]
+
+    jugador = Player.Player(dades[""], )
+
+
+def GuardarMissionsAcceptades(jugador, missions):
+    aceptades = {}
+    for id, value in missions.items():
+        for id2, mision in value.items():
+            if id2 in jugador.MisionsAcceptades:
+                progres = 0
+                if id == "Kill":
+                    progres = mision.Count
+
+                aceptades.update(
+                    {
+                        id2: {
+                            "id": id2,
+                            "type": id,
+                            "Progress": progres
+                        }
+                    }
+                )
+    return aceptades
+        
+
+def GuardarInventari(jugador):
+    inventari = []
+    for obj, amt in jugador.objectes.items():
+        inventari.append(
+            {
+                "id": obj.id,
+                "Amount": amt
+            }
+        )
+    return inventari
 
 def GuardarPersonatges(personatges):
     equip = []

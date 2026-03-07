@@ -1,0 +1,40 @@
+{
+    "Nom": "Nat",
+    "Ubicació": "dawn_village",
+    "Or": 2000,
+    "Ultim_Visitat": "dawn_village",
+    "Missions_Acceptades": {},
+    "Missions_Finalitzades": [],
+    "Missions_Disponibles": [
+        "first_adventure"
+    ],
+    "Llocs_Trobats": [
+        "dawn_village",
+        "south_forest"
+    ],
+    "Llocs_Visitats": [
+        "dawn_village"
+    ],
+    "Team": [
+        {
+            "id": "Player",
+            "Nom": "Nat",
+            "Base": "mage",
+            "Lv": 5,
+            "Lv_Limit": 100,
+            "Moves": [],
+            "Afected": [],
+            "XP": 0
+        }
+    ],
+    "Inventari": [
+        {
+            "id": "inferior_potion",
+            "Amount": 2
+        }
+    ],
+    "Titols": [],
+    "Estadistiques": {},
+    "Increment_Stats": {},
+    "Companys": []
+}

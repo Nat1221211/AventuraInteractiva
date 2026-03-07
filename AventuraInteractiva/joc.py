@@ -21,6 +21,7 @@ from Classes import Utilitats
 from Classes import Characteristics
 from Classes import Events
 import PrepararCridar as Call
+import SaveGame
 
 from Controladors import ControladorMissions
 
@@ -116,6 +117,15 @@ Menus = {
             Utilitats.OpcioMenu("acceptades", "Veure Missions Acceptades", True, "Veure les missions acceptades."),
         ],
         3
+    ),
+
+    "Pantalla de Titol": Utilitats.Menu(
+        "Pantalla de Titol",
+        [
+            Utilitats.OpcioMenu("carregar", "Carregar Partida", True, "Carregar una partida guardada."),
+            Utilitats.OpcioMenu("nova", "Començar Nova Partida", True, "Començar una nova partida."),
+        ],
+        2
     )
 }
 
@@ -220,17 +230,7 @@ def CrearJugador(first = False):
 
     return playableentity
 
-# Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
-personatge = CrearJugador(True)
-ubicacio = zones["dawn_village"]
-team = {}
-team.update({"Player": personatge})
-
-jugador = Player.Player(personatge.nom, team, ubicacio)
-
-
-# # Afegim algun objecte al jugador de base
-jugador.AfegirObjecte(Objects["Combat"]["inferior_potion"], 2)
+jugador = Player.Player
 
 def AccioMenuPrincipal():
     global jugador
@@ -262,7 +262,7 @@ def AccioMenuPrincipal():
     elif accio == "lluitar":
         GenerarEnemic()
     elif accio == "guardar":
-        print("")
+        SaveGame.GuardarPartida(jugador, missions)
     elif accio == "exits":
         #MostrarExits()
         print("No actualitxat")
@@ -411,14 +411,14 @@ def OcurrenciaMisio(misio):
 
 def ExplorarTrobaroNo():
     global jugador
-    perTrobar = len(ubicacio.Objectes)
+    perTrobar = len(jugador.Ubicacio.Objectes)
     if perTrobar >= 1:
         choice = random.choices(["res", "objecte"], [10, 90])
         if choice == ["objecte"]:
-            objectes = list(ubicacio.Objectes.keys())
-            probabilitat = [j[0] for j in ubicacio.Objectes.values()]
+            objectes = list(jugador.Ubicacio.Objectes.keys())
+            probabilitat = [j[0] for j in jugador.Ubicacio.Objectes.values()]
             trobat = random.choices(objectes, probabilitat)
-            ubicacio.ObjecteTrobat(trobat[0])
+            jugador.Ubicacio.ObjecteTrobat(trobat[0])
             print(f"Has trobat un/a {trobat[0].ObjectName}.")
             jugador.AfegirObjecte(trobat[0], 1)
 
@@ -923,9 +923,38 @@ def finalitzarCombat(clon):
         jugador.Team[i].afected = []
         jugador.Team[i].DefinirCombatStats()
 
+def SeleccioPartida():
+    ruta_base = os.path.dirname(__file__)
+    ruta = os.path.join(ruta_base, "Saves/save.json")
+    if os.path.isfile(ruta):
+        res = MostrarMenus(Menus["Pantalla de Titol"], False)
+        if res != None:
+            if res == "carregar":
+                SaveGame
+            elif res == "nova":
+                NovaPartida()
+        else:
+            print("Ha ocurregut un error...")
+    else:
+        NovaPartida()
+
+def NovaPartida():
+    # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
+    personatge = CrearJugador(True)
+    ubicacio = zones["dawn_village"]
+    team = {}
+    team.update({"Player": personatge})
+
+    jugador = Player.Player(personatge.nom, team, ubicacio)
+
+    # # Afegim algun objecte al jugador de base
+    jugador.AfegirObjecte(Objects["Combat"]["inferior_potion"], 2)
 
 def main():
     print("!! - Joc Interactiu - !!")
+
+    SeleccioPartida()
+
     PostGame = False
     while True:
         alive = 1
