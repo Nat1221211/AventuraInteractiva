@@ -317,7 +317,7 @@ def MenuMisions():
         id, tipus = MostrarMenus(Menus["Reclamar Missions"])
         if id != None and tipus != None:
             missions[tipus][id].Reclamar(jugador)
-            event.CridarEvent("Missio Finalitzada", res, jugador, missions)
+            event.CridarEvent("Missio Finalitzada", id, jugador, missions)
         else:
             input("Has sortit del menu missions...")
 
