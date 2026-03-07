@@ -136,10 +136,6 @@ def VeureEstatus(combat = False):
     else:
         input("Has sortit del menu d'estatus...")
 
-
-
-
-
 def PrepararBotiga(): # Afegir objectes segons nivell
     global jugador
     if jugador.Team.get(jugador.Name).Lv > 35:
