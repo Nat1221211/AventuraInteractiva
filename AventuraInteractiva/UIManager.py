@@ -123,6 +123,7 @@ def MostrarMenus(Menu, sortir = True, combat = False, jugador = None, enemy = No
     else:
         print("No hi ha opcions...")
         input("Presiona per a continuar...")
+        return None, None
 
 def MenuMisions(jugador, missions, event):
     sel = MostrarMenus(Menus["Missions"])
