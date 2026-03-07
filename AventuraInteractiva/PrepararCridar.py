@@ -21,8 +21,7 @@ from Classes import Zones
 from Classes import Utilitats
 import PrepararCridar as Call
 
-def ClearScreen():
-    os.system("cls" if os.name == "nt" else "clear")
+
 
 def CallCSV(cami):
     try:
