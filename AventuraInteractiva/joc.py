@@ -235,8 +235,6 @@ jugador = Player.Player
 def AccioMenuPrincipal():
     global jugador
     
-    pos = 0
-
     print(f"Vostè es troba a {jugador.Ubicacio.NameZone}")
 
     # Seleccionem la accio
@@ -924,13 +922,15 @@ def finalitzarCombat(clon):
         jugador.Team[i].DefinirCombatStats()
 
 def SeleccioPartida():
+    global jugador
     ruta_base = os.path.dirname(__file__)
     ruta = os.path.join(ruta_base, "Saves/save.json")
     if os.path.isfile(ruta):
         res = MostrarMenus(Menus["Pantalla de Titol"], False)
         if res != None:
             if res == "carregar":
-                SaveGame
+                ruta_partida = os.path.join(ruta_base, "Saves/save.json")
+                jugador = SaveGame.CarregarPartida(ruta_partida, missions, Objects, zones, Entities)
             elif res == "nova":
                 NovaPartida()
         else:
@@ -940,6 +940,7 @@ def SeleccioPartida():
 
 def NovaPartida():
     # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
+    global jugador
     personatge = CrearJugador(True)
     ubicacio = zones["dawn_village"]
     team = {}

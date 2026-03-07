@@ -331,14 +331,14 @@ class Entity():
         print(f"DEF: {round(self.StatsCombat["DEF"], 2)}")
         print(f"SPD: {round(self.StatsCombat["SPD"], 2)}")
         print("\nTitols: ")
-        if self.isPlayer == True:
-            count = 0
-            for i in self.Titles:
-                if count < 3:
-                    print(i.TitleName, end=", ")
-                else:
-                    print(i)
-                    count = 0
+        # if self.isPlayer == True:
+        #     count = 0
+        #     for i in self.Titles:
+        #         if count < 3:
+        #             print(i.TitleName, end=", ")
+        #         else:
+        #             print(i)
+        #             count = 0
         print("")
         if combat == False and self.subAcquirable == True:
             res = int(input("Digues si vols sortir (1), o obtenir una segona classe (2): "))

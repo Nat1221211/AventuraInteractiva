@@ -1,6 +1,6 @@
 {
     "Nom": "Nat",
-    "Ubicació": "dawn_village",
+    "Ubicacio": "dawn_village",
     "Or": 2000,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
@@ -30,7 +30,8 @@
     "Inventari": [
         {
             "id": "inferior_potion",
-            "Amount": 2
+            "Amount": 2,
+            "Clase": "Combat"
         }
     ],
     "Titols": [],

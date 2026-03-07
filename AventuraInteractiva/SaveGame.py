@@ -11,13 +11,14 @@ import os
 # Importar Classes
 from Classes import Entitat
 from Classes import Player
+from Classes import Objectes
 
 
 def GuardarPartida(jugador, missions):
     dades = {
         # Detalls Generals
         "Nom": jugador.Name,
-        "Ubicació": jugador.Ubicacio.id,
+        "Ubicacio": jugador.Ubicacio.id,
         "Or": jugador.Gold,
         "Ultim_Visitat": jugador.UltimPobleVisitat.id,
         
@@ -55,17 +56,37 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
         dades = json.load(save)
 
     equip = {}
-    for i in dades[""]:
+    for i in dades["Team"]:
         equip.update({
                 i["id"]:
-                Entitat.Entity(i[""], i[""], i[""], True,
-                               entitats[i[""]], i[""])
+                Entitat.Entity(i["id"], i["Nom"], i["Lv"], True,
+                               entitats[i["Base"]], i["Lv_Limit"])
             }
         )
     
-    ubicacio = zones[dades[""]]
+    ubicacio = zones[dades["Ubicacio"]]
+    ultim_visitat = zones[dades["Ultim_Visitat"]]
 
-    jugador = Player.Player(dades[""], )
+    missions_acceptades = []
+    for id, value in dades["Missions_Acceptades"].items():
+        missions_acceptades.append(id)
+        missions["Kill"][id].Count = value["Progress"]
+    
+    inventari = {}
+    for o in dades["Inventari"]:
+        inventari.update({objectes[o["Clase"]][o["id"]]: o["Amount"]})
+
+    jugador = Player.Player(dades["Nom"], equip, ubicacio)
+    jugador.MissionsFinalitzades = dades["Missions_Finalitzades"]
+    jugador.MissionsDisponibles = dades["Missions_Disponibles"]
+    jugador.LlocsTrobats = dades["Llocs_Trobats"]
+    jugador.LlocsVisitats = dades["Llocs_Visitats"]
+    jugador.MisionsAcceptades = missions_acceptades
+    jugador.Gold = dades["Or"]
+    jugador.objectes = inventari
+    jugador.UltimPobleVisitat = ultim_visitat
+
+    return jugador
 
 
 def GuardarMissionsAcceptades(jugador, missions):
@@ -92,10 +113,16 @@ def GuardarMissionsAcceptades(jugador, missions):
 def GuardarInventari(jugador):
     inventari = []
     for obj, amt in jugador.objectes.items():
+        if isinstance(obj, Objectes.ObjecteCombat):
+            clase = "Combat"
+        elif isinstance(obj, Objectes.ObjecteClau):
+            clase = "Clau"
+
         inventari.append(
             {
                 "id": obj.id,
-                "Amount": amt
+                "Amount": amt,
+                "Clase": clase
             }
         )
     return inventari
