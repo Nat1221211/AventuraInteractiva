@@ -47,7 +47,7 @@ class Player():
         }
 
         self.fleeProb = 75
-
+    
     def AplicarStatsGenerals(self):
         for i in self.Team:
             for j in self.StatIncrement.items():

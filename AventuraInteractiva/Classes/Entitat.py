@@ -38,9 +38,6 @@ class Entity():
     # Other
     isPlayer = bool()
     fleeProb = 75
-    IndivAchievments = {}
-    Titles = []
-    CountForTitle = {}
 
     # Metodes
     def __init__(self, iden, nom, level, IsPlayer, BaseEntity, limit = 100):
@@ -92,8 +89,6 @@ class Entity():
                     self.nom = self.base.EntityName
         self.afected = []
         self.subclass = []
-        self.CountForTitle = {}
-        self.Titles = []
         self.Equipment = {
             "Weapon": "",
             "Armor": "",
@@ -102,80 +97,16 @@ class Entity():
             "Accesory_1": "",
             "Accesory_2": "",
         }
-    
-    def ComprovarSubClassesDisponibles(self):
-        for i in self.base.paths.items():
-            req = True
-            for j in i[1][0]:
-                if j[0] == "Lv" and self.Lv < j[1]:
-                    req = False
-                elif j[0] == "Stat":
-                    for s in j[1]:
-                        if s[0] == "Mana" and self.MaxMana < s[1]:
-                            req = False
-                        elif s[0] == "Health" and self.MaxHP < s[1]:
-                            req = False
-                        elif s[0] == "Attack" and self.ATK < s[1]:
-                            req = False
-                        elif s[0] == "Int" and self.INT < s[1]:
-                            req = False
-                        elif s[0] == "Defense" and self.DEF < s[1]:
-                            req = False
-                        elif s[0] == "Speed" and self.SPD < s[1]:
-                            req = False
-                elif j[0] == "Éxit":
-                    if j[1] not in self.AcquiredAchievements:
-                        req = False
-            if req == True:
-                self.base.paths[i[0]][1] = True
-                if self.subAcquirable == False and self.subclass == None:
-                    self.subAcquirable = True
-
-    def DefinirSubClass(self):
-        disponible = []
-        for j in self.base.paths.items():
-            if j[1][1] == True:
-                disponible.append(j[0])
-        count = 1
-        sel = 0
-        while sel < 1:
-            os.system("cls" if os.name == "nt" else "clear")
-            print(" - Tria la teva Segona Classe - ")
-            print("No totes les opcions que existeixen poden ser seleccionables..." \
-            "Només és mostren les que es compleixen els requisits...")
-            print()
-            for i in disponible:
-                print(f"{count} -> {i.EntityName}")
-                print(f"{i.EntityDescription}\n")
-                count += 1
-            print(f"{count} -> Sortir\n")
-            try:
-                sel = int(input(f"Digues quina Segona Classe Vols: "))
-                if sel not in range(1, count + 2):
-                    print("Has de dir un dels numeros segons la segona classe que vols...")
-            except ValueError:
-                print("Ha ocurregut un error...")
-        if sel == count:
-            print("Has sortit del menu de seleccio de subclasse...")
-            print("Pots tornar a accedir-hi desde el menu d'estat...")
-            input("Presiona per a continuar...")
-        else:
-            self.PastClasses.append(self.base)
-            self.base = disponible[sel - 1]
-            self.subAcquirable = False
-            self.DefinirStats(True)
-
-
         
     def DefinirMoves(self):
         for k in self.base.EntityMoves.items():
             if k[1]["Lv"] <= self.Lv and k[0] not in self.Moves.keys():
                 self.Moves.update({k[0]: k[1]["Move"]})
-        if len(self.PastClasses) > 0:
-            for i in self.PastClasses:
-                for j in i.EntityMoves.items():
-                    if j[1]["Lv"] <= self.Lv and j[0] not in self.Moves.keys():
-                        self.Moves.update({j[0]: j[1]["Move"]})
+        # if len(self.PastClasses) > 0:
+        #     for i in self.PastClasses:
+        #         for j in i.EntityMoves.items():
+        #             if j[1]["Lv"] <= self.Lv and j[0] not in self.Moves.keys():
+        #                 self.Moves.update({j[0]: j[1]["Move"]})
 
     def DefinirStats(self,LvOrNot = False):
         baseHealth = self.base.Health / 50
@@ -185,14 +116,14 @@ class Entity():
         baseDefense = self.base.Defense / 50
         baseSpeed = self.base.Speed / 50
         
-        if len(self.PastClasses) > 0:
-            for i in self.PastClasses:
-                baseHealth += i.Health / 100
-                baseMagic += i.Magic / 100
-                baseAttack += i.Attack / 100
-                baseIntel += i.Intel / 100
-                baseDefense += i.Defense / 100
-                baseSpeed += i.Speed / 100            
+        # if len(self.PastClasses) > 0:
+        #     for i in self.PastClasses:
+        #         baseHealth += i.Health / 100
+        #         baseMagic += i.Magic / 100
+        #         baseAttack += i.Attack / 100
+        #         baseIntel += i.Intel / 100
+        #         baseDefense += i.Defense / 100
+        #         baseSpeed += i.Speed / 100            
 
         self.StatsBase["MaxHP"] = 10 + (baseHealth * self.Lv)
         self.StatsBase["MaxMana"] = 10 + (baseMagic * self.Lv)
