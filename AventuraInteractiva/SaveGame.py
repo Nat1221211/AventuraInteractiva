@@ -60,7 +60,8 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
         equip.update({
                 i["id"]:
                 Entitat.Entity(i["id"], i["Nom"], i["Lv"], True,
-                               entitats[i["Base"]], i["Lv_Limit"])
+                               entitats[i["Base"]], i["Lv_Limit"],
+                               i["XP"])
             }
         )
     

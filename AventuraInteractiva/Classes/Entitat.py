@@ -40,7 +40,7 @@ class Entity():
     fleeProb = 75
 
     # Metodes
-    def __init__(self, iden, nom, level, IsPlayer, BaseEntity, limit = 100):
+    def __init__(self, iden, nom, level, IsPlayer, BaseEntity, limit = 100, Xp = 0):
         self.id = iden
         self.nom = nom
         self.Lv = level
@@ -48,6 +48,7 @@ class Entity():
         self.LvLimit = limit
         self.base = BaseEntity
         self.Moves = {}
+        self.Xp = Xp
 
             # Stats
         self.StatsBase = {
