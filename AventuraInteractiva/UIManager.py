@@ -7,6 +7,7 @@
 from Classes import Utilitats
 from Classes import Characteristics
 from Classes import EntityType
+from Classes import Entitat
 from Classes import Events
 
 import os
@@ -93,7 +94,7 @@ def MostrarMenus(Menu, sortir = True, combat = False, jugador = None, enemy = No
     if len(Menu.Opcions) >= 1:
         while True:
             ClearScreen()
-            if combat == True:
+            if combat != False:
                 BattleScreenShow(jugador.Team)
                 BattleScreenShow(enemy)
             
@@ -123,7 +124,7 @@ def MostrarMenus(Menu, sortir = True, combat = False, jugador = None, enemy = No
         print("No hi ha opcions...")
         input("Presiona per a continuar...")
 
-def MenuMisions(jugador, missions):
+def MenuMisions(jugador, missions, event):
     sel = MostrarMenus(Menus["Missions"])
 
     if sel == "aceptar":
@@ -200,3 +201,74 @@ def CrearMenuMissions(llistamissions, NomMenu, filtre, estat = None, opcionsvisi
             )
         }
     )
+
+
+def BattleScreenShow(teamlis):
+
+    for id, ent in teamlis.items():
+        if ent.StatsCombat["CurHP"] > 0:
+            llarg = len(f"{ent.nom}, LV: {ent.Lv}")
+            espaiat = ""
+            for j in range(30 - llarg):
+                espaiat += " "
+            print(f"{ent.nom}, LV: {ent.Lv}", end=espaiat)
+    
+    print()
+    for id, ent in teamlis.items():
+        if ent.StatsCombat["CurHP"] > 0:
+            llarg = len(f"HP: {round(ent.StatsCombat["CurHP"], 2)} / {round(ent.StatsCombat["MaxHP"], 2)}")
+            espaiat = ""
+            for j in range(30 - llarg):
+                espaiat += " "
+            print(f"HP: {round(ent.StatsCombat["CurHP"], 2)} / {round(ent.StatsCombat["MaxHP"], 2)}", end=espaiat)
+    
+    saltdeLinia = False
+    for id, ent in teamlis.items():
+        if ent.StatsCombat["CurHP"] > 0:
+            if ent.isPlayer == True:
+                if saltdeLinia == False:
+                    print()
+                llarg = len(f"Mana: {round(ent.StatsCombat["Mana"], 2)} / {round(ent.StatsCombat["MaxMana"], 2)}")
+                espaiat = ""
+                for j in range(30 - llarg):
+                    espaiat += " "
+                print(f"Mana: {round(ent.StatsCombat["Mana"], 2)} / {round(ent.StatsCombat["MaxMana"], 2)}", end=espaiat)
+                saltdeLinia = True
+
+    saltdeLinia = False
+    for id, ent in teamlis.items():
+        if ent.StatsCombat["CurHP"] > 0:
+            if len(ent.afected) > 0:
+                if saltdeLinia == False:
+                    print()
+                llarg = 0
+                effect = ""
+                for e in ent.afected:
+                    llarg += len(e.Name)
+                    effect += e.Name + ", "
+                espaiat = ""
+                for j in range(30 - llarg):
+                    espaiat += " "
+                print(f"{effect}", end=espaiat)
+                saltdeLinia = True
+            else:
+                afectats = False
+                for k in teamlis.values():
+                    if k != ent  and len(k.afected) > 0:
+                        afectats = True
+                if afectats == True:
+                    espaiat = ""
+                    for j in range(30):
+                        espaiat += " "
+                    print(espaiat, end="")
+    
+    print()
+    for id, ent in teamlis.items():
+        if ent.StatsCombat["CurHP"] > 0:
+            llarg = len(f"Prioritat: {round(ent.Priority, 1)}")
+            espaiat = ""
+            for j in range(30 - llarg):
+                espaiat += " "
+            print(f"Prioritat: {round(ent.Priority, 1)}", end=espaiat)
+            saltdeLinia = True
+    print("\n")

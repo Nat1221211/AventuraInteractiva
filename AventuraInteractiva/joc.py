@@ -68,10 +68,10 @@ def CrearJugador(first = False):
         except ValueError:
             print("Ha ocurregut un error...")
     
-    CrearMenu(Entities.items(), "Menu Seleccio Inicial")
+    UIManager.CrearMenu(Entities.items(), "Menu Seleccio Inicial")
     identifier = None
     while identifier == None:
-        identifier = UIManager.MostrarMenus(Menus["Menu Seleccio Inicial"], False)
+        identifier = UIManager.MostrarMenus(UIManager.Menus["Menu Seleccio Inicial"], False)
         if identifier == None:
             print("Has de seleccionar una de les opcions")
     if first == True:
@@ -87,15 +87,15 @@ jugador = Player.Player
 def AccioMenuPrincipal():
     global jugador
     
-    print(f"Vostè es troba a {jugador.Ubicacio.NameZone}")
+    print()
 
     # Seleccionem la accio
     if jugador.Ubicacio.ZoneType == "Poble":
-        accio = UIManager.MostrarMenus(Menus["Menu Poble"], False)
+        accio = UIManager.MostrarMenus(UIManager.Menus["Menu Poble"], False, False, None, None, f"Vostè es troba a {jugador.Ubicacio.NameZone}")
     elif jugador.Ubicacio.ZoneType != "Poble":
-        accio = UIManager.MostrarMenus(Menus["Menu Wild"], False)
+        accio = UIManager.MostrarMenus(UIManager.Menus["Menu Wild"], False, False, None, None, f"Vostè es troba a {jugador.Ubicacio.NameZone}")
 
-    Call.ClearScreen()
+    UIManager.ClearScreen()
     # Executem acció seleccionada
     if accio == "mapa":
         Mapa()
@@ -108,7 +108,7 @@ def AccioMenuPrincipal():
     elif accio == "estat":
         VeureEstatus()
     elif accio == "missions":
-        MenuMisions()
+        UIManager.MenuMisions(jugador, missions, event)
     elif accio == "lluitar":
         GenerarEnemic()
     elif accio == "guardar":
@@ -123,10 +123,10 @@ def AccioMenuPrincipal():
         print("Desactivat")
 
 def VeureEstatus(combat = False):
-    Call.ClearScreen()
-    CrearMenu(jugador.Team.items(), "Seleccio Equip", "")
+    UIManager.ClearScreen()
+    UIManager.CrearMenu(jugador.Team.items(), "Seleccio Equip", jugador, zones)
 
-    seleccio = UIManager.MostrarMenus(Menus["Seleccio Equip"])
+    seleccio = UIManager.MostrarMenus(UIManager.Menus["Seleccio Equip"])
 
     if seleccio != None:
         if combat == False:
@@ -178,7 +178,7 @@ def Posada(free = False):
     res = ""
     if free == False:
         while res not in ["S", "N"]:
-            Call.ClearScreen()
+            UIManager.ClearScreen()
             try:
                 res = input("\nVols descansar? Costa 100 gold (S / N): ").capitalize()
             except ValueError:
@@ -200,9 +200,9 @@ def Posada(free = False):
 def Mapa():
     global jugador    
     
-    CrearMenu(jugador.Ubicacio.Connections, "Mapa", None, 4)
+    UIManager.CrearMenu(jugador.Ubicacio.Connections, "Mapa", jugador, zones, None, 4)
 
-    seleccio = MostrarMenus(Menus["Mapa"], True, False, None, f"Ubicació: {jugador.Ubicacio.NameZone}")
+    seleccio = UIManager.MostrarMenus(UIManager.Menus["Mapa"], True, False, None, None, f"Ubicació: {jugador.Ubicacio.NameZone}")
 
     if seleccio == "bloquejat":
         print("Opcio Bloquejada!")
@@ -339,11 +339,11 @@ def TrobarOr(moneda):
 
 def MenuAtacar(personatge):
     global jugador
-    Call.ClearScreen()
+    UIManager.ClearScreen()
     
-    CrearMenu(personatge.Moves.items(), "Moviments", "")
+    UIManager.CrearMenu(personatge.Moves.items(), "Moviments", jugador, zones)
 
-    sel = MostrarMenus(Menus["Moviments"])
+    sel = UIManager.MostrarMenus(UIManager.Menus["Moviments"])
 
     use = personatge.Moves[sel]
     if use.Cost > personatge.StatsCombat["Mana"]:
@@ -357,7 +357,7 @@ def AccionsLluita(jug, enemy, enemyderr):
     global jugador
     print(f"És el torn de {jug.nom}")
     
-    seleccio = MostrarMenus(Menus["Accions Lluita"], False, True, enemy)
+    seleccio = UIManager.MostrarMenus(UIManager.Menus["Accions Lluita"], False, True, jugador, enemy)
     
     turn = False
     fugir = [False]
@@ -366,9 +366,9 @@ def AccionsLluita(jug, enemy, enemyderr):
     if seleccio == "atacar":
         move = MenuAtacar(jug)
         target = None
-        Call.ClearScreen()
-        BattleScreenShow(jugador.Team)
-        BattleScreenShow(enemy)
+        UIManager.ClearScreen()
+        UIManager.BattleScreenShow(jugador.Team)
+        UIManager.BattleScreenShow(enemy)
         print("\n")
         if move != None:
             if move.MultiTarget == False:
@@ -408,12 +408,12 @@ def AccionsLluita(jug, enemy, enemyderr):
 def TriarObjectius(list):
     global jugador
 
-    Call.ClearScreen()
+    UIManager.ClearScreen()
     targetable = [i for i in list.items() if i[1].StatsCombat["CurHP"] > 0]
     
-    CrearMenu(targetable, "Qui Vols Atacar?")
+    UIManager.CrearMenu(targetable, "Qui Vols Atacar?", jugador, zones)
 
-    target = MostrarMenus(Menus["Qui Vols Atacar?"], True)
+    target = UIManager.MostrarMenus(UIManager.Menus["Qui Vols Atacar?"], True)
         
     return target
         
@@ -543,76 +543,6 @@ def IncrementarPrioritat(enemy):
             j.Priority += j.StatsCombat["SPD"] / 100
     return enemy
 
-def BattleScreenShow(teamlis):
-
-    for id, ent in teamlis.items():
-        if ent.StatsCombat["CurHP"] > 0:
-            llarg = len(f"{ent.nom}, LV: {ent.Lv}")
-            espaiat = ""
-            for j in range(30 - llarg):
-                espaiat += " "
-            print(f"{ent.nom}, LV: {ent.Lv}", end=espaiat)
-    
-    print()
-    for id, ent in teamlis.items():
-        if ent.StatsCombat["CurHP"] > 0:
-            llarg = len(f"HP: {round(ent.StatsCombat["CurHP"], 2)} / {round(ent.StatsCombat["MaxHP"], 2)}")
-            espaiat = ""
-            for j in range(30 - llarg):
-                espaiat += " "
-            print(f"HP: {round(ent.StatsCombat["CurHP"], 2)} / {round(ent.StatsCombat["MaxHP"], 2)}", end=espaiat)
-    
-    saltdeLinia = False
-    for id, ent in teamlis.items():
-        if ent.StatsCombat["CurHP"] > 0:
-            if ent.isPlayer == True:
-                if saltdeLinia == False:
-                    print()
-                llarg = len(f"Mana: {round(ent.StatsCombat["Mana"], 2)} / {round(ent.StatsCombat["MaxMana"], 2)}")
-                espaiat = ""
-                for j in range(30 - llarg):
-                    espaiat += " "
-                print(f"Mana: {round(ent.StatsCombat["Mana"], 2)} / {round(ent.StatsCombat["MaxMana"], 2)}", end=espaiat)
-                saltdeLinia = True
-
-    saltdeLinia = False
-    for id, ent in teamlis.items():
-        if ent.StatsCombat["CurHP"] > 0:
-            if len(ent.afected) > 0:
-                if saltdeLinia == False:
-                    print()
-                llarg = 0
-                effect = ""
-                for e in ent.afected:
-                    llarg += len(e.Name)
-                    effect += e.Name + ", "
-                espaiat = ""
-                for j in range(30 - llarg):
-                    espaiat += " "
-                print(f"{effect}", end=espaiat)
-                saltdeLinia = True
-            else:
-                afectats = False
-                for k in teamlis.values():
-                    if k != ent  and len(k.afected) > 0:
-                        afectats = True
-                if afectats == True:
-                    espaiat = ""
-                    for j in range(30):
-                        espaiat += " "
-                    print(espaiat, end="")
-    
-    print()
-    for id, ent in teamlis.items():
-        if ent.StatsCombat["CurHP"] > 0:
-            llarg = len(f"Prioritat: {round(ent.Priority, 1)}")
-            espaiat = ""
-            for j in range(30 - llarg):
-                espaiat += " "
-            print(f"Prioritat: {round(ent.Priority, 1)}", end=espaiat)
-            saltdeLinia = True
-    print("\n")
-
 def PrepararPerCombat(enemy):
     for i in jugador.Team.values():
         i.DefinirCombatStats()
@@ -651,25 +581,25 @@ def Lluitar(enemy):
             if i.Priority >= 100 and len(enemy) >= 1 and i.StatsCombat["CurHP"] > 0.1 and combat == True:
                 turn = True
                 while turn == True:
-                    Call.ClearScreen()
-                    BattleScreenShow(jugador.Team)
-                    BattleScreenShow(enemy)
+                    UIManager.ClearScreen()
+                    UIManager.BattleScreenShow(jugador.Team)
+                    UIManager.BattleScreenShow(enemy)
                     turn = False
                     i, enemy, turn, fugir, enemyderr = AccionsLluita(i, enemy, enemyderr)
                     if fugir[0] == False:
                         i, teamderr = ComprobarEfectEstat(i, teamderr)
                     if turn == False:
                         i.Priority = 0
-                Call.ClearScreen()
+                UIManager.ClearScreen()
             if combat == True:
                 combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr)
 
         # Turn enemic
         for j in enemy.values():
             if j.Priority >= 100 and fugir[0] == False and len(jugador.Team) >= 1 and j.StatsCombat["CurHP"] > 0.1 and combat == True:
-                Call.ClearScreen()
-                BattleScreenShow(jugador.Team)
-                BattleScreenShow(enemy)
+                UIManager.ClearScreen()
+                UIManager.BattleScreenShow(jugador.Team)
+                UIManager.BattleScreenShow(enemy)
                 enemyMove = random.choice([e for e in j.Moves.values()])
                 targetable = [e.id for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
                 # for e in jugador.Team.values():
@@ -686,7 +616,7 @@ def Lluitar(enemy):
                 teamderr = DescartarDerrotats(jugador.Team[target], teamderr)
                 if protegitPer != None:
                     teamderr = DescartarDerrotats(protegitPer, teamderr)
-                Call.ClearScreen()
+                UIManager.ClearScreen()
             if combat == True:
                 combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr)
         
@@ -697,7 +627,7 @@ def ComprobarFiCombat(combat, enemyderr, enemy, teamderr):
     if enemyderr == len(enemy) or teamderr == len(jugador.Team):
         combat = False
         if len(enemy) == enemyderr:
-            Call.ClearScreen()
+            UIManager.ClearScreen()
             print("Tos els enemics han estat derrotats !!")
             input("Presiona per a continuar")
             for id, val in enemy.items():
@@ -709,7 +639,7 @@ def DescartarDerrotats(p, derr):
     if p.StatsCombat["CurHP"] <= 0.1:
         derr += 1
         if p.isPlayer == False:
-            Call.ClearScreen()
+            UIManager.ClearScreen()
             alive = 0
             for i in jugador.Team.values(): 
                 if i.StatsCombat["CurHP"] > 0:
@@ -738,7 +668,7 @@ def SeleccioPartida():
     ruta_base = os.path.dirname(__file__)
     ruta = os.path.join(ruta_base, "Saves/save.json")
     if os.path.isfile(ruta):
-        res = MostrarMenus(Menus["Pantalla de Titol"], False)
+        res = UIManager.MostrarMenus(UIManager.Menus["Pantalla de Titol"], False)
         if res != None:
             if res == "carregar":
                 ruta_partida = os.path.join(ruta_base, "Saves/save.json")
@@ -772,7 +702,7 @@ def main():
     while True:
         alive = 1
         while alive > 0:
-            Call.ClearScreen()
+            UIManager.ClearScreen()
             AccioMenuPrincipal()
             alive = 0
             for i in jugador.Team.values():

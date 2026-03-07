@@ -1,7 +1,7 @@
 {
     "Nom": "Nat",
-    "Ubicacio": "dawn_village",
-    "Or": 2180,
+    "Ubicacio": "south_forest",
+    "Or": 2270,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -14,6 +14,7 @@
     ],
     "Llocs_Visitats": [
         "dawn_village",
+        "Bosc del Sud",
         "Bosc del Sud"
     ],
     "Team": [
@@ -21,11 +22,11 @@
             "id": "Player",
             "Nom": "Nat",
             "Base": "mage",
-            "Lv": 6,
+            "Lv": 7,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 58.51
+            "XP": 52.58
         }
     ],
     "Inventari": [

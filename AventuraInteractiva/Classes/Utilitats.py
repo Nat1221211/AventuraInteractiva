@@ -22,7 +22,10 @@ class Menu():
         opcio = self.Opcions[self.Cursor]
         if opcio.Habilitat == True:
             if opcio.Extra != None:
-                return opcio.id, opcio.Extra
+                if opcio != None:
+                    return opcio.id, opcio.Extra
+                else:
+                    return None, None
             else:
                 return opcio.id
         return None
