@@ -1,7 +1,7 @@
 {
     "Nom": "Nat",
-    "Ubicacio": "dawn_village",
-    "Or": 2000,
+    "Ubicacio": "south_forest",
+    "Or": 2050,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -13,7 +13,8 @@
         "south_forest"
     ],
     "Llocs_Visitats": [
-        "dawn_village"
+        "dawn_village",
+        "Bosc del Sud"
     ],
     "Team": [
         {
@@ -24,7 +25,7 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 0
+            "XP": 35.0
         }
     ],
     "Inventari": [

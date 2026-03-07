@@ -898,16 +898,7 @@ def DescartarDerrotats(p, derr):
                 jugador.Gold += p.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
                 print(f"Has guanyat {p.Lv * 10} gold.")
                 input("Presiona per a continuar...")
-            Comprovacions(p)
-
     return derr
-
-def Comprovacions(enemy):
-    for i in missions:
-        if type(i) == Missions.KillMission:
-            i.IncrementCount(enemy)
-    for i in jugador.Team.values():
-        i.ComprovarSubClassesDisponibles()
 
 def finalitzarCombat(clon):
     global jugador
