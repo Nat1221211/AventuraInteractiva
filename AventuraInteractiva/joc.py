@@ -184,7 +184,10 @@ def CrearMenuMissions(llistamissions, NomMenu, filtre, estat = None, opcionsvisi
         for j in i[1].items():
             if j[0] in filtre:
                 if estat != None and j[1].Status == estat:
-                    opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description))
+                    if estat == "Pendent Reclamar":
+                        opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description, i[0]))
+                    else:
+                        opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description))
                 
     Menus.update({NomMenu: Utilitats.Menu(
                 NomMenu,
@@ -311,9 +314,9 @@ def MenuMisions():
     
     elif sel == "reclamar":
         CrearMenuMissions(missions, "Reclamar Missions", jugador.MisionsAcceptades, "Pendent Reclamar", 4)
-        res = MostrarMenus(Menus["Reclamar Missions"])
-        if res != None:
-            missions["Place"][res].Reclamar(jugador)
+        id, tipus = MostrarMenus(Menus["Reclamar Missions"])
+        if id != None and tipus != None:
+            missions[tipus][id].Reclamar(jugador)
             event.CridarEvent("Missio Finalitzada", res, jugador, missions)
         else:
             input("Has sortit del menu missions...")
