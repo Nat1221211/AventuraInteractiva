@@ -236,7 +236,7 @@ class Entity():
 
             derrotats = []
             for id, ent in enemy.items():
-                if move.MultiTarget or id == target:
+                if move.MultiTarget or id == target or target == None:
                     if move.Precision < 100:
                         atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
                     else:
