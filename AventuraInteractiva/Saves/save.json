@@ -1,7 +1,7 @@
 {
     "Nom": "Nat",
     "Ubicacio": "south_forest",
-    "Or": 2270,
+    "Or": 2410,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -22,11 +22,11 @@
             "id": "Player",
             "Nom": "Nat",
             "Base": "mage",
-            "Lv": 7,
+            "Lv": 8,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 52.58
+            "XP": 91.93
         }
     ],
     "Inventari": [

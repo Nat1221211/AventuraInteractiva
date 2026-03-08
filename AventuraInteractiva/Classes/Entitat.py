@@ -218,7 +218,7 @@ class Entity():
             enemy.ApplyStatusEffects(i[0], i[1])
         return damage
 
-    def atacar(self, enemy,  move):
+    def atacar(self, enemy, target, move):
         impedit = [False]
         if len(self.afected) > 0:
             for i in self.afected:
@@ -233,72 +233,79 @@ class Entity():
             # Cridar icrements d'stats en cas de ser necessari
             for i in move.Buff.items():
                 self.ApplyStatusEffects(i[0], i[1])
-        
-            for i in enemy:
-                if move.Precision < 100:
-                    atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
-                else:
-                    atac = [True]
-                if atac == [True]:
-                    if enemy.Protected == False or enemy.ProtectedBy[0] != None:
-                        damage = self.CalcularDamage(enemy, move)
-                        damage = round(damage, 2)
-                        if enemy.Protected == True:
-                            if enemy.ProtectedBy[0] != None:
-                                damage = damage * ((100 - enemy.ProtectedBy[1]) / 100)
-                                enemy.ProtectedBy[0].StatsCombat["CurHP"] -= damage
-                                print(f"{enemy.ProtectedBy[0].nom}, ha entomat el {enemy.ProtectedBy[1]}% del dany...")
-                                if enemy.ProtectedBy[0].StatsCombat["CurHP"] < 0.1:
-                                    print(f"{enemy.ProtectedBy[0].nom}, ha estat derrotat...")
+
+            derrotats = []
+            for id, ent in enemy.items():
+                if move.MultiTarget or id == target:
+                    if move.Precision < 100:
+                        atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
+                    else:
+                        atac = [True]
+                    if atac == [True]:
+                        if ent.Protected == False or ent.ProtectedBy[0] != None:
+                            damage = self.CalcularDamage(ent, move)
+                            damage = round(damage, 2)
+                            if ent.Protected == True:
+                                if ent.ProtectedBy[0] != None:
+                                    damage = damage * ((100 - ent.ProtectedBy[1]) / 100)
+                                    ent.ProtectedBy[0].StatsCombat["CurHP"] -= damage
+                                    print(f"{ent.ProtectedBy[0].nom}, ha entomat el {ent.ProtectedBy[1]}% del dany...")
+                                    if ent.ProtectedBy[0].StatsCombat["CurHP"] < 0.1:
+                                        print(f"{ent.ProtectedBy[0].nom}, ha estat derrotat...")
+                                        derrotats.append(ent)
+                                    else:
+                                        print(f"{ent.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
                                 else:
-                                    print(f"{enemy.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
+                                    enemy.StatsCombat["CurHP"] -= damage
+                                    if enemy.StatsCombat["CurHP"] < 0.1:
+                                        print(f"{enemy.nom} ha estat derrotat.")
+                                        derrotats.append(ent)
+                                    else:
+                                        print(f"{enemy.nom} ha perdut {damage} punts de vida...")
                             else:
-                                enemy.StatsCombat["CurHP"] -= damage
-                                if enemy.StatsCombat["CurHP"] < 0.1:
-                                    print(f"{enemy.nom} ha estat derrotat.")
+                                ent.StatsCombat["CurHP"] -= damage
+                                if ent.StatsCombat["CurHP"] < 0.1:
+                                    print(f"{ent.nom} ha estat derrotat.")
+                                    derrotats.append(ent)
                                 else:
-                                    print(f"{enemy.nom} ha perdut {damage} punts de vida...")
+                                    print(f"{ent.nom} ha perdut {damage} punts de vida...")
                         else:
-                            enemy.StatsCombat["CurHP"] -= damage
-                            if enemy.StatsCombat["CurHP"] < 0.1:
-                                print(f"{enemy.nom} ha estat derrotat.")
-                            else:
-                                print(f"{enemy.nom} ha perdut {damage} punts de vida...")
+                            print(f"{ent.nom} esta protegit i per tant l'atac no ha causat res...")
                     else:
-                        print(f"{enemy.nom} esta protegit i per tant l'atac no ha causat res...")
-                else:
-                    if self.isPlayer == True:
-                        print("Has fallat l'atac...")
-                    else:
-                        print("L'atac enemic a fallat...")
-                if enemy.Protected == True:
-                    enemy.Protected = False
+                        if self.isPlayer == True:
+                            print("Has fallat l'atac...")
+                        else:
+                            print("L'atac enemic a fallat...")
+                    if ent.Protected == True:
+                        ent.Protected = False
         else:
             print(f"Has estat impedit per {impedit.Name}")
         input("Presiona per a continuar...")
-        return enemy
+        return enemy, derrotats
 
-    def MoveProtHeal(self, target, move):
-        if move.Healing == True:
-            if (target.StatsCombat["CurHP"] + (move.Power * (self.StatsCombat["INT"] / 100))) > target.StatsCombat["MaxHP"]:
-                target.StatsCombat["CurHP"] = target.StatsCombat["MaxHP"]
-                print(f"{target.nom} ha recuperat vida fins al seu limit...")
-            else:
-                target.StatsCombat["CurHP"] += (move.Power * (self.StatsCombat["INT"] / 100))
-                print(f"{target.nom} ha recuperat {move.Power * (self.StatsCombat["INT"] / 100)} punts de vida...")
-            for i in move.Buff.items():
-                target.ApplyStatusEffects(i[0], i[1])
-        if move.Protective == True:
-            target.Protected = True
-            if self == target:
-                print(f"{self.nom} s'ha preparat per protegir-se")
-            else:
-                print(f"{self.nom} s'ha preparat per protegir a {target.nom}")
-            if move.AutoDamaging > 0:
-                target.ProtectedBy = (self, move.AutoDamaging)
-                
-            for i in move.Buff.items():
-                target.ApplyStatusEffects(i[0], i[1])
+    def MoveProtHeal(self, targets, target, move):
+        for id, ent in targets.items():
+            if id == target or move.MultiTarget:
+                if move.Healing == True:
+                    if (ent.StatsCombat["CurHP"] + (move.Power * (self.StatsCombat["INT"] / 100))) > ent.StatsCombat["MaxHP"]:
+                        ent.StatsCombat["CurHP"] = ent.StatsCombat["MaxHP"]
+                        print(f"{ent.nom} ha recuperat vida fins al seu limit...")
+                    else:
+                        ent.StatsCombat["CurHP"] += (move.Power * (self.StatsCombat["INT"] / 100))
+                        print(f"{ent.nom} ha recuperat {move.Power * (self.StatsCombat["INT"] / 100)} punts de vida...")
+                    for i in move.Buff.items():
+                        ent.ApplyStatusEffects(i[0], i[1])
+                if move.Protective == True:
+                    ent.Protected = True
+                    if self == ent:
+                        print(f"{self.nom} s'ha preparat per protegir-se")
+                    else:
+                        print(f"{self.nom} s'ha preparat per protegir a {ent.nom}")
+                    if move.AutoDamaging > 0:
+                        target.ProtectedBy = (self, move.AutoDamaging)
+                        
+                    for i in move.Buff.items():
+                        target.ApplyStatusEffects(i[0], i[1])
         input("Presiona per a continuar...")
         return target
 
