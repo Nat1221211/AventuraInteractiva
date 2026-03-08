@@ -159,10 +159,10 @@ def MenuMisions(jugador, missions, event):
             input("Has sortit del menu missions...")
 
 
-def CrearMenu(llista, NomMenu, jugador, zones, filtre = "Playables", opcionsvisibles = 3):
+def CrearMenu(llista, NomMenu, jugador = None, zones = None, filtre = "Playables", opcionsvisibles = 3):
     options = []
     for i in llista:
-        if isinstance(i, str) and i in zones.keys():
+        if zones != None and jugador != None and isinstance(i, str) and i in zones.keys():
             if i in jugador.LlocsTrobats:
                 options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, True, zones[i].Description))
             else:
@@ -273,3 +273,17 @@ def BattleScreenShow(teamlis):
             print(f"Prioritat: {round(ent.Priority, 1)}", end=espaiat)
             saltdeLinia = True
     print("\n")
+
+def VeureEstatus(jugador, combat = False):
+    ClearScreen()
+    CrearMenu(jugador.Team.items(), "Seleccio Equip")
+
+    seleccio = MostrarMenus(Menus["Seleccio Equip"])
+
+    if seleccio != None:
+        if combat == False:
+            jugador.Team[seleccio].ShowStatus(jugador)
+        else:
+            jugador.Team[seleccio].ShowStatus(jugador, True)
+    else:
+        input("Has sortit del menu d'estatus...")
