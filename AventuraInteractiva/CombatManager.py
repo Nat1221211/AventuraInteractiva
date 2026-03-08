@@ -267,8 +267,8 @@ def AccionsLluita(atacant, jugador, enemy, enemyderr):
         UIManager.BattleScreenShow(enemy)
         print("\n")
         if move != None:
-            if move.MultiTarget:
-                if move.Healing == False and move.Protective == False and len(enemy) >= 1:
+            if move.MultiTarget == False:
+                if move.Healing == False and move.Protective == False and len(enemy) > 1:
                     target = TriarObjectius(enemy)
                 elif move.Healing == True or move.Protective == True:
                     target = TriarObjectius(jugador.Team)
