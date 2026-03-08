@@ -201,9 +201,6 @@ class Entity():
                     self.StatsCombat[k] *= v
 
     def CalcularDamage(self, enemy, move):
-        # Cridar icrements d'stats en cas de ser necessari
-        for i in move.Buff.items():
-            self.ApplyStatusEffects(i[0], i[1])
         
         # Calcul dels danys
         if move.Type == False:
@@ -214,15 +211,7 @@ class Entity():
         crit = random.choices([True, False], cum_weights=[5, 95])
         if crit[0] == True:
             damage *= 1.75
-            print("Ha estat un cop critic...")
-        # amplify = 1
-        # for i in self.Tituls:
-        #     if enemy.base in i.Afects:
-        #         amplify += i.DamageAmplify - 1
-        # if amplify != 1:
-        #     print("El dany causat a incrementat a causa dels titols.")
-        #     damage *= amplify
-        # damage *= (random.randint(90,111) / 100)
+            print(f"{enemy.nom} ha rebut un critic...")
 
         # Reduim les estadistiques per efectes d'estat despres de calcular el dany.
         for i in move.Debuff.items():
@@ -241,23 +230,34 @@ class Entity():
                         if impedit[0] == True:
                             impedit[1] = i
         if impedit[0] == False:
-            if move.Precision < 100:
-                atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
-            else:
-                atac = [True]
-            if atac == [True]:
-                if enemy.Protected == False or enemy.ProtectedBy[0] != None:
-                    damage = self.CalcularDamage(enemy, move)
-                    damage = round(damage, 2)
-                    if enemy.Protected == True:
-                        if enemy.ProtectedBy[0] != None:
-                            damage = damage * ((100 - enemy.ProtectedBy[1]) / 100)
-                            enemy.ProtectedBy[0].StatsCombat["CurHP"] -= damage
-                            print(f"{enemy.ProtectedBy[0].nom}, ha entomat el {enemy.ProtectedBy[1]}% del dany...")
-                            if enemy.ProtectedBy[0].StatsCombat["CurHP"] < 0.1:
-                                print(f"{enemy.ProtectedBy[0].nom}, ha estat derrotat...")
+            # Cridar icrements d'stats en cas de ser necessari
+            for i in move.Buff.items():
+                self.ApplyStatusEffects(i[0], i[1])
+        
+            for i in enemy:
+                if move.Precision < 100:
+                    atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
+                else:
+                    atac = [True]
+                if atac == [True]:
+                    if enemy.Protected == False or enemy.ProtectedBy[0] != None:
+                        damage = self.CalcularDamage(enemy, move)
+                        damage = round(damage, 2)
+                        if enemy.Protected == True:
+                            if enemy.ProtectedBy[0] != None:
+                                damage = damage * ((100 - enemy.ProtectedBy[1]) / 100)
+                                enemy.ProtectedBy[0].StatsCombat["CurHP"] -= damage
+                                print(f"{enemy.ProtectedBy[0].nom}, ha entomat el {enemy.ProtectedBy[1]}% del dany...")
+                                if enemy.ProtectedBy[0].StatsCombat["CurHP"] < 0.1:
+                                    print(f"{enemy.ProtectedBy[0].nom}, ha estat derrotat...")
+                                else:
+                                    print(f"{enemy.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
                             else:
-                                print(f"{enemy.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
+                                enemy.StatsCombat["CurHP"] -= damage
+                                if enemy.StatsCombat["CurHP"] < 0.1:
+                                    print(f"{enemy.nom} ha estat derrotat.")
+                                else:
+                                    print(f"{enemy.nom} ha perdut {damage} punts de vida...")
                         else:
                             enemy.StatsCombat["CurHP"] -= damage
                             if enemy.StatsCombat["CurHP"] < 0.1:
@@ -265,20 +265,14 @@ class Entity():
                             else:
                                 print(f"{enemy.nom} ha perdut {damage} punts de vida...")
                     else:
-                        enemy.StatsCombat["CurHP"] -= damage
-                        if enemy.StatsCombat["CurHP"] < 0.1:
-                            print(f"{enemy.nom} ha estat derrotat.")
-                        else:
-                            print(f"{enemy.nom} ha perdut {damage} punts de vida...")
+                        print(f"{enemy.nom} esta protegit i per tant l'atac no ha causat res...")
                 else:
-                    print(f"{enemy.nom} esta protegit i per tant l'atac no ha causat res...")
-            else:
-                if self.isPlayer == True:
-                    print("Has fallat l'atac...")
-                else:
-                    print("L'atac enemic a fallat...")
-            if enemy.Protected == True:
-                enemy.Protected = False
+                    if self.isPlayer == True:
+                        print("Has fallat l'atac...")
+                    else:
+                        print("L'atac enemic a fallat...")
+                if enemy.Protected == True:
+                    enemy.Protected = False
         else:
             print(f"Has estat impedit per {impedit.Name}")
         input("Presiona per a continuar...")
