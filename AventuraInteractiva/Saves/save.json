@@ -1,15 +1,20 @@
 {
     "Nom": "Nat",
     "Ubicacio": "knightshire",
-    "Or": 5840,
+    "Or": 5050,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [
         "first_adventure"
     ],
-    "Missions_Disponibles": [
-        "defeat_slimes"
-    ],
+    "Missions_Disponibles": {
+        "defeat_slimes": {
+            "id": "defeat_slimes",
+            "type": "Kill",
+            "Progress": 0,
+            "Status": "Disponible"
+        }
+    },
     "Llocs_Trobats": [
         "dawn_village",
         "south_forest",
@@ -18,9 +23,6 @@
     ],
     "Llocs_Visitats": [
         "dawn_village",
-        "Bosc del Sud",
-        "Bosc del Sud",
-        "Dawn Village",
         "Bosc del Sud",
         "Bosc de Fusta Verda",
         "Knightshire",
@@ -32,11 +34,11 @@
             "id": "Player",
             "Nom": "Nat",
             "Base": "mage",
-            "Lv": 12,
+            "Lv": 7,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 151.38
+            "XP": 60.08999999999999
         }
     ],
     "Inventari": [

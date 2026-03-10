@@ -25,7 +25,7 @@ def GuardarPartida(jugador, missions):
         # Seguiment
         "Missions_Acceptades": {},
         "Missions_Finalitzades": jugador.MissionsFinalitzades,
-        "Missions_Disponibles": jugador.MissionsDisponibles,
+        "Missions_Disponibles": {},
         "Llocs_Trobats": jugador.LlocsTrobats,
         "Llocs_Visitats": jugador.LlocsVisitats,
 
@@ -44,8 +44,9 @@ def GuardarPartida(jugador, missions):
     }
     dades["Team"]=GuardarPersonatges(jugador.Team)
     dades["Inventari"]=GuardarInventari(jugador)
-    dades["Missions_Acceptades"]=GuardarMissionsAcceptades(jugador, missions)
-    
+    dades["Missions_Acceptades"]=GuardarMissions(jugador.MisionsAcceptades, missions)
+    dades["Missions_Disponibles"]=GuardarMissions(jugador.MissionsDisponibles, missions)
+
     ruta = os.path.dirname(__file__)
     ruta_final = os.path.join(ruta, "Saves/save.json")
     with open(ruta_final, "w", encoding="utf-8") as save:
@@ -73,16 +74,20 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
         missions_acceptades.append(id)
         if value["type"] == "Kill":
             missions[value["type"]][id].Count = value["Progress"]
-        else:
-            missions[value["type"]][id].Status = value["Progress"]
+        missions[value["type"]][id].Status = value["Status"]
     
+    missions_disponibles = []
+    for id, value in dades["Missions_Disponibles"].items():
+        missions_disponibles.append(id)
+        missions[value["type"]][id].Status = value["Status"]
+
     inventari = {}
     for o in dades["Inventari"]:
         inventari.update({objectes[o["Clase"]][o["id"]]: o["Amount"]})
 
     jugador = Player.Player(dades["Nom"], equip, ubicacio)
     jugador.MissionsFinalitzades = dades["Missions_Finalitzades"]
-    jugador.MissionsDisponibles = dades["Missions_Disponibles"]
+    jugador.MissionsDisponibles = missions_disponibles
     jugador.LlocsTrobats = dades["Llocs_Trobats"]
     jugador.LlocsVisitats = dades["Llocs_Visitats"]
     jugador.MisionsAcceptades = missions_acceptades
@@ -93,28 +98,28 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
     return jugador
 
 
-def GuardarMissionsAcceptades(jugador, missions):
-    aceptades = {}
+def GuardarMissions(aguardar, missions):
+    guardar = {}
     for id, value in missions.items():
         for id2, mision in value.items():
-            if id2 in jugador.MisionsAcceptades:
+            if id2 in aguardar:
                 progres = 0
                 if id == "Kill":
                     progres = mision.Count
-                else:
-                    progres = mision.Status
+                status = mision.Status
                         
 
-                aceptades.update(
+                guardar.update(
                     {
                         id2: {
                             "id": id2,
                             "type": id,
-                            "Progress": progres
+                            "Progress": progres,
+                            "Status": status
                         }
                     }
                 )
-    return aceptades
+    return guardar
         
 
 def GuardarInventari(jugador):
