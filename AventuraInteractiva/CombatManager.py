@@ -279,7 +279,7 @@ def AccionsLluita(atacant, jugador, enemy, enemyderr):
     elif seleccio == "fugir":
         fugir = Fugir(enemy, jugador)
         if fugir[0] == False:
-            i, derrotats = ComprobarEfectEstat(i, derrotats)
+            atacant, derrotats = ComprobarEfectEstat(atacant, derrotats)
     elif seleccio == "motxila":
         used = jugador.ObjectesMochila(jugador.Team, atacant, True)
         if used == False:

@@ -3,11 +3,7 @@
     "Ubicacio": "knightshire",
     "Or": 5050,
     "Ultim_Visitat": "knightshire",
-    "Missions_Acceptades": {},
-    "Missions_Finalitzades": [
-        "first_adventure"
-    ],
-    "Missions_Disponibles": {
+    "Missions_Acceptades": {
         "defeat_slimes": {
             "id": "defeat_slimes",
             "type": "Kill",
@@ -15,6 +11,10 @@
             "Status": "Disponible"
         }
     },
+    "Missions_Finalitzades": [
+        "first_adventure"
+    ],
+    "Missions_Disponibles": {},
     "Llocs_Trobats": [
         "dawn_village",
         "south_forest",

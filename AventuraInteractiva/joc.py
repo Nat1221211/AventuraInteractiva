@@ -129,9 +129,10 @@ def Botiga():
 
 def Posada(free = False):
     global jugador
+
     if free == False:
         res = UIManager.MostrarMenus(UIManager.Menus["Posada"], False)
-    if res == "si" or free == True:
+    if free == True or res == "si":
         if jugador.Gold >= 100 or free == True:
             print("Has descansat comodament, t'has recuperat completament...")
             if free == False:
