@@ -1,4 +1,4 @@
-# Arxiu: PrepararCridar.py
+# Arxiu: SaveGame.py
 # Autor: Bernat Puig Casals
 # Data: 7 de Març de 2026
 # Descripcio:
@@ -71,7 +71,10 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
     missions_acceptades = []
     for id, value in dades["Missions_Acceptades"].items():
         missions_acceptades.append(id)
-        missions["Kill"][id].Count = value["Progress"]
+        if value["type"] == "Kill":
+            missions[value["type"]][id].Count = value["Progress"]
+        else:
+            missions[value["type"]][id].Status = value["Progress"]
     
     inventari = {}
     for o in dades["Inventari"]:
@@ -98,6 +101,9 @@ def GuardarMissionsAcceptades(jugador, missions):
                 progres = 0
                 if id == "Kill":
                     progres = mision.Count
+                else:
+                    progres = mision.Status
+                        
 
                 aceptades.update(
                     {

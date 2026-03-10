@@ -64,7 +64,7 @@ class Mission():
         else:
             print("No compleixes amb els requisits per a la missio...")
     
-    def Reclamar(self, jugador):
+    def Reclamar(self, jugador, Objectes):
         if self.Status == "Pendent Reclamar":
             for id, value in self.Rewards.items():
                 if id == "XP":
@@ -74,7 +74,7 @@ class Mission():
                     jugador.Gold += value
                 elif id == "Objects":
                     for obj in value:
-                        jugador.AfegirObjecte(obj["id"], obj["Amount"])
+                        jugador.AfegirObjecte(Objectes[obj["type"]][obj["id"]], obj["Amount"])
                 elif id == "Title":
                     jugador.Titles.append(value)
             self.Status = "Completada"

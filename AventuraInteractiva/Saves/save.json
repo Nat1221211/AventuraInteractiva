@@ -1,38 +1,53 @@
 {
     "Nom": "Nat",
-    "Ubicacio": "south_forest",
-    "Or": 2550,
-    "Ultim_Visitat": "dawn_village",
+    "Ubicacio": "knightshire",
+    "Or": 5840,
+    "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {},
-    "Missions_Finalitzades": [],
-    "Missions_Disponibles": [
+    "Missions_Finalitzades": [
         "first_adventure"
+    ],
+    "Missions_Disponibles": [
+        "defeat_slimes"
     ],
     "Llocs_Trobats": [
         "dawn_village",
-        "south_forest"
+        "south_forest",
+        "greenwoods",
+        "knightshire"
     ],
     "Llocs_Visitats": [
         "dawn_village",
         "Bosc del Sud",
-        "Bosc del Sud"
+        "Bosc del Sud",
+        "Dawn Village",
+        "Bosc del Sud",
+        "Bosc de Fusta Verda",
+        "Knightshire",
+        "Bosc de Fusta Verda",
+        "Knightshire"
     ],
     "Team": [
         {
             "id": "Player",
             "Nom": "Nat",
             "Base": "mage",
-            "Lv": 9,
+            "Lv": 12,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 106.3
+            "XP": 151.38
         }
     ],
     "Inventari": [
         {
             "id": "inferior_potion",
-            "Amount": 2,
+            "Amount": 3,
+            "Clase": "Combat"
+        },
+        {
+            "id": "potion",
+            "Amount": 1,
             "Clase": "Combat"
         }
     ],

@@ -13,10 +13,12 @@
         "Objects": [
             {
                 "id": "inferior_potion",
+                "type": "Combat",
                 "Amount": 1
             },
             {
                 "id": "potion",
+                "type": "Combat",
                 "Amount": 1
             }
         ]

@@ -1,8 +1,8 @@
-# Arxiu: PrepararCridar.py
+# Arxiu: UIManager.py
 # Autor: Bernat Puig Casals
 # Data: 7 de Març de 2026
 # Descripcio:
-# Creem el modul per a guardar i carregar la partida.
+# Creem el modul per a generar interficies.
 
 from Classes import Utilitats
 from Classes import Characteristics
@@ -125,7 +125,7 @@ def MostrarMenus(Menu, sortir = True, combat = False, jugador = None, enemy = No
         input("Presiona per a continuar...")
         return None, None
 
-def MenuMisions(jugador, missions, event):
+def MenuMisions(jugador, missions, event, objects):
     sel = MostrarMenus(Menus["Missions"])
 
     if sel == "aceptar":
@@ -153,7 +153,7 @@ def MenuMisions(jugador, missions, event):
         CrearMenuMissions(missions, "Reclamar Missions", jugador.MisionsAcceptades, "Pendent Reclamar", 4)
         id, tipus = MostrarMenus(Menus["Reclamar Missions"])
         if id != None and tipus != None:
-            missions[tipus][id].Reclamar(jugador)
+            missions[tipus][id].Reclamar(jugador, objects)
             event.CridarEvent("Missio Finalitzada", id, jugador, missions)
         else:
             input("Has sortit del menu missions...")
