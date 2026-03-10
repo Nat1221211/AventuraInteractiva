@@ -99,6 +99,11 @@ class Entity():
             "Accesory_1": "",
             "Accesory_2": "",
         }
+
+    def Recuperacio(self):
+        self.StatsCombat["CurHP"] = self.StatsCombat["MaxHP"]
+        self.StatsCombat["Mana"] = self.StatsCombat["MaxMana"]
+        self.afected = []
         
     def DefinirMoves(self):
         for k in self.base.EntityMoves.items():

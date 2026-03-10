@@ -83,6 +83,15 @@ Menus = {
             Utilitats.OpcioMenu("nova", "Començar Nova Partida", True, "Començar una nova partida."),
         ],
         2
+    ),
+
+    "Posada": Utilitats.Menu(
+        "Descansar al Hostal",
+        [
+            Utilitats.OpcioMenu("si", "Descansar al hostal", True, "Recupera als jugadors a canvi de 100 d'or."),
+            Utilitats.OpcioMenu("no", "No descansar al hostal", True, "Surt del hostal."),
+        ],
+        2
     )
 }
 
@@ -130,13 +139,16 @@ def MenuMisions(jugador, missions, event, objects):
 
     if sel == "aceptar":
         CrearMenuMissions(missions, "Aceptar Missions", jugador.MissionsDisponibles, "Disponible", 4)
-        res = MostrarMenus(Menus["Aceptar Missions"])
-        if res != None:
-            jugador.MisionsAcceptades.append(res)
-            jugador.MissionsDisponibles.remove(res)
-        else:
-            print("Has sortit del Menu")
-            input("Presiona per a continuar...")
+        try:
+            res = MostrarMenus(Menus["Aceptar Missions"])
+            if res != None:
+                jugador.MisionsAcceptades.append(res)
+                jugador.MissionsDisponibles.remove(res)
+            else:
+                print("Has sortit del Menu")
+                input("Presiona per a continuar...")
+        except ValueError:
+            print()
     elif sel == "veure":
         res = MostrarMenus(Menus["Veure Missions"])
         if res == "disponibles":

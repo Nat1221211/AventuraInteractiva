@@ -124,60 +124,20 @@ def AccioMenuPrincipal():
         # Gremi()
         print("Desactivat")
 
-
-
-def PrepararBotiga(): # Afegir objectes segons nivell
-    global jugador
-    if jugador.Team.get(jugador.Name).Lv > 35:
-        print()
-    elif jugador.Team.get(jugador.Name).Lv > 20:
-        print()
-    elif jugador.Team.get(jugador.Name).Lv > 10:
-        print()
-
 def Botiga():
-    res = -1
-    while res not in (range(0, len(botiga) + 2)):
-        temp = 0
-        for i in botiga:
-            print(f"{temp + 1} -> {i.ObjectName}")
-            print(f"Preu: {i.Preu} gold\n")
-            temp += 1
-            if temp == len(botiga):
-                print(f"{temp + 1} -> Sortir")
-        res = int(input("Que vols comprar: "))
-        if res not in (range(0, len(botiga) + 2)):
-            print("Has de dir un dels objectes o el numero equivalent a sortir.")
-    if res == len(botiga) + 1:
-        print("Has sortit de la botiga...")
-    else:
-        qty = 0
-        res = res -1
-        while qty < 1:
-            qty = int(input(f"\nQuants/es {botiga[res].ObjectName} vols comprar: "))
-        jugador.AfegirObjecte(botiga[res], qty)
-        jugador.Gold -= botiga[res].Preu * qty
-        print(f"Has comprat {qty} {botiga[res].ObjectName} per {botiga[res].Preu * qty} gold !")
+    print()
 
 def Posada(free = False):
     global jugador
-    res = ""
     if free == False:
-        while res not in ["S", "N"]:
-            UIManager.ClearScreen()
-            try:
-                res = input("\nVols descansar? Costa 100 gold (S / N): ").capitalize()
-            except ValueError:
-                print("Ha ocurregut un error...")
-    if res == "S" or free == True:
+        res = UIManager.MostrarMenus(UIManager.Menus["Posada"], False)
+    if res == "si" or free == True:
         if jugador.Gold >= 100 or free == True:
             print("Has descansat comodament, t'has recuperat completament...")
             if free == False:
                 jugador.Gold -= 100
             for i in jugador.Team.values():
-                i.StatsCombat["CurHP"] = i.StatsCombat["MaxHP"]
-                i.StatsCombat["Mana"] = i.StatsCombat["MaxMana"]
-                i.afected = []
+                i.Recuperacio()
         else:
             print("No tens suficient gold per pagar la posada, has marxat sense poder descansar...")
     else:

@@ -38,12 +38,14 @@ class Menu():
         return self.Opcions[inici:fi], inici, pagina, totalpag
 
 class OpcioMenu():
-    def __init__(self,iden, nom, habilitat, descripcio, altres = None):
+    def __init__(self,iden, nom, habilitat, descripcio, altres = None, condicio_habilitat = False):
         self.id = iden
         self.Nom = nom
         self.Descripcio = descripcio
         self.Habilitat = habilitat
         self.Extra = altres
+        if condicio_habilitat == True:
+            self.Habilitat = True
 
 class MostrarMenu():
     def Mostrar(Menu, textextra = ""):
