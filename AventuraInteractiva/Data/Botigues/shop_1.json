@@ -2,15 +2,19 @@
     "id": "shop_1",
     "name": "Botiga",
     "description": "Una botiga",
-    "Per Vendre": [
-        {
+    "Per Vendre": {
+        "(same as id)": {
             "id": "",
             "description": "",
             "type": "",
             "price": ""
         },
-        {
 
+        "(same_id)": {
+            "id": "",
+            "description": "",
+            "type": "",
+            "price": ""
         }
-    ]
+    }
 }
