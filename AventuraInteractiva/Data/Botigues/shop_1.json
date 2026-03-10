@@ -1,0 +1,16 @@
+{
+    "id": "shop_1",
+    "name": "Botiga",
+    "description": "Una botiga",
+    "Per Vendre": [
+        {
+            "id": "",
+            "description": "",
+            "type": "",
+            "price": ""
+        },
+        {
+
+        }
+    ]
+}
