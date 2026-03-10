@@ -21,11 +21,13 @@
         "Gold": 3000,
         "Objects": [
             {
-                "id": "",
+                "id": "high_potion",
+                "type": "Combat",
                 "Amount": 1
             },
             {
-                "id": "",
+                "id": "elixir",
+                "type": "Combat",
                 "Amount": 1
             }
         ]

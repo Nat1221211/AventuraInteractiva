@@ -16,6 +16,7 @@
         "Objects": [
             {
                 "id": "high_potion",
+                "type": "Combat",
                 "Amount": 1
             }
         ]

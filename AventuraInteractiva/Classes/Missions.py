@@ -50,8 +50,8 @@ class Mission():
                 if jugador.Team["Player"].Lv < value:
                     resultat = False
             elif key == "Mission":
-                for id in jugador.MissionsFinalitzades:
-                    if id not in self.Requisite["Mission"]:
+                for id in self.Requisite["Mission"]:
+                    if id not in jugador.MissionsFinalitzades:
                         resultat = False
         
         return resultat

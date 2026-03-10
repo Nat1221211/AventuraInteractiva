@@ -1,14 +1,14 @@
 {
     "Nom": "Nat",
-    "Ubicacio": "knightshire",
-    "Or": 5050,
+    "Ubicacio": "greenwoods",
+    "Or": 8270,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
         "defeat_slimes": {
             "id": "defeat_slimes",
             "type": "Kill",
-            "Progress": 0,
-            "Status": "Disponible"
+            "Progress": 3,
+            "Status": "Pendent Reclamar"
         }
     },
     "Missions_Finalitzades": [
@@ -27,18 +27,19 @@
         "Bosc de Fusta Verda",
         "Knightshire",
         "Bosc de Fusta Verda",
-        "Knightshire"
+        "Knightshire",
+        "Bosc de Fusta Verda"
     ],
     "Team": [
         {
             "id": "Player",
             "Nom": "Nat",
             "Base": "mage",
-            "Lv": 7,
+            "Lv": 10,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 60.08999999999999
+            "XP": 183.35
         }
     ],
     "Inventari": [
@@ -49,6 +50,11 @@
         },
         {
             "id": "potion",
+            "Amount": 1,
+            "Clase": "Combat"
+        },
+        {
+            "id": "high_potion",
             "Amount": 1,
             "Clase": "Combat"
         }
