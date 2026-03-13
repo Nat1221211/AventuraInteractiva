@@ -375,7 +375,7 @@ class Entity():
                 self.DefinirStats(True)
                 self.DefinirCombatStats()
                 self.Xp -= self.XpRequired
-                self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
+                self.XpRequired = float(round(5 * (self.Lv ** (2 + (self.Lv * (1 / 1000)))), 2))
             input("Presiona per a continuar...")
     
     

@@ -26,7 +26,7 @@ id1;Atacant de Desventatges;Un lladre centrat en atacar aplicant desventatges en
 id1;Arquer Magic;Un arquer centrat en multiples atacs magics i normals;170;160;200;160;120;200;False;150;Human;bite: 1
 id1;Arquer Potent;Un arquer centrat en el dany per atac mes que en atacar seguit;180;120;200;100;120;50;False;150;Human;bite: 1
 conill;Conill Cornut;;100;20;80;20;100;110;False;25;Beast, Monster;bite: 1
-id1;Fenrir;;400;400;400;400;400;400;False;4000;Divine, Beast;bite: 1
+fenrir;Fenrir;;400;400;400;400;400;400;False;4000;Divine, Beast;bite: 1
 id1;Wight;;120;100;120;40;120;100;False;50;Spirit, Monster;bite: 1
 id1;Lich;;200;300;150;250;200;180;False;800;Spirit, Monster;bite: 1
 id1;Vampire;;250;200;250;250;200;180;False;800;Monster, Human;bite: 1
