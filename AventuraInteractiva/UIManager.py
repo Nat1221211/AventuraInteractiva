@@ -132,43 +132,52 @@ def MostrarMenus(Menu, sortir = True, combat = False, jugador = None, enemy = No
     else:
         print("No hi ha opcions...")
         input("Presiona per a continuar...")
-        return None, None
+        return None
 
 def MenuMisions(jugador, missions, event, objects):
-    sel = MostrarMenus(Menus["Missions"])
+    sel = ""
+    while sel != None:
+        sel = MostrarMenus(Menus["Missions"])
 
-    if sel == "aceptar":
-        CrearMenuMissions(missions, "Aceptar Missions", jugador.MissionsDisponibles, "Disponible", 4)
-        try:
-            res = MostrarMenus(Menus["Aceptar Missions"])
-            if res != None:
-                jugador.MisionsAcceptades.append(res)
-                jugador.MissionsDisponibles.remove(res)
-            else:
-                print("Has sortit del Menu")
-                input("Presiona per a continuar...")
-        except ValueError:
-            print()
-    elif sel == "veure":
-        res = MostrarMenus(Menus["Veure Missions"])
-        if res == "disponibles":
-            CrearMenuMissions(missions, "Missions Disponibles", jugador.MissionsDisponibles, "Disponible", 6)
-            res = MostrarMenus(Menus["Missions Disponibles"], True, False, None, "", False)
-        elif res == "completades":
-            CrearMenuMissions(missions, "Missions Completades", jugador.MissionsFinalitzades, "Completada", 6)
-            res = MostrarMenus(Menus["Missions Completades"], True, False, None, "", False)
-        elif res == "acceptades":
-            CrearMenuMissions(missions, "Missions Acceptades", jugador.MisionsAcceptades, "Acceptada", 6)
-            res = MostrarMenus(Menus["Missions Acceptades"], True, False, None, "", False)
-    
-    elif sel == "reclamar":
-        CrearMenuMissions(missions, "Reclamar Missions", jugador.MisionsAcceptades, "Pendent Reclamar", 4)
-        id, tipus = MostrarMenus(Menus["Reclamar Missions"])
-        if id != None and tipus != None:
-            missions[tipus][id].Reclamar(jugador, objects)
-            event.CridarEvent("Missio Finalitzada", id, jugador, missions)
-        else:
-            input("Has sortit del menu missions...")
+        if sel == "aceptar":
+            CrearMenuMissions(missions, "Aceptar Missions", jugador.MissionsDisponibles, None, 4)
+            try:
+                res = MostrarMenus(Menus["Aceptar Missions"])
+                if res != None:
+                    jugador.MisionsAcceptades.append(res)
+                    jugador.MissionsDisponibles.remove(res)
+                else:
+                    print("Has sortit del Menu")
+                    input("Presiona per a continuar...")
+            except ValueError:
+                print("Ha ocurregut un error...")
+        elif sel == "veure":
+            res = ""
+            while res != None:
+                res = MostrarMenus(Menus["Veure Missions"])
+                if res == "disponibles":
+                    CrearMenuMissions(missions, "Missions Disponibles", jugador.MissionsDisponibles, None, 6)
+                    res = MostrarMenus(Menus["Missions Disponibles"], True, False, None, "", False)
+                elif res == "completades":
+                    CrearMenuMissions(missions, "Missions Completades", jugador.MissionsFinalitzades, None, 6)
+                    res = MostrarMenus(Menus["Missions Completades"], True, False, None, "", False)
+                elif res == "acceptades":
+                    CrearMenuMissions(missions, "Missions Acceptades", jugador.MisionsAcceptades, None, 6)
+                    res = MostrarMenus(Menus["Missions Acceptades"], True, False, None, "", False)
+        
+        elif sel == "reclamar":
+            CrearMenuMissions(missions, "Reclamar Missions", jugador.MisionsAcceptades, "Pendent Reclamar", 4)
+            dictio = {"id": None, "tipus": None}
+            while isinstance(dictio, dict) and dictio["id"] == None and dictio["tipus"] == None:
+                dictio = MostrarMenus(Menus["Reclamar Missions"])
+                if isinstance(dictio, dict):
+                    if dictio["id"] != None or dictio["tipus"] != None:
+                        missions[dictio["tipus"]][dictio["id"]].Reclamar(jugador, objects)
+                        event.CridarEvent("Missio Finalitzada", dictio["id"], jugador, missions)
+                    else:
+                        sel = None
+                else:
+                    input("Has sortit del menu missions...")
 
 
 def CrearMenu(llista, NomMenu, jugador = None, zones = None, filtre = "Playables", opcionsvisibles = 3):
@@ -201,9 +210,9 @@ def CrearMenuMissions(llistamissions, NomMenu, filtre, estat = None, opcionsvisi
     for i in llistamissions.items():
         for j in i[1].items():
             if j[0] in filtre:
-                if estat != None and j[1].Status == estat:
+                if estat == None or j[1].Status == estat:
                     if estat == "Pendent Reclamar":
-                        opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description, i[0]))
+                        opcions.append(Utilitats.OpcioMenu({"id": j[0], "tipus": i[0]}, j[1].Name, True, j[1].Description))
                     else:
                         opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description))
                 

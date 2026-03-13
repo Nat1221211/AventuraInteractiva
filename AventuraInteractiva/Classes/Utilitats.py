@@ -21,13 +21,7 @@ class Menu():
     def SeleccionarOpcio(self):
         opcio = self.Opcions[self.Cursor]
         if opcio.Habilitat == True:
-            if opcio.Extra != None:
-                if opcio != None:
-                    return opcio.id, opcio.Extra
-                else:
-                    return None, None
-            else:
-                return opcio.id
+            return opcio.id
         return None
 
     def OpcionsVisible(self):
@@ -38,12 +32,11 @@ class Menu():
         return self.Opcions[inici:fi], inici, pagina, totalpag
 
 class OpcioMenu():
-    def __init__(self,iden, nom, habilitat, descripcio, altres = None, condicio_habilitat = False):
+    def __init__(self,iden, nom, habilitat, descripcio, condicio_habilitat = False):
         self.id = iden
         self.Nom = nom
         self.Descripcio = descripcio
         self.Habilitat = habilitat
-        self.Extra = altres
         if condicio_habilitat == True:
             self.Habilitat = True
 
