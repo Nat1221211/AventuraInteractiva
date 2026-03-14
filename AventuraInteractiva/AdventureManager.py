@@ -41,23 +41,27 @@ def OcurrenciaMisio(misio, jugador, missions, event):
     if type(misio) != Missions.KillMission:
         input("Presiona per a Continuar...")
 
-def ExplorarTrobaroNo(jugador):
+def ExplorarTrobaroNo(jugador, objects):
     
-    perTrobar = len(jugador.Ubicacio.Objectes)
+    perTrobar = len(jugador.Ubicacio.Objectes.keys())
     if perTrobar >= 1:
         choice = random.choices(["res", "objecte"], [10, 90])
         if choice == ["objecte"]:
-            objectes = list(jugador.Ubicacio.Objectes.keys())
-            probabilitat = [j[0] for j in jugador.Ubicacio.Objectes.values()]
+            objectes = [j[1]["id"] for j in jugador.Ubicacio.Objectes.items()]
+            probabilitat = [j[1]["prob"] for j in jugador.Ubicacio.Objectes.items()]
             trobat = random.choices(objectes, probabilitat)
-            jugador.Ubicacio.ObjecteTrobat(trobat[0])
-            print(f"Has trobat un/a {trobat[0].ObjectName}.")
+
+            tipus = jugador.Ubicacio.Objectes[trobat[0]]["type"]
+            identif = trobat[0]
+
+            print(f"Has trobat un/a {objects[tipus][identif].ObjectName}.")
             jugador.AfegirObjecte(trobat[0], 1)
+            jugador.Ubicacio.ObjecteTrobat(trobat[0])
 
     if perTrobar == 0 or choice == ["res"]:
         print("No has trobat res...")
 
-def Explorar(jugador, missions, Entities, event, zones):
+def Explorar(jugador, missions, Entities, event, zones, objects):
 
     print("Has començar a explorar...")
     prob = random.randrange(1, 100)
@@ -80,7 +84,7 @@ def Explorar(jugador, missions, Entities, event, zones):
                 misio = random.choice(llista)
                 OcurrenciaMisio(misio, jugador, missions, event)
         if len(llista) == 0 or choice == ["res"]:
-            ExplorarTrobaroNo(jugador)
+            ExplorarTrobaroNo(jugador, objects)
     elif prob > 70 and prob <= 95:  # Lluitar
         CombatManager.GenerarEnemic(Entities, jugador, event, missions)
     elif prob > 95 and prob <= 100: # Seguent ruta

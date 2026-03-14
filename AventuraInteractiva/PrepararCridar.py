@@ -155,7 +155,7 @@ def CallZones():
             i = json.load(f)
 
             place = Zones.Zona(i["id"], i["name"], i["description"], i["zone_type"], i["enemies"], 
-                            i["monedes"])
+                            i["monedes"], i["Intents"], i["objects"])
             
             place.AddConnections(i["connections"])
             place.AfegirCondicio(i["unlock_condition"])

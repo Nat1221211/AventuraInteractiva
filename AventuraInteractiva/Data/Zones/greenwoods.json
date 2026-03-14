@@ -58,8 +58,20 @@
             "prob": 10
         }
     },
-    "objects": {
-        
+    "objects":{
+        "high_potion": {
+            "id": "high_potion",
+            "prob": 10,
+            "type": "Combat",
+            "Amount": 3
+        },
+        "complete_potion": {
+            "id": "complete_potion",
+            "prob": 10,
+            "type": "Combat",
+            "Amount": 3
+        }
     },
+    "Intents": 5,
     "unlock_condition": {}
 }

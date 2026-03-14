@@ -20,7 +20,7 @@ class Zona():
 
 
     # Metodes
-    def __init__(self, id, name, description, tipus, enemies, gol, intents = 5):
+    def __init__(self, id, name, description, tipus, enemies, gol, intents = 5, objects = {}):
         self.id = id
         self.NameZone = name
         self.Description = description
@@ -29,6 +29,7 @@ class Zona():
         self.Or = gol
         self.CondicioPerTrobarRuta = {}
         self.IntentsPerTrobar = intents
+        self.Objectes = objects
         self.Connections = None
     
     def AddConnections(self, connections):
@@ -37,16 +38,11 @@ class Zona():
     def Trobar(self):
         self.Trobada = True
     
-    def AfegirObjectePerTrobar(self, objectes):
-        for i in objectes:  
-            self.ObjectesPerTrobar[i[0]] = i[1]
-            # i[0] = Objecte i[1] = llista amb prob i quantitat per trobar.
-    
     def ObjecteTrobat(self, trobat):
-        if self.ObjectesPerTrobar[trobat][1] >= 1:
-            self.ObjectesPerTrobar[trobat][1] -= 1
-            if self.ObjectesPerTrobar[trobat][1] <= 0:
-                self.ObjectesPerTrobar.pop(trobat)
+        if self.Objectes[trobat]["Amount"] >= 1:
+            self.Objectes[trobat]["Amount"] -= 1
+            if self.Objectes[trobat]["Amount"] <= 0:
+                self.Objectes.pop(trobat)
     
     def ComprobarCondicio(self, player):
         if self.CondicioPerTrobarRuta != None:

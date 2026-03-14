@@ -102,7 +102,7 @@ def AccioMenuPrincipal():
     if accio == "mapa":
         AdventureManager.Mapa(jugador, zones, missions, event)
     elif accio == "explorar":
-        AdventureManager.Explorar(jugador, missions, Entities, event, zones)
+        AdventureManager.Explorar(jugador, missions, Entities, event, zones, Objects)
     elif accio == "hostal":
         Posada()
     elif accio == "botiga":

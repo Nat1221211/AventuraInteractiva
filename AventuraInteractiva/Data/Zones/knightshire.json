@@ -7,5 +7,6 @@
     "connections": ["greenwoods"],
     "monedes": {},
     "objects": {},
+    "Intents": 5,
     "unlock_condition": {}
 }
