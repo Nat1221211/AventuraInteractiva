@@ -17,12 +17,23 @@ def Botiga(jugador, objectes):
     if sel != None:
         UIManager.CrearMenuProductes(botigues[sel]["Venta"].items(), "Productes")
         prod = ""
-        while prod == "":
+        while prod != None:
             prod = UIManager.MostrarMenus(UIManager.Menus["Productes"])
             if prod != None:
                 product = objectes[botigues[sel]["Venta"][prod]["type"]][prod]
-                jugador.AfegirObjecte(product, 1)
-                jugador.Gold -= botigues[sel]["Venta"][prod]["price"]
+                amt = -1
+                while amt < 0:
+                    try:
+                        amt = int(input("Digues quans en vols: "))
+                        if amt < 0:
+                            print("Ha ocurregut un error amb el numero introduit...")
+                        elif amt == 0:
+                            print("Has sortit del menu de compra")
+                    except ValueError:
+                        print("Ha ocurregut un error amb el numero introduit...")
+                if amt > 0:
+                    jugador.AfegirObjecte(product, amt)
+                    jugador.Gold -= botigues[sel]["Venta"][prod]["price"] * amt
 
 
 def Posada(jugador, free = False):
