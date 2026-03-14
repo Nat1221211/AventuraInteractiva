@@ -53,7 +53,7 @@ def ExplorarTrobaroNo(jugador, objects):
             identif = trobat[0]
 
             print(f"Has trobat un/a {objects[tipus][identif].ObjectName}.")
-            jugador.AfegirObjecte(trobat[0], 1)
+            jugador.AfegirObjecte(objects[tipus][identif], 1)
             jugador.Ubicacio.ObjecteTrobat(trobat[0])
 
     if perTrobar == 0 or choice == ["res"]:

@@ -36,11 +36,11 @@
             "id": "Player",
             "Nom": "Nat",
             "Base": "mage",
-            "Lv": 11,
+            "Lv": 12,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 419.48
+            "XP": 371.53
         }
     ],
     "Inventari": [
@@ -56,7 +56,12 @@
         },
         {
             "id": "high_potion",
-            "Amount": 2,
+            "Amount": 3,
+            "Clase": "Combat"
+        },
+        {
+            "id": "elixir",
+            "Amount": 1,
             "Clase": "Combat"
         }
     ],
