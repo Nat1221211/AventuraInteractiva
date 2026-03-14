@@ -1,8 +1,8 @@
 {
     "Nom": "Nat",
-    "Ubicacio": "south_forest",
+    "Ubicacio": "dawn_village",
     "Or": 11100,
-    "Ultim_Visitat": "knightshire",
+    "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {
         "defeat_slimes": {
             "id": "defeat_slimes",
@@ -31,7 +31,8 @@
         "Bosc de Fusta Verda",
         "Knightshire",
         "Bosc de Fusta Verda",
-        "Bosc del Sud"
+        "Bosc del Sud",
+        "Dawn Village"
     ],
     "Team": [
         {

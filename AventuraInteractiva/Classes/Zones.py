@@ -20,7 +20,7 @@ class Zona():
 
 
     # Metodes
-    def __init__(self, id, name, description, tipus, enemies, gol, intents = 5, objects = {}):
+    def __init__(self, id, name, description, tipus, enemies, gol, intents = 5, objects = {}, shops = {}):
         self.id = id
         self.NameZone = name
         self.Description = description
@@ -30,6 +30,7 @@ class Zona():
         self.CondicioPerTrobarRuta = {}
         self.IntentsPerTrobar = intents
         self.Objectes = objects
+        self.Shops = shops
         self.Connections = None
     
     def AddConnections(self, connections):

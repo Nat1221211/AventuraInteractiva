@@ -196,6 +196,8 @@ def CrearMenu(llista, NomMenu, jugador = None, zones = None, filtre = "Playables
             options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription))
         elif isinstance(i[1], Characteristics.Moves):
             options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, i[1].Description))
+        elif isinstance(i[1], dict):
+            options.append(Utilitats.OpcioMenu(i[1]["id"], i[1]["name"], True, i[1]["description"]))
         
     Menus.update({NomMenu: Utilitats.Menu(
                 NomMenu,

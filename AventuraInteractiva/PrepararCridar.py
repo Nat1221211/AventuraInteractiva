@@ -154,8 +154,21 @@ def CallZones():
         with open(ruta_file, "r", encoding="utf-8") as f:
             i = json.load(f)
 
+            shop_dict = {}
+            for shop in i["shops"]:
+                ruta_shop = os.path.join(rutabase, "Data/Botigues",shop+".json")
+                with open(ruta_file, "r", encoding="utf-8") as shop_file:
+                    shop_value = json.load(shop_file)
+                
+                shop_dict.update(
+                    {
+                        shop:
+                        shop_value
+                    }
+                )
+
             place = Zones.Zona(i["id"], i["name"], i["description"], i["zone_type"], i["enemies"], 
-                            i["monedes"], i["Intents"], i["objects"])
+                            i["monedes"], i["Intents"], i["objects"], shop_dict)
             
             place.AddConnections(i["connections"])
             place.AfegirCondicio(i["unlock_condition"])

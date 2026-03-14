@@ -3,6 +3,7 @@
     "name": "Bosc de Fusta Verda",
     "description": "Al atravesar el bosc ubicat al sud de Dawn Village, entres als boscs de fusta verda, t'apropes a la capital...",
     "zone_type": "bosc",
+    "shops": [],
     
     "enemies": {
         "wolf": {

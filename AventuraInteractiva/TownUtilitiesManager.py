@@ -10,8 +10,10 @@ import random
 import UIManager
 from Classes import Missions
 
-def Botiga():
-    print()
+def Botiga(jugador):
+    botigues = jugador.Ubicacio.Shops
+    UIManager.CrearMenu(botigues.items(), "Botigues")
+    UIManager.MostrarMenus(UIManager.Menus["Botigues"])
 
 def Posada(jugador, free = False):
 

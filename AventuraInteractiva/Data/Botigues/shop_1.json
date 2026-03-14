@@ -1,20 +1,36 @@
 {
     "id": "shop_1",
-    "name": "Botiga",
-    "description": "Una botiga",
-    "Per Vendre": {
-        "(same as id)": {
-            "id": "",
-            "description": "",
-            "type": "",
-            "price": ""
+    "name": "Botiga General",
+    "description": "Una botiga general, sol ser trobada en molts pobles i ciutats...",
+    "Venta": {
+        "inferior_potion": {
+            "id": "inferior_potion",
+            "description": "Una pocio de baixa calitat.",
+            "type": "Combat",
+            "price": 100,
+            "Requirements": {
+                "Level": 1
+            }
         },
 
-        "(same_id)": {
-            "id": "",
-            "description": "",
-            "type": "",
-            "price": ""
+        "potion": {
+            "id": "potion",
+            "description": "Una pocio normal i corrent.",
+            "type": "Combat",
+            "price": 300,
+            "Requirements": {
+                "Level": 1
+            }
+        },
+
+        "intermediate_potion": {
+            "id": "intermediate_potion",
+            "description": "Una pocio considerablement bona.",
+            "type": "Combat",
+            "price": 500,
+            "Requirements": {
+                "Level": 1
+            }
         }
     }
 }
