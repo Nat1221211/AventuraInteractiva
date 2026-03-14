@@ -360,7 +360,7 @@ class Entity():
     def LvlUp(self, enemy = None, XP = None):
         if self.Lv < self.LvLimit:
             if XP == None and enemy != None:
-                XP = float(round(5 + enemy.base.baseXP * (enemy.Lv * 0.2), 2))
+                XP = float(round(self.XPObtained(enemy), 2))
                 self.Xp += XP
                 self.Xp = float(round(self.Xp, 2))
             elif XP != None and enemy == None:
@@ -379,4 +379,22 @@ class Entity():
             input("Presiona per a continuar...")
     
     
-   
+    def XPObtained(self, enemy):
+        baseXP = enemy.base.baseXP
+        
+        # Exponents / Multiplicadors
+        lvlExponent = 0.15
+        lvlDiffExponent = 1.6
+
+        # Valors
+        multiplierperLevel = 1 + (lvlExponent*enemy.Lv)
+        multiplierPerDiff = (enemy.Lv / self.Lv) ** lvlDiffExponent
+
+        # Resultat
+        xpObtained = baseXP * multiplierperLevel * multiplierPerDiff
+
+        xpObtained = max(xpObtained, baseXP * 0.1)
+        xpObtained = min(xpObtained, baseXP * 5000)
+
+        return xpObtained
+
