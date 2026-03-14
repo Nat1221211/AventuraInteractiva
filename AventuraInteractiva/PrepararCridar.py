@@ -157,7 +157,7 @@ def CallZones():
             shop_dict = {}
             for shop in i["shops"]:
                 ruta_shop = os.path.join(rutabase, "Data/Botigues",shop+".json")
-                with open(ruta_file, "r", encoding="utf-8") as shop_file:
+                with open(ruta_shop, "r", encoding="utf-8") as shop_file:
                     shop_value = json.load(shop_file)
                 
                 shop_dict.update(

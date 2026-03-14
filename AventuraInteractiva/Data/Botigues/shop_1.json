@@ -5,6 +5,7 @@
     "Venta": {
         "inferior_potion": {
             "id": "inferior_potion",
+            "name": "Pocio Inferior",
             "description": "Una pocio de baixa calitat.",
             "type": "Combat",
             "price": 100,
@@ -15,6 +16,7 @@
 
         "potion": {
             "id": "potion",
+            "name": "Pocio",
             "description": "Una pocio normal i corrent.",
             "type": "Combat",
             "price": 300,
@@ -25,6 +27,7 @@
 
         "intermediate_potion": {
             "id": "intermediate_potion",
+            "name": "Pocio Intermitja",
             "description": "Una pocio considerablement bona.",
             "type": "Combat",
             "price": 500,

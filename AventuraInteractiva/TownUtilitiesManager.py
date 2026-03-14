@@ -10,10 +10,20 @@ import random
 import UIManager
 from Classes import Missions
 
-def Botiga(jugador):
+def Botiga(jugador, objectes):
     botigues = jugador.Ubicacio.Shops
     UIManager.CrearMenu(botigues.items(), "Botigues")
-    UIManager.MostrarMenus(UIManager.Menus["Botigues"])
+    sel = UIManager.MostrarMenus(UIManager.Menus["Botigues"])
+    if sel != None:
+        UIManager.CrearMenuProductes(botigues[sel]["Venta"].items(), "Productes")
+        prod = ""
+        while prod == "":
+            prod = UIManager.MostrarMenus(UIManager.Menus["Productes"])
+            if prod != None:
+                product = objectes[botigues[sel]["Venta"][prod]["type"]][prod]
+                jugador.AfegirObjecte(product, 1)
+                jugador.Gold -= botigues[sel]["Venta"][prod]["price"]
+
 
 def Posada(jugador, free = False):
 

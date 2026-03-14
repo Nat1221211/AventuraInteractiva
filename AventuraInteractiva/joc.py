@@ -109,7 +109,7 @@ def AccioMenuPrincipal():
     elif accio == "hostal":
         TUtManager.Posada(jugador)
     elif accio == "botiga":
-        TUtManager.Botiga(jugador)
+        TUtManager.Botiga(jugador, Objects)
     elif accio == "estat":
         UIManager.VeureEstatus(jugador)
     elif accio == "missions":

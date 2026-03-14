@@ -207,6 +207,23 @@ def CrearMenu(llista, NomMenu, jugador = None, zones = None, filtre = "Playables
         }
     )
 
+def CrearMenuProductes(botiga, NomMenu, opcionsvisibles = 5):
+    opcions = []
+
+    for id, value in botiga:
+        espaiats = 80 - len(value["name"])
+        textProd = f"{value["name"]}" + " "*espaiats + f"Preu: {value["price"]}"
+
+        opcions.append(Utilitats.OpcioMenu(value["id"], 
+                                           textProd, True, value["description"]))
+
+    Menus.update({NomMenu: Utilitats.Menu(
+                NomMenu,
+                opcions,
+                opcionsvisibles
+            )
+        }
+    )
 def CrearMenuMissions(llistamissions, NomMenu, filtre, estat = None, opcionsvisibles = 6):
     opcions = []
     for i in llistamissions.items():
