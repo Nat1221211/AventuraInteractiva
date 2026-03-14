@@ -1,7 +1,7 @@
 {
     "id": "def_great_slime",
     "name": "Derrotant al Slime",
-    "description": "T'encarreguen que derrotis a un slime extrany que ha apregut",
+    "description": "T'encarreguen que derrotis a un slime extrany que ha apregut al Bosc de Fusta verda...",
     "class": "Principal",
     "type": "Kill",
     "generic": "False",

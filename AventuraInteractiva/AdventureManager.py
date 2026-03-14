@@ -28,10 +28,8 @@ def Mapa(jugador, zones, missions, event):
         input("Has sortit del mapa... (Presiona per a continuar)")
 
 def OcurrenciaMisio(misio, jugador, missions, event):
-    if type(misio) == Missions.KillMission:
-        if misio.Enemic == 1:
-            aLluitar = [misio.Enemic]
-        CombatManager.Lluitar(jugador, aLluitar, event, missions)
+    if type(misio) == Missions.KillMission:        
+        CombatManager.Lluitar(jugador, misio.Enemic, event, missions)
     elif type(misio) == Missions.FindMission:
         print(f"Has trobat en/la {misio.Objective}")
         misio.Completed()
@@ -70,16 +68,17 @@ def Explorar(jugador, missions, Entities, event, zones, objects):
         TrobarOr(jugador)
     elif prob > 20 and prob <= 70:  # Res / Missions / Ocurrencies
         llista = []
-        for i, v in missions.items():
-            for id, value in v.items():
-                if value.Status == "Accepted" and value.Place == jugador.Ubicacio:
-                    if type(i) == Missions.KillMission:
-                        if value.Generic == False:
-                            llista.append(id)
-                    else:
-                        llista.append(id)
+        for id in jugador.MisionsAcceptades:
+            for i in missions.items():
+                if id in i[1]:
+                    if i[1][id].Objective["Place"] == jugador.Ubicacio.id:
+                        if i[0] == "Kill":
+                            if i[1][id].Generic == "False":
+                                llista.append(i[1][id])
+                        else:
+                            llista.append(i[1][id])
         if len(llista) > 0:
-            choice = random.choices(["res", "missio"], [80, 20])
+            choice = random.choices(["res", "missio"], [10, 90])
             if choice[0] == "missio":
                 misio = random.choice(llista)
                 OcurrenciaMisio(misio, jugador, missions, event)

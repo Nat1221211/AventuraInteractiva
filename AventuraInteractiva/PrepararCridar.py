@@ -164,7 +164,7 @@ def CallZones():
             places.update({i["id"]: place})
     return places
 
-def CallMissions():
+def CallMissions(entitats):
     rutabase = os.path.dirname(__file__)
     ruta = os.path.join(rutabase, "Data/Missions/")
 
@@ -181,7 +181,7 @@ def CallMissions():
                 if i["generic"] == "True":
                     i["generic"] = True
                 mision = Missions.KillMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
-                                             i["objective"], i["requisites"], i["generic"])
+                                             i["objective"], i["requisites"], i["generic"], entitats)
             elif i["type"] == "Find":
                 mision = Missions.FindMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
                                               i["objective"], i["requisites"])

@@ -144,7 +144,7 @@ class KillMission(Mission):
     Count = 0
     
     # Metodes
-    def __init__(self, iden, name, description, cat, rewards, objective, requisite, generic = True):
+    def __init__(self, iden, name, description, cat, rewards, objective, requisite, generic = True, entitats = None):
         self.id = iden
         self.Name = name
         self.Description = description
@@ -154,10 +154,15 @@ class KillMission(Mission):
         self.Requisite = requisite
         self.Generic = generic
         self.Count = 0
-        if self.Generic == False:
-            for i in self.Objective:
-                self.Enemic = Entitat.Entity("missions_enemy", self.Objective["entity"], self.Objective["name"],
-                                             False, self.Objective["level"])
+        if self.Generic == "False":
+            self.Enemic = []
+            count = 0
+            for j in self.Objective["enemy"]:
+                self.Enemic.append(
+                    Entitat.Entity(f"missions_enemy_{count}", j["name"],
+                                    j["level"], False, entitats[j["entity"]])
+                )
+                count += 1
 
     def IncrementCount(self, enemy):
         if self.Generic == True:

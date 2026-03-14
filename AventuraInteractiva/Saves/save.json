@@ -1,18 +1,19 @@
 {
     "Nom": "Nat",
     "Ubicacio": "greenwoods",
-    "Or": 8330,
+    "Or": 11330,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
-        "defeat_slimes": {
-            "id": "defeat_slimes",
+        "def_great_slime": {
+            "id": "def_great_slime",
             "type": "Kill",
-            "Progress": 3,
-            "Status": "Pendent Reclamar"
+            "Progress": 0,
+            "Status": "Disponible"
         }
     },
     "Missions_Finalitzades": [
-        "first_adventure"
+        "first_adventure",
+        "defeat_slimes"
     ],
     "Missions_Disponibles": {},
     "Llocs_Trobats": [
@@ -39,7 +40,7 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 119.48
+            "XP": 419.48
         }
     ],
     "Inventari": [
@@ -55,7 +56,7 @@
         },
         {
             "id": "high_potion",
-            "Amount": 1,
+            "Amount": 2,
             "Clase": "Combat"
         }
     ],

@@ -48,7 +48,7 @@ botiga = [Objects["Combat"]["inferior_potion"],
 
 achievements = []
 
-missions = Call.CallMissions()
+missions = Call.CallMissions(Entities)
 
 missions["Place"]["first_adventure"].Status = "Disponible"
 
