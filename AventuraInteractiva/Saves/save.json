@@ -1,7 +1,7 @@
 {
     "Nom": "Nat",
     "Ubicacio": "greenwoods",
-    "Or": 8270,
+    "Or": 8330,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
         "defeat_slimes": {
@@ -35,11 +35,11 @@
             "id": "Player",
             "Nom": "Nat",
             "Base": "mage",
-            "Lv": 10,
+            "Lv": 11,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 183.35
+            "XP": 119.48
         }
     ],
     "Inventari": [

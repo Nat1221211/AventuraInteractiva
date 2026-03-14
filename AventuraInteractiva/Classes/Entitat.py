@@ -142,7 +142,7 @@ class Entity():
         if LvOrNot == False:
             self.StatsCombat["CurHP"] = self.StatsBase["MaxHP"]
             self.StatsCombat["Mana"] = self.StatsBase["MaxMana"]
-            self.XpRequired = float(round(self.XpRequired + 5 * (self.Lv ** 1.2), 2))
+            self.XpRequired = float(round(self.CalcXPRequired(), 2))
             self.afected = []
         self.DefinirMoves()
     
@@ -375,16 +375,30 @@ class Entity():
                 self.DefinirStats(True)
                 self.DefinirCombatStats()
                 self.Xp -= self.XpRequired
-                self.XpRequired = float(round(5 * (self.Lv ** (2 + (self.Lv * (1 / 1000)))), 2))
+                self.XpRequired = float(round(self.CalcXPRequired(), 2))
             input("Presiona per a continuar...")
     
-    
+    def CalcXPRequired(self):
+        baseAmount = 5
+        multiplierToLvl = 600
+
+        exponentForLvl = 2
+
+
+        addToExponent = (self.Lv * (1 / multiplierToLvl))
+
+        xpMultiplier = (self.Lv ** (exponentForLvl + addToExponent))
+        xpRequired = baseAmount * xpMultiplier
+
+        return xpRequired
+
+
     def XPObtained(self, enemy):
         baseXP = enemy.base.baseXP
         
         # Exponents / Multiplicadors
-        lvlExponent = 0.15
-        lvlDiffExponent = 1.6
+        lvlExponent = 0.3
+        lvlDiffExponent = 2.2
 
         # Valors
         multiplierperLevel = 1 + (lvlExponent*enemy.Lv)

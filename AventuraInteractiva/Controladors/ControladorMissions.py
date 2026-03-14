@@ -21,18 +21,19 @@ import PrepararCridar as Call
 def sistemaMissionsDerrota(dada, jugador, missions):
     for id in jugador.MisionsAcceptades:
         if id in missions["Kill"].keys():
-            if missions["Kill"][id].Generic == True:
-                if dada.base.id in missions["Kill"][id].Objective["enemy"]:
-                    missions["Kill"][id].Count += 1
-            else:
-                for obj in missions["Kill"][id].Objective["enemy"]:
-                    if obj["entity"] == dada.base.id:
-                        if obj["name"] == dada.nom:
-                            if obj["level"] == dada.level:
-                                missions["Kill"][id].Count += 1
+            if missions["Kill"][id].Status not in ["Pendent Reclamar"]:
+                if missions["Kill"][id].Generic == True:
+                    if dada.base.id in missions["Kill"][id].Objective["enemy"]:
+                        missions["Kill"][id].Count += 1
+                else:
+                    for obj in missions["Kill"][id].Objective["enemy"]:
+                        if obj["entity"] == dada.base.id:
+                            if obj["name"] == dada.nom:
+                                if obj["level"] == dada.level:
+                                    missions["Kill"][id].Count += 1
 
-            if missions["Kill"][id].Count >= missions["Kill"][id].Objective["Amount"]:
-                ReclamarMissio(missions["Kill"][id])
+                if missions["Kill"][id].Count >= missions["Kill"][id].Objective["Amount"]:
+                    ReclamarMissio(missions["Kill"][id])
 
 def sistemaMissionsVisita(dada, jugador, missions):
     for id in jugador.MisionsAcceptades:
