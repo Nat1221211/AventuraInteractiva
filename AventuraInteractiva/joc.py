@@ -25,6 +25,7 @@ import SaveGame
 import UIManager
 import CombatManager
 import AdventureManager
+import TownUtilitiesManager as TUtManager
 
 from Controladors import ControladorMissions
 
@@ -106,9 +107,9 @@ def AccioMenuPrincipal():
     elif accio == "explorar":
         AdventureManager.Explorar(jugador, missions, Entities, event, zones, Objects)
     elif accio == "hostal":
-        Posada()
+        TUtManager.Posada(jugador)
     elif accio == "botiga":
-        Botiga()
+        TUtManager.Botiga()
     elif accio == "estat":
         UIManager.VeureEstatus(jugador)
     elif accio == "missions":
@@ -125,26 +126,6 @@ def AccioMenuPrincipal():
     elif accio == "gremi":
         # Gremi()
         print("Desactivat")
-
-def Botiga():
-    print()
-
-def Posada(free = False):
-    global jugador
-
-    if free == False:
-        res = UIManager.MostrarMenus(UIManager.Menus["Posada"], False)
-    if free == True or res == "si":
-        if jugador.Gold >= 100 or free == True:
-            print("Has descansat comodament, t'has recuperat completament...")
-            if free == False:
-                jugador.Gold -= 100
-            for i in jugador.Team.values():
-                i.Recuperacio()
-        else:
-            print("No tens suficient gold per pagar la posada, has marxat sense poder descansar...")
-    else:
-        print("Has marxat...")  
 
 def SeleccioPartida():
     global jugador
@@ -193,7 +174,7 @@ def main():
                     alive += 1
         print(f"Has estat derrotat, t'han trobat i ara estas en la posada del ultim poble per el que has passat...")
         jugador.Ubicacio = jugador.UltimPobleVisitat
-        Posada(True)
+        TUtManager.Posada(jugador, True)
         input("Presiona per a continuar...")
         # if PostGame == False and objectes[15] in jugador.objectes.keys(): # Es pot eliminar aquest easter egg eliminant la funcio EasterEgg() i les 3 linies baix aquesta.
         #     PostGame = True   # Faria falta eliminar també el bool Easter dins el main()
