@@ -12,6 +12,16 @@
             "entity": "slime",
             "level": 10,
             "name": "Great Slime"
+            },
+            {
+            "entity": "slime",
+            "level": 6,
+            "name": "Slime"
+            },
+            {
+            "entity": "slime",
+            "level": 6,
+            "name": "Slime"
             }
         ],
         "Amount": 1

@@ -63,6 +63,11 @@
             "id": "elixir",
             "Amount": 1,
             "Clase": "Combat"
+        },
+        {
+            "id": "complete_potion",
+            "Amount": 1,
+            "Clase": "Combat"
         }
     ],
     "Titols": [],
