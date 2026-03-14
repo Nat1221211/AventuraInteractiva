@@ -6,7 +6,7 @@
     "type": "Kill",
     "generic": "False",
     "objective":{
-        "Place": "greenwoods", 
+        "place": "greenwoods", 
         "enemy": [
             {
             "entity": "slime",

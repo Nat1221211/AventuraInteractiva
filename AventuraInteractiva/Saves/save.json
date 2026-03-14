@@ -1,11 +1,11 @@
 {
     "Nom": "Nat",
-    "Ubicacio": "greenwoods",
-    "Or": 11330,
+    "Ubicacio": "south_forest",
+    "Or": 11100,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
-        "def_great_slime": {
-            "id": "def_great_slime",
+        "defeat_slimes": {
+            "id": "defeat_slimes",
             "type": "Kill",
             "Progress": 0,
             "Status": "Disponible"
@@ -13,7 +13,8 @@
     },
     "Missions_Finalitzades": [
         "first_adventure",
-        "defeat_slimes"
+        "find_smulet_greenwoods",
+        "fins_jack_south_forest"
     ],
     "Missions_Disponibles": {},
     "Llocs_Trobats": [
@@ -29,44 +30,30 @@
         "Knightshire",
         "Bosc de Fusta Verda",
         "Knightshire",
-        "Bosc de Fusta Verda"
+        "Bosc de Fusta Verda",
+        "Bosc del Sud"
     ],
     "Team": [
         {
             "id": "Player",
             "Nom": "Nat",
             "Base": "mage",
-            "Lv": 12,
+            "Lv": 8,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 371.53
+            "XP": 39.43000000000001
         }
     ],
     "Inventari": [
         {
             "id": "inferior_potion",
-            "Amount": 3,
+            "Amount": 5,
             "Clase": "Combat"
         },
         {
             "id": "potion",
-            "Amount": 1,
-            "Clase": "Combat"
-        },
-        {
-            "id": "high_potion",
             "Amount": 3,
-            "Clase": "Combat"
-        },
-        {
-            "id": "elixir",
-            "Amount": 1,
-            "Clase": "Combat"
-        },
-        {
-            "id": "complete_potion",
-            "Amount": 1,
             "Clase": "Combat"
         }
     ],

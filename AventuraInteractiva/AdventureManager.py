@@ -31,11 +31,11 @@ def OcurrenciaMisio(misio, jugador, missions, event):
     if type(misio) == Missions.KillMission:        
         CombatManager.Lluitar(jugador, misio.Enemic, event, missions)
     elif type(misio) == Missions.FindMission:
-        print(f"Has trobat en/la {misio.Objective}")
-        misio.Completed()
+        print(f"Has trobat en/la {misio.Objective["find"]}")
+        event.CridarEvent("Persona Missio Trobada", misio.Objective["find"], jugador, missions)
     elif type(misio) == Missions.ObjectMission:
-        print(f"Has trobat l'objecte {misio.Objective.ObjectName}")
-        misio.Completed()
+        print(f"Has trobat l'objecte {misio.Objective["ObjName"]}")
+        event.CridarEvent("Objecte Missio Trobat", misio.Objective["object"], jugador, missions)
     if type(misio) != Missions.KillMission:
         input("Presiona per a Continuar...")
 
@@ -71,7 +71,7 @@ def Explorar(jugador, missions, Entities, event, zones, objects):
         for id in jugador.MisionsAcceptades:
             for i in missions.items():
                 if id in i[1]:
-                    if i[1][id].Objective["Place"] == jugador.Ubicacio.id:
+                    if i[1][id].Objective["place"] == jugador.Ubicacio.id:
                         if i[0] == "Kill":
                             if i[1][id].Generic == "False":
                                 llista.append(i[1][id])

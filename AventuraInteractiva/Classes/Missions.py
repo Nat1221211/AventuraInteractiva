@@ -83,7 +83,7 @@ class Mission():
 
 class FindMission(Mission):
     
-    Objective = ""
+    Objective = {}
     
     # Metodes
     def __init__(self, iden, name, description, cat, rewards, objective, requisite):
@@ -95,14 +95,9 @@ class FindMission(Mission):
         self.Objective = objective
         self.Requisite = requisite
         
-    
-    def Completed(self):
-        self.Status = "Rewards Unclaimed"
-        print(f"Has completat la missio {self.Name}.")
-
 class ObjectMission(Mission):
     
-    Objective = Objectes.ObjecteClau
+    Objective = {}
     
     # Metodes
     def __init__(self, iden, name, description, cat, rewards, objective, requisite):
@@ -113,11 +108,7 @@ class ObjectMission(Mission):
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
-   
-    def Completed(self):
-        print(f"Has completat la missio {self.Name}.")
-        self.Status = "Rewards Unclaimed"
-
+  
 class PlaceMission(Mission):
     
     Objective = Zones.Zona
@@ -131,12 +122,6 @@ class PlaceMission(Mission):
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
-   
-    def Completed(self):
-        if self.Status == "Accepted":
-            self.Status = "Rewards Unclaimed"
-            print(f"\nHas completat la missio {self.Name}.")
-            input("\nPresiona per a continuar...")
 
 class KillMission(Mission):
     

@@ -41,6 +41,18 @@ def sistemaMissionsVisita(dada, jugador, missions):
             if dada == missions["Place"][id].Objective["place"]:
                 ReclamarMissio(missions["Place"][id])
 
+def sistemaMissionsObject(dada, jugador, missions):
+    for id in jugador.MisionsAcceptades:
+        if id in missions["Object"].keys():
+            if dada == missions["Object"][id].Objective["object"]:
+                ReclamarMissio(missions["Object"][id])
+
+def sistemaMissionsFind(dada, jugador, missions):
+    for id in jugador.MisionsAcceptades:
+        if id in missions["Find"].keys():
+            if dada == missions["Find"][id].Objective["find"]:
+                ReclamarMissio(missions["Find"][id])
+
 
 def ReclamarMissio(missio):
     missio.Status = "Pendent Reclamar"

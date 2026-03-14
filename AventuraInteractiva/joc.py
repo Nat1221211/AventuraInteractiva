@@ -56,6 +56,8 @@ event = Events.ControladorEvents()
 
 event.NouEvent("Derrotar Enemic", ControladorMissions.sistemaMissionsDerrota)
 event.NouEvent("Lloc Visitat", ControladorMissions.sistemaMissionsVisita)
+event.NouEvent("Objecte Missio Trobat", ControladorMissions.sistemaMissionsObject)
+event.NouEvent("Persona Missio Trobada", ControladorMissions.sistemaMissionsFind)
 event.NouEvent("Missio Finalitzada", ControladorMissions.DesbloquejarMissio)
 
 
