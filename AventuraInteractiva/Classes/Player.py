@@ -58,11 +58,11 @@ class Player():
             i.DefinirPermanentStats()
 
     def AfegirObjecte(self, afegit, quantitat):
-        if afegit in self.objectes:
+        if afegit.id in self.objectes.keys():
             self.objectes[afegit.id]["amount"] += quantitat
         else:
-            self.objectes[afegit.id].update({"objecte": afegit, "amount": quantitat})
-        UIManager.CrearMenu(self.objectes.items(), "Motxila", "Objectes",opcionsvisibles=6)
+            self.objectes.update({afegit.id: {"objecte": afegit, "amount": quantitat}})
+        UIManager.CrearMenu(self.objectes.items(), "Motxila", "Objectes", opcionsvisibles=6)
     
     def ActualitzarUltimPobleVisitat(self):
         if self.Ubicacio.ZoneType == "Poble":

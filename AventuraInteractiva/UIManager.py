@@ -205,7 +205,7 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None, opcionsvisi
             else:
                 tipus = "Clau"
             options.append(Utilitats.OpcioMenu({"id": i[1]["objecte"].id, "type": tipus}, mostrar, True, i[1]["objecte"].ObjectDescription))
-        elif isinstance(i[1], dict):
+        elif filtre == "Botigues" and isinstance(i[1], dict):
             options.append(Utilitats.OpcioMenu(i[1]["id"], i[1]["name"], True, i[1]["description"]))
         
     Menus.update({NomMenu: Utilitats.Menu(

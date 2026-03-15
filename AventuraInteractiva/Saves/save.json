@@ -1,8 +1,8 @@
 {
     "Nom": "Nat",
-    "Ubicacio": "greenwoods",
+    "Ubicacio": "knightshire",
     "Or": 14280,
-    "Ultim_Visitat": "dawn_village",
+    "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [
         "first_adventure",
@@ -35,7 +35,8 @@
         "Bosc del Sud",
         "Dawn Village",
         "Bosc del Sud",
-        "Bosc de Fusta Verda"
+        "Bosc de Fusta Verda",
+        "Knightshire"
     ],
     "Team": [
         {

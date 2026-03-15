@@ -12,7 +12,7 @@ from Classes import Missions
 
 def Botiga(jugador, objectes):
     botigues = jugador.Ubicacio.Shops
-    UIManager.CrearMenu(botigues.items(), "Botigues")
+    UIManager.CrearMenu(botigues.items(), "Botigues", "Botigues")
     sel = UIManager.MostrarMenus(UIManager.Menus["Botigues"])
     if sel != None:
         UIManager.CrearMenuProductes(botigues[sel]["Venta"].items(), "Productes")
