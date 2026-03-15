@@ -115,14 +115,14 @@ def AccioMenuPrincipal():
     elif accio == "missions":
         UIManager.MenuMisions(jugador, missions, event, Objects)
     elif accio == "lluitar":
-        CombatManager.GenerarEnemic(Entities, jugador, event, missions)
+        CombatManager.GenerarEnemic(Entities, jugador, event, missions, Objects)
     elif accio == "guardar":
         SaveGame.GuardarPartida(jugador, missions)
     elif accio == "exits":
         #MostrarExits()
         print("No actualitxat")
     elif accio == "motxila":
-        jugador.ObjectesMochila(False)
+        jugador.ObjectesMochila(Objects, False)
     elif accio == "gremi":
         # Gremi()
         print("Desactivat")

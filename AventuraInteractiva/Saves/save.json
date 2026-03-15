@@ -1,22 +1,23 @@
 {
     "Nom": "Nat",
     "Ubicacio": "south_forest",
-    "Or": 11140,
+    "Or": 14280,
     "Ultim_Visitat": "dawn_village",
-    "Missions_Acceptades": {
-        "defeat_slimes": {
-            "id": "defeat_slimes",
-            "type": "Kill",
-            "Progress": 1,
-            "Status": "Disponible"
-        }
-    },
+    "Missions_Acceptades": {},
     "Missions_Finalitzades": [
         "first_adventure",
         "find_smulet_greenwoods",
-        "fins_jack_south_forest"
+        "fins_jack_south_forest",
+        "defeat_slimes"
     ],
-    "Missions_Disponibles": {},
+    "Missions_Disponibles": {
+        "def_great_slime": {
+            "id": "def_great_slime",
+            "type": "Kill",
+            "Progress": 0,
+            "Status": "Disponible"
+        }
+    },
     "Llocs_Trobats": [
         "dawn_village",
         "south_forest",
@@ -40,22 +41,27 @@
             "id": "Player",
             "Nom": "Nat",
             "Base": "mage",
-            "Lv": 8,
+            "Lv": 9,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 54.36
+            "XP": 71.79
         }
     ],
     "Inventari": [
         {
             "id": "inferior_potion",
-            "Amount": 5,
+            "Amount": 3,
             "Clase": "Combat"
         },
         {
             "id": "potion",
             "Amount": 3,
+            "Clase": "Combat"
+        },
+        {
+            "id": "high_potion",
+            "Amount": 1,
             "Clase": "Combat"
         }
     ],

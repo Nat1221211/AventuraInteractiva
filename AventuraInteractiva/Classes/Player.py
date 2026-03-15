@@ -59,9 +59,9 @@ class Player():
 
     def AfegirObjecte(self, afegit, quantitat):
         if afegit in self.objectes:
-            self.objectes[afegit] += quantitat
+            self.objectes[afegit.id]["amount"] += quantitat
         else:
-            self.objectes[afegit]=quantitat
+            self.objectes[afegit.id].update({"objecte": afegit, "amount": quantitat})
         UIManager.CrearMenu(self.objectes.items(), "Motxila", "Objectes",opcionsvisibles=6)
     
     def ActualitzarUltimPobleVisitat(self):
@@ -76,15 +76,16 @@ class Player():
             print(f"{i[0].ObjectDescription}")
             print("\n")
 
-    def ObjectesMochila(self, combat = False):
+    def ObjectesMochila(self, objectes, combat = False):
             obj = ""
             while obj != None:
                 obj = UIManager.MostrarMenus(UIManager.Menus["Motxila"])
                 if obj != None:
+                    objecte = objectes[obj["type"]][obj["id"]]
                     if combat == False:
-                        obj = CombatManager.UseObject(self, self.Team, obj)
+                        obj = CombatManager.UseObject(self, self.Team, objecte)
                     else:
-                        return obj
+                        return objecte
                 else:
                     input("Has sortit de la motxila...")
 

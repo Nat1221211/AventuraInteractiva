@@ -14,7 +14,7 @@ from Classes import Entitat
 import UIManager
 
 
-def GenerarEnemic(Entities, jugador, event, missions):
+def GenerarEnemic(Entities, jugador, event, missions, objectes):
 
     pesos = []
     for j in jugador.Ubicacio.Enemies.values():
@@ -61,7 +61,7 @@ def GenerarEnemic(Entities, jugador, event, missions):
             
             enemy.update({entitat.id: entitat})
     
-    Lluitar(jugador, enemy, event, missions)
+    Lluitar(jugador, enemy, event, missions, objectes)
 
 
 
@@ -94,7 +94,7 @@ def PrioritatInicial(jugador, enemy):
 
     return enemy
 
-def Lluitar(jugador, enemy, event, missions):
+def Lluitar(jugador, enemy, event, missions, objectes):
 
     teamderr = 0
     enemyderr = 0
@@ -126,7 +126,7 @@ def Lluitar(jugador, enemy, event, missions):
                     UIManager.BattleScreenShow(jugador.Team)
                     UIManager.BattleScreenShow(enemy)
                     turn = False
-                    i, enemy, turn, fugir, enemyderr = AccionsLluita(i, jugador, enemy, enemyderr)
+                    i, enemy, turn, fugir, enemyderr = AccionsLluita(i, jugador, enemy, enemyderr, objectes)
                     
                     if turn == False:
                         i.Priority = 0
@@ -244,7 +244,7 @@ def MenuAtacar(personatge):
     else:
         return use
     
-def AccionsLluita(atacant, jugador, enemy, enemyderr):
+def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes):
     print(f"És el torn de {atacant.nom}")
     
     seleccio = UIManager.MostrarMenus(UIManager.Menus["Accions Lluita"], False, True, jugador, enemy)
@@ -281,7 +281,7 @@ def AccionsLluita(atacant, jugador, enemy, enemyderr):
         if fugir[0] == False:
             atacant, derrotats = ComprobarEfectEstat(atacant, derrotats)
     elif seleccio == "motxila":
-        obj = jugador.ObjectesMochila(True)
+        obj = jugador.ObjectesMochila(objectes, True)
         used = UseObject(jugador, jugador.Team, obj, True)
         if used == False:
             turn = True
@@ -308,9 +308,9 @@ def TriarObjectius(list):
 def UseObject(jugador, equip, obj, combat = False):
     target = TriarObjectius(equip)
     if target != None:
-        obj.Utilitzar(target)
-        if jugador.objectes[obj] > 1:
-            jugador.objectes[obj] -= 1
+        obj.Utilitzar(jugador.Team[target])
+        if jugador.objectes[obj.id]["amount"] > 1:
+            jugador.objectes[obj.id]["amount"] -= 1
         else:
             jugador.objectes.pop(obj)
         UIManager.CrearMenu(jugador.objectes.items(), "Motxila", "Objectes", opcionsvisibles=6)

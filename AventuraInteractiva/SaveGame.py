@@ -85,7 +85,7 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
 
     inventari = {}
     for o in dades["Inventari"]:
-        inventari.update({objectes[o["Clase"]][o["id"]]: o["Amount"]})
+        inventari.update({o["id"]: {"objecte": objectes[o["Clase"]][o["id"]], "amount": o["Amount"]}})
 
     jugador = Player.Player(dades["Nom"], equip, ubicacio)
     jugador.MissionsFinalitzades = dades["Missions_Finalitzades"]
@@ -128,16 +128,16 @@ def GuardarMissions(aguardar, missions):
 
 def GuardarInventari(jugador):
     inventari = []
-    for obj, amt in jugador.objectes.items():
-        if isinstance(obj, Objectes.ObjecteCombat):
+    for id, dict in jugador.objectes.items():
+        if isinstance(dict["objecte"], Objectes.ObjecteCombat):
             clase = "Combat"
-        elif isinstance(obj, Objectes.ObjecteClau):
+        elif isinstance(dict["objecte"], Objectes.ObjecteClau):
             clase = "Clau"
 
         inventari.append(
             {
-                "id": obj.id,
-                "Amount": amt,
+                "id": dict["objecte"].id,
+                "Amount": dict["amount"],
                 "Clase": clase
             }
         )

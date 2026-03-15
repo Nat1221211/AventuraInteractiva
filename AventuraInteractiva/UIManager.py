@@ -9,6 +9,7 @@ from Classes import Characteristics
 from Classes import EntityType
 from Classes import Entitat
 from Classes import Events
+from Classes import Objectes
 
 import os
 
@@ -197,9 +198,13 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None, opcionsvisi
         elif filtre == "Moves" and isinstance(i[1], Characteristics.Moves):
             options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, i[1].Description))
         elif filtre == "Objectes":
-            espaiat = 30 - len(i[0].ObjectName)
-            mostrar = f"{i[0].ObjectName}" + " "*espaiat + f"{i[1]}"
-            options.append(Utilitats.OpcioMenu(i[0].id, mostrar, True, i[0].ObjectDescription))
+            espaiat = 30 - len(i[1]["objecte"].ObjectName)
+            mostrar = f"{i[1]["objecte"].ObjectName}" + " "*espaiat + f"{i[1]["amount"]}"
+            if isinstance(i[1]["objecte"], Objectes.ObjecteCombat):
+                tipus = "Combat"
+            else:
+                tipus = "Clau"
+            options.append(Utilitats.OpcioMenu({"id": i[1]["objecte"].id, "type": tipus}, mostrar, True, i[1]["objecte"].ObjectDescription))
         elif isinstance(i[1], dict):
             options.append(Utilitats.OpcioMenu(i[1]["id"], i[1]["name"], True, i[1]["description"]))
         
