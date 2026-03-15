@@ -1,6 +1,6 @@
 {
     "Nom": "Nat",
-    "Ubicacio": "south_forest",
+    "Ubicacio": "greenwoods",
     "Or": 14280,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
@@ -34,14 +34,15 @@
         "Bosc de Fusta Verda",
         "Bosc del Sud",
         "Dawn Village",
-        "Bosc del Sud"
+        "Bosc del Sud",
+        "Bosc de Fusta Verda"
     ],
     "Team": [
         {
             "id": "Player",
             "Nom": "Nat",
             "Base": "mage",
-            "Lv": 9,
+            "Lv": 12,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],

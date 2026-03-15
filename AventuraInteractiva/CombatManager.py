@@ -207,7 +207,7 @@ def finalitzarCombat(clon, jugador):
         jugador.Team[i].afected = []
         jugador.Team[i].DefinirCombatStats()
 
-def ComprobarEfectEstat(entitat, derrotats):
+def ComprobarEfectEstat(entitat, derrotats = []):
     if len(entitat.afected) > 0:
         eliminar = []
         for i in entitat.afected:
@@ -279,7 +279,7 @@ def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes):
     elif seleccio == "fugir":
         fugir = Fugir(enemy, jugador)
         if fugir[0] == False:
-            atacant, derrotats = ComprobarEfectEstat(atacant, derrotats)
+            atacant, derrotats = ComprobarEfectEstat(atacant)
     elif seleccio == "motxila":
         obj = jugador.ObjectesMochila(objectes, True)
         used = None

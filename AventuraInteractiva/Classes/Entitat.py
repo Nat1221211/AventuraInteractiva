@@ -397,8 +397,8 @@ class Entity():
         baseXP = enemy.base.baseXP
         
         # Exponents / Multiplicadors
-        lvlExponent = 0.4
-        lvlDiffExponent = 1.8
+        lvlExponent = 3
+        lvlDiffExponent = 3
 
         # Valors
         multiplierperLevel = 1 + (lvlExponent*enemy.Lv)
