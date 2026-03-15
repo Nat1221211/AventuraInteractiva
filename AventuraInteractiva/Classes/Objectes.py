@@ -52,8 +52,11 @@ class ObjecteCombat(Objecte):
                     rec = int(v.replace("%", ""))
                     if jugador.StatsCombat[k] + ((jugador.StatsCombat[k] * rec) / 100) > jugador.StatsCombat[max]:
                         jugador.StatsCombat[k] = jugador.StatsCombat[max]
+                        input("Has recuperat tota la vida...")
                     else:
-                        jugador.StatsCombat[k] += ((jugador.StatsCombat[k] * rec) / 100)
+                        recup = ((jugador.StatsCombat[k] * rec) / 100)
+                        jugador.StatsCombat[k] += recup
+                        input(f"Has recuperat {recup} punts de vida...")
                 else:
                     cur = k
                     if k == "HP":
@@ -61,8 +64,10 @@ class ObjecteCombat(Objecte):
                     max = "Max" + k
                     if jugador.StatsCombat[cur] + v > jugador.StatsCombat[max]:
                         jugador.StatsCombat[cur] = jugador.StatsCombat[max]
+                        input("Has recuperat tota la vida...")
                     else:
                         jugador.StatsCombat[cur] += v
+                        input(f"Has recuperat {v} punts de vida...")
             if k == "Flee":
                 print("")
             if k in ["ATK","SPD","DEF","INT"]:

@@ -51,7 +51,7 @@
     "Inventari": [
         {
             "id": "inferior_potion",
-            "Amount": 3,
+            "Amount": 2,
             "Clase": "Combat"
         },
         {

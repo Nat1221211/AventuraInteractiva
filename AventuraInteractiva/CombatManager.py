@@ -282,8 +282,9 @@ def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes):
             atacant, derrotats = ComprobarEfectEstat(atacant, derrotats)
     elif seleccio == "motxila":
         obj = jugador.ObjectesMochila(objectes, True)
-        used = UseObject(jugador, jugador.Team, obj, True)
-        if used == False:
+        if obj != None:
+            used = UseObject(jugador, jugador.Team, obj, True)
+        if obj == False or used == False:
             turn = True
     elif seleccio == "status":
         UIManager.VeureEstatus(jugador, True)

@@ -88,6 +88,8 @@ class Player():
                         return objecte
                 else:
                     input("Has sortit de la motxila...")
+                    if combat == True:
+                        return None
 
             
                 
