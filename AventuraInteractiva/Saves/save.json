@@ -1,13 +1,13 @@
 {
     "Nom": "Nat",
-    "Ubicacio": "dawn_village",
-    "Or": 11100,
+    "Ubicacio": "south_forest",
+    "Or": 11140,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {
         "defeat_slimes": {
             "id": "defeat_slimes",
             "type": "Kill",
-            "Progress": 0,
+            "Progress": 1,
             "Status": "Disponible"
         }
     },
@@ -32,7 +32,8 @@
         "Knightshire",
         "Bosc de Fusta Verda",
         "Bosc del Sud",
-        "Dawn Village"
+        "Dawn Village",
+        "Bosc del Sud"
     ],
     "Team": [
         {
@@ -43,7 +44,7 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 39.43000000000001
+            "XP": 54.36
         }
     ],
     "Inventari": [

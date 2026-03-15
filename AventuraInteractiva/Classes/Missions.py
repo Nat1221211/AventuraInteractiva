@@ -139,7 +139,7 @@ class KillMission(Mission):
         self.Requisite = requisite
         self.Generic = generic
         self.Count = 0
-        if self.Generic == "False":
+        if self.Generic == False:
             self.Enemic = {}
             count = 0
             for j in self.Objective["enemy"]:

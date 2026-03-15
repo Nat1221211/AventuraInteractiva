@@ -13,7 +13,7 @@ import CombatManager
 
 def Mapa(jugador, zones, missions, event):
     
-    UIManager.CrearMenu(jugador.Ubicacio.Connections, "Mapa", jugador, zones, None, 4)
+    UIManager.CrearMenu(jugador.Ubicacio.Connections, "Mapa", "Zones", jugador, zones, 4)
 
     seleccio = UIManager.MostrarMenus(UIManager.Menus["Mapa"], True, False, None, None, f"Ubicació: {jugador.Ubicacio.NameZone}")
 
@@ -73,7 +73,7 @@ def Explorar(jugador, missions, Entities, event, zones, objects):
                 if id in i[1]:
                     if i[1][id].Objective["place"] == jugador.Ubicacio.id:
                         if i[0] == "Kill":
-                            if i[1][id].Generic == "False":
+                            if i[1][id].Generic == False:
                                 llista.append(i[1][id])
                         else:
                             llista.append(i[1][id])

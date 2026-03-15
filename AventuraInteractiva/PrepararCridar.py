@@ -193,6 +193,8 @@ def CallMissions(entitats):
             elif i["type"] == "Kill":
                 if i["generic"] == "True":
                     i["generic"] = True
+                else:
+                    i["generic"] = False
                 mision = Missions.KillMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
                                              i["objective"], i["requisites"], i["generic"], entitats)
             elif i["type"] == "Find":

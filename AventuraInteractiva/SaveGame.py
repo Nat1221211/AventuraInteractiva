@@ -13,6 +13,8 @@ from Classes import Entitat
 from Classes import Player
 from Classes import Objectes
 
+import UIManager
+
 
 def GuardarPartida(jugador, missions):
     dades = {
@@ -94,6 +96,8 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
     jugador.Gold = dades["Or"]
     jugador.objectes = inventari
     jugador.UltimPobleVisitat = ultim_visitat
+
+    UIManager.CrearMenu(jugador.objectes.items(), "Motxila", "Objectes",jugador, opcionsvisibles=6)
 
     return jugador
 

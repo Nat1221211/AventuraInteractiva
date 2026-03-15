@@ -22,7 +22,7 @@ def sistemaMissionsDerrota(dada, jugador, missions):
     for id in jugador.MisionsAcceptades:
         if id in missions["Kill"].keys():
             if missions["Kill"][id].Status not in ["Pendent Reclamar"]:
-                if missions["Kill"][id].Generic == "True":
+                if missions["Kill"][id].Generic == True:
                     if dada.base.id in missions["Kill"][id].Objective["enemy"]:
                         missions["Kill"][id].Count += 1
                 else:

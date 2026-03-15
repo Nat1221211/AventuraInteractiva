@@ -232,7 +232,7 @@ def ComprobarEfectEstat(entitat, derrotats):
 def MenuAtacar(personatge):
     UIManager.ClearScreen()
     
-    UIManager.CrearMenu(personatge.Moves.items(), "Moviments")
+    UIManager.CrearMenu(personatge.Moves.items(), "Moviments", "Moves")
 
     sel = UIManager.MostrarMenus(UIManager.Menus["Moviments"])
 
@@ -281,7 +281,8 @@ def AccionsLluita(atacant, jugador, enemy, enemyderr):
         if fugir[0] == False:
             atacant, derrotats = ComprobarEfectEstat(atacant, derrotats)
     elif seleccio == "motxila":
-        used = jugador.ObjectesMochila(jugador.Team, atacant, True)
+        obj = jugador.ObjectesMochila(True)
+        used = UseObject(jugador, jugador.Team, obj, True)
         if used == False:
             turn = True
     elif seleccio == "status":
@@ -298,11 +299,25 @@ def TriarObjectius(list):
     UIManager.ClearScreen()
     targetable = [i for i in list.items() if i[1].StatsCombat["CurHP"] > 0]
     
-    UIManager.CrearMenu(targetable, "Qui Vols Atacar?")
+    UIManager.CrearMenu(targetable, "Qui Vols Atacar?", "Entitat")
 
     target = UIManager.MostrarMenus(UIManager.Menus["Qui Vols Atacar?"], True)
         
     return target
+
+def UseObject(jugador, equip, obj, combat = False):
+    target = TriarObjectius(equip)
+    if target != None:
+        obj.Utilitzar(target)
+        if jugador.objectes[obj] > 1:
+            jugador.objectes[obj] -= 1
+        else:
+            jugador.objectes.pop(obj)
+        UIManager.CrearMenu(jugador.objectes.items(), "Motxila", "Objectes", opcionsvisibles=6)
+        if combat == False:
+            return ""
+    else:
+        return None
         
 
 def Fugir(enemy, jugador):

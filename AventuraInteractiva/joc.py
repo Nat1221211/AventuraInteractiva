@@ -73,7 +73,7 @@ def CrearJugador(first = False):
         except ValueError:
             print("Ha ocurregut un error...")
     
-    UIManager.CrearMenu(Entities.items(), "Menu Seleccio Inicial")
+    UIManager.CrearMenu(Entities.items(), "Menu Seleccio Inicial", ("Tipus Entitat", "Playable"))
     identifier = None
     while identifier == None:
         identifier = UIManager.MostrarMenus(UIManager.Menus["Menu Seleccio Inicial"], False)
@@ -122,7 +122,7 @@ def AccioMenuPrincipal():
         #MostrarExits()
         print("No actualitxat")
     elif accio == "motxila":
-        jugador.ObjectesMochila(jugador.Team)
+        jugador.ObjectesMochila(False)
     elif accio == "gremi":
         # Gremi()
         print("Desactivat")

@@ -180,22 +180,26 @@ def MenuMisions(jugador, missions, event, objects):
                     input("Has sortit del menu missions...")
 
 
-def CrearMenu(llista, NomMenu, jugador = None, zones = None, filtre = "Playables", opcionsvisibles = 3):
+def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None, opcionsvisibles = 3):
     options = []
     for i in llista:
-        if zones != None and jugador != None and isinstance(i, str) and i in zones.keys():
+        if filtre == "Zones" and zones != None and jugador != None and isinstance(i, str) and i in zones.keys():
             if i in jugador.LlocsTrobats:
                 options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, True, zones[i].Description))
             else:
                 options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, False, zones[i].Description))
-        elif isinstance(i[1], EntityType.EntityType):
-            if filtre == "Playables" and i[1].isPlayable != True:
+        elif isinstance(filtre, tuple) and filtre[0] == "Tipus Entitat" and isinstance(i[1], EntityType.EntityType):
+            if filtre[1] == "Playables" and i[1].isPlayable != True:
                 continue
             options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription))
-        elif isinstance(i[1], Entitat.Entity):
+        elif filtre == "Entitat" and isinstance(i[1], Entitat.Entity):
             options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription))
-        elif isinstance(i[1], Characteristics.Moves):
+        elif filtre == "Moves" and isinstance(i[1], Characteristics.Moves):
             options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, i[1].Description))
+        elif filtre == "Objectes":
+            espaiat = 30 - len(i[0].ObjectName)
+            mostrar = f"{i[0].ObjectName}" + " "*espaiat + f"{i[1]}"
+            options.append(Utilitats.OpcioMenu(i[0].id, mostrar, True, i[0].ObjectDescription))
         elif isinstance(i[1], dict):
             options.append(Utilitats.OpcioMenu(i[1]["id"], i[1]["name"], True, i[1]["description"]))
         
@@ -316,7 +320,7 @@ def BattleScreenShow(teamlis):
 
 def VeureEstatus(jugador, combat = False):
     ClearScreen()
-    CrearMenu(jugador.Team.items(), "Seleccio Equip")
+    CrearMenu(jugador.Team.items(), "Seleccio Equip", "Entitat")
 
     seleccio = MostrarMenus(Menus["Seleccio Equip"])
 
