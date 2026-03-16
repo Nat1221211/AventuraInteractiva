@@ -1,12 +1,30 @@
-Nom;Descripcio;Tipus de Requisit;Requisit;Quantitat;Recompensa;
-Lv 10; Arribar a Nivell 10; Stat; Lv; 10; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-Lv 20; Arribar a Nivell 20; Stat; Lv; 20; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-Lv 30; Arribar a Nivell 30; Stat; Lv; 30; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-Lv 40; Arribar a Nivell 40; Stat; Lv; 40; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-Lv 50; Arribar a Nivell 50; Stat; Lv; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-Lv 60; Arribar a Nivell 60; Stat; Lv; 60; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-Lv 70; Arribar a Nivell 70; Stat; Lv; 70; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-Lv 80; Arribar a Nivell 80; Stat; Lv; 80; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-Lv 90; Arribar a Nivell 90; Stat; Lv; 90; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-Lv 99; Arribar a Nivell 99; Stat; Lv; 99; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-Terror de les Besties; Ara ets el terror de les besties, fas dany augmentat contra aquestes; Kill; wold | conill; 3; Titol: Beast Slayer
+id;Nom;Descripcio;Ocult?;Tipus de Requisit;Requisit;Quantitat;Recompensa;
+lv10;Lv 10; Arribar a Nivell 10 amb un personatge.; False; Stat; Lv; 10; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+lv20;Lv 20; Arribar a Nivell 20 amb un personatge.; False; Stat; Lv; 20; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+lv30;Lv 30; Arribar a Nivell 30 amb un personatge.; False; Stat; Lv; 30; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+lv40;Lv 40; Arribar a Nivell 40 amb un personatge.; False; Stat; Lv; 40; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+lv50;Lv 50; Arribar a Nivell 50 amb un personatge.; False; Stat; Lv; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+lv60;Lv 60; Arribar a Nivell 60 amb un personatge.; False; Stat; Lv; 60; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+lv70;Lv 70; Arribar a Nivell 70 amb un personatge.; False; Stat; Lv; 70; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+lv80;Lv 80; Arribar a Nivell 80 amb un personatge.; False; Stat; Lv; 80; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+lv90;Lv 90; Arribar a Nivell 90 amb un personatge.; False; Stat; Lv; 90; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+lv99;Lv 99; Arribar a Nivell 99 amb un personatge.; False; Stat; Lv; 99; ATK: 5% | MaxHP: 5% | MaxMana: 5% | INT: 5% | DEF: 5% | SPD: 5%
+hp50;Lv 10; Arribar a ... amb un personatge.; False; Stat; MaxHP; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+hp100;Lv 20; Arribar a ... amb un personatge.; False; Stat; MaxHP; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+hp200;Lv 30; Arribar a ... amb un personatge.; False; Stat; MaxHP; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+atk50;Lv 10; Arribar a ... amb un personatge.; False; Stat; ATK; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+atk100;Lv 20; Arribar a ... amb un personatge.; False; Stat; ATK; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+atk200;Lv 30; Arribar a ... amb un personatge.; False; Stat; ATK; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+def50;Lv 10; Arribar a ... amb un personatge.; False; Stat; DEF; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+def100;Lv 20; Arribar a ... amb un personatge.; False; Stat; DEF; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+def200;Lv 30; Arribar a ... amb un personatge.; False; Stat; DEF; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+spd50;Lv 10; Arribar a ... amb un personatge.; False; Stat; SPD; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+spd100;Lv 20; Arribar a ... amb un personatge.; False; Stat; SPD; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+spd200;Lv 30; Arribar a ... amb un personatge.; False; Stat; SPD; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+mana50;Lv 10; Arribar a ... amb un personatge.; False; Stat; MaxMana; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+mana100;Lv 20; Arribar a ... amb un personatge.; False; Stat; MaxMana; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+mana200;Lv 30; Arribar a ... amb un personatge.; False; Stat; MaxMana; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+int50;Lv 10; Arribar a ... amb un personatge.; False; Stat; INT; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+int100;Lv 20; Arribar a ... amb un personatge.; False; Stat; INT; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+int200;Lv 30; Arribar a ... amb un personatge.; False; Stat; INT; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+beast_slayer;Terror de les Besties; Ara ets el terror de les besties, fas dany augmentat contra aquestes; True; Kill; beast; 3; Titol: Beast Slayer

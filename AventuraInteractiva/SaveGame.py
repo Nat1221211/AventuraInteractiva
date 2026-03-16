@@ -30,6 +30,8 @@ def GuardarPartida(jugador, missions):
         "Missions_Disponibles": {},
         "Llocs_Trobats": jugador.LlocsTrobats,
         "Llocs_Visitats": jugador.LlocsVisitats,
+        "AchievementsProgress": {},
+        "AchievementsObtained": jugador.AcquiredAchievements,
 
         # Equip Jugador
         "Team": [],
@@ -101,6 +103,10 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
 
     return jugador
 
+
+def GuardarExits(exits):
+    for id, value in exits:
+        print()
 
 def GuardarMissions(aguardar, missions):
     guardar = {}

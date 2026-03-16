@@ -6,19 +6,9 @@
 
 # Llibreries
 import os
-import random
-import tkinter
 
-from Classes import Objectes
-from Classes import Exits
 from Classes import Entitat
-from Classes import EntityType
-from Classes import Missions
-from Classes import Titles
-from Classes import Zones
 from Classes import Player
-from Classes import Utilitats
-from Classes import Characteristics
 from Classes import Events
 import PrepararCridar as Call
 import SaveGame
@@ -47,7 +37,7 @@ botiga = [Objects["Combat"]["inferior_potion"],
           Objects["Combat"]["intermediate_potion"]
           ]
 
-achievements = []
+achievements = Call.CallAchievements()
 
 missions = Call.CallMissions(Entities)
 

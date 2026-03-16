@@ -50,8 +50,8 @@ def CallCSV(cami):
                         items = linia[j].split("| ").copy()
                         linia[j] = dict()
                         for v in items:
-                            kv = v.split(": ")
-                            linia[j][kv[0]] = float(kv[1]) if not kv[1].endswith("%") else kv[1]
+                            kv = v.strip().split(": ")
+                            linia[j][kv[0]] = kv[1] if kv[1].endswith("%") or kv[0].startswith("Titol") else float(kv[1])
                     elif len(linia[j].split("| ")) > 1:
                         linia[j] = linia[j].split("| ")
                     DictData[caps[j]] = linia[j]
@@ -132,17 +132,17 @@ def CallObject():
             objectes["Clau"].update({obj.id: obj})    
     return objectes
 
-def CallAchievements(Individual = True):
-    objects = CallCSV("Data/Achievements.csv")
-    for i in objects:
-        requisits = {}
-        if Individual == True:
-            if i["Tipus de Requisit"] == "Kill":
-                Exits.KillExit(i["Nom"], i["Descripcio"], i["Requisit"], i["Quantitat"], i["Recompensa"])
-        else:
-            if i["Tipus de Requisit"] != "Kill":
-                requisits[i["Nom"]]={"Type&Amt": (i["Requisit"], i["Quantitat"]), "Qty": 0}
-    return requisits
+def CallAchievements():
+    chargedlist = CallCSV("Data/Achievements.csv")
+
+    achievements = {}
+    for i in chargedlist:
+        unlock = {}
+        unlock.update({"Type": i["Tipus de Requisit"], "Objective": i["Requisit"], "Amount": i["Quantitat"]})
+
+        achieve = Exits.Exits(i["id"], i["Nom"], i["Descripcio"], i["Ocult?"], i["Recompensa"], unlock)
+        achievements.update({i["id"]: {"id": i["id"], "achievement": achieve}})
+    return achievements
 
 def CallZones():
     rutabase = os.path.dirname(__file__)
