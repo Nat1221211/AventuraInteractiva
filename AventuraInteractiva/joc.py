@@ -107,8 +107,7 @@ def AccioMenuPrincipal():
     elif accio == "guardar":
         SaveGame.GuardarPartida(jugador, missions)
     elif accio == "exits":
-        #MostrarExits()
-        print("No actualitxat")
+        UIManager.MostrarExits(achievements, jugador)
     elif accio == "motxila":
         jugador.ObjectesMochila(Objects, False)
     elif accio == "gremi":

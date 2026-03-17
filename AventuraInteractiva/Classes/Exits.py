@@ -8,9 +8,6 @@ import random
 from Classes import Objectes
 
 class Exits():
-    
-    Obtained = False
-
     # Metodes
     def __init__(self, iden, name, description, hiden, rewards, unlock):
         self.id = iden

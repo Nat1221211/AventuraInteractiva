@@ -93,6 +93,15 @@ Menus = {
             Utilitats.OpcioMenu("no", "No descansar al hostal", True, "Surt del hostal."),
         ],
         2
+    ),
+
+    "Exits": Utilitats.Menu(
+        "Menu d'Exits",
+        [
+            Utilitats.OpcioMenu("acquired", "Veure Exits adquirits", True, "Mostra els exits que han estat adquirits per el jugador..."),
+            Utilitats.OpcioMenu("locked", "Veure Exits per adquirir", True, "Mostra els exits que no han estat adquirits per el jugador."),
+        ],
+        2
     )
 }
 
@@ -180,24 +189,45 @@ def MenuMisions(jugador, missions, event, objects, exits):
                 else:
                     input("Has sortit del menu missions...")
 
+def MostrarExits(exits, jugador):
+    sel = ""
+    while sel != None:
+        sel = MostrarMenus(Menus["Exits"])
+
+        if sel == "acquired":
+            CrearMenu(exits.items(), "Acquired Achievements", ("achievements", "acquirits"), jugador, None, 8)
+            MostrarMenus(Menus["Acquired Achievements"], True, False, None, None, "", False)
+        elif sel == "locked":
+            CrearMenu(exits.items(), "Unacquired Achievements", ("achievements", "locked"), jugador, None, 8)
+            MostrarMenus(Menus["Unacquired Achievements"], True, False, None, None, "", False)
+
 
 def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None, opcionsvisibles = 3):
     options = []
-    for i in llista:
-        if filtre == "Zones" and zones != None and jugador != None and isinstance(i, str) and i in zones.keys():
-            if i in jugador.LlocsTrobats:
-                options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, True, zones[i].Description))
-            else:
-                options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, False, zones[i].Description))
-        elif isinstance(filtre, tuple) and filtre[0] == "Tipus Entitat" and isinstance(i[1], EntityType.EntityType):
-            if filtre[1] == "Playables" and i[1].isPlayable != True:
-                continue
-            options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription))
-        elif filtre == "Entitat" and isinstance(i[1], Entitat.Entity):
-            options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription))
-        elif filtre == "Moves" and isinstance(i[1], Characteristics.Moves):
-            options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, i[1].Description))
-        elif filtre == "Objectes":
+    
+    if filtre == "Zones" and zones != None and jugador != None:
+        for i in llista:
+            if isinstance(i, str) and i in zones.keys():
+                if i in jugador.LlocsTrobats:
+                    options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, True, zones[i].Description))
+                else:
+                    options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, False, zones[i].Description))
+    elif filtre[0] == "Tipus Entitat":
+        for i in llista:
+            if isinstance(filtre, tuple) and isinstance(i[1], EntityType.EntityType):
+                if filtre[1] == "Playables" and i[1].isPlayable != True:
+                    continue
+                options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription))
+    elif filtre == "Entitat":
+        for i in llista:
+            if isinstance(i[1], Entitat.Entity):
+                options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription))
+    elif filtre == "Moves":
+        for i in llista:
+            if isinstance(i[1], Characteristics.Moves):
+                options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, i[1].Description))
+    elif filtre == "Objectes":
+        for i in llista:
             espaiat = 30 - len(i[1]["objecte"].ObjectName)
             mostrar = f"{i[1]["objecte"].ObjectName}" + " "*espaiat + f"{i[1]["amount"]}"
             if isinstance(i[1]["objecte"], Objectes.ObjecteCombat):
@@ -205,8 +235,17 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None, opcionsvisi
             else:
                 tipus = "Clau"
             options.append(Utilitats.OpcioMenu({"id": i[1]["objecte"].id, "type": tipus}, mostrar, True, i[1]["objecte"].ObjectDescription))
-        elif filtre == "Botigues" and isinstance(i[1], dict):
-            options.append(Utilitats.OpcioMenu(i[1]["id"], i[1]["name"], True, i[1]["description"]))
+    elif isinstance(filtre, tuple):
+        if filtre[0] == "achievements":
+            if filtre[1] == "acquirits":
+                for id, value in llista:
+                    if value["achievement"].Obtained == True:
+                        options.append(Utilitats.OpcioMenu(value["achievement"].id,value["achievement"].Name, True, value["achievement"].Description))
+            if filtre[1] == "locked":
+                for id, value in llista:
+                    if value["achievement"].Obtained == False:
+                        options.append(Utilitats.OpcioMenu(value["achievement"].id, value["achievement"].Name, True, value["achievement"].Description))
+
         
     Menus.update({NomMenu: Utilitats.Menu(
                 NomMenu,
