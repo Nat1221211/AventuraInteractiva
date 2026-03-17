@@ -235,14 +235,16 @@ def MenuAtacar(personatge):
     UIManager.CrearMenu(personatge.Moves.items(), "Moviments", "Moves")
 
     sel = UIManager.MostrarMenus(UIManager.Menus["Moviments"])
-
-    use = personatge.Moves[sel]
-    if use.Cost > personatge.StatsCombat["Mana"]:
-        print("No tens suficient Mana per a realitzar aquest atac...")
-        input("Presiona per a continuar...")
-        return None
+    if sel != None:
+        use = personatge.Moves[sel]
+        if use.Cost > personatge.StatsCombat["Mana"]:
+            print("No tens suficient Mana per a realitzar aquest atac...")
+            input("Presiona per a continuar...")
+            return None
+        else:
+            return use
     else:
-        return use
+        return sel
     
 def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes, event, exits):
     print(f"És el torn de {atacant.nom}")
