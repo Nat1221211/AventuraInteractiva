@@ -55,7 +55,7 @@ class MostrarMenu():
             print(f"{cursor} {opcio.Nom} {estat}")
         
         if total > 1:
-            print(f"\nPagina: {pagina + 1} de {total}")
+            print(f"\nPagina: {pagina + 1} de {total + 1}")
 
         posicio = Menu.Cursor % len(opcions)
         print(f"\nDescripció: \n{opcions[posicio].Descripcio}")
