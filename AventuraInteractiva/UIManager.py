@@ -135,7 +135,7 @@ def MostrarMenus(Menu, sortir = True, combat = False, jugador = None, enemy = No
         input("Presiona per a continuar...")
         return None
 
-def MenuMisions(jugador, missions, event, objects):
+def MenuMisions(jugador, missions, event, objects, exits):
     sel = ""
     while sel != None:
         sel = MostrarMenus(Menus["Missions"])
@@ -173,7 +173,7 @@ def MenuMisions(jugador, missions, event, objects):
                 dictio = MostrarMenus(Menus["Reclamar Missions"])
                 if isinstance(dictio, dict):
                     if dictio["id"] != None or dictio["tipus"] != None:
-                        missions[dictio["tipus"]][dictio["id"]].Reclamar(jugador, objects)
+                        missions[dictio["tipus"]][dictio["id"]].Reclamar(jugador, objects, event, exits)
                         event.CridarEvent("Missio Finalitzada", dictio["id"], jugador, missions)
                     else:
                         sel = None

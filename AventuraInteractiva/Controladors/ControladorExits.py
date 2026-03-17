@@ -6,23 +6,18 @@
 
 import os
 import random
-import tkinter
 
-from Classes import Entitat
-from Classes import EntityType
-from Classes import Missions
-from Classes import Titles
-from Classes import Zones
-from Classes import Player
-from Classes import Utilitats
-from Classes import Characteristics
-import PrepararCridar as Call
-
-achievements = Call.CallAchievements()
-
-def sistemaExits(enemic, jugador):
+def sistemaExitsDerrota(enemic, jugador, achievements):
     for id, value in achievements.items():
-        if id in missions["Kill"].keys():
-            if enemic.base.id in missions["Kill"][id].Objective:
-                missions["Kill"][id].Count += 1
+        if id in achievements.keys():
+            print()
+
+
+def sistemaExitsStatChange(personatge, jugador, achievements):
+    for id, value in achievements.items():
+        if value["achievement"].UnlockRequirements["Type"] != "Stat" or id in jugador.AcquiredAchievements:
+            continue
+        else:
+            value["achievement"].ComprovarExit(personatge, jugador)
+
 

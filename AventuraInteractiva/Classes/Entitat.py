@@ -146,7 +146,7 @@ class Entity():
             self.afected = []
         self.DefinirMoves()
     
-    def DefinirPermanentStats(self):
+    def DefinirPermanentStats(self, jugador):
         # if "%" in permanentbuff:
         #     self.StatsPermanents[permanentbuff[0]]["%"] += float(permanentbuff[1])
         # else:
@@ -202,8 +202,7 @@ class Entity():
                             StatChanges[k]+=value
                         else:
                             StatChanges[k]=value
-                for k, v in StatChanges.items():
-                    self.StatsCombat[k] *= v
+                self.ChangeCombatStats(StatChanges)
 
     def CalcularDamage(self, enemy, move):
         
@@ -357,7 +356,7 @@ class Entity():
         # elif combat == False:
         input("Presiona per a continuar...")
 
-    def LvlUp(self, enemy = None, XP = None):
+    def LvlUp(self, event, jugador, exits, enemy = None, XP = None):
         if self.Lv < self.LvLimit:
             if XP == None and enemy != None:
                 XP = float(round(self.XPObtained(enemy), 2))
@@ -376,6 +375,7 @@ class Entity():
                 self.DefinirCombatStats()
                 self.Xp -= self.XpRequired
                 self.XpRequired = float(round(self.CalcXPRequired(), 2))
+                event.CridarEvent("Nivell Incrementat", self, jugador, exits)
             input("Presiona per a continuar...")
     
     def CalcXPRequired(self):

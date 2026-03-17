@@ -18,6 +18,7 @@ import AdventureManager
 import TownUtilitiesManager as TUtManager
 
 from Controladors import ControladorMissions
+from Controladors import ControladorExits
 
 Objects = Call.CallObject()
 Effects = Call.CallEfect()
@@ -50,10 +51,7 @@ event.NouEvent("Lloc Visitat", ControladorMissions.sistemaMissionsVisita)
 event.NouEvent("Objecte Missio Trobat", ControladorMissions.sistemaMissionsObject)
 event.NouEvent("Persona Missio Trobada", ControladorMissions.sistemaMissionsFind)
 event.NouEvent("Missio Finalitzada", ControladorMissions.DesbloquejarMissio)
-
-
-
-
+event.NouEvent("Nivell Incrementat",  ControladorExits.sistemaExitsStatChange)
 
 def CrearJugador(first = False):
     nom = ""
@@ -95,7 +93,7 @@ def AccioMenuPrincipal():
     if accio == "mapa":
         AdventureManager.Mapa(jugador, zones, missions, event)
     elif accio == "explorar":
-        AdventureManager.Explorar(jugador, missions, Entities, event, zones, Objects)
+        AdventureManager.Explorar(jugador, missions, Entities, event, zones, Objects, achievements)
     elif accio == "hostal":
         TUtManager.Posada(jugador)
     elif accio == "botiga":
@@ -103,9 +101,9 @@ def AccioMenuPrincipal():
     elif accio == "estat":
         UIManager.VeureEstatus(jugador)
     elif accio == "missions":
-        UIManager.MenuMisions(jugador, missions, event, Objects)
+        UIManager.MenuMisions(jugador, missions, event, Objects, achievements)
     elif accio == "lluitar":
-        CombatManager.GenerarEnemic(Entities, jugador, event, missions, Objects)
+        CombatManager.GenerarEnemic(Entities, jugador, event, missions, Objects, achievements)
     elif accio == "guardar":
         SaveGame.GuardarPartida(jugador, missions)
     elif accio == "exits":

@@ -27,17 +27,40 @@ class Exits():
         jugador.AcquiredAchievements.append(self.id)
         self.ClaimRewards(jugador)
 
-    def ComprovarExit(self, jugador):
-        print()
+    def ComprovarExit(self, entitat, jugador):
+        unlock = True
+        if self.Obtained == False:
+            if self.UnlockRequirements["Type"] == "Stat":
+                if self.UnlockRequirements["Objective"] == "Lv":
+                    if entitat.Lv < self.UnlockRequirements["Amount"]:
+                        unlock = False
+                elif self.UnlockRequirements["Objective"] in []:
+                    print("")
+                else:
+                    if entitat.StatsCombat[self.UnlockRequirements["Objective"]] < self.UnlockRequirements["Amount"]:
+                        unlock = False            
+            else:
+                unlock = False
+            if unlock == True:
+                self.Obtained = True
+                jugador.AcquiredAchievements.append(self.id)
+                self.ClaimRewards(jugador)
+
 
     def ClaimRewards(self, jugador):
-        for key, value in self.rewards.items():
-            if self.unlock["Type"] == "Stat":
+        for key, value in self.Rewards.items():
+            if self.UnlockRequirements["Type"] == "Stat":
                 tipus = "Flat"
                 if isinstance(value, str):
                     if value.endswith("%"):
                         tipus = "%"
                         value.replace("%", "")
                 jugador.StatIncrement[key][tipus]+=value
+
+class KillExit(Exits):
+
+    def __init__(self, iden, name, description, hiden, rewards, unlock, count):
+        super().__init__(iden, name, description, hiden, rewards, unlock)
+        self.Count = count
 
         

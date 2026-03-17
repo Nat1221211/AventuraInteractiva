@@ -14,7 +14,7 @@ from Classes import Entitat
 import UIManager
 
 
-def GenerarEnemic(Entities, jugador, event, missions, objectes):
+def GenerarEnemic(Entities, jugador, event, missions, objectes, exits):
 
     pesos = []
     for j in jugador.Ubicacio.Enemies.values():
@@ -61,7 +61,7 @@ def GenerarEnemic(Entities, jugador, event, missions, objectes):
             
             enemy.update({entitat.id: entitat})
     
-    Lluitar(jugador, enemy, event, missions, objectes)
+    Lluitar(jugador, enemy, event, missions, objectes, exits)
 
 
 
@@ -94,7 +94,7 @@ def PrioritatInicial(jugador, enemy):
 
     return enemy
 
-def Lluitar(jugador, enemy, event, missions, objectes):
+def Lluitar(jugador, enemy, event, missions, objectes, exits):
 
     teamderr = 0
     enemyderr = 0
@@ -126,7 +126,7 @@ def Lluitar(jugador, enemy, event, missions, objectes):
                     UIManager.BattleScreenShow(jugador.Team)
                     UIManager.BattleScreenShow(enemy)
                     turn = False
-                    i, enemy, turn, fugir, enemyderr = AccionsLluita(i, jugador, enemy, enemyderr, objectes)
+                    i, enemy, turn, fugir, enemyderr = AccionsLluita(i, jugador, enemy, enemyderr, objectes, event, exits)
                     
                     if turn == False:
                         i.Priority = 0
@@ -149,7 +149,7 @@ def Lluitar(jugador, enemy, event, missions, objectes):
                 jugador.Team, derrotats = j.atacar(jugador.Team, target, enemyMove)
                 j.Priority = 0
                 j, derrotats = ComprobarEfectEstat(j, derrotats)
-                teamderr = DescartarDerrotats(derrotats, teamderr, jugador)
+                teamderr = DescartarDerrotats(derrotats, teamderr, jugador, event, exits)
                 UIManager.ClearScreen()
             if combat == True:
                 combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr, event, missions, jugador)
@@ -167,7 +167,7 @@ def IncrementarPrioritat(jugador, enemy):
             j.Priority += j.StatsCombat["SPD"] / 100
     return enemy
 
-def DescartarDerrotats(llista, derr, jugador):
+def DescartarDerrotats(llista, derr, jugador, event, exits):
     for p in llista:
         if p.StatsCombat["CurHP"] <= 0.1:
             derr += 1
@@ -176,7 +176,7 @@ def DescartarDerrotats(llista, derr, jugador):
                 alive = 0
                 for i in jugador.Team.values(): 
                     if i.StatsCombat["CurHP"] > 0:
-                        i.LvlUp(p)
+                        i.LvlUp(event, jugador, exits, p)
                         alive += 1
                 if alive >= 1:
                     jugador.Gold += p.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
@@ -244,7 +244,7 @@ def MenuAtacar(personatge):
     else:
         return use
     
-def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes):
+def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes, event, exits):
     print(f"És el torn de {atacant.nom}")
     
     seleccio = UIManager.MostrarMenus(UIManager.Menus["Accions Lluita"], False, True, jugador, enemy)
@@ -269,7 +269,7 @@ def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes):
                     target = TriarObjectius(jugador.Team)
             if move.Healing == False and move.Protective == False:
                 enemy, derrotats = atacant.atacar(enemy, target, move)
-                enemyderr = DescartarDerrotats(derrotats, enemyderr, jugador)
+                enemyderr = DescartarDerrotats(derrotats, enemyderr, jugador, event, exits)
             else:
                 jugador.Team, derrotats = atacant.MoveProtHeal(jugador.Team, target, move)
                 

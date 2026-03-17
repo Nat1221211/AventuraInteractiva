@@ -1,6 +1,6 @@
 {
     "Nom": "Nat",
-    "Ubicacio": "knightshire",
+    "Ubicacio": "greenwoods",
     "Or": 14280,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {},
@@ -36,8 +36,11 @@
         "Dawn Village",
         "Bosc del Sud",
         "Bosc de Fusta Verda",
-        "Knightshire"
+        "Knightshire",
+        "Bosc de Fusta Verda"
     ],
+    "AchievementsProgress": {},
+    "AchievementsObtained": [],
     "Team": [
         {
             "id": "Player",
@@ -47,7 +50,7 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 71.79
+            "XP": 750.79
         }
     ],
     "Inventari": [

@@ -64,12 +64,12 @@ class Mission():
         else:
             print("No compleixes amb els requisits per a la missio...")
     
-    def Reclamar(self, jugador, Objectes):
+    def Reclamar(self, jugador, Objectes, events, exits):
         if self.Status == "Pendent Reclamar":
             for id, value in self.Rewards.items():
                 if id == "XP":
                     for id, ent in jugador.Team.items():
-                        ent.LvlUp(None, value)
+                        ent.LvlUp(events, jugador, exits, None, value)
                 elif id == "Gold":
                     jugador.Gold += value
                 elif id == "Objects":
