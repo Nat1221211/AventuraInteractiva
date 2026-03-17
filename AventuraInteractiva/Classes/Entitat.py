@@ -160,6 +160,7 @@ class Entity():
             self.StatsCombat[k] = PostBuff
     
     def ChangeCombatStats(self, changes):
+        self.DefinirCombatStats()
         for k, v in changes.items():
             self.StatsCombat[k] *= v
 
@@ -168,14 +169,22 @@ class Entity():
 
         for i in self.afected:
             for k, v in i.StatEffects.items():
-                if v < 1:
-                    value = 1 - v
-                else:
-                    value = v
                 if k in StatChanges.keys():
-                    StatChanges[k]+=value
+                    if v < 1:
+                        StatChanges[k]-=v
+                    else:
+                        StatChanges[k]+= (v-1)
                 else:
+                    if v < 1:
+                        value = 1 - v
+                    else:
+                        value = v
                     StatChanges[k]=value
+        for id, value in StatChanges.items():
+            if value > 4:
+                value = 4
+            elif value < 0.3:
+                value = 0.3
         self.ChangeCombatStats(StatChanges)
     
     
@@ -190,12 +199,12 @@ class Entity():
                 efectNames.append(i.Name)
             
             aplicable = True
-            if effect in efectNames:
+            if effect.Name in efectNames:
                 effectCount = 0
                 for i in self.afected:
-                    if effect == i.Name:
+                    if effect.Name == i.Name:
                         effectCount += 1
-                        limit = i.EffectLimit
+                limit = effect.EffectLimit
                 if effectCount + 1 > limit and limit != 0:
                     aplicable = False
                     print(f"{self.nom} ha arribat al limit d'aplicacions de l'efecte {effect}")
