@@ -162,6 +162,21 @@ class Entity():
     def ChangeCombatStats(self, changes):
         for k, v in changes.items():
             self.StatsCombat[k] *= v
+
+    def AplicarCanvisEfectesEstat(self):
+        StatChanges = {}
+
+        for i in self.afected:
+            for k, v in i.StatEffects.items():
+                if v < 1:
+                    value = 1 - v
+                else:
+                    value = v
+                if k in StatChanges.keys():
+                    StatChanges[k]+=value
+                else:
+                    StatChanges[k]=value
+        self.ChangeCombatStats(StatChanges)
     
     
     def ApplyStatusEffects(self, effect, prob):
@@ -189,20 +204,9 @@ class Entity():
                 effect.RemainingTurns = effect.Turns
                 self.afected.append(effect)
                 print(f"{self.nom} ha estat afectat per {effect.Name}.")
+                self.AplicarCanvisEfectesEstat()
 
-                StatChanges = {}
-
-                for i in self.afected:
-                    for k, v in i.StatEffects.items():
-                        if v < 1:
-                            value = 1 - v
-                        else:
-                            value = v
-                        if k in StatChanges.keys():
-                            StatChanges[k]+=value
-                        else:
-                            StatChanges[k]=value
-                self.ChangeCombatStats(StatChanges)
+                
 
     def CalcularDamage(self, enemy, move):
         
@@ -376,6 +380,7 @@ class Entity():
                 self.Xp -= self.XpRequired
                 self.XpRequired = float(round(self.CalcXPRequired(), 2))
                 event.CridarEvent("Nivell Incrementat", self, jugador, exits)
+                self.AplicarCanvisEfectesEstat()
             input("Presiona per a continuar...")
     
     def CalcXPRequired(self):
