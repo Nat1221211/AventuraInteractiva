@@ -215,7 +215,7 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None, opcionsvisi
     elif filtre[0] == "Tipus Entitat":
         for i in llista:
             if isinstance(filtre, tuple) and isinstance(i[1], EntityType.EntityType):
-                if filtre[1] == "Playables" and i[1].isPlayable != True:
+                if filtre[1] == "Playable" and i[1].isPlayable != True:
                     continue
                 options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription))
     elif filtre == "Entitat":

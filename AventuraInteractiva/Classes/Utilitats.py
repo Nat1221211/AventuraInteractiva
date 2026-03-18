@@ -29,6 +29,8 @@ class Menu():
         inici = pagina * self.OpcionsPagina
         fi = inici + self.OpcionsPagina
         totalpag = len(self.Opcions) // self.OpcionsPagina
+        if (len(self.Opcions) % self.OpcionsPagina) > 0:
+            totalpag += 1
         return self.Opcions[inici:fi], inici, pagina, totalpag
 
 class OpcioMenu():
@@ -55,7 +57,7 @@ class MostrarMenu():
             print(f"{cursor} {opcio.Nom} {estat}")
         
         if total > 1:
-            print(f"\nPagina: {pagina + 1} de {total + 1}")
+            print(f"\nPagina: {pagina + 1} de {total}")
 
         posicio = Menu.Cursor % len(opcions)
         print(f"\nDescripció: \n{opcions[posicio].Descripcio}")
