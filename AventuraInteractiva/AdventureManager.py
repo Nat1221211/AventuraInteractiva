@@ -59,7 +59,7 @@ def ExplorarTrobaroNo(jugador, objects):
     if perTrobar == 0 or choice == ["res"]:
         print("No has trobat res...")
 
-def Explorar(jugador, missions, Entities, event, zones, objects):
+def Explorar(jugador, missions, Entities, event, zones, objects, achievements):
 
     print("Has començar a explorar...")
     prob = random.randrange(1, 100)
@@ -85,7 +85,7 @@ def Explorar(jugador, missions, Entities, event, zones, objects):
         if len(llista) == 0 or choice == ["res"]:
             ExplorarTrobaroNo(jugador, objects)
     elif prob > 70 and prob <= 95:  # Lluitar
-        CombatManager.GenerarEnemic(Entities, jugador, event, missions, objects)
+        CombatManager.GenerarEnemic(Entities, jugador, event, missions, objects, achievements)
     elif prob > 95 and prob <= 100: # Seguent ruta
         TrobarSeguentZona(jugador, zones)
         

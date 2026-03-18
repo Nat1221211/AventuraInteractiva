@@ -1,0 +1,77 @@
+{
+    "Nom": "jose",
+    "Ubicacio": "knightshire",
+    "Or": 5000,
+    "Ultim_Visitat": "knightshire",
+    "Missions_Acceptades": {},
+    "Missions_Finalitzades": [
+        "first_adventure"
+    ],
+    "Missions_Disponibles": {
+        "defeat_slimes": {
+            "id": "defeat_slimes",
+            "type": "Kill",
+            "Progress": 0,
+            "Status": "Disponible"
+        },
+        "find_smulet_greenwoods": {
+            "id": "find_smulet_greenwoods",
+            "type": "Object",
+            "Progress": 0,
+            "Status": "Disponible"
+        },
+        "fins_jack_south_forest": {
+            "id": "fins_jack_south_forest",
+            "type": "Find",
+            "Progress": 0,
+            "Status": "Disponible"
+        }
+    },
+    "Llocs_Trobats": [
+        "dawn_village",
+        "south_forest",
+        "greenwoods",
+        "knightshire"
+    ],
+    "Llocs_Visitats": [
+        "dawn_village",
+        "Bosc del Sud",
+        "Bosc de Fusta Verda",
+        "Knightshire"
+    ],
+    "AchievementsProgress": {},
+    "AchievementsObtained": [],
+    "Team": [
+        {
+            "id": "Player",
+            "Nom": "jose",
+            "Base": "warrior",
+            "Lv": 6,
+            "Lv_Limit": 100,
+            "Moves": [],
+            "Afected": [],
+            "XP": 73.31
+        }
+    ],
+    "Inventari": [
+        {
+            "id": "inferior_potion",
+            "Amount": 3,
+            "Clase": "Combat"
+        },
+        {
+            "id": "high_potion",
+            "Amount": 1,
+            "Clase": "Combat"
+        },
+        {
+            "id": "potion",
+            "Amount": 1,
+            "Clase": "Combat"
+        }
+    ],
+    "Titols": [],
+    "Estadistiques": {},
+    "Increment_Stats": {},
+    "Companys": []
+}
