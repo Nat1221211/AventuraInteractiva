@@ -1,8 +1,8 @@
 id;Nom;Descripcio;Vida;Mana;ATK;INT;DEF;SPD;Playable?;XP;Groups;Movements
-warrior;Guerrer;Un habil lluitador cos a cos...;160;100;140;40;130;80;True;50;Human;fire_ball: 1 
-mage;Mag;Qui ha iniciat el seu cami per a descobrir les veritats del mon...;80;200;60;180;100;100;True;50;Human;cop_basto: 1 | fire_ball: 3
-archer;Arquer;Una persona amb bon ull, capaç d'apuntar a essers en moviment i acertar-los...;120;140;140;100;140;120;True;50;Human;bite: 1
-thief;Lladre;;120;120;130;100;120;160;True;50;Human;bite: 1
+warrior;Guerrer;Un habil lluitador cos a cos...;160;100;140;40;130;80;True;50;Human;tall: 1 | power_slash: 4 | lightning_slash: 8 | war_cry: 10
+mage;Mag;Qui ha iniciat el seu cami per a descobrir les veritats del mon...;80;200;60;180;100;100;True;50;Human;cop_basto: 1 | fire_ball: 3 | debuff: 10
+archer;Arquer;Una persona amb bon ull, capaç d'apuntar a essers en moviment i acertar-los...;120;140;140;100;140;120;True;50;Human;arrow: 1 | pierce_arrow: 5 | power_arrow: 10
+thief;Lladre;;120;120;130;100;120;160;True;50;Human;tall: 1 | lightning_assault: 4 | debuff: 10
 wolf;Llop;;120;40;120;20;100;140;False;30;Beast;bite: 1
 slime;Slime;;60;60;60;60;60;60;False;20;Monster;bite: 1
 shadow;Sombra;;120;120;120;120;120;120;False;200;Monster;bite: 1
@@ -14,9 +14,9 @@ flame_mage;Mag de Flames;Un mag centrat en poderosos atacs destructius;60;250;60
 gryphon;Griu;Una bestia llegendaria, amb cap i ales d'aguila i cos de lleó...;200;200;220;160;160;220;False;1000;Beast, Monster;bite: 1
 expert;Expert en Armes;Un expert en diverses armes cos a cos, és molt capaç, és una forma millorada del Guerrer...;160;120;180;100;130;100;False;50;Human;bite: 1
 knight;Caballer;Un expert especialitzat en la resistencia, tot i això te una capacitat ofensiva considerable.;200;60;100;40;260;60;False;50;Human;bite: 1
-adventurer;Aventurer;No especialitzat en cap camp en excés, no destaca en cap camp però tampoc és dolent en cap d'ells...;140;120;140;140;115;115;True;50;Human;bite: 1
+adventurer;Aventurer;No especialitzat en cap camp en excés, no destaca en cap camp però tampoc és dolent en cap d'ells...;140;120;140;140;115;115;True;50;Human;tall: 1 | power_slash: 4 | lightning_assault: 5 | flame_vest: 10
 jabali;Porc Senglar;;150;40;150;20;140;80;False;35;Beast;bite: 1
-priest;Sacerdot;Una persona de religio, amb la capacitat de curar...;120;160;80;120;120;120;True;50;Human;bite: 1
+priest;Sacerdot;Una persona de religio, amb la capacitat de curar...;120;160;80;120;120;120;True;50;Human;cop_basto: 1 | heal: 4 | sacred_light: 5 | sanctuary: 10
 id1;Sacerdot Guerrer;;200;160;250;180;150;150;False;150;Human;bite: 1
 id1;Caballer Magic;Un forma avançada de caballeria i magia...;250;160;200;300;180;160;False;150;Human;bite: 1
 id1;Sant;Una especialitzacio en curacio per part del sacerdot;200;250;80;200;120;100;False;150;Human;bite: 1

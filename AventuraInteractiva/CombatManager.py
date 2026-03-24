@@ -269,15 +269,20 @@ def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes, event, exits):
                         target = TriarObjectius(enemy)
                 elif move.Healing == True or move.Protective == True:
                     target = TriarObjectius(jugador.Team)
-            if move.Healing == False and move.Protective == False:
-                enemy, derrotats = atacant.atacar(enemy, target, move)
-                enemyderr = DescartarDerrotats(derrotats, enemyderr, jugador, event, exits)
             else:
-                jugador.Team, derrotats = atacant.MoveProtHeal(jugador.Team, target, move)
-                
-            atacant.StatsCombat["Mana"] -= move.Cost
-        if move == None or target == False:
+                target = "All"
+            if target != None:
+                if move.Healing == False and move.Protective == False:
+                    enemy, derrotats = atacant.atacar(enemy, target, move)
+                    enemyderr = DescartarDerrotats(derrotats, enemyderr, jugador, event, exits)
+                else:
+                    jugador.Team = atacant.MoveProtHeal(jugador.Team, target, move)
+           
+        if move == None or target == None:
             turn = True
+        else:
+            atacant.StatsCombat["Mana"] -= move.Cost
+
     elif seleccio == "fugir":
         fugir = Fugir(enemy, jugador)
         if fugir[0] == False:

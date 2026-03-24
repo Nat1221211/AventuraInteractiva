@@ -253,7 +253,7 @@ class Entity():
 
             derrotats = []
             for id, ent in enemy.items():
-                if move.MultiTarget or id == target or target == None:
+                if move.MultiTarget or id == target:
                     if move.Precision < 100:
                         atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
                     else:
@@ -324,7 +324,7 @@ class Entity():
                     for i in move.Buff.items():
                         target.ApplyStatusEffects(i[0], i[1])
         input("Presiona per a continuar...")
-        return target
+        return targets
 
     def ShowStatus(self, jugador, combat = False):
         UIManager.ClearScreen()
@@ -412,7 +412,7 @@ class Entity():
         
         # Exponents / Multiplicadors
         lvlExponent = 3
-        lvlDiffExponent = 3
+        lvlDiffExponent = 1.5
 
         # Valors
         multiplierperLevel = 1 + (lvlExponent*enemy.Lv)
