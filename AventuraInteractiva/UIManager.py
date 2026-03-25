@@ -235,6 +235,10 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None, opcionsvisi
             else:
                 tipus = "Clau"
             options.append(Utilitats.OpcioMenu({"id": i[1]["objecte"].id, "type": tipus}, mostrar, True, i[1]["objecte"].ObjectDescription))
+    elif filtre == "Botigues":
+        for id, val in llista:
+            options.append(Utilitats.OpcioMenu(id, val["name"], True, val["description"]))
+
     elif isinstance(filtre, tuple):
         if filtre[0] == "achievements":
             if filtre[1] == "acquirits":

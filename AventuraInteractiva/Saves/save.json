@@ -1,7 +1,7 @@
 {
     "Nom": "Nat",
     "Ubicacio": "dawn_village",
-    "Or": 2150,
+    "Or": 2220,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -21,6 +21,8 @@
         "dawn_village",
         "Bosc del Sud",
         "Bosc del Sud",
+        "Dawn Village",
+        "Bosc del Sud",
         "Dawn Village"
     ],
     "AchievementsProgress": {},
@@ -34,7 +36,7 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 6.78000000000003
+            "XP": 39.65
         }
     ],
     "Inventari": [

@@ -22,18 +22,26 @@ def Botiga(jugador, objectes):
             if prod != None:
                 product = objectes[botigues[sel]["Venta"][prod]["type"]][prod]
                 amt = -1
-                while amt < 0:
+                while amt != None and int(amt) < 0:
                     try:
-                        amt = int(input("Digues quans en vols: "))
-                        if amt < 0:
+                        amt = input("Digues quans en vols: (Enter per a sortir o enviar el numero..., 0 per a sortir)")
+                        if int(amt) < 0:
                             print("Ha ocurregut un error amb el numero introduit...")
-                        elif amt == 0:
+                        elif int(amt) == 0:
                             print("Has sortit del menu de compra")
                     except ValueError:
                         print("Ha ocurregut un error amb el numero introduit...")
-                if amt > 0:
-                    jugador.AfegirObjecte(product, amt)
-                    jugador.Gold -= botigues[sel]["Venta"][prod]["price"] * amt
+                        if amt == "":
+                            amt = None
+                if amt != None:
+                    amt = int(amt)
+                    if amt > 0:
+                        if jugador.Gold > botigues[sel]["Venta"][prod]["price"] * amt:
+                            jugador.AfegirObjecte(product, amt)
+                            jugador.Gold -= botigues[sel]["Venta"][prod]["price"] * amt
+                            input(f"Has comprat {amt} {botigues[sel]["Venta"][prod]["name"]}.")
+                        else:
+                            input("No tens suficients diners per a comprar-ho...")
 
 
 def Posada(jugador, free = False):
