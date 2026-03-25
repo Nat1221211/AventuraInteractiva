@@ -253,7 +253,8 @@ class Entity():
 
             derrotats = []
             for id, ent in enemy.items():
-                if move.MultiTarget or id == target:
+                if move.MultiTarget or id == target or target == "All":
+                    print(f"{self.nom} ha atacat.")
                     if move.Precision < 100:
                         atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
                     else:
@@ -289,10 +290,8 @@ class Entity():
                         else:
                             print(f"{ent.nom} esta protegit i per tant l'atac no ha causat res...")
                     else:
-                        if self.isPlayer == True:
-                            print("Has fallat l'atac...")
-                        else:
-                            print("L'atac enemic a fallat...")
+                        print("Ha fallat l'atac...")
+                    
                     if ent.Protected == True:
                         ent.Protected = False
         else:
@@ -411,8 +410,8 @@ class Entity():
         baseXP = enemy.base.baseXP
         
         # Exponents / Multiplicadors
-        lvlExponent = 3
-        lvlDiffExponent = 1.5
+        lvlExponent = 0.3
+        lvlDiffExponent = 1.4
 
         # Valors
         multiplierperLevel = 1 + (lvlExponent*enemy.Lv)
@@ -422,7 +421,7 @@ class Entity():
         xpObtained = baseXP * multiplierperLevel * multiplierPerDiff
 
         xpObtained = max(xpObtained, baseXP * 0.1)
-        xpObtained = min(xpObtained, baseXP * 5000)
+        xpObtained = min(xpObtained, baseXP * 100)
 
         return xpObtained
 

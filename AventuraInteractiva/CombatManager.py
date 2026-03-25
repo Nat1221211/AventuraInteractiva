@@ -267,6 +267,8 @@ def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes, event, exits):
                 if move.Healing == False and move.Protective == False:
                     if len(enemy) > 1:
                         target = TriarObjectius(enemy)
+                    else:
+                        target = "enemy_0"
                 elif move.Healing == True or move.Protective == True:
                     target = TriarObjectius(jugador.Team)
             else:
@@ -309,9 +311,9 @@ def TriarObjectius(list):
     UIManager.ClearScreen()
     targetable = [i for i in list.items() if i[1].StatsCombat["CurHP"] > 0]
     
-    UIManager.CrearMenu(targetable, "Qui Vols Atacar?", "Entitat")
+    UIManager.CrearMenu(targetable, "Qui és l'objectiu?", "Entitat")
 
-    target = UIManager.MostrarMenus(UIManager.Menus["Qui Vols Atacar?"], True)
+    target = UIManager.MostrarMenus(UIManager.Menus["Qui és l'objectiu?"], True)
         
     return target
 
