@@ -234,7 +234,9 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None, opcionsvisi
     elif filtre == "Moves":
         for i in llista:
             if isinstance(i[1], Characteristics.Moves):
-                options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, i[1].Description))
+                description = f"{i[1].Description}\n Characteristics: \n Potencia: {i[1].Power}, Precisio: {i[1].Precision}, Mana Cost: {i[1].Cost}"
+
+                options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, description))
     elif filtre == "Objectes":
         for i in llista:
             espaiat = 30 - len(i[1]["objecte"].ObjectName)
