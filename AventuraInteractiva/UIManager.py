@@ -102,6 +102,15 @@ Menus = {
             Utilitats.OpcioMenu("locked", "Veure Exits per adquirir", True, "Mostra els exits que no han estat adquirits per el jugador."),
         ],
         2
+    ),
+
+    "Guardar": Utilitats.Menu(
+        "Vols Sobrescriure la partida guardada?",
+        [
+            Utilitats.OpcioMenu("si", "Si", True, "Sobrescriu la ultima partida guardada, permetint accedir a la nova..."),
+            Utilitats.OpcioMenu("no", "No", True, "Decideix no sobrescriure la anterior partida guardada, mantenint la ultima si n'hi ha una..."),
+        ],
+        2
     )
 }
 
