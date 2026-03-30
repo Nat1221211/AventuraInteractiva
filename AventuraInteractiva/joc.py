@@ -91,7 +91,7 @@ def AccioMenuPrincipal():
     UIManager.ClearScreen()
     # Executem acció seleccionada
     if accio == "mapa":
-        AdventureManager.Mapa(jugador, zones, missions, event)
+        AdventureManager.Mapa(jugador, zones, missions, event, achievements)
     elif accio == "explorar":
         AdventureManager.Explorar(jugador, missions, Entities, event, zones, Objects, achievements)
     elif accio == "hostal":

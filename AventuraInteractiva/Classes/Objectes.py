@@ -62,6 +62,7 @@ class ObjecteCombat(Objecte):
                     if k == "HP":
                         cur = "Cur" + k
                     max = "Max" + k
+                    v = float(v)
                     if jugador.StatsCombat[cur] + v > jugador.StatsCombat[max]:
                         jugador.StatsCombat[cur] = jugador.StatsCombat[max]
                         input("Has recuperat tota la vida...")

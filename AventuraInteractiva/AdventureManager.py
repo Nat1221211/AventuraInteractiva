@@ -11,7 +11,7 @@ import UIManager
 from Classes import Missions
 import CombatManager
 
-def Mapa(jugador, zones, missions, event):
+def Mapa(jugador, zones, missions, event, exits):
     
     UIManager.CrearMenu(jugador.Ubicacio.Connections, "Mapa", "Zones", jugador, zones, 4)
 
@@ -27,9 +27,9 @@ def Mapa(jugador, zones, missions, event):
     elif seleccio == None:
         input("Has sortit del mapa... (Presiona per a continuar)")
 
-def OcurrenciaMisio(misio, jugador, missions, event, objectes):
+def OcurrenciaMisio(misio, jugador, missions, event, objectes, exits):
     if type(misio) == Missions.KillMission:        
-        CombatManager.Lluitar(jugador, misio.Enemic, event, missions, objectes)
+        CombatManager.Lluitar(jugador, misio.Enemic, event, missions, objectes, exits)
     elif type(misio) == Missions.FindMission:
         print(f"Has trobat en/la {misio.Objective["find"]}")
         event.CridarEvent("Persona Missio Trobada", misio.Objective["find"], jugador, missions)
@@ -81,7 +81,7 @@ def Explorar(jugador, missions, Entities, event, zones, objects, achievements):
             choice = random.choices(["res", "missio"], [10, 90])
             if choice[0] == "missio":
                 misio = random.choice(llista)
-                OcurrenciaMisio(misio, jugador, missions, event, objects)
+                OcurrenciaMisio(misio, jugador, missions, event, objects, achievements)
         if len(llista) == 0 or choice == ["res"]:
             ExplorarTrobaroNo(jugador, objects)
     elif prob > 70 and prob <= 95:  # Lluitar

@@ -136,7 +136,7 @@ def Lluitar(jugador, enemy, event, missions, objectes, exits):
 
         # Turn enemic
         for j in enemy.values():
-            if j.Priority >= 100 and fugir[0] == False and len(jugador.Team) >= 1 and j.StatsCombat["CurHP"] > 0.1 and combat == True:
+            if j.Priority >= 100 and fugir[0] == False and len(jugador.Team) >= 1 and j.StatsCombat["CurHP"] > 0 and combat == True:
                 UIManager.ClearScreen()
                 UIManager.BattleScreenShow(jugador.Team)
                 UIManager.BattleScreenShow(enemy)

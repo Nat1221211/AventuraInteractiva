@@ -1,42 +1,50 @@
 {
-    "Nom": "Nat",
-    "Ubicacio": "dawn_village",
-    "Or": 2220,
-    "Ultim_Visitat": "dawn_village",
-    "Missions_Acceptades": {},
-    "Missions_Finalitzades": [],
-    "Missions_Disponibles": {
+    "Nom": "gambita",
+    "Ubicacio": "knightshire",
+    "Or": 2000,
+    "Ultim_Visitat": "knightshire",
+    "Missions_Acceptades": {
         "first_adventure": {
             "id": "first_adventure",
             "type": "Place",
             "Progress": 0,
-            "Status": "Disponible"
+            "Status": "Pendent Reclamar"
         }
     },
+    "Missions_Finalitzades": [],
+    "Missions_Disponibles": {},
     "Llocs_Trobats": [
         "dawn_village",
-        "south_forest"
+        "south_forest",
+        "greenwoods",
+        "knightshire"
     ],
     "Llocs_Visitats": [
         "dawn_village",
         "Bosc del Sud",
+        "Dawn Village",
         "Bosc del Sud",
         "Dawn Village",
         "Bosc del Sud",
-        "Dawn Village"
+        "Dawn Village",
+        "Bosc del Sud",
+        "Dawn Village",
+        "Bosc del Sud",
+        "Bosc de Fusta Verda",
+        "Knightshire"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
     "Team": [
         {
             "id": "Player",
-            "Nom": "Nat",
-            "Base": "priest",
-            "Lv": 8,
+            "Nom": "gambita",
+            "Base": "warrior",
+            "Lv": 5,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 39.65
+            "XP": 90.38
         }
     ],
     "Inventari": [
