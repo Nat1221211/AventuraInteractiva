@@ -51,11 +51,10 @@ class Player():
         self.fleeProb = 75
     
     def AplicarStatsGenerals(self):
-        for i in self.Team:
-            for j in self.StatIncrement.items():
-                i.StatPermanent[j[0]]["%"] = j[1]["%"]
-                i.StatPermanent[j[0]]["Flat"] = j[1]["Flat"]
-            i.DefinirPermanentStats()
+        for k, v in self.Team.items():
+            for stat, value in self.StatIncrement.items():
+                v.StatsPermanents[stat]["%"] = value["%"]
+                v.StatsPermanents[stat]["Flat"] = value["Flat"]
 
     def AfegirObjecte(self, afegit, quantitat):
         if afegit.id in self.objectes.keys():

@@ -146,12 +146,9 @@ class Entity():
             self.afected = []
         self.DefinirMoves()
     
-    def DefinirPermanentStats(self, jugador):
-        # if "%" in permanentbuff:
-        #     self.StatsPermanents[permanentbuff[0]]["%"] += float(permanentbuff[1])
-        # else:
-        #     self.StatsPermanents[permanentbuff[0]]["Flat"] += float(permanentbuff[1])
-        print()
+    # def DefinirPermanentStats(self, jugador):
+    #     for k, v in jugador.StatIncrement.items():
+    #         self.StatsPermanents[k][v[0]]+=v[1]
     
     def DefinirCombatStats(self):
         for k, v in self.StatsBase.items():

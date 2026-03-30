@@ -53,6 +53,8 @@ class Exits():
                         tipus = "%"
                         value.replace("%", "")
                 jugador.StatIncrement[key][tipus]+=value
+        if self.UnlockRequirements["Type"] == "Stat":
+            jugador.AplicarStatsGenerals()        
 
 class KillExit(Exits):
 
