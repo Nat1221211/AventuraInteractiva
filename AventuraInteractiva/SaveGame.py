@@ -43,7 +43,7 @@ def GuardarPartida(jugador, missions):
         "Titols": [],
 
         "Estadistiques": {},
-        "Increment_Stats": {},
+        "Increment_Stats": jugador.StatIncrement,
         "Companys": []
     }
     dades["Team"]=GuardarPersonatges(jugador.Team)
@@ -98,6 +98,7 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
     jugador.Gold = dades["Or"]
     jugador.objectes = inventari
     jugador.UltimPobleVisitat = ultim_visitat
+    jugador.StatIncrement = dades["Increment_Stats"]
 
     UIManager.CrearMenu(jugador.objectes.items(), "Motxila", "Objectes",jugador, opcionsvisibles=6)
 

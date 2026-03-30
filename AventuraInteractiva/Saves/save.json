@@ -1,50 +1,38 @@
 {
-    "Nom": "gambita",
-    "Ubicacio": "knightshire",
+    "Nom": "Nat",
+    "Ubicacio": "south_forest",
     "Or": 2000,
-    "Ultim_Visitat": "knightshire",
-    "Missions_Acceptades": {
+    "Ultim_Visitat": "dawn_village",
+    "Missions_Acceptades": {},
+    "Missions_Finalitzades": [],
+    "Missions_Disponibles": {
         "first_adventure": {
             "id": "first_adventure",
             "type": "Place",
             "Progress": 0,
-            "Status": "Pendent Reclamar"
+            "Status": "Disponible"
         }
     },
-    "Missions_Finalitzades": [],
-    "Missions_Disponibles": {},
     "Llocs_Trobats": [
         "dawn_village",
-        "south_forest",
-        "greenwoods",
-        "knightshire"
+        "south_forest"
     ],
     "Llocs_Visitats": [
         "dawn_village",
-        "Bosc del Sud",
-        "Dawn Village",
-        "Bosc del Sud",
-        "Dawn Village",
-        "Bosc del Sud",
-        "Dawn Village",
-        "Bosc del Sud",
-        "Dawn Village",
-        "Bosc del Sud",
-        "Bosc de Fusta Verda",
-        "Knightshire"
+        "Bosc del Sud"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
     "Team": [
         {
             "id": "Player",
-            "Nom": "gambita",
-            "Base": "warrior",
-            "Lv": 5,
+            "Nom": "Nat",
+            "Base": "mage",
+            "Lv": 9,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 90.38
+            "XP": 410
         }
     ],
     "Inventari": [
@@ -56,6 +44,31 @@
     ],
     "Titols": [],
     "Estadistiques": {},
-    "Increment_Stats": {},
+    "Increment_Stats": {
+        "MaxHP": {
+            "%": 0,
+            "Flat": 0
+        },
+        "MaxMana": {
+            "%": 0,
+            "Flat": 0
+        },
+        "ATK": {
+            "%": 0,
+            "Flat": 0
+        },
+        "INT": {
+            "%": 0,
+            "Flat": 0
+        },
+        "DEF": {
+            "%": 0,
+            "Flat": 0
+        },
+        "SPD": {
+            "%": 0,
+            "Flat": 0
+        }
+    },
     "Companys": []
 }
