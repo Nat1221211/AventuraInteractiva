@@ -9,22 +9,22 @@ lv70;Lv 70; Arribar a Nivell 70 amb un personatge.; False; Stat; Lv; 70; ATK: 5 
 lv80;Lv 80; Arribar a Nivell 80 amb un personatge.; False; Stat; Lv; 80; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
 lv90;Lv 90; Arribar a Nivell 90 amb un personatge.; False; Stat; Lv; 90; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
 lv99;Lv 99; Arribar a Nivell 99 amb un personatge.; False; Stat; Lv; 99; ATK: 5% | MaxHP: 5% | MaxMana: 5% | INT: 5% | DEF: 5% | SPD: 5%
-hp50;Lv 10; Arribar a ... amb un personatge.; False; Stat; MaxHP; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-hp100;Lv 20; Arribar a ... amb un personatge.; False; Stat; MaxHP; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-hp200;Lv 30; Arribar a ... amb un personatge.; False; Stat; MaxHP; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-atk50;Lv 10; Arribar a ... amb un personatge.; False; Stat; ATK; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-atk100;Lv 20; Arribar a ... amb un personatge.; False; Stat; ATK; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-atk200;Lv 30; Arribar a ... amb un personatge.; False; Stat; ATK; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-def50;Lv 10; Arribar a ... amb un personatge.; False; Stat; DEF; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-def100;Lv 20; Arribar a ... amb un personatge.; False; Stat; DEF; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-def200;Lv 30; Arribar a ... amb un personatge.; False; Stat; DEF; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-spd50;Lv 10; Arribar a ... amb un personatge.; False; Stat; SPD; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-spd100;Lv 20; Arribar a ... amb un personatge.; False; Stat; SPD; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-spd200;Lv 30; Arribar a ... amb un personatge.; False; Stat; SPD; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-mana50;Lv 10; Arribar a ... amb un personatge.; False; Stat; MaxMana; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-mana100;Lv 20; Arribar a ... amb un personatge.; False; Stat; MaxMana; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-mana200;Lv 30; Arribar a ... amb un personatge.; False; Stat; MaxMana; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-int50;Lv 10; Arribar a ... amb un personatge.; False; Stat; INT; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-int100;Lv 20; Arribar a ... amb un personatge.; False; Stat; INT; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
-int200;Lv 30; Arribar a ... amb un personatge.; False; Stat; INT; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+hp50;50 HP; Arribar a 50 de Vida amb un personatge.; False; Stat; MaxHP; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+hp100;100 HP; Arribar a 100 de Vida amb un personatge.; False; Stat; MaxHP; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+hp200;200 HP; Arribar a 200 de Vida amb un personatge.; False; Stat; MaxHP; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+atk50;50 ATK; Arribar a 50 d'Atac amb un personatge.; False; Stat; ATK; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+atk100;100 ATK; Arribar a 100 d'Atac amb un personatge.; False; Stat; ATK; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+atk200;200 ATK; Arribar a 200 d'Atac amb un personatge.; False; Stat; ATK; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+def50;50 DEF; Arribar a 50 de Defensa amb un personatge.; False; Stat; DEF; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+def100;100 DEF; Arribar a 100 de Defensa amb un personatge.; False; Stat; DEF; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+def200;200 DEF; Arribar a 200 de Defensa amb un personatge.; False; Stat; DEF; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+spd50;50 SPD; Arribar a 50 de Velocitat amb un personatge.; False; Stat; SPD; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+spd100;100 SPD; Arribar a 100 de Velocitat amb un personatge.; False; Stat; SPD; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+spd200;200 SPD; Arribar a 200 de Velocitat amb un personatge.; False; Stat; SPD; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+mana50;50 Mana; Arribar a 50 de Mana amb un personatge.; False; Stat; MaxMana; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+mana100;100 Mana; Arribar a 100 de Mana amb un personatge.; False; Stat; MaxMana; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+mana200;200 Mana; Arribar a 200 de Mana amb un personatge.; False; Stat; MaxMana; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+int50;50 INT; Arribar a 50 de Inteligencia amb un personatge.; False; Stat; INT; 50; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+int100;100 INT; Arribar a 100 de Inteligencia amb un personatge.; False; Stat; INT; 100; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
+int200;200 INT; Arribar a 200 de Inteligencia amb un personatge.; False; Stat; INT; 200; ATK: 5 | MaxHP: 5 | MaxMana: 5 | INT: 5 | DEF: 5 | SPD: 5
 beast_slayer;Terror de les Besties; Ara ets el terror de les besties, fas dany augmentat contra aquestes; True; Kill; beast; 3; Titol: Beast Slayer
