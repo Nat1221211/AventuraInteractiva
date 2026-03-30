@@ -69,7 +69,7 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
                                i["XP"])
             }
         )
-    
+
     ubicacio = zones[dades["Ubicacio"]]
     ultim_visitat = zones[dades["Ultim_Visitat"]]
 
@@ -99,8 +99,12 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
     jugador.objectes = inventari
     jugador.UltimPobleVisitat = ultim_visitat
     jugador.StatIncrement = dades["Increment_Stats"]
+    jugador.AplicarStatsGenerals()
 
-    UIManager.CrearMenu(jugador.objectes.items(), "Motxila", "Objectes",jugador, opcionsvisibles=6)
+    for k, v in jugador.Team.items():
+        v.DefinirCombatStats()
+
+    UIManager.CrearMenu(jugador.objectes.items(), "Motxila", "Objectes", jugador, opcionsvisibles=6)
 
     return jugador
 
