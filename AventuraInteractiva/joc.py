@@ -6,6 +6,7 @@
 
 # Llibreries
 import os
+import tkinter as tk
 
 from Classes import Entitat
 from Classes import Player
@@ -52,6 +53,16 @@ event.NouEvent("Objecte Missio Trobat", ControladorMissions.sistemaMissionsObjec
 event.NouEvent("Persona Missio Trobada", ControladorMissions.sistemaMissionsFind)
 event.NouEvent("Missio Finalitzada", ControladorMissions.DesbloquejarMissio)
 event.NouEvent("Nivell Incrementat",  ControladorExits.sistemaExitsStatChange)
+
+# Definit finestra del joc principal...
+# Declarar el mainloop despres dels canvis a la finestra principal.
+root = tk.Tk()
+
+root.title("Joc RPG Python i TKinter")
+root.geometry("900x600+330+120")    # Mantenir en mides 900x600+330+120, les considero adecuades
+
+root.mainloop()
+
 
 def CrearJugador(first = False):
     nom = ""
