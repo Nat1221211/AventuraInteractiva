@@ -16,7 +16,7 @@ class Mission():
     
     Name = ""
     Description = ""
-    Status = "Unacceped"
+    Status = "Bloquejada"
     Rewards = {}
     Requisite = []
     Place = Zones.Zona
@@ -25,26 +25,12 @@ class Mission():
 
 
     # Metodes
-    def __init__(self, name, description, rewards, cat):
+    def __init__(self, iden, name, description, rewards, cat):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Rewards = rewards
         self.Categoria = cat
-    
-    def RequisitesCompleted(self, jugador):
-        if self.Status not in ["Accepted", "Requisites", "Completed", "Rewards Unclaimed"]:
-            reqcompleted = True
-            if len(self.Requisite) > 0:
-                for i in self.Requisite:
-                    if type(i) == tuple:
-                        if i[0] == "Lv":
-                            if jugador.Team[0].Lv < i[1]:
-                                reqcompleted = False
-                    elif type(i) in [Mission, FindMission, ObjectMission, KillMission, PlaceMission]:
-                        if i.Status != "Completed":
-                            reqcompleted = False
-            if reqcompleted == True:
-                self.Status = "Requisites"
 
     def ShowRequisites(self):
         if len(self.Requisite) > 0:
@@ -57,6 +43,18 @@ class Mission():
                     print(f"    {i.Name} Completed")
             print("\n")
 
+    def MissioDesbloquejable(self, jugador):
+        resultat = True
+        for key, value in self.Requisite.items():
+            if key == "Lv":
+                if jugador.Team["Player"].Lv < value:
+                    resultat = False
+            elif key == "Mission":
+                for id in self.Requisite["Mission"]:
+                    if id not in jugador.MissionsFinalitzades:
+                        resultat = False
+        
+        return resultat
 
     def Aceptar(self, jugador):
         self.RequisitesCompleted(jugador)
@@ -66,111 +64,91 @@ class Mission():
         else:
             print("No compleixes amb els requisits per a la missio...")
     
-    def Completed(self):
-        self.Status = "Rewards Unclaimed"
-
-    def ClaimedRewards(self, jugador):
-        if self.Status == "Rewards Unclaimed":
-            self.Status = "Completed"
-            for i in self.Rewards:
-                if type(i) == str:
-                    jugador.Tituls.append(i)
-                elif type(i) == tuple:
-                    if type(i[0]) == Objectes.ObjecteCombat:
-                        jugador.AfegirObjecte(i[0], i[1])
-                        print(f"Has obtingut {i[1]} {i[0].ObjectName}")
-                    elif i[0] == "Gold":
-                        jugador.Gold += i[1]
-                        print(f"Has obtingut {i[1]} gold.")
-                    elif i[0] == "XP":
-                        for t in jugador.Team:
-                            t.LvlUp(None, i[1])
-            self.Finished = True
-            jugador.MissionsFinalitzades.append(self)
-        else:
-            print("Encara no has complert la missio...")
+    def Reclamar(self, jugador, Objectes, events, exits):
+        if self.Status == "Pendent Reclamar":
+            for id, value in self.Rewards.items():
+                if id == "XP":
+                    for id, ent in jugador.Team.items():
+                        ent.LvlUp(events, jugador, exits, None, value)
+                elif id == "Gold":
+                    jugador.Gold += value
+                elif id == "Objects":
+                    for obj in value:
+                        jugador.AfegirObjecte(Objectes[obj["type"]][obj["id"]], obj["Amount"])
+                elif id == "Title":
+                    jugador.Titles.append(value)
+            self.Status = "Completada"
+            jugador.MissionsFinalitzades.append(self.id)
+            jugador.MisionsAcceptades.remove(self.id)
 
 class FindMission(Mission):
     
-    Objective = ""
+    Objective = {}
     
     # Metodes
-    def __init__(self, name, description, cat, rewards, objective, requisite, place):
+    def __init__(self, iden, name, description, cat, rewards, objective, requisite):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Categoria = cat
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
-        self.Place = place
         
-    
-    def Completed(self):
-        self.Status = "Rewards Unclaimed"
-        print(f"Has completat la missio {self.Name}.")
-
 class ObjectMission(Mission):
     
-    Objective = Objectes.ObjecteClau
+    Objective = {}
     
     # Metodes
-    def __init__(self, name, description, cat, rewards, objective, requisite, place):
+    def __init__(self, iden, name, description, cat, rewards, objective, requisite):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Categoria = cat
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
-        self.Place = place
-   
-    def Completed(self):
-        print(f"Has completat la missio {self.Name}.")
-        self.Status = "Rewards Unclaimed"
-
+  
 class PlaceMission(Mission):
     
     Objective = Zones.Zona
     
     # Metodes
-    def __init__(self, name, description, cat, rewards, objective, requisite):
+    def __init__(self, iden, name, description, cat, rewards, objective, requisite):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Categoria = cat
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
-   
-    def Completed(self):
-        if self.Status == "Accepted":
-            self.Status = "Rewards Unclaimed"
-            print(f"\nHas completat la missio {self.Name}.")
-            input("\nPresiona per a continuar...")
 
 class KillMission(Mission):
     
     Objective = []
-    Quantity = int()
     Count = 0
-    Generic = True 
-    # En referencia a si un enemic generat aleatori compta, en aquest acs seria si
-    # si el cas es per exemple un unic enemic, que apareix no com els altres sino per que hauria d'estar alla
-    # seria False i el generaria segons el que compte la clase.
-    Enemic = None
-
     
     # Metodes
-    def __init__(self, name, description, cat, rewards, qty, objective, requisite, place, generic = True, enemy = None):
+    def __init__(self, iden, name, description, cat, rewards, objective, requisite, generic = True, entitats = None):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Categoria = cat
         self.Rewards = rewards
-        self.Quantity = qty
         self.Objective = objective
         self.Requisite = requisite
-        self.Place = place
         self.Generic = generic
+        self.Count = 0
         if self.Generic == False:
-            self.Enemic = enemy
+            self.Enemic = {}
+            count = 0
+            for j in self.Objective["enemy"]:
+                self.Enemic.update({
+                    f"missions_enemy_{count}":
+                    Entitat.Entity(f"missions_enemy_{count}", j["name"],
+                                    j["level"], False, entitats[j["entity"]])
+                })
+                count += 1
 
     def IncrementCount(self, enemy):
         if self.Generic == True:

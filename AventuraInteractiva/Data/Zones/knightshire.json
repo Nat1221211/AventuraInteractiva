@@ -1,0 +1,13 @@
+{
+    "id": "knightshire",
+    "name": "Knightshire",
+    "description": "La capital del regne, una terra de caballers...",
+    "zone_type": "Poble",
+    "enemies": {},
+    "connections": ["greenwoods"],
+    "monedes": {},
+    "objects": {},
+    "shops": ["shop_1"],
+    "Intents": 5,
+    "unlock_condition": {}
+}

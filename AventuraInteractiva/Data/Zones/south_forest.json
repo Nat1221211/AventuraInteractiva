@@ -3,7 +3,7 @@
     "name": "Bosc del Sud",
     "description": "Un bosc ubicat al sud de Dawn Village, un bosc relativament segur...",
     "zone_type": "bosc",
-    
+    "shops": [],
     "enemies": {
         "wolf": {
             "prob": 40,
@@ -12,7 +12,7 @@
             "drops": {
 
             },
-            "level_range": [1, 5]
+            "level_range": [3, 5]
         },
 
         "slime": {
@@ -22,7 +22,7 @@
             "drops": {
 
             },
-            "level_range": [1, 5]
+            "level_range": [3, 5]
         },
 
         "conill": {
@@ -32,7 +32,7 @@
             "drops": {
 
             },
-            "level_range": [1, 5]
+            "level_range": [3, 5]
         }
     },
     "connections": ["dawn_village", "greenwoods"],
@@ -46,5 +46,6 @@
     "objects": {
         
     },
+    "Intents": 5,
     "unlock_condition": {}
 }

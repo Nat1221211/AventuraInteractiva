@@ -18,6 +18,10 @@ from Classes import Missions
 from Classes import Objectes
 from Classes import Titles
 from Classes import Zones
+from Classes import Utilitats
+import PrepararCridar as Call
+
+
 
 def CallCSV(cami):
     try:
@@ -46,8 +50,8 @@ def CallCSV(cami):
                         items = linia[j].split("| ").copy()
                         linia[j] = dict()
                         for v in items:
-                            kv = v.split(": ")
-                            linia[j][kv[0]] = float(kv[1]) if not kv[1].endswith("%") else kv[1]
+                            kv = v.strip().split(": ")
+                            linia[j][kv[0]] = kv[1] if kv[1].endswith("%") or kv[0].startswith("Titol") else float(kv[1])
                     elif len(linia[j].split("| ")) > 1:
                         linia[j] = linia[j].split("| ")
                     DictData[caps[j]] = linia[j]
@@ -64,7 +68,12 @@ def CallEntity(movements):
     for i in entitats:
         moves = {}
         for m, n in i["Movements"].items():
-            moves[movements[m]]=n
+            if m not in moves.keys():
+                dictio = {
+                    "Move": movements[m],
+                    "Lv": n
+                }
+                moves.update({m: dictio})
 
         entitat = EntityType.EntityType(i["id"], i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
                                         i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
@@ -103,9 +112,9 @@ def CallMovement(effects):
                     Debuff[effects[i["Debuff"][j]]]=int(i["ProbEfecteDebuff"][j])
         elif i["Debuff"] != "" and i["ProbEfecteDebuff"] != "":
             Debuff[effects[i["Debuff"]]]=int(i["ProbEfecteDebuff"])
-        move = Characteristics.Moves(i["Nom"], i["Descripcio"], i["Potencia"], i["Precisio"],  i["Magic?"], 
-                                        i["Cost"], Buff, Debuff, i["MultipleObjectiu?"], i["Cura?"], i["Protegeix?"], i["DanyperProteccio"])
-        moves.update({move.Name: move})
+        move = Characteristics.Moves(i["id"], i["Nom"], i["Descripcio"], i["Potencia"], i["Precisio"],  i["Magic?"], 
+                                    i["Cost"], Buff, Debuff, i["MultipleObjectiu?"], i["Cura?"], i["Protegeix?"], i["DanyperProteccio"])
+        moves.update({move.id: move})
     return moves
 
 def CallObject():
@@ -116,26 +125,26 @@ def CallObject():
     }
     for i in objects:
         if i["Tipus"] == "Combat":
-            obj = Objectes.ObjecteCombat(i["Nom"], i["Descripcio"], i["Efectes"], i["Preu"],  i["ForadeCombat?"])
-            objectes["Combat"].update({obj.ObjectName: obj})
+            obj = Objectes.ObjecteCombat(i["id"] ,i["Nom"], i["Descripcio"], i["Efectes"], i["Preu"],  i["ForadeCombat?"])
+            objectes["Combat"].update({obj.id: obj})
         elif i["Tipus"] == "Clau":
-            obj = Objectes.ObjecteClau(i["Nom"], i["Descripcio"])
-            objectes["Clau"].update({obj.ObjectName: obj})    
+            obj = Objectes.ObjecteClau(i["id"], i["Nom"], i["Descripcio"])
+            objectes["Clau"].update({obj.id: obj})    
     return objectes
 
-def CallAchievements(Individual = True):
-    objects = CallCSV("Data/Achievements.csv")
-    for i in objects:
-        requisits = {}
-        if Individual == True:
-            if i["Tipus de Requisit"] == "Kill":
-                Exits.KillExit(i["Nom"], i["Descripcio"], i["Requisit"], i["Quantitat"], i["Recompensa"])
-        else:
-            if i["Tipus de Requisit"] != "Kill":
-                requisits[i["Nom"]]={"Type&Amt": (i["Requisit"], i["Quantitat"]), "Qty": 0}
-    return requisits
+def CallAchievements():
+    chargedlist = CallCSV("Data/Achievements.csv")
 
-def CallZones(Entitats):
+    achievements = {}
+    for i in chargedlist:
+        unlock = {}
+        unlock.update({"Type": i["Tipus de Requisit"], "Objective": i["Requisit"], "Amount": i["Quantitat"]})
+
+        achieve = Exits.Exits(i["id"], i["Nom"], i["Descripcio"], i["Ocult?"], i["Recompensa"], unlock)
+        achievements.update({i["id"]: {"id": i["id"], "achievement": achieve}})
+    return achievements
+
+def CallZones():
     rutabase = os.path.dirname(__file__)
     ruta = os.path.join(rutabase, "Data/Zones/")
 
@@ -145,8 +154,21 @@ def CallZones(Entitats):
         with open(ruta_file, "r", encoding="utf-8") as f:
             i = json.load(f)
 
+            shop_dict = {}
+            for shop in i["shops"]:
+                ruta_shop = os.path.join(rutabase, "Data/Botigues",shop+".json")
+                with open(ruta_shop, "r", encoding="utf-8") as shop_file:
+                    shop_value = json.load(shop_file)
+                
+                shop_dict.update(
+                    {
+                        shop:
+                        shop_value
+                    }
+                )
+
             place = Zones.Zona(i["id"], i["name"], i["description"], i["zone_type"], i["enemies"], 
-                            i["monedes"])
+                            i["monedes"], i["Intents"], i["objects"], shop_dict)
             
             place.AddConnections(i["connections"])
             place.AfegirCondicio(i["unlock_condition"])
@@ -154,6 +176,39 @@ def CallZones(Entitats):
 
             places.update({i["id"]: place})
     return places
+
+def CallMissions(entitats):
+    rutabase = os.path.dirname(__file__)
+    ruta = os.path.join(rutabase, "Data/Missions/")
+
+    missions = {}
+    for j in os.listdir(ruta):
+        ruta_file = os.path.join(ruta, j)
+        with open(ruta_file, "r", encoding="utf-8") as f:
+            i = json.load(f)
+
+            if i["type"] == "Place":
+                mision = Missions.PlaceMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
+                                              i["objective"], i["requisites"])
+            elif i["type"] == "Kill":
+                if i["generic"] == "True":
+                    i["generic"] = True
+                else:
+                    i["generic"] = False
+                mision = Missions.KillMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
+                                             i["objective"], i["requisites"], i["generic"], entitats)
+            elif i["type"] == "Find":
+                mision = Missions.FindMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
+                                              i["objective"], i["requisites"])
+            elif i["type"] == "Object":
+                mision = Missions.ObjectMission(i["id"], i["name"], i["description"], i["class"], i["rewards"], 
+                                              i["objective"], i["requisites"])
+
+            if i["type"] in missions.keys():
+                missions[i["type"]].update({i["id"]: mision})
+            else:
+                missions.update({i["type"]: {i["id"]: mision}})
+    return missions
 
 def main():
     print("!! - Joc de Preguntes - !!")

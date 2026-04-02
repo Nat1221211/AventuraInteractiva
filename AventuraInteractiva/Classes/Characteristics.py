@@ -23,7 +23,8 @@ class Moves():
     AutoDamaging = 0
 
     # Metodes
-    def __init__(self, name, description, power, precision, tipo, cost, buff, debuff, multitarget = False, healing = False, protective = False, autodamage = 0):
+    def __init__(self, iden, name, description, power, precision, tipo, cost, buff, debuff, multitarget = False, healing = False, protective = False, autodamage = 0):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Power = power

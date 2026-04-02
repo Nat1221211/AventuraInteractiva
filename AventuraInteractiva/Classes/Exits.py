@@ -8,86 +8,58 @@ import random
 from Classes import Objectes
 
 class Exits():
-    
-    Name = ""
-    Description = ""
-    Obtained = False
-
-
     # Metodes
-    def __init__(self, name, description):
+    def __init__(self, iden, name, description, hiden, rewards, unlock):
+        self.id = iden
         self.Name = name
         self.Description = description
+        self.Hiden = hiden
+        self.Obtained = False
+        self.Rewards = rewards
+        self.UnlockRequirements = unlock
     
-    def Obtain(self, jugador):
+
+    def UnlockExit(self, jugador):
         self.Obtained = True
-        for i in jugador.Team:
-            for k in self.rewtype:
-                i.DefinirPermanentStats(())
-                
-        if self.rewtype == "Title":
-            jugador.Tituls.append(self.reward)
-            print(f"Has obtingut el titol {self.reward.TitleName}.")
-        
+        jugador.AcquiredAchievements.append(self.id)
+        self.ClaimRewards(jugador)
 
-class StatusExit(Exits):
+    def ComprovarExit(self, entitat, jugador):
+        unlock = True
+        if self.Obtained == False:
+            if self.UnlockRequirements["Type"] == "Stat":
+                if self.UnlockRequirements["Objective"] == "Lv":
+                    if entitat.Lv < self.UnlockRequirements["Amount"]:
+                        unlock = False
+                elif self.UnlockRequirements["Objective"] in []:
+                    print("")
+                else:
+                    if entitat.StatsCombat[self.UnlockRequirements["Objective"]] < self.UnlockRequirements["Amount"]:
+                        unlock = False            
+            else:
+                unlock = False
+            if unlock == True:
+                self.Obtained = True
+                jugador.AcquiredAchievements.append(self.id)
+                self.ClaimRewards(jugador)
 
-    RequisitStat = ""
-    RequisitNumber = int()
-    Rewards = None
-    RewType = ""
 
-
-    def __init__(self, name, description, RequisitStat, reqnumber, reward):
-        self.Name = name
-        self.Description = description
-        self.RequisitStat = RequisitStat
-        self.RequisitNumber = reqnumber
-        self.Rewards = reward
-
-    def Completed(self, jugador):
-        for i in jugador.Team:
-            if self.RequisitStat == "Lv":
-                if jugador.Lv >= self.RequisitNumber:
-                    self.Obtain(jugador, self.Rewards)
-            elif jugador.CombatStats[self.RequisitStat] >= self.RequisitNumber:
-                    self.Obtain(jugador, self.Rewards)
-
-class ObjectExit(Exits):
-
-    ObjectRequired = []
-    Quantity = int()
-    Rewards = {}
-
-    def __init__(self, name, description, ObjectRequired, Quantity, reward):
-        self.Name = name
-        self.Description = description
-        self.ObjectRequired = ObjectRequired
-        self.Quantity = Quantity
-        self.Rewards = reward
-    
-    def Completed(self, jugador):
-        print("")
+    def ClaimRewards(self, jugador):
+        for key, value in self.Rewards.items():
+            if self.UnlockRequirements["Type"] == "Stat":
+                tipus = "Flat"
+                if isinstance(value, str):
+                    if value.endswith("%"):
+                        tipus = "%"
+                        value.replace("%", "")
+                jugador.StatIncrement[key][tipus]+=value
+        if self.UnlockRequirements["Type"] == "Stat":
+            jugador.AplicarStatsGenerals()        
 
 class KillExit(Exits):
 
-    Entities = []
-    Quantity = int()
-    Count = int()
-    Rewards = None
-    RewType = ""
+    def __init__(self, iden, name, description, hiden, rewards, unlock, count):
+        super().__init__(iden, name, description, hiden, rewards, unlock)
+        self.Count = count
 
-    def __init__(self, name, description, entities, quantity, reward):
-        self.Name = name
-        self.Description = description
-        self.Entities = entities
-        self.Quantity = quantity
-        self.Rewards = reward
-
-    def IncrementCount(self, enemy):
-        if enemy.base.EntityName in self.Entities:
-            self.Count += 1
-    
-    def Completed(self, team):
-        if self.Count >= self.Quantity:
-            self.Obtain(team, self.Rewards, self.RewType)
+        

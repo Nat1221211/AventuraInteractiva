@@ -1,0 +1,33 @@
+{
+    "id": "find_smulet_greenwoods",
+    "name": "Troba l'amulet perdut",
+    "description": "Has recibit una peticio per a trobar un amulet que s'ha persut, creuen que esta en els Boscs de Fusta Verda...",
+    "class": "Secundaria",
+    "type": "Object",
+    "objective": {
+        "object": "silver_amulet",
+        "ObjName": "Amulet Platejat",
+        "type": "Clau",
+        "place": "greenwoods"
+    },
+    "rewards": {
+        "XP": 200,
+        "Gold": 3000,
+        "Objects": [
+            {
+                "id": "inferior_potion",
+                "type": "Combat",
+                "Amount": 1
+            },
+            {
+                "id": "potion",
+                "type": "Combat",
+                "Amount": 1
+            }
+        ]
+    },
+    "requisites": {
+        "Lv": 5,
+        "Mission": ["first_adventure"]
+    }
+}

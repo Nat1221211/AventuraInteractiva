@@ -20,7 +20,7 @@ class Zona():
 
 
     # Metodes
-    def __init__(self, id, name, description, tipus, enemies, gol, intents = 5):
+    def __init__(self, id, name, description, tipus, enemies, gol, intents = 5, objects = {}, shops = {}):
         self.id = id
         self.NameZone = name
         self.Description = description
@@ -29,6 +29,9 @@ class Zona():
         self.Or = gol
         self.CondicioPerTrobarRuta = {}
         self.IntentsPerTrobar = intents
+        self.Objectes = objects
+        self.Shops = shops
+        self.Connections = None
     
     def AddConnections(self, connections):
         self.Connections = connections
@@ -36,18 +39,13 @@ class Zona():
     def Trobar(self):
         self.Trobada = True
     
-    def AfegirObjectePerTrobar(self, objectes):
-        for i in objectes:  
-            self.ObjectesPerTrobar[i[0]] = i[1]
-            # i[0] = Objecte i[1] = llista amb prob i quantitat per trobar.
-    
     def ObjecteTrobat(self, trobat):
-        if self.ObjectesPerTrobar[trobat][1] >= 1:
-            self.ObjectesPerTrobar[trobat][1] -= 1
-            if self.ObjectesPerTrobar[trobat][1] <= 0:
-                self.ObjectesPerTrobar.pop(trobat)
+        if self.Objectes[trobat]["Amount"] >= 1:
+            self.Objectes[trobat]["Amount"] -= 1
+            if self.Objectes[trobat]["Amount"] <= 0:
+                self.Objectes.pop(trobat)
     
-    def ComprobarCondicio(self, team):
+    def ComprobarCondicio(self, player):
         if self.CondicioPerTrobarRuta != None:
             trobada = True
             for j in self.CondicioPerTrobarRuta:
@@ -57,7 +55,7 @@ class Zona():
                             trobada = False
                 if j[0] == "Objecte":
                     for v in j[1]:
-                        if v not in team[0].objectes.keys():
+                        if v not in player.objectes.keys():
                             trobada = False
                 if j[0] == "Missio":
                     for m in j[1]:

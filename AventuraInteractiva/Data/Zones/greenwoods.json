@@ -3,6 +3,7 @@
     "name": "Bosc de Fusta Verda",
     "description": "Al atravesar el bosc ubicat al sud de Dawn Village, entres als boscs de fusta verda, t'apropes a la capital...",
     "zone_type": "bosc",
+    "shops": [],
     
     "enemies": {
         "wolf": {
@@ -12,7 +13,7 @@
             "drops": {
 
             },
-            "level_range": [3, 7]
+            "level_range": [5, 9]
         },
 
         "slime": {
@@ -32,7 +33,7 @@
             "drops": {
 
             },
-            "level_range": [3, 7]
+            "level_range": [6, 9]
         },
 
         "jabali": {
@@ -45,16 +46,33 @@
             "level_range": [3, 7]
         }
     },
-    "connections": ["south_forest"],
+    "connections": ["south_forest", "knightshire"],
     "monedes": {
         "Bronze": {
             "type": "Bronze",
-            "amount_range": [1, 5],
-            "prob": 100
+            "amount_range": [3, 8],
+            "prob": 90
+        },
+        "Plata": {
+            "type": "Plata",
+            "amount_range": [1, 1],
+            "prob": 10
         }
     },
-    "objects": {
-        
+    "objects":{
+        "high_potion": {
+            "id": "high_potion",
+            "prob": 10,
+            "type": "Combat",
+            "Amount": 3
+        },
+        "complete_potion": {
+            "id": "complete_potion",
+            "prob": 10,
+            "type": "Combat",
+            "Amount": 3
+        }
     },
+    "Intents": 5,
     "unlock_condition": {}
 }

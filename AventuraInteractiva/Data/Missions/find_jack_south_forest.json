@@ -1,0 +1,31 @@
+{
+    "id": "fins_jack_south_forest",
+    "name": "Trobar a en Jack",
+    "description": "No saben on esta en jack, els del poble et demanen que el trobis...",
+    "class": "Secundaria",
+    "type": "Find",
+    "objective": {
+        "find": "Jack",
+        "place": "south_forest"
+    },
+    "rewards": {
+        "XP": 200,
+        "Gold": 3000,
+        "Objects": [
+            {
+                "id": "inferior_potion",
+                "type": "Combat",
+                "Amount": 1
+            },
+            {
+                "id": "potion",
+                "type": "Combat",
+                "Amount": 1
+            }
+        ]
+    },
+    "requisites": {
+        "Lv": 5,
+        "Mission": ["first_adventure"]
+    }
+}

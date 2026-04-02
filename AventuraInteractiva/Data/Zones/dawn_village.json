@@ -7,5 +7,7 @@
     "connections": ["south_forest"],
     "monedes": {},
     "objects": {},
+    "shops": ["shop_1"],
+    "Intents": 5,
     "unlock_condition": {}
 }
