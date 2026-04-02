@@ -204,7 +204,7 @@ class Entity():
                 limit = effect.EffectLimit
                 if effectCount + 1 > limit and limit != 0:
                     aplicable = False
-                    print(f"{self.nom} ha arribat al limit d'aplicacions de l'efecte {effect}")
+                    print(f"{self.nom} ha arribat al limit d'aplicacions de l'efecte {effect.Name}")
 
             if aplicable == True:
                 effect.RemainingTurns = effect.Turns
