@@ -21,10 +21,13 @@ import TownUtilitiesManager as TUtManager
 from Controladors import ControladorMissions
 from Controladors import ControladorExits
 
+filepath = os.path.dirname(__file__)
+
 Objects = Call.CallObject()
 Effects = Call.CallEfect()
 Movements = Call.CallMovement(Effects)
 Entities = Call.CallEntity(Movements)
+
 
 
 # Creem la funcio per a generar els grups d'entitats algo aixi com els tipus.
@@ -61,8 +64,17 @@ root = tk.Tk()
 root.title("Joc RPG Python i TKinter")
 root.geometry("900x600+330+120")    # Mantenir en mides 900x600+330+120, les considero adecuades
 
-root.mainloop()
+root.minsize(900, 600)
+root.maxsize(900, 600)
 
+imagepath = os.path.join(filepath, "Assets/Backgrounds/Window/TitleBackground.png")
+background = tk.PhotoImage(file=imagepath)
+background = background.
+
+backgroundlabel = tk.Label(root, image=background)
+backgroundlabel.place(x = 0, y = 0)
+
+root.mainloop()
 
 def CrearJugador(first = False):
     nom = ""
