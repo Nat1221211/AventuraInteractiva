@@ -76,15 +76,13 @@ class App():
 
         self.fondo = None
 
-        self.Menu = Utilitats.Menu(self, self.canvas, "")
+        self.Menu = Utilitats.Menu(self, self.canvas, "", [])
 
         self.MostrarPantallaInicial()
     
     def ConfirmarSeleccio(self, event = None):
-        seleccionat = self.menu.opcions[self.menu.index]
-
-        if seleccionat.id == "":    # Segons la opcio i l'objecte dur a terme una accio
-            print()
+        if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
+            self.SeleccionarPartida()
     
     def CanviarMenu(self, menu):
         self.Menu = Utilitats.Menu(self, self.canvas, menu)
@@ -161,7 +159,17 @@ class App():
         self.MostrarMenu()
         
 
-
+    def SeleccionarPartida(self):
+        seleccionat = self.menu.opcions[self.menu.index]
+        if seleccionat.id == "Nova":
+            self.NovaPartida()
+        elif seleccionat.id == "Carregar":
+            ruta_base = os.path.dirname(__file__)
+            ruta = os.path.join(ruta_base, "Saves/save.json")
+            self.CarregarPartida(ruta)
+        
+        if seleccionat.id != None:
+            UIManager.MostrarMenuPrincipal(self)
 
     def NovaPartida(self):
         # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
