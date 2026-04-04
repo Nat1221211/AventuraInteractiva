@@ -8,13 +8,13 @@ import random
 import tkinter as tk
 
 class Menu():
-    def __init__(self, app, canvas, ident, opcions):
+    def __init__(self, app, canvas, ident, opcions, limitfila = 10):
         self.app = app
         self.canvas = canvas
         self.id = ident
         self.opcions = opcions
         self.index = 0
-        self.columnes = 0
+        self.columnes = len(self.opcions) // limitfila if len(self.opcions) > limitfila else 1
         self.espaiat_x = 250
         self.espaiat_y = 40
         self.x_inicial = 250
@@ -25,22 +25,23 @@ class Menu():
         self.labels = []
 
         for i, opcio in enumerate(self.opcions):
-            colum = i % self.columnes
-            fila = i // self.columnes
+            if self.columnes > 0:
+                colum = i % self.columnes
+                fila = i // self.columnes
 
-            if x == None or y == None:
-                x = self.x_inicial + (colum * self.espaiat_x)
-                y = self.y_inicial + (fila * self.espaiat_y)
+                if x == None or y == None:
+                    x = self.x_inicial + (colum * self.espaiat_x)
+                    y = self.y_inicial + (fila * self.espaiat_y)
 
-            color = "blue" if self.index == i else "black"
+                color = "blue" if self.index == i else "black"
 
-            label = self.canvas.create_text(
-                x, y + (i*40),
-                text=opcio.Nom, fill=color,
-                font=("Courier", 18, "bold"),
-                anchor="w", tags="menu_interactiu"
-            )
-            self.labels.append(label)
+                label = self.canvas.create_text(
+                    x, y + (i*40),
+                    text=opcio.Nom, fill=color,
+                    font=("Courier", 18, "bold"),
+                    anchor="w", tags="menu_interactiu"
+                )
+                self.labels.append(label)
 
     def Moviment(self, direccio):
         if direccio == "w":

@@ -85,13 +85,17 @@ class App():
             self.SeleccionarPartida()
     
     def CanviarMenu(self, menu):
-        self.Menu = Utilitats.Menu(self, self.canvas, menu)
+        self.Menu = Utilitats.Menu(self, self.canvas, menu["id"], menu["opcions"])
 
     def MostrarMenu(self):
         self.Menu.dibuixar()
 
-    def RedimensionarFons(self):
+    def RedimensionarFons(self, image = None):
 
+        if image != None:
+            if os.path.exists(image):
+                self.ImatgeFons = Image.open(image)
+        
         # Redimensionem a la mida de la pantalla, i li donem format LANCZOS (de bona qualitat)
         redim_image = self.ImatgeFons.resize(
             (self.Ancho, self.Alto), Image.Resampling.LANCZOS
@@ -142,7 +146,7 @@ class App():
         ruta_base = os.path.dirname(__file__)
         ruta = os.path.join(ruta_base, "Saves/save.json")
         if os.path.isfile(ruta):
-            UIManager.Menus["Seleccio Partida"].append(
+            UIManager.Menus["Seleccio Partida"]["opcions"].append(
                 Utilitats.OpcioMenu("Carregar", "Carregar Partida", True, "Carrega la ultima partida guardada..."),
             )
 
@@ -151,8 +155,8 @@ class App():
         self.root.bind("<s>", lambda event: self.Menu.Moviment("s"))
         # self.root.bind("<a>", lambda event: self.MostrarPantallaSeleccio())
         # self.root.bind("<d>", lambda event: self.MostrarPantallaSeleccio())
-        self.root.bind("<Return>", lambda event: self.MostrarPantallaSeleccio())
-        self.root.bind("<BackSpace>", lambda event: self.MostrarPantallaSeleccio())
+        self.root.bind("<Return>", lambda event: self.ConfirmarSeleccio())
+        self.root.bind("<BackSpace>", lambda event: self.ConfirmarSeleccio())
 
         
         self.CanviarMenu(UIManager.Menus["Seleccio Partida"])
@@ -160,7 +164,7 @@ class App():
         
 
     def SeleccionarPartida(self):
-        seleccionat = self.menu.opcions[self.menu.index]
+        seleccionat = self.Menu.opcions[self.Menu.index]
         if seleccionat.id == "Nova":
             self.NovaPartida()
         elif seleccionat.id == "Carregar":
@@ -182,7 +186,7 @@ class App():
 
         # # Afegim algun objecte al jugador de base
         self.jugador.AfegirObjecte(self.Objects["Combat"]["inferior_potion"], 2)
-        UIManager.AccioMenuPrincipal(self)
+        UIManager.MostrarMenuPrincipal(self)
     
     def CrearJugador(self, first = False):
         nom = ""
@@ -208,12 +212,9 @@ class App():
     
     def CarregarPartida(self, partida):
         self.jugador = SaveGame.CarregarPartida(partida, self.Missions, self.Objects, self.Zones, self.Entities)
-        UIManager.AccioMenuPrincipal(self)
+        UIManager.MostrarMenuPrincipal(self)
 
     def GuardarPartida(self):
         SaveGame.GuardarPartida(self.jugador, self.Missions)
 
-    def NetejarPantalla(self):
-        self.canvas.delete("all") # Borrem el que tingues el canvas
-    
         

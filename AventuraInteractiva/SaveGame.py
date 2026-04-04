@@ -116,8 +116,6 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
     for k, v in jugador.Team.items():
         v.DefinirCombatStats()
 
-    UIManager.CrearMenu(jugador.objectes.items(), "Motxila", "Objectes", jugador, opcionsvisibles=6)
-
     return jugador
 
 
