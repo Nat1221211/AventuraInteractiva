@@ -8,31 +8,22 @@ import random
 import tkinter as tk
 
 class Menu():
-    def __init__(self, titol, opcions, op_per_pag):
-        self.Titol = titol
-        self.Opcions = opcions
-        self.Cursor = 0
-        self.OpcionsPagina = op_per_pag
+    def __init__(self, app, canvas, opcions):
+        self.app = app
+        self.canvas = canvas
+        self.opcions = opcions
+        self.index = 0
+        self.labels = []
+        self.seleccionat = None
     
-    
-    def MoureCursor(self, direccio):
-        total = len(self.Opcions)
-        self.Cursor = (self.Cursor + direccio) % total
+    def dibuixar(self, x = 100, y = 100):
+        self.canvas.delete("menu_interactiu")
+        self.labels = []
 
-    def SeleccionarOpcio(self):
-        opcio = self.Opcions[self.Cursor]
-        if opcio.Habilitat == True:
-            return opcio.id
-        return None
+        for i, opcio in enumerate(self.opcions):
+            color = "blue" if self.index == i else "black"
+            text = opcio.nom
 
-    def OpcionsVisible(self):
-        pagina = self.Cursor // self.OpcionsPagina
-        inici = pagina * self.OpcionsPagina
-        fi = inici + self.OpcionsPagina
-        totalpag = len(self.Opcions) // self.OpcionsPagina
-        if (len(self.Opcions) % self.OpcionsPagina) > 0:
-            totalpag += 1
-        return self.Opcions[inici:fi], inici, pagina, totalpag
 
 class OpcioMenu():
     def __init__(self,iden, nom, posicio, habilitat, descripcio, condicio_habilitat = False):
@@ -43,29 +34,3 @@ class OpcioMenu():
         self.Habilitat = habilitat
         if condicio_habilitat == True:
             self.Habilitat = True
-
-class MostrarMenu():
-    def Mostrar(App, Menu, textextra = ""):
-        if textextra != "":
-            print(f"\n{textextra}")
-        print("\n" + Menu.Titol)
-        opcions, inici, pagina, total = Menu.OpcionsVisible()
-
-        App.NetejarPantalla()
-
-        for i, opcio in enumerate(opcions):
-            index = inici + i
-            cursor = "->" if index == Menu.Cursor else ""
-            estat = "" if opcio.Habilitat == True else "(Bloquejat)"
-            objecte = tk.Button(App.root, text=opcio.Nom, 
-                                    font=("Helvetica", 18), command=Menu.SeleccionarOpcio,
-                                    fg="black", bg = "white"
-                                    )
-            posicio = opcio.Posicio
-            App.canvas.create_window(App.Ancho * posicio[0], posicio[1], window=objecte)
-        
-        if total > 1:
-            print(f"\nPagina: {pagina + 1} de {total}")
-
-        posicio = Menu.Cursor % len(opcions)
-    

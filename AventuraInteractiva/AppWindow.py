@@ -17,6 +17,7 @@ from Classes import Player
 from Classes import Entitat
 from Classes import Player
 from Classes import Events
+from Classes import Utilitats
 
 from Controladors import ControladorMissions
 from Controladors import ControladorExits
@@ -74,6 +75,17 @@ class App():
         self.canvas.pack(fill="both", expand=True)
 
         self.fondo = None
+
+        Menu = 
+
+         # Interaccions
+        self.root.bind("<w>", lambda event: self.MostrarPantallaSeleccio())
+        self.root.bind("<s>", lambda event: self.MostrarPantallaSeleccio())
+        self.root.bind("<a>", lambda event: self.MostrarPantallaSeleccio())
+        self.root.bind("<d>", lambda event: self.MostrarPantallaSeleccio())
+        self.root.bind("<Return>", lambda event: self.MostrarPantallaSeleccio())
+        self.root.bind("<BackSpace>", lambda event: self.MostrarPantallaSeleccio())
+
 
         self.MostrarPantallaInicial()
 
@@ -139,7 +151,7 @@ class App():
         ruta_base = os.path.dirname(__file__)
         ruta = os.path.join(ruta_base, "Saves/save.json")
         if os.path.isfile(ruta):
-            carregar = tk.Button(self.root, text="Carregar Partida", font=("Helvetica", 18), command=self.CarregarPartida)
+            carregar = tk.Label(self.root, text="Carregar Partida", font=("Helvetica", 18), command=self.CarregarPartida)
             self.canvas.create_window(posicio[0], posicio[1], window=carregar)
             posicio = (self.Ancho // 2, self.Alto - self.Alto // 6)
 
