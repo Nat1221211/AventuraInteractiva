@@ -85,9 +85,12 @@ class App():
         
         if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
             self.SeleccionarPartida()
+
         elif self.Menu.id == "Menu Poble" or self.Menu.id == "Menu Wild":
             UIManager.CridarAccioMenuPrincipal(App, seleccionat)
     
+        
+
     def CanviarMenu(self, menu):
         self.Menu = Utilitats.Menu(self, self.canvas, menu["id"], menu["opcions"])
 

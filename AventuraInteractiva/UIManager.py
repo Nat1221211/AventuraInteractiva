@@ -34,7 +34,7 @@ Menus = {
     },
 
     "Menu Wild":{
-        "id": "Menu WIld",
+        "id": "Menu Wild",
         "opcions":
         [
             Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
@@ -148,7 +148,7 @@ def CridarAccioMenuPrincipal(App, accio):
     }
 
     if accio.id in accions:
-        accions[accio.id]()
+        accions[accio.id]
 
 # def MenuMisions(jugador, missions, event, objects, exits):
 #     sel = ""
