@@ -61,7 +61,7 @@ class Player():
             self.objectes[afegit.id]["amount"] += quantitat
         else:
             self.objectes.update({afegit.id: {"objecte": afegit, "amount": quantitat}})
-        UIManager.CrearMenu(self.objectes.items(), "Motxila", "Objectes", opcionsvisibles=6)
+        UIManager.CrearMenu(self.objectes.items(), "Motxila", "Objectes")
     
     def ActualitzarUltimPobleVisitat(self):
         if self.Ubicacio.ZoneType == "Poble":

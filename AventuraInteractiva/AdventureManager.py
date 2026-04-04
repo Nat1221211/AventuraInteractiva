@@ -11,21 +11,17 @@ import UIManager
 from Classes import Missions
 import CombatManager
 
-def Mapa(jugador, zones, missions, event, exits):
+def Mapa(App):
     
-    UIManager.CrearMenu(jugador.Ubicacio.Connections, "Mapa", "Zones", jugador, zones, 4)
+    UIManager.CrearMenu(App.jugador.Ubicacio.Connections, "Mapa", "Zones", App.jugador, App.Zones)
+    App.CanviarMenu(UIManager.Menus["Mapa"])
+    App.MostrarMenu()
 
-    seleccio = UIManager.MostrarMenus(UIManager.Menus["Mapa"], True, False, None, None, f"Ubicació: {jugador.Ubicacio.NameZone}")
-
-    if seleccio == "bloquejat":
-        print("Opcio Bloquejada!")
-        input("Presiona per a continuar...")
-    elif seleccio != None:
-        jugador.Ubicacio = zones[seleccio]    # Canviem la zona i la retornem
-        jugador.ActualitzarUltimPobleVisitat()
-        event.CridarEvent("Lloc Visitat", jugador.Ubicacio.id, jugador, missions)
-    elif seleccio == None:
-        input("Has sortit del mapa... (Presiona per a continuar)")
+def CanviarZona(App, seleccio):
+        App.jugador.Ubicacio = App.Zones[seleccio.id]    # Canviem la zona i la retornem
+        App.jugador.ActualitzarUltimPobleVisitat()
+        App.event.CridarEvent("Lloc Visitat", App.jugador.Ubicacio.id, App.jugador, App.Missions)
+    
 
 def OcurrenciaMisio(misio, jugador, missions, event, objectes, exits):
     if type(misio) == Missions.KillMission:        

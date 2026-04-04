@@ -60,6 +60,7 @@ class Menu():
                     anchor="w", tags="menu_interactiu"
                 )
                 self.labels.append(label)
+        
         self.dibuixar_fons_menus()
     
     def dibuixar_fons_menus(self):

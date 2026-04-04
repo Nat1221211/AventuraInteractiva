@@ -11,6 +11,8 @@ import os
 import PrepararCridar as Call
 import SaveGame
 import UIManager
+import AdventureManager
+import TownUtilitiesManager as TUtManager
 
 
 from Classes import Player
@@ -87,9 +89,12 @@ class App():
             self.SeleccionarPartida()
 
         elif self.Menu.id == "Menu Poble" or self.Menu.id == "Menu Wild":
-            UIManager.CridarAccioMenuPrincipal(App, seleccionat)
-    
+            UIManager.CridarAccioMenuPrincipal(self, seleccionat)
         
+        elif self.Menu.id == "Mapa":
+            AdventureManager.CanviarZona(self, seleccionat)
+    
+
 
     def CanviarMenu(self, menu):
         self.Menu = Utilitats.Menu(self, self.canvas, menu["id"], menu["opcions"])
@@ -152,7 +157,7 @@ class App():
 
         ruta = os.path.join(filepath, "Saves/save.json")
         if os.path.isfile(ruta):
-            UIManager.Menus["Seleccio Partida"]["opcions"].append(
+            UIManager.Menus["Seleccio Partida"]["opcions"].insert(1,
                 Utilitats.OpcioMenu("Carregar", "Carregar Partida", True, "Carrega la ultima partida guardada..."),
             )
 
