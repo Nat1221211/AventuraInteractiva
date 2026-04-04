@@ -14,16 +14,12 @@ from Classes import Player
 from Classes import Objectes
 
 import UIManager
+from Classes import Utilitats
 
 
-def GuardarPartida(jugador, missions):
+def GuardarPartida(App, jugador, missions):
 
-    # res = UIManager.MostrarMenus(UIManager.Menus["Guardar"], False, False)
-
-    # if res == "si":
-    #     UIManager.ClearScreen()
-    #     print("Guardant la Partida, No apaguis el equip, ni tanquis el joc...")
-
+    App.Menu.dibuixar_sense_borrar("Guardant la partida...")
     dades = {
         # Detalls Generals
         "Nom": jugador.Name,
@@ -63,7 +59,8 @@ def GuardarPartida(jugador, missions):
     with open(ruta_final, "w", encoding="utf-8") as save:
         json.dump(dades, save, indent=4, ensure_ascii=False)
     
-    input("\nPartida Guardada ! \n \nPresiona per a continuar...")
+    
+
     # else:
     #     print("Surts del menu de guardat...")
     #     input("Presiona per a continuar...")

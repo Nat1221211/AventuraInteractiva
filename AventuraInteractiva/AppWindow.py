@@ -228,6 +228,6 @@ class App():
         UIManager.MostrarMenuPrincipal(self)
 
     def GuardarPartida(self):
-        SaveGame.GuardarPartida(self.jugador, self.Missions)
+        SaveGame.GuardarPartida(self, self.jugador, self.Missions)
 
         

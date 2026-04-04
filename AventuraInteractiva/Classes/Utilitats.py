@@ -65,12 +65,30 @@ class Menu():
     
     def dibuixar_sense_borrar(self, dialeg):
         label = self.canvas.create_text(
-            10, self.Alt - 10,
+            40, self.app.Alto - 40 - 300,
             text=dialeg, fill="black",
             font=("Courier", 18, "bold"),
-            anchor="w", tags="menu_interactiu"
+            anchor="w", tags="dialeg"
         )
         self.labels.append(label)
+
+        rect2 = self.canvas.create_rectangle(
+            5, 420,
+            self.app.Ancho - 5,
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=4, tags="dialeg"
+        )
+
+        # Ordenem les coses
+            # Enviem fons al final
+        self.canvas.tag_lower("fons")
+
+            # Enviem a davant del tot el tag
+        self.canvas.tag_raise("dialeg")
+
+            # Enviem rectangle sota el tag 
+        self.canvas.tag_lower(rect2, "dialeg")
     
     def dibuixar_fons_menus(self):
         
