@@ -81,8 +81,12 @@ class App():
         self.MostrarPantallaInicial()
     
     def ConfirmarSeleccio(self, event = None):
+        seleccionat = self.Menu.opcions[self.Menu.index]
+        
         if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
             self.SeleccionarPartida()
+        elif self.Menu.id == "Menu Poble" or self.Menu.id == "Menu Wild":
+            UIManager.CridarAccioMenuPrincipal(App, seleccionat)
     
     def CanviarMenu(self, menu):
         self.Menu = Utilitats.Menu(self, self.canvas, menu["id"], menu["opcions"])
@@ -143,8 +147,7 @@ class App():
 
         self.RedimensionarFons()
 
-        ruta_base = os.path.dirname(__file__)
-        ruta = os.path.join(ruta_base, "Saves/save.json")
+        ruta = os.path.join(filepath, "Saves/save.json")
         if os.path.isfile(ruta):
             UIManager.Menus["Seleccio Partida"]["opcions"].append(
                 Utilitats.OpcioMenu("Carregar", "Carregar Partida", True, "Carrega la ultima partida guardada..."),

@@ -19,7 +19,7 @@ import os
 
 Menus = {
     "Menu Poble":{
-        "id": "Seleccio Partida",
+        "id": "Menu Poble",
         "opcions":
         [
             Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona."),
@@ -34,7 +34,7 @@ Menus = {
     },
 
     "Menu Wild":{
-        "id": "Seleccio Partida",
+        "id": "Menu WIld",
         "opcions":
         [
             Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
@@ -49,7 +49,7 @@ Menus = {
     },
 
     "Accions Lluita":{
-        "id": "Seleccio Partida",
+        "id": "",
         "opcions":
         [
             Utilitats.OpcioMenu("atacar", "Atacar", True, "Seleccionar un atac entre els poseits per atacar l'objectiu..."),
@@ -61,7 +61,7 @@ Menus = {
     },
 
     "Missions":{
-        "id": "Seleccio Partida",
+        "id": "",
         "opcions":
         [
             Utilitats.OpcioMenu("aceptar", "Aceptar Missio", True, "Aceptar una nova missio disponible"),
@@ -71,7 +71,7 @@ Menus = {
     },
 
     "Veure Missions":{
-        "id": "Seleccio Partida",
+        "id": "",
         "opcions":
         [
             Utilitats.OpcioMenu("disponibles", "Veure Missions Disponibles", True, "Veure les missions que estan per aceptar."),
@@ -81,7 +81,7 @@ Menus = {
     },
 
     "Posada":{
-        "id": "Seleccio Partida",
+        "id": "",
         "opcions":        
         [
             Utilitats.OpcioMenu("si", "Descansar al hostal",  True, "Recupera als jugadors a canvi de 100 d'or."),
@@ -90,7 +90,7 @@ Menus = {
     },
 
     "Exits":{
-        "id": "Seleccio Partida",
+        "id": "",
         "opcions":
         [
             Utilitats.OpcioMenu("acquired", "Veure Exits adquirits", True, "Mostra els exits que han estat adquirits per el jugador..."),
@@ -99,7 +99,7 @@ Menus = {
     },
 
     "Guardar":{
-        "id": "Seleccio Partida",
+        "id": "",
         "opcions":
         [
             Utilitats.OpcioMenu("si", "Si", True, "Sobrescriu la ultima partida guardada, permetint accedir a la nova..."),
@@ -133,26 +133,22 @@ def MostrarMenuPrincipal(App):
 
 def CridarAccioMenuPrincipal(App, accio):
     # Executem acció seleccionada
-    if accio == "mapa":
-        AdventureManager.Mapa(App)
-    elif accio == "explorar":
-        AdventureManager.Explorar(App)
-    elif accio == "hostal":
-        TUtManager.Posada(App.jugador)
-    elif accio == "botiga":
-        TUtManager.Botiga(App.jugador, App.Objects)
-    # elif accio == "estat":
-    #     VeureEstatus(App.jugador)
-    # elif accio == "missions":
-    #     MenuMisions(App)
-    elif accio == "lluitar":
-        CombatManager.GenerarEnemic(App)
-    elif accio == "guardar":
-        App.GuardarPartida(App.jugador, App.missions)
-    # elif accio == "exits":
-    #     MostrarExits(App.achievements, App.jugador)
-    elif accio == "motxila":
-        App.jugador.ObjectesMochila(App.Objects, False)
+
+    accions = {
+        "mapa": lambda e: AdventureManager.Mapa(App),
+        "explorar": lambda e: AdventureManager.Explorar(App),
+        "hostal": lambda e: TUtManager.Posada(App.jugador),
+        "botiga": lambda e: TUtManager.Botiga(App.jugador, App.Objects),
+        # "estat": lambda e: VeureEstatus(App.jugador)
+        # "missions": lambda e: MenuMisions(App)
+        "lluitar": lambda e: CombatManager.GenerarEnemic(App),
+        "guardar": lambda e: App.GuardarPartida(App.jugador, App.missions),
+        # "exits": lambda e: MostrarExits(App.achievements, App.jugador)
+        "motxila": lambda e: App.jugador.ObjectesMochila(App.Objects, False),
+    }
+
+    if accio.id in accions:
+        accions[accio.id]()
 
 # def MenuMisions(jugador, missions, event, objects, exits):
 #     sel = ""
