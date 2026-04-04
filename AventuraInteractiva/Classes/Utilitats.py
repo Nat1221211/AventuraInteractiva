@@ -69,38 +69,46 @@ class Menu():
         if index == 0:
             self.mostrat = ""
 
-
         if index < len(dialeg):  
             self.mostrat += dialeg[index]
-            
-            self.canvas.delete("dialeg")
-            label = self.canvas.create_text(
-                30, 450,
-                text=self.mostrat, fill="black",
-                font=("Courier", 16, "bold"),
-                anchor="w", tags="dialeg"
-            )
+        
+        self.canvas.delete("dialeg")
+        self.canvas.create_text(
+            30, 450,
+            text=self.mostrat, fill="black",
+            font=("Courier", 16, "bold"),
+            anchor="w", tags="dialeg"
+        )
 
-            rect2 = self.canvas.create_rectangle(
-                5, 420,
-                self.app.Ancho - 5,
-                self.app.Alto - 5,
-                fill="white", outline="black",
-                width=4, tags="dialeg"
-            )
+        if index > len(dialeg) -1 and index % 2 == 0:
+            self.canvas.create_text(
+            self.app.Ancho - 50, 550,
+            text="<>", fill="black",
+            font=("Courier", 16, "bold"),
+            anchor="w", tags="dialeg"
+        )
 
-            # Ordenem les coses
-                # Enviem fons al final
-            self.canvas.tag_lower("fons")
+        rect2 = self.canvas.create_rectangle(
+            5, 420,
+            self.app.Ancho - 5,
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=4, tags="dialeg"
+        )
 
-                # Enviem a davant del tot el tag
-            self.canvas.tag_raise("dialeg")
+        # Ordenem les coses
+            # Enviem fons al final
+        self.canvas.tag_lower("fons")
 
-                # Enviem rectangle sota el tag 
-            self.canvas.tag_lower(rect2, "dialeg")
+            # Enviem a davant del tot el tag
+        self.canvas.tag_raise("dialeg")
 
-            # Escriure pas a pas cridant la mateixa funcio un mica mes tard
-            self.app.root.after(50, lambda: self.dibuixar_sense_borrar(dialeg, index+1))
+            # Enviem rectangle sota el tag 
+        self.canvas.tag_lower(rect2, "dialeg")
+
+        # Escriure pas a pas cridant la mateixa funcio un mica mes tard
+    
+        self.app.root.after(50, lambda: self.dibuixar_sense_borrar(dialeg, index+1))
 
     
     def dibuixar_fons_menus(self):
