@@ -1,4 +1,4 @@
-# Arxiu: Entitat.py
+# Arxiu: Events.py
 # Autor: Bernat Puig Casals
 # Data: 5 de Març de 2026
 # Descripcio:
