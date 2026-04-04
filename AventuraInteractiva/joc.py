@@ -8,58 +8,12 @@
 import os
 
 import AppWindow
-import SaveGame
-import UIManager
-import CombatManager
-import AdventureManager
-import TownUtilitiesManager as TUtManager
-
 
 # Creem la funcio per a generar els grups d'entitats algo aixi com els tipus.
 entityGroups = {""}
 
-
-
 # Definit finestra del joc principal...
 App = AppWindow.App()
-
-def AccioMenuPrincipal():
-    global jugador
-    
-    print()
-
-    # Seleccionem la accio
-    if jugador.Ubicacio.ZoneType == "Poble":
-        accio = UIManager.MostrarMenus(UIManager.Menus["Menu Poble"], False, False, None, None, f"Vostè es troba a {jugador.Ubicacio.NameZone}")
-    elif jugador.Ubicacio.ZoneType != "Poble":
-        accio = UIManager.MostrarMenus(UIManager.Menus["Menu Wild"], False, False, None, None, f"Vostè es troba a {jugador.Ubicacio.NameZone}")
-
-    UIManager.ClearScreen()
-    # Executem acció seleccionada
-    if accio == "mapa":
-        AdventureManager.Mapa(jugador, zones, missions, event, achievements)
-    elif accio == "explorar":
-        AdventureManager.Explorar(jugador, missions, Entities, event, zones, Objects, achievements)
-    elif accio == "hostal":
-        TUtManager.Posada(jugador)
-    elif accio == "botiga":
-        TUtManager.Botiga(jugador, Objects)
-    elif accio == "estat":
-        UIManager.VeureEstatus(jugador)
-    elif accio == "missions":
-        UIManager.MenuMisions(jugador, missions, event, Objects, achievements)
-    elif accio == "lluitar":
-        CombatManager.GenerarEnemic(Entities, jugador, event, missions, Objects, achievements)
-    elif accio == "guardar":
-        SaveGame.GuardarPartida(jugador, missions)
-    elif accio == "exits":
-        UIManager.MostrarExits(achievements, jugador)
-    elif accio == "motxila":
-        jugador.ObjectesMochila(Objects, False)
-    elif accio == "gremi":
-        # Gremi()
-        print("Desactivat")
-
 
 def main():
     print("!! - Joc Interactiu - !!")

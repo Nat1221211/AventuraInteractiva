@@ -49,29 +49,7 @@ class Player():
         }
 
         self.fleeProb = 75
-    
-    def CrearJugador(self, first = False):
-        nom = ""
-        while nom == "":
-            try:
-                nom = "Nat" # Canviar per a demanar
-            except ValueError:
-                print("Ha ocurregut un error...")
         
-        # UIManager.CrearMenu(self.Entities.items(), "Menu Seleccio Inicial", ("Tipus Entitat", "Playable"))
-        # identifier = None
-        # while identifier == None:
-        #     identifier = UIManager.MostrarMenus(UIManager.Menus["Menu Seleccio Inicial"], False)
-        #     if identifier == None:
-        #         print("Has de seleccionar una de les opcions")
-        if first == True:
-            id = "Player"
-        else:
-            id = f"ally_{len(self.jugador.Team)}"
-        playableentity = self.Entitat.Entity(id, nom, 5, True, self.Entities["mage"])
-
-        return playableentity
-    
     def AplicarStatsGenerals(self):
         for k, v in self.Team.items():
             for stat, value in self.StatIncrement.items():

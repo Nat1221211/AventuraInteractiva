@@ -9,6 +9,9 @@ from PIL import Image, ImageTk
 import os
 
 import PrepararCridar as Call
+import SaveGame
+import UIManager
+
 
 from Classes import Player
 from Classes import Entitat
@@ -30,26 +33,26 @@ class App():
 
         # Declarar Logiques del Joc (Llistes Objectes i altres...)
         self.jugador = player
-        Objects = Call.CallObject()
-        Effects = Call.CallEfect()
-        Movements = Call.CallMovement(Effects)
-        Entities = Call.CallEntity(Movements)
-        Zones = Call.CallZones()
-        Achievements = Call.CallAchievements()
+        self.Objects = Call.CallObject()
+        self.Effects = Call.CallEfect()
+        self.Movements = Call.CallMovement(self.Effects)
+        self.Entities = Call.CallEntity(self.Movements)
+        self.Zones = Call.CallZones()
+        self.Achievements = Call.CallAchievements()
 
         # Declarem els events
-        event = Events.ControladorEvents()
+        self.event = Events.ControladorEvents()
 
-        event.NouEvent("Derrotar Enemic", ControladorMissions.sistemaMissionsDerrota)
-        event.NouEvent("Lloc Visitat", ControladorMissions.sistemaMissionsVisita)
-        event.NouEvent("Objecte Missio Trobat", ControladorMissions.sistemaMissionsObject)
-        event.NouEvent("Persona Missio Trobada", ControladorMissions.sistemaMissionsFind)
-        event.NouEvent("Missio Finalitzada", ControladorMissions.DesbloquejarMissio)
-        event.NouEvent("Nivell Incrementat",  ControladorExits.sistemaExitsStatChange)
+        self.event.NouEvent("Derrotar Enemic", ControladorMissions.sistemaMissionsDerrota)
+        self.event.NouEvent("Lloc Visitat", ControladorMissions.sistemaMissionsVisita)
+        self.event.NouEvent("Objecte Missio Trobat", ControladorMissions.sistemaMissionsObject)
+        self.event.NouEvent("Persona Missio Trobada", ControladorMissions.sistemaMissionsFind)
+        self.event.NouEvent("Missio Finalitzada", ControladorMissions.DesbloquejarMissio)
+        self.event.NouEvent("Nivell Incrementat",  ControladorExits.sistemaExitsStatChange)
 
         # Missions
-        Missions = Call.CallMissions(Entities)
-        Missions["Place"]["first_adventure"].Status = "Disponible"
+        self.Missions = Call.CallMissions(self.Entities)
+        self.Missions["Place"]["first_adventure"].Status = "Disponible"
 
 
         # Midas pantalla
@@ -131,27 +134,62 @@ class App():
 
         # Creem els botons
 
-        posicio = (self.Ancho // 2, self.Alto - self.Alto // 6)
+        posicio = (self.Ancho // 2, self.Alto - (self.Alto // 6)*2)
 
         ruta_base = os.path.dirname(__file__)
         ruta = os.path.join(ruta_base, "Saves/save.json")
         if os.path.isfile(ruta):
-            carregar = tk.Button(self.root, text="Carregar Partida", font=("Helvetica", 18), command="")
+            carregar = tk.Button(self.root, text="Carregar Partida", font=("Helvetica", 18), command=self.CarregarPartida)
             self.canvas.create_window(posicio[0], posicio[1], window=carregar)
-            posicio = (self.Ancho // 2, self.Alto - (self.Alto // 6)*2)
+            posicio = (self.Ancho // 2, self.Alto - self.Alto // 6)
 
-        novaPartida = tk.Button(self.root, text="Carregar Partida", font=("Helvetica", 18), command="")
+        novaPartida = tk.Button(self.root, text="Nova Partida", font=("Helvetica", 18), command=self.NovaPartida)
         self.canvas.create_window(posicio[0], posicio[1], window=novaPartida)
 
 
     def NovaPartida(self):
         # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
-        personatge = self.jugador.CrearJugador(True)
+        personatge = self.CrearJugador(True)
         ubicacio = self.Zones["dawn_village"]
         team = {}
         team.update({"Player": personatge})
 
-        jugador = Player.Player(personatge.nom, team, ubicacio)
+        self.jugador = Player.Player(personatge.nom, team, ubicacio)
 
         # # Afegim algun objecte al jugador de base
-        jugador.AfegirObjecte(self.Objects["Combat"]["inferior_potion"], 2)
+        self.jugador.AfegirObjecte(self.Objects["Combat"]["inferior_potion"], 2)
+        UIManager.AccioMenuPrincipal(self)
+    
+    def CrearJugador(self, first = False):
+        nom = ""
+        while nom == "":
+            try:
+                nom = "Nat" # Canviar per a demanar
+            except ValueError:
+                print("Ha ocurregut un error...")
+        
+        # UIManager.CrearMenu(self.Entities.items(), "Menu Seleccio Inicial", ("Tipus Entitat", "Playable"))
+        # identifier = None
+        # while identifier == None:
+        #     identifier = UIManager.MostrarMenus(UIManager.Menus["Menu Seleccio Inicial"], False)
+        #     if identifier == None:
+        #         print("Has de seleccionar una de les opcions")
+        if first == True:
+            id = "Player"
+        else:
+            id = f"ally_{len(self.jugador.Team)}"
+        playableentity = Entitat.Entity(id, nom, 5, True, self.Entities["mage"])
+
+        return playableentity
+    
+    def CarregarPartida(self, partida):
+        self.jugador = SaveGame.CarregarPartida(partida, self.Missions, self.Objects, self.Zones, self.Entities)
+        UIManager.AccioMenuPrincipal(self)
+
+    def GuardarPartida(self):
+        SaveGame.GuardarPartida(self.jugador, self.Missions)
+
+    def NetejarPantalla(self):
+        self.canvas.delete("all") # Borrem el que tingues el canvas
+    
+        

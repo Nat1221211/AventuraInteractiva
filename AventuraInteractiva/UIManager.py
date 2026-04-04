@@ -11,6 +11,9 @@ from Classes import Entitat
 from Classes import Events
 from Classes import Objectes
 
+import CombatManager
+import AdventureManager
+import TownUtilitiesManager as TUtManager
 
 import os
 
@@ -18,15 +21,14 @@ Menus = {
     "Menu Poble": Utilitats.Menu(
         "Menu Principal",
         [
-            Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona."),
-            Utilitats.OpcioMenu("motxila", "Motxila", True, "Veure els objectes i utilitzar-los."),
-            Utilitats.OpcioMenu("hostal", "Hostal", True, "Anar al hostal a descansar (Recuperar Salut i altres...)"),
-            Utilitats.OpcioMenu("botiga", "Botiga", True, "Comprar Objectes."),
-            Utilitats.OpcioMenu("estat", "Estat", True, "Veure el estat dels personatges del jugador..."),
-            Utilitats.OpcioMenu("missions", "Missions", True, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
-            Utilitats.OpcioMenu("exits", "Éxits", True, "Veure els exits que pots i has adquirit..."),
-            Utilitats.OpcioMenu("gremi","Gremi", True, "Anar al gremi a contractar companys..."),
-            Utilitats.OpcioMenu("guardar", "Guardar", True, "Guardar la Partida.")
+            Utilitats.OpcioMenu("mapa", "Mapa", (0.1, 150), True, "Veure el Mapa i Canviar de Zona."),
+            Utilitats.OpcioMenu("motxila", "Motxila", (0.25, 150), True, "Veure els objectes i utilitzar-los."),
+            Utilitats.OpcioMenu("hostal", "Hostal", (0.1, 250), True, "Anar al hostal a descansar (Recuperar Salut i altres...)"),
+            Utilitats.OpcioMenu("botiga", "Botiga", (0.25, 250), True, "Comprar Objectes."),
+            Utilitats.OpcioMenu("estat", "Estat", (0.1, 350), True, "Veure el estat dels personatges del jugador..."),
+            Utilitats.OpcioMenu("missions", "Missions", (0.25, 350), True, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
+            Utilitats.OpcioMenu("exits", "Éxits", (0.1, 450), True, "Veure els exits que pots i has adquirit..."),
+            Utilitats.OpcioMenu("guardar", "Guardar", (0.25, 450), True, "Guardar la Partida.")
         ],
         9
     ),
@@ -34,14 +36,14 @@ Menus = {
     "Menu Wild": Utilitats.Menu(
         "Menu Principal",
         [
-            Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("motxila","Motxila", True, "Veure els objectes i utilitzar-los."),
-            Utilitats.OpcioMenu("explorar","Explorar", True, "Anar a explorar la zona, pots trobar or, enemics i involucrar-te en missions..."),
-            Utilitats.OpcioMenu("lluitar","Lluitar", True, "Entrar forçosament en combat amb un dels enemcis de la zona..."),
-            Utilitats.OpcioMenu("estat","Estat", True, "Veure el estat dels personatges del jugador..."),
-            Utilitats.OpcioMenu("missions", "Missions", True, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
-            Utilitats.OpcioMenu("exits", "Éxits", True, "Veure els exits que pots i has adquirit..."),
-            Utilitats.OpcioMenu("guardar", "Guardar", True, "Guardar la Partida.")
+            Utilitats.OpcioMenu("mapa", "Mapa", (0.4, 100), True, "Veure el Mapa i Canviar de Zona"),
+            Utilitats.OpcioMenu("motxila","Motxila", (0.6, 100), True, "Veure els objectes i utilitzar-los."),
+            Utilitats.OpcioMenu("explorar","Explorar", (0.4, 100), True, "Anar a explorar la zona, pots trobar or, enemics i involucrar-te en missions..."),
+            Utilitats.OpcioMenu("lluitar","Lluitar", (0.6, 100), True, "Entrar forçosament en combat amb un dels enemcis de la zona..."),
+            Utilitats.OpcioMenu("estat","Estat", (0.4, 100), True, "Veure el estat dels personatges del jugador..."),
+            Utilitats.OpcioMenu("missions", "Missions", (0.6, 100), True, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
+            Utilitats.OpcioMenu("exits", "Éxits", (0.4, 100), True, "Veure els exits que pots i has adquirit..."),
+            Utilitats.OpcioMenu("guardar", "Guardar", (0.6, 100), True, "Guardar la Partida.")
         ],
         8
     ),
@@ -49,11 +51,11 @@ Menus = {
     "Accions Lluita": Utilitats.Menu(
         "Seleccio d'Accions",
         [
-            Utilitats.OpcioMenu("atacar", "Atacar", True, "Seleccionar un atac entre els poseits per atacar l'objectiu..."),
-            Utilitats.OpcioMenu("motxila", "Motxila", True, "Obre La motxila i utilitza o revisa el que hi tens..."),
-            Utilitats.OpcioMenu("status", "Veure Estat", True, "veure l'estat d'un dels jugadors de l'equip.."),
-            Utilitats.OpcioMenu("fugir", "Fugir", True, "Intentar fugir del enemic..."),
-            Utilitats.OpcioMenu("pasar", "Pasar Torn", True, "Deixar pasar el torn sense fer res...")
+            Utilitats.OpcioMenu("atacar", "Atacar", (0.4, 100), True, "Seleccionar un atac entre els poseits per atacar l'objectiu..."),
+            Utilitats.OpcioMenu("motxila", "Motxila", (0.4, 100), True, "Obre La motxila i utilitza o revisa el que hi tens..."),
+            Utilitats.OpcioMenu("status", "Veure Estat", (0.4, 100), True, "veure l'estat d'un dels jugadors de l'equip.."),
+            Utilitats.OpcioMenu("fugir", "Fugir", (0.4, 100), True, "Intentar fugir del enemic..."),
+            Utilitats.OpcioMenu("pasar", "Pasar Torn", (0.4, 100),  True, "Deixar pasar el torn sense fer res...")
         ],
         5
     ),
@@ -61,9 +63,9 @@ Menus = {
     "Missions": Utilitats.Menu(
         "Menu Missions",
         [
-            Utilitats.OpcioMenu("aceptar", "Aceptar Missio", True, "Aceptar una nova missio disponible"),
-            Utilitats.OpcioMenu("veure", "Veure Missio", True, "Veure les missions (disponibles, aceptades, completades)."),
-            Utilitats.OpcioMenu("reclamar", "Reclamar Missio", True, "Reclamar una missio completada."),
+            Utilitats.OpcioMenu("aceptar", "Aceptar Missio", (0.4, 100), True, "Aceptar una nova missio disponible"),
+            Utilitats.OpcioMenu("veure", "Veure Missio", (0.4, 100), True, "Veure les missions (disponibles, aceptades, completades)."),
+            Utilitats.OpcioMenu("reclamar", "Reclamar Missio", (0.4, 100), True, "Reclamar una missio completada."),
         ],
         3
     ),
@@ -71,9 +73,9 @@ Menus = {
     "Veure Missions": Utilitats.Menu(
         "Veure Missions",
         [
-            Utilitats.OpcioMenu("disponibles", "Veure Missions Disponibles", True, "Veure les missions que estan per aceptar."),
-            Utilitats.OpcioMenu("completades", "Veure Missions Compleatdes", True, "Veure les missions que estan completades."),
-            Utilitats.OpcioMenu("acceptades", "Veure Missions Acceptades", True, "Veure les missions acceptades."),
+            Utilitats.OpcioMenu("disponibles", "Veure Missions Disponibles",(0.4, 100),  True, "Veure les missions que estan per aceptar."),
+            Utilitats.OpcioMenu("completades", "Veure Missions Compleatdes",(0.4, 100),  True, "Veure les missions que estan completades."),
+            Utilitats.OpcioMenu("acceptades", "Veure Missions Acceptades", (0.4, 100), True, "Veure les missions acceptades."),
         ],
         3
     ),
@@ -81,8 +83,8 @@ Menus = {
     "Pantalla de Titol": Utilitats.Menu(
         "Pantalla de Titol",
         [
-            Utilitats.OpcioMenu("carregar", "Carregar Partida", True, "Carregar una partida guardada."),
-            Utilitats.OpcioMenu("nova", "Començar Nova Partida", True, "Començar una nova partida."),
+            Utilitats.OpcioMenu("carregar", "Carregar Partida",(0.4, 100),  True, "Carregar una partida guardada."),
+            Utilitats.OpcioMenu("nova", "Començar Nova Partida",(0.4, 100),  True, "Començar una nova partida."),
         ],
         2
     ),
@@ -90,8 +92,8 @@ Menus = {
     "Posada": Utilitats.Menu(
         "Descansar al Hostal",
         [
-            Utilitats.OpcioMenu("si", "Descansar al hostal", True, "Recupera als jugadors a canvi de 100 d'or."),
-            Utilitats.OpcioMenu("no", "No descansar al hostal", True, "Surt del hostal."),
+            Utilitats.OpcioMenu("si", "Descansar al hostal",(0.4, 100),  True, "Recupera als jugadors a canvi de 100 d'or."),
+            Utilitats.OpcioMenu("no", "No descansar al hostal",(0.4, 100),  True, "Surt del hostal."),
         ],
         2
     ),
@@ -99,8 +101,8 @@ Menus = {
     "Exits": Utilitats.Menu(
         "Menu d'Exits",
         [
-            Utilitats.OpcioMenu("acquired", "Veure Exits adquirits", True, "Mostra els exits que han estat adquirits per el jugador..."),
-            Utilitats.OpcioMenu("locked", "Veure Exits per adquirir", True, "Mostra els exits que no han estat adquirits per el jugador."),
+            Utilitats.OpcioMenu("acquired", "Veure Exits adquirits", (0.4, 100), True, "Mostra els exits que han estat adquirits per el jugador..."),
+            Utilitats.OpcioMenu("locked", "Veure Exits per adquirir",(0.4, 100),  True, "Mostra els exits que no han estat adquirits per el jugador."),
         ],
         2
     ),
@@ -108,8 +110,8 @@ Menus = {
     "Guardar": Utilitats.Menu(
         "Vols Sobrescriure la partida guardada?",
         [
-            Utilitats.OpcioMenu("si", "Si", True, "Sobrescriu la ultima partida guardada, permetint accedir a la nova..."),
-            Utilitats.OpcioMenu("no", "No", True, "Decideix no sobrescriure la anterior partida guardada, mantenint la ultima si n'hi ha una..."),
+            Utilitats.OpcioMenu("si", "Si", (0.4, 100), True, "Sobrescriu la ultima partida guardada, permetint accedir a la nova..."),
+            Utilitats.OpcioMenu("no", "No", (0.4, 100), True, "Decideix no sobrescriure la anterior partida guardada, mantenint la ultima si n'hi ha una..."),
         ],
         2
     )
@@ -119,7 +121,7 @@ Menus = {
 def ClearScreen():
     os.system("cls" if os.name == "nt" else "clear")
 
-def MostrarMenus(Menu, sortir = True, combat = False, jugador = None, enemy = None, TextExtra = "", seleccionar = True):
+def MostrarMenus(App, Menu, sortir = True, combat = False, jugador = None, enemy = None, TextExtra = "", seleccionar = True):
     if len(Menu.Opcions) >= 1:
         while True:
             ClearScreen()
@@ -127,7 +129,7 @@ def MostrarMenus(Menu, sortir = True, combat = False, jugador = None, enemy = No
                 BattleScreenShow(jugador.Team)
                 BattleScreenShow(enemy)
             
-            Utilitats.MostrarMenu.Mostrar(Menu, TextExtra)
+            Utilitats.MostrarMenu.Mostrar(App, Menu, TextExtra)
 
             print("\n W/S moures", end="")
             print(", Enter seleccionar" if seleccionar == True else "", end="")
@@ -153,6 +155,37 @@ def MostrarMenus(Menu, sortir = True, combat = False, jugador = None, enemy = No
         print("No hi ha opcions...")
         input("Presiona per a continuar...")
         return None
+
+def AccioMenuPrincipal(App):
+    
+    # Seleccionem la accio
+    if App.jugador.Ubicacio.ZoneType == "Poble":
+        accio = MostrarMenus(App, Menus["Menu Poble"], False, False, None, None, f"Vostè es troba a {App.jugador.Ubicacio.NameZone}")
+    elif App.jugador.Ubicacio.ZoneType != "Poble":
+        accio = MostrarMenus(App, Menus["Menu Wild"], False, False, None, None, f"Vostè es troba a {App.jugador.Ubicacio.NameZone}")
+
+    ClearScreen()
+    # Executem acció seleccionada
+    if accio == "mapa":
+        AdventureManager.Mapa(App)
+    elif accio == "explorar":
+        AdventureManager.Explorar(App)
+    elif accio == "hostal":
+        TUtManager.Posada(App.jugador)
+    elif accio == "botiga":
+        TUtManager.Botiga(App.jugador, App.Objects)
+    elif accio == "estat":
+        VeureEstatus(App.jugador)
+    elif accio == "missions":
+        MenuMisions(App)
+    elif accio == "lluitar":
+        CombatManager.GenerarEnemic(App)
+    elif accio == "guardar":
+        App.GuardarPartida(App.jugador, App.missions)
+    elif accio == "exits":
+        MostrarExits(App.achievements, App.jugador)
+    elif accio == "motxila":
+        App.jugador.ObjectesMochila(App.Objects, False)
 
 def MenuMisions(jugador, missions, event, objects, exits):
     sel = ""
@@ -246,21 +279,21 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None, opcionsvisi
                 tipus = "Combat"
             else:
                 tipus = "Clau"
-            options.append(Utilitats.OpcioMenu({"id": i[1]["objecte"].id, "type": tipus}, mostrar, True, i[1]["objecte"].ObjectDescription))
+            options.append(Utilitats.OpcioMenu({"id": i[1]["objecte"].id, "type": tipus}, mostrar, (100, 100), True, i[1]["objecte"].ObjectDescription))
     elif filtre == "Botigues":
         for id, val in llista:
-            options.append(Utilitats.OpcioMenu(id, val["name"], True, val["description"]))
+            options.append(Utilitats.OpcioMenu(id, val["name"],(100, 100), True, val["description"]))
 
     elif isinstance(filtre, tuple):
         if filtre[0] == "achievements":
             if filtre[1] == "acquirits":
                 for id, value in llista:
                     if value["achievement"].Obtained == True:
-                        options.append(Utilitats.OpcioMenu(value["achievement"].id,value["achievement"].Name, True, value["achievement"].Description))
+                        options.append(Utilitats.OpcioMenu(value["achievement"].id,value["achievement"].Name, (100, 100), True, value["achievement"].Description))
             if filtre[1] == "locked":
                 for id, value in llista:
                     if value["achievement"].Obtained == False:
-                        options.append(Utilitats.OpcioMenu(value["achievement"].id, value["achievement"].Name, True, value["achievement"].Description))
+                        options.append(Utilitats.OpcioMenu(value["achievement"].id, value["achievement"].Name,(100, 100), True, value["achievement"].Description))
 
         
     Menus.update({NomMenu: Utilitats.Menu(

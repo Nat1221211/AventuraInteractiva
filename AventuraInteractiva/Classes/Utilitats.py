@@ -5,6 +5,7 @@
 # Creem la classe titles.
 
 import random
+import tkinter as tk
 
 class Menu():
     def __init__(self, titol, opcions, op_per_pag):
@@ -34,32 +35,37 @@ class Menu():
         return self.Opcions[inici:fi], inici, pagina, totalpag
 
 class OpcioMenu():
-    def __init__(self,iden, nom, habilitat, descripcio, condicio_habilitat = False):
+    def __init__(self,iden, nom, posicio, habilitat, descripcio, condicio_habilitat = False):
         self.id = iden
         self.Nom = nom
+        self.Posicio = posicio
         self.Descripcio = descripcio
         self.Habilitat = habilitat
         if condicio_habilitat == True:
             self.Habilitat = True
 
 class MostrarMenu():
-    def Mostrar(Menu, textextra = ""):
+    def Mostrar(App, Menu, textextra = ""):
         if textextra != "":
             print(f"\n{textextra}")
         print("\n" + Menu.Titol)
         opcions, inici, pagina, total = Menu.OpcionsVisible()
 
+        App.NetejarPantalla()
+
         for i, opcio in enumerate(opcions):
             index = inici + i
             cursor = "->" if index == Menu.Cursor else ""
             estat = "" if opcio.Habilitat == True else "(Bloquejat)"
-
-            print(f"{cursor} {opcio.Nom} {estat}")
+            objecte = tk.Button(App.root, text=opcio.Nom, 
+                                    font=("Helvetica", 18), command=Menu.SeleccionarOpcio,
+                                    fg="black", bg = "white"
+                                    )
+            posicio = opcio.Posicio
+            App.canvas.create_window(App.Ancho * posicio[0], posicio[1], window=objecte)
         
         if total > 1:
             print(f"\nPagina: {pagina + 1} de {total}")
 
         posicio = Menu.Cursor % len(opcions)
-        print(f"\nDescripció: \n{opcions[posicio].Descripcio}")
-
     
