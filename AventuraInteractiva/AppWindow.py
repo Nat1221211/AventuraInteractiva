@@ -57,6 +57,8 @@ class App():
         self.Missions = Call.CallMissions(self.Entities)
         self.Missions["Place"]["first_adventure"].Status = "Disponible"
 
+        # ALtres
+        self.DialegActiu = False
 
         # Midas pantalla
         self.Alto = 600 # Declarem mides en variables per a utilitzarles facilment.
@@ -164,17 +166,27 @@ class App():
             )
 
          # Interaccions
-        self.root.bind("<w>", lambda event: self.Menu.Moviment("w"))
-        self.root.bind("<s>", lambda event: self.Menu.Moviment("s"))
-        # self.root.bind("<a>", lambda event: self.MostrarPantallaSeleccio())
-        # self.root.bind("<d>", lambda event: self.MostrarPantallaSeleccio())
-        self.root.bind("<Return>", lambda event: self.ConfirmarSeleccio())
-        self.root.bind("<BackSpace>", lambda event: self.ConfirmarSeleccio())
+        self.root.bind("<w>", lambda event: self.ControlBinds("<w>"))
+        self.root.bind("<s>", lambda event: self.ControlBinds("<s>"))
+        # self.root.bind("<a>", lambda event: self.ControlBinds())
+        # self.root.bind("<d>", lambda event: self.ControlBinds())
+        self.root.bind("<Return>", lambda event: self.ControlBinds("<Return>"))
+        self.root.bind("<BackSpace>", lambda event: self.ControlBinds("<BackSpace>"))
 
         
         self.CanviarMenu(UIManager.Menus["Seleccio Partida"])
         self.MostrarMenu()
-        
+    
+    def ControlBinds(self, tecla):
+        if self.DialegActiu == True:
+            if tecla == "<Return>":
+                self.Menu.PulsarEnter()
+        else:
+            if tecla == "<w>": self.Menu.Moviment("w")
+            if tecla == "<s>": self.Menu.Moviment("s")
+            if tecla == "<Return>": self.ConfirmarSeleccio()
+            if tecla == "<BackSpace>": self.ConfirmarSeleccio()
+
 
     def SeleccionarPartida(self):
         seleccionat = self.Menu.opcions[self.Menu.index]

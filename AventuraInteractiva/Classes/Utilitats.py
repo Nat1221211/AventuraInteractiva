@@ -25,6 +25,10 @@ class Menu():
         self.espaiat_y = 40
         self.x_inicial = self.app.Ancho - 300
         self.y_inicial = 50
+
+        # Estats Dialeg
+        self.Esciribint = False
+        self.Parpadeig = None
     
     def dibuixar(self, x = None, y = None):
         self.canvas.delete("menu_interactiu")
@@ -63,31 +67,13 @@ class Menu():
         
         self.dibuixar_fons_menus()
     
-    def dibuixar_sense_borrar(self, dialeg, index = 0):
-
-        font = tkfont.Font(family="Courier", size=16, weight="bold")
-        if index == 0:
-            self.mostrat = ""
-
-        if index < len(dialeg):  
-            self.mostrat += dialeg[index]
-        
+    def dibuixar_sense_borrar(self, dialeg):
+        self.textdialeg = dialeg
+        self.mostrat = ""
         self.canvas.delete("dialeg")
-        self.canvas.create_text(
-            30, 450,
-            text=self.mostrat, fill="black",
-            font=("Courier", 16, "bold"),
-            anchor="w", tags="dialeg"
-        )
-
-        if index > len(dialeg) -1 and index % 2 == 0:
-            self.canvas.create_text(
-            self.app.Ancho - 50, 550,
-            text="<>", fill="black",
-            font=("Courier", 16, "bold"),
-            anchor="w", tags="dialeg"
-        )
-
+        self.Escribint = True
+        self.app.DialegActiu = True
+        
         rect2 = self.canvas.create_rectangle(
             5, 420,
             self.app.Ancho - 5,
@@ -106,9 +92,57 @@ class Menu():
             # Enviem rectangle sota el tag 
         self.canvas.tag_lower(rect2, "dialeg")
 
-        # Escriure pas a pas cridant la mateixa funcio un mica mes tard
-    
-        self.app.root.after(50, lambda: self.dibuixar_sense_borrar(dialeg, index+1))
+        self.TextAnimat(0)
+
+    def TextAnimat(self, index):
+        if not self.Escribint == True:
+            return
+        
+        if index <= len(self.textdialeg):  
+            mostrat = self.textdialeg[:index]
+
+            self.canvas.delete("text_animat")
+            self.canvas.create_text(
+                30, 450,
+                text=mostrat, fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("dialeg", "text_animat")
+            )
+
+            self.after_id = self.app.root.after(75, lambda: self.TextAnimat(index+1))
+        else:
+            self.Escribint = False
+            self.ComencarParpadeig()
+        
+    def ComencarParpadeig(self, visible = True):
+        self.canvas.delete("simbol_continuar")
+        if visible:
+            self.canvas.create_text(
+                self.app.Ancho - 50, 550,
+                text="<>", fill="blue",
+                font=("Courier", 14, "bold"),
+                anchor="w", tags=("dialeg", "simbol_continuar")
+            )
+        self.parpadeig_id = self.app.root.after(150, lambda: self.ComencarParpadeig(not visible))
+
+    def PulsarEnter(self):
+        if self.Escribint:
+            self.app.root.after_cancel(self.after_id)
+            self.Escribint = False
+            self.canvas.delete("text_animat")
+            self.canvas.create_text(
+                30, 450,
+                text=self.textdialeg, fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("dialeg", "text_animat")
+            )
+            self.ComencarParpadeig()
+
+        elif self.parpadeig_id != None:
+            self.app.root.after_cancel(self.parpadeig_id)
+            self.parpadeig_id = None
+            self.canvas.delete("dialeg")
+            self.app.DialegActiu = False
 
     
     def dibuixar_fons_menus(self):
