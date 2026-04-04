@@ -22,7 +22,7 @@ class Menu():
 
         for i, opcio in enumerate(self.opcions):
             color = "blue" if self.index == i else "black"
-            text = opcio.nom
+            text = opcio.Nom
 
             label = self.canvas.create_text(
                 x, y + (i*40),
@@ -32,31 +32,18 @@ class Menu():
             )
             self.labels.append(label)
 
-        self.dibuixarSelector()
-
-    def dibuixarSelector(self, x, y):
-        if self.seleccionat:
-            self.canvas.delete(self.seleccionat)
-        self.seleccionat = self.canvas.create_text(
-            x, y, text=">", fill="yellow",
-            font=("Courier", 18, "bold"),
-            tags="menu_interactiu"
-        )
-    
     def Moviment(self, direccio):
         if direccio == "w":
-            self.index (self.index -1) % len(self.opcions)
+            self.index = (self.index -1) % len(self.opcions)
         elif direccio == "s":
-            self.index (self.index +1) % len(self.opcions)
+            self.index = (self.index +1) % len(self.opcions)
         
-        for i, label in enumerate(self.labels):
-            color = "blue" if self.index == i else "black"
-            self.canvas.itemconfig(label, fill=color)
+        self.dibuixar()
         
 
 
 class OpcioMenu():
-    def __init__(self,iden, nom, posicio, habilitat, descripcio, condicio_habilitat = False):
+    def __init__(self,iden, nom, habilitat, descripcio, condicio_habilitat = False):
         self.id = iden
         self.Nom = nom
         self.Descripcio = descripcio

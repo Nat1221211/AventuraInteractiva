@@ -104,7 +104,7 @@ def AccioMenuPrincipal(App):
 
     App.MostrarMenu()
 
-    ClearScreen()
+def CridarAccioMenuPrincipal(App, accio):
     # Executem acció seleccionada
     if accio == "mapa":
         AdventureManager.Mapa(App)

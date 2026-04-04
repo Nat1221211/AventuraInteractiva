@@ -76,27 +76,18 @@ class App():
 
         self.fondo = None
 
-        self.Menu = Utilitats.Menu(self, self.canvas, UIManager.Menus[""])
-
-         # Interaccions
-        self.root.bind("<w>", lambda event: self.Menu.Moviment("w"))
-        self.root.bind("<s>", lambda event: self.Menu.Moviment("s"))
-        # self.root.bind("<a>", lambda event: self.MostrarPantallaSeleccio())
-        # self.root.bind("<d>", lambda event: self.MostrarPantallaSeleccio())
-        self.root.bind("<Return>", lambda event: self.MostrarPantallaSeleccio())
-        self.root.bind("<BackSpace>", lambda event: self.MostrarPantallaSeleccio())
-
+        self.Menu = Utilitats.Menu(self, self.canvas, "")
 
         self.MostrarPantallaInicial()
     
     def ConfirmarSeleccio(self, event = None):
         seleccionat = self.menu.opcions[self.menu.index]
 
-        if hasattr(seleccionat, ""):    # Segons la opcio i l'objecte dur a terme una accio
+        if seleccionat.id == "":    # Segons la opcio i l'objecte dur a terme una accio
             print()
     
     def CanviarMenu(self, menu):
-        self.Menu = Utilitats.Menu(self, self.canvas, UIManager.Menus[menu])
+        self.Menu = Utilitats.Menu(self, self.canvas, menu)
 
     def MostrarMenu(self):
         self.Menu.dibuixar()
@@ -156,6 +147,15 @@ class App():
             UIManager.Menus["Seleccio Partida"].append(
                 Utilitats.OpcioMenu("Carregar", "Carregar Partida", True, "Carrega la ultima partida guardada..."),
             )
+
+         # Interaccions
+        self.root.bind("<w>", lambda event: self.Menu.Moviment("w"))
+        self.root.bind("<s>", lambda event: self.Menu.Moviment("s"))
+        # self.root.bind("<a>", lambda event: self.MostrarPantallaSeleccio())
+        # self.root.bind("<d>", lambda event: self.MostrarPantallaSeleccio())
+        self.root.bind("<Return>", lambda event: self.MostrarPantallaSeleccio())
+        self.root.bind("<BackSpace>", lambda event: self.MostrarPantallaSeleccio())
+
         
         self.CanviarMenu(UIManager.Menus["Seleccio Partida"])
         self.MostrarMenu()
