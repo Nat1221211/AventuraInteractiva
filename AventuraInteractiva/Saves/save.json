@@ -1,6 +1,6 @@
 {
     "Nom": "Nat",
-    "Ubicacio": "south_forest",
+    "Ubicacio": "dawn_village",
     "Or": 2040,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
@@ -19,7 +19,8 @@
     ],
     "Llocs_Visitats": [
         "dawn_village",
-        "Bosc del Sud"
+        "Bosc del Sud",
+        "Dawn Village"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],

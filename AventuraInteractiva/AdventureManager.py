@@ -18,9 +18,11 @@ def Mapa(App):
     App.MostrarMenu()
 
 def CanviarZona(App, seleccio):
-        App.jugador.Ubicacio = App.Zones[seleccio.id]    # Canviem la zona i la retornem
-        App.jugador.ActualitzarUltimPobleVisitat()
-        App.event.CridarEvent("Lloc Visitat", App.jugador.Ubicacio.id, App.jugador, App.Missions)
+    App.jugador.Ubicacio = App.Zones[seleccio.id]    # Canviem la zona i la retornem
+    App.jugador.ActualitzarUltimPobleVisitat()
+    App.event.CridarEvent("Lloc Visitat", App.jugador.Ubicacio.id, App.jugador, App.Missions)
+    
+    UIManager.MostrarMenuPrincipal(App)
     
 
 def OcurrenciaMisio(misio, jugador, missions, event, objectes, exits):

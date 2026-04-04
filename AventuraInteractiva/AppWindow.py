@@ -93,6 +93,8 @@ class App():
         
         elif self.Menu.id == "Mapa":
             AdventureManager.CanviarZona(self, seleccionat)
+        
+        
     
 
 

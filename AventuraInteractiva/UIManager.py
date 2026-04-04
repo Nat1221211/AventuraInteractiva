@@ -151,7 +151,7 @@ def CridarAccioMenuPrincipal(App, accio):
         # "estat": lambda e: VeureEstatus(App.jugador)
         # "missions": lambda e: MenuMisions(App)
         "lluitar": lambda: CombatManager.GenerarEnemic(App),
-        "guardar": lambda: App.GuardarPartida(App.jugador, App.missions),
+        "guardar": lambda: App.GuardarPartida(),
         # "exits": lambda e: MostrarExits(App.achievements, App.jugador)
         "motxila": lambda: App.jugador.ObjectesMochila(App.Objects, False),
         # "sortir": lambda e: (Mostra una funcio que demana si vols sortir del joc, si la resposta es si surt...)

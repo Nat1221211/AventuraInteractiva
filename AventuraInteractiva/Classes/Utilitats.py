@@ -63,6 +63,15 @@ class Menu():
         
         self.dibuixar_fons_menus()
     
+    def dibuixar_sense_borrar(self, dialeg):
+        label = self.canvas.create_text(
+            10, self.Alt - 10,
+            text=dialeg, fill="black",
+            font=("Courier", 18, "bold"),
+            anchor="w", tags="menu_interactiu"
+        )
+        self.labels.append(label)
+    
     def dibuixar_fons_menus(self):
         
         bbox = self.canvas.bbox("menu_interactiu")

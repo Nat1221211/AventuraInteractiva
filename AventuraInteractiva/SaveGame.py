@@ -18,55 +18,55 @@ import UIManager
 
 def GuardarPartida(jugador, missions):
 
-    res = UIManager.MostrarMenus(UIManager.Menus["Guardar"], False, False)
+    # res = UIManager.MostrarMenus(UIManager.Menus["Guardar"], False, False)
 
-    if res == "si":
-        UIManager.ClearScreen()
-        print("Guardant la Partida, No apaguis el equip, ni tanquis el joc...")
+    # if res == "si":
+    #     UIManager.ClearScreen()
+    #     print("Guardant la Partida, No apaguis el equip, ni tanquis el joc...")
 
-        dades = {
-            # Detalls Generals
-            "Nom": jugador.Name,
-            "Ubicacio": jugador.Ubicacio.id,
-            "Or": jugador.Gold,
-            "Ultim_Visitat": jugador.UltimPobleVisitat.id,
-            
-            # Seguiment
-            "Missions_Acceptades": {},
-            "Missions_Finalitzades": jugador.MissionsFinalitzades,
-            "Missions_Disponibles": {},
-            "Llocs_Trobats": jugador.LlocsTrobats,
-            "Llocs_Visitats": jugador.LlocsVisitats,
-            "AchievementsProgress": {},
-            "AchievementsObtained": jugador.AcquiredAchievements,
-
-            # Equip Jugador
-            "Team": [],
-
-            # Inventari
-            "Inventari": {},
-
-            # Altres
-            "Titols": [],
-
-            "Estadistiques": {},
-            "Increment_Stats": jugador.StatIncrement,
-            "Companys": []
-        }
-        dades["Team"]=GuardarPersonatges(jugador.Team)
-        dades["Inventari"]=GuardarInventari(jugador)
-        dades["Missions_Acceptades"]=GuardarMissions(jugador.MisionsAcceptades, missions)
-        dades["Missions_Disponibles"]=GuardarMissions(jugador.MissionsDisponibles, missions)
-
-        ruta = os.path.dirname(__file__)
-        ruta_final = os.path.join(ruta, "Saves/save.json")
-        with open(ruta_final, "w", encoding="utf-8") as save:
-            json.dump(dades, save, indent=4, ensure_ascii=False)
+    dades = {
+        # Detalls Generals
+        "Nom": jugador.Name,
+        "Ubicacio": jugador.Ubicacio.id,
+        "Or": jugador.Gold,
+        "Ultim_Visitat": jugador.UltimPobleVisitat.id,
         
-        input("\nPartida Guardada ! \n \nPresiona per a continuar...")
-    else:
-        print("Surts del menu de guardat...")
-        input("Presiona per a continuar...")
+        # Seguiment
+        "Missions_Acceptades": {},
+        "Missions_Finalitzades": jugador.MissionsFinalitzades,
+        "Missions_Disponibles": {},
+        "Llocs_Trobats": jugador.LlocsTrobats,
+        "Llocs_Visitats": jugador.LlocsVisitats,
+        "AchievementsProgress": {},
+        "AchievementsObtained": jugador.AcquiredAchievements,
+
+        # Equip Jugador
+        "Team": [],
+
+        # Inventari
+        "Inventari": {},
+
+        # Altres
+        "Titols": [],
+
+        "Estadistiques": {},
+        "Increment_Stats": jugador.StatIncrement,
+        "Companys": []
+    }
+    dades["Team"]=GuardarPersonatges(jugador.Team)
+    dades["Inventari"]=GuardarInventari(jugador)
+    dades["Missions_Acceptades"]=GuardarMissions(jugador.MisionsAcceptades, missions)
+    dades["Missions_Disponibles"]=GuardarMissions(jugador.MissionsDisponibles, missions)
+
+    ruta = os.path.dirname(__file__)
+    ruta_final = os.path.join(ruta, "Saves/save.json")
+    with open(ruta_final, "w", encoding="utf-8") as save:
+        json.dump(dades, save, indent=4, ensure_ascii=False)
+    
+    input("\nPartida Guardada ! \n \nPresiona per a continuar...")
+    # else:
+    #     print("Surts del menu de guardat...")
+    #     input("Presiona per a continuar...")
 
 def CarregarPartida(partida, missions, objectes, zones, entitats):
     with open(partida, "r", encoding="utf-8") as save:
