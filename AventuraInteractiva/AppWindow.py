@@ -76,18 +76,30 @@ class App():
 
         self.fondo = None
 
-        Menu = 
+        self.Menu = Utilitats.Menu(self, self.canvas, UIManager.Menus[""])
 
          # Interaccions
-        self.root.bind("<w>", lambda event: self.MostrarPantallaSeleccio())
-        self.root.bind("<s>", lambda event: self.MostrarPantallaSeleccio())
-        self.root.bind("<a>", lambda event: self.MostrarPantallaSeleccio())
-        self.root.bind("<d>", lambda event: self.MostrarPantallaSeleccio())
+        self.root.bind("<w>", lambda event: self.Menu.Moviment("w"))
+        self.root.bind("<s>", lambda event: self.Menu.Moviment("s"))
+        # self.root.bind("<a>", lambda event: self.MostrarPantallaSeleccio())
+        # self.root.bind("<d>", lambda event: self.MostrarPantallaSeleccio())
         self.root.bind("<Return>", lambda event: self.MostrarPantallaSeleccio())
         self.root.bind("<BackSpace>", lambda event: self.MostrarPantallaSeleccio())
 
 
         self.MostrarPantallaInicial()
+    
+    def ConfirmarSeleccio(self, event = None):
+        seleccionat = self.menu.opcions[self.menu.index]
+
+        if hasattr(seleccionat, ""):    # Segons la opcio i l'objecte dur a terme una accio
+            print()
+    
+    def CanviarMenu(self, menu):
+        self.Menu = Utilitats.Menu(self, self.canvas, UIManager.Menus[menu])
+
+    def MostrarMenu(self):
+        self.Menu.dibuixar()
 
     def RedimensionarFons(self):
 
@@ -138,25 +150,17 @@ class App():
 
         self.RedimensionarFons()
 
-         # Mostrar Titol
-        titol = tk.Label(self.root, text="Seleccionar Partida", font=("Helvetica", 32, "bold"),
-                         fg="white", bg="black")
-        
-        self.canvas.create_window(self.Ancho // 2, self.Alto // 6, window=titol)
-
-        # Creem els botons
-
-        posicio = (self.Ancho // 2, self.Alto - (self.Alto // 6)*2)
-
         ruta_base = os.path.dirname(__file__)
         ruta = os.path.join(ruta_base, "Saves/save.json")
         if os.path.isfile(ruta):
-            carregar = tk.Label(self.root, text="Carregar Partida", font=("Helvetica", 18), command=self.CarregarPartida)
-            self.canvas.create_window(posicio[0], posicio[1], window=carregar)
-            posicio = (self.Ancho // 2, self.Alto - self.Alto // 6)
+            UIManager.Menus["Seleccio Partida"].append(
+                Utilitats.OpcioMenu("Carregar", "Carregar Partida", True, "Carrega la ultima partida guardada..."),
+            )
+        
+        self.CanviarMenu(UIManager.Menus["Seleccio Partida"])
+        self.MostrarMenu()
+        
 
-        novaPartida = tk.Button(self.root, text="Nova Partida", font=("Helvetica", 18), command=self.NovaPartida)
-        self.canvas.create_window(posicio[0], posicio[1], window=novaPartida)
 
 
     def NovaPartida(self):
