@@ -65,7 +65,7 @@ class Menu():
     
     def dibuixar_sense_borrar(self, dialeg):
         label = self.canvas.create_text(
-            40, self.app.Alto - 40 - 300,
+            30, 450,
             text=dialeg, fill="black",
             font=("Courier", 18, "bold"),
             anchor="w", tags="dialeg"
