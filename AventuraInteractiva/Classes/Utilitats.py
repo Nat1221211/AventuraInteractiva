@@ -63,32 +63,45 @@ class Menu():
         
         self.dibuixar_fons_menus()
     
-    def dibuixar_sense_borrar(self, dialeg):
-        label = self.canvas.create_text(
-            30, 450,
-            text=dialeg, fill="black",
-            font=("Courier", 18, "bold"),
-            anchor="w", tags="dialeg"
-        )
-        self.labels.append(label)
+    def dibuixar_sense_borrar(self, dialeg, index = 0):
 
-        rect2 = self.canvas.create_rectangle(
-            5, 420,
-            self.app.Ancho - 5,
-            self.app.Alto - 5,
-            fill="white", outline="black",
-            width=4, tags="dialeg"
-        )
+        font = tkfont.Font(family="Courier", size=16, weight="bold")
+        if index == 0:
+            self.mostrat = ""
 
-        # Ordenem les coses
-            # Enviem fons al final
-        self.canvas.tag_lower("fons")
 
-            # Enviem a davant del tot el tag
-        self.canvas.tag_raise("dialeg")
+        if index < len(dialeg):  
+            self.mostrat += dialeg[index]
+            
+            self.canvas.delete("dialeg")
+            label = self.canvas.create_text(
+                30, 450,
+                text=self.mostrat, fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="w", tags="dialeg"
+            )
 
-            # Enviem rectangle sota el tag 
-        self.canvas.tag_lower(rect2, "dialeg")
+            rect2 = self.canvas.create_rectangle(
+                5, 420,
+                self.app.Ancho - 5,
+                self.app.Alto - 5,
+                fill="white", outline="black",
+                width=4, tags="dialeg"
+            )
+
+            # Ordenem les coses
+                # Enviem fons al final
+            self.canvas.tag_lower("fons")
+
+                # Enviem a davant del tot el tag
+            self.canvas.tag_raise("dialeg")
+
+                # Enviem rectangle sota el tag 
+            self.canvas.tag_lower(rect2, "dialeg")
+
+            # Escriure pas a pas cridant la mateixa funcio un mica mes tard
+            self.app.root.after(50, lambda: self.dibuixar_sense_borrar(dialeg, index+1))
+
     
     def dibuixar_fons_menus(self):
         
