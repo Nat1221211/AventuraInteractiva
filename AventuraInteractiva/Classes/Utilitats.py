@@ -254,12 +254,17 @@ class Menu():
             anchor="nw", tags="clase"
         )
 
+        font = tkfont.Font(family="Courier", size=18, weight="bold")
+
+
+        descripcio = self.app.Entities[self.opcions[self.index].id].EntityDescription
+
         # Mostrem la descripcio
         self.canvas.create_text(
             30, 450,
-            text=self.app.Entities[self.opcions[self.index].id].EntityDescription,
-            fill="black",
-            font=("Courier", 20, "bold"),
+            width=self.app.Ancho - 60,
+            text=descripcio, fill="black",
+            font=("Courier", 16, "bold"),
             anchor="nw", tags="clase"
         )
 

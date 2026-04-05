@@ -225,17 +225,6 @@ class App():
             UIManager.MostrarMenuPrincipal(self)
 
     def NovaPartida(self):
-        # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
-        
-        # nom = self.SeleccioText("Com et dius?")
-        # ubicacio = self.Zones["dawn_village"]
-        # team = {}
-        
-        # self.jugador = Player.Player(nom, team, ubicacio)
-
-        # # # Afegim algun objecte al jugador de base
-        # self.jugador.AfegirObjecte(self.Objects["Combat"]["inferior_potion"], 2)
-    
         self.SeleccionarEntitat()
 
     def SeleccionarEntitat(self):
@@ -249,15 +238,15 @@ class App():
         # En acabar necessito que al pressionar enter en la casella del text o un boto de d'acord
         # M'envii a Seleccionar Entitat per a seleccionar el personatge principal
 
-    def CrearEntitatAliada(self):
+    def CrearEntitatAliada(self, id_entitat, nom = None):
         if len(self.jugador.Team) < 1:
             id = "Player"
             nom = self.jugador.Name
         else:
             id = f"ally_{len(self.jugador.Team)}"
-        playableentity = Entitat.Entity(id, nom, 5, True, self.Entities["mage"])
+        playableentity = Entitat.Entity(id, nom, 5, True, self.Entities[id_entitat])
 
-        return playableentity
+        self.jugador.Team.update({id: playableentity})
     
     def CarregarPartida(self, partida):
         self.jugador = SaveGame.CarregarPartida(partida, self.Missions, self.Objects, self.Zones, self.Entities)
