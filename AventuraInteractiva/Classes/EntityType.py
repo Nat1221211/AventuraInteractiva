@@ -40,7 +40,7 @@ class EntityType():
         self.EntityMoves = moves
         self.Companions = {}
         self.Images = {
-            "Frontal": "Programes/AventuraInteractiva/AventuraInteractiva/Assets/Entities/Mage/front.png"
+            "Frontal": ""
         }
     
     def AddImages(self, images):

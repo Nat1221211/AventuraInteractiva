@@ -170,35 +170,35 @@ class Menu():
         # Declarem les imatges de les opcions...
         self.opcions[prev].Imatge["Carregada"] = self.app.RedimensionarImatge(
                                         self.opcions[prev].Imatge["Path"],
-                                        120, 100, True
+                                        200, 300, True
                                         )
 
         self.opcions[seg].Imatge["Carregada"] = self.app.RedimensionarImatge(
                                         self.opcions[seg].Imatge["Path"],
-                                        120, 100, True
+                                        200, 300, True
                                         )
     
         self.opcions[self.index].Imatge["Carregada"] = self.app.RedimensionarImatge(
                                         self.opcions[self.index].Imatge["Path"],
-                                        120, 100
+                                        200, 300
                                         )
 
         # Creem les imatges
 
         self.canvas.create_image(
-            150, 270,
+            80, 220,
             image=self.opcions[prev].Imatge["Carregada"],
             tags="clase"
         )
 
         self.canvas.create_image(
-            300, 270,
+            500, 220,
             image=self.opcions[seg].Imatge["Carregada"],
             tags="clase"
         )
 
         self.canvas.create_image(
-            250, 250,
+            320, 250,
             image=self.opcions[self.index].Imatge["Carregada"],
             tags="clase"
         )

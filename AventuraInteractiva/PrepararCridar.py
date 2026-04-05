@@ -77,18 +77,18 @@ def CallEntity(movements):
                 moves.update({m: dictio})
         
         base_path = os.path.dirname(__file__)
-        ruta_imatges_entitat = os.path.join(base_path, f"/Assets/Entities/{i["id"]}")
+        ruta_imatges_entitat = os.path.join(base_path, f"Assets/Entities/{i["id"]}_sprite")
 
         entitat = EntityType.EntityType(i["id"], i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
                                         i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
-        # if os.path.exists("ruta_imatges_entitat"):
-        imatges = {}
-        if os.path.exists(os.path.join(ruta_imatges_entitat, f"/front.png")):
-            imatges.update({"Frontal": os.path.join(ruta_imatges_entitat, f"/front.png")})
-        if os.path.exists(os.path.join(ruta_imatges_entitat, f"/back.png")):
-            imatges.update({"back": os.path.join(ruta_imatges_entitat, f"/back.png")})
-        if os.path.exists(os.path.join(ruta_imatges_entitat, f"/mini.png")):
-            imatges.update({"mini": os.path.join(ruta_imatges_entitat, f"/mini.png")})
+        if os.path.exists(ruta_imatges_entitat):
+            imatges = {}
+            if os.path.exists(os.path.join(ruta_imatges_entitat, f"front.png")):
+                imatges.update({"Frontal": os.path.join(ruta_imatges_entitat, f"front.png")})
+            if os.path.exists(os.path.join(ruta_imatges_entitat, f"back.png")):
+                imatges.update({"Back": os.path.join(ruta_imatges_entitat, f"back.png")})
+            if os.path.exists(os.path.join(ruta_imatges_entitat, f"mini.png")):
+                imatges.update({"Mini": os.path.join(ruta_imatges_entitat, f"mini.png")})
 
             entitat.AddImages(imatges)
 
