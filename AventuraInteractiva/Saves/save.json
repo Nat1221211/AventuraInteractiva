@@ -1,7 +1,7 @@
 {
     "Nom": "Nat",
     "Ubicacio": "dawn_village",
-    "Or": 2040,
+    "Or": 2000,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -18,9 +18,7 @@
         "south_forest"
     ],
     "Llocs_Visitats": [
-        "dawn_village",
-        "Bosc del Sud",
-        "Dawn Village"
+        "dawn_village"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
@@ -29,11 +27,11 @@
             "id": "Player",
             "Nom": "Nat",
             "Base": "mage",
-            "Lv": 10,
+            "Lv": 5,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 9.100000000000023
+            "XP": 0
         }
     ],
     "Inventari": [
@@ -48,27 +46,27 @@
     "Increment_Stats": {
         "MaxHP": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         },
         "MaxMana": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         },
         "ATK": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         },
         "INT": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         },
         "DEF": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         },
         "SPD": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         }
     },
     "Companys": []

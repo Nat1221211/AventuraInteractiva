@@ -5,7 +5,7 @@
 # Creem la classe App.
 
 import tkinter as tk
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageFilter
 import os
 
 import PrepararCridar as Call
@@ -90,6 +90,9 @@ class App():
         if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
             self.SeleccionarPartida()
 
+        elif self.Menu.id == "Seleccio Entitat":
+            print("Cridar funcio de crear entitat")
+
         elif self.Menu.id == "Menu Poble" or self.Menu.id == "Menu Wild":
             UIManager.CridarAccioMenuPrincipal(self, seleccionat)
         
@@ -122,7 +125,28 @@ class App():
 
         # Posicionem la imatge en la finestra
         self.canvas.create_image(0, 0, image=self.fondo, anchor="nw", tags="fondo")
+    
+    def RedimensionarImatge(self, imatge, x, y, borros=False):
 
+        if imatge != None:
+            if os.path.exists(imatge):
+                image = Image.open(imatge)
+                    # Redimensionem a la mida de la pantalla, i li donem format LANCZOS (de bona qualitat)
+                redim_image = image.resize(
+                    (x, y), Image.Resampling.LANCZOS
+                )
+
+                # Convertim a format compatible
+                imatge_redimensionada = ImageTk.PhotoImage(redim_image)
+
+                if borros == True:
+                    imatge_redimensionada.filter(ImageFilter.GaussianBlur(radius=3))
+
+                return imatge_redimensionada
+                # En acabar el return encara cal crear la imatge al canvas i colocar-la...
+
+            else:
+                print("No s'ha trobat la imatge")
     
     def MostrarPantallaInicial(self):
         self.RedimensionarFons()
@@ -168,8 +192,8 @@ class App():
          # Interaccions
         self.root.bind("<w>", lambda event: self.ControlBinds("<w>"))
         self.root.bind("<s>", lambda event: self.ControlBinds("<s>"))
-        # self.root.bind("<a>", lambda event: self.ControlBinds())
-        # self.root.bind("<d>", lambda event: self.ControlBinds())
+        self.root.bind("<a>", lambda event: self.ControlBinds("<a>"))
+        self.root.bind("<d>", lambda event: self.ControlBinds("<d>"))
         self.root.bind("<Return>", lambda event: self.ControlBinds("<Return>"))
         self.root.bind("<BackSpace>", lambda event: self.ControlBinds("<BackSpace>"))
 
@@ -184,6 +208,8 @@ class App():
         else:
             if tecla == "<w>": self.Menu.Moviment("w")
             if tecla == "<s>": self.Menu.Moviment("s")
+            if tecla == "<a>": self.Menu.Moviment("a")
+            if tecla == "<d>": self.Menu.Moviment("d")
             if tecla == "<Return>": self.ConfirmarSeleccio()
             if tecla == "<BackSpace>": self.ConfirmarSeleccio()
 
@@ -196,39 +222,37 @@ class App():
             ruta_base = os.path.dirname(__file__)
             ruta = os.path.join(ruta_base, "Saves/save.json")
             self.CarregarPartida(ruta)
-        
-        if seleccionat.id != None:
             UIManager.MostrarMenuPrincipal(self)
 
     def NovaPartida(self):
         # Cridem la funcio per crear el jugador, la variable ubicacio, i la variable de diccionari amb els grups i les seves entitats
-        personatge = self.CrearJugador(True)
-        ubicacio = self.Zones["dawn_village"]
-        team = {}
-        team.update({"Player": personatge})
-
-        self.jugador = Player.Player(personatge.nom, team, ubicacio)
-
-        # # Afegim algun objecte al jugador de base
-        self.jugador.AfegirObjecte(self.Objects["Combat"]["inferior_potion"], 2)
-        UIManager.MostrarMenuPrincipal(self)
-    
-    def CrearJugador(self, first = False):
-        nom = ""
-        while nom == "":
-            try:
-                nom = "Nat" # Canviar per a demanar
-            except ValueError:
-                print("Ha ocurregut un error...")
         
-        # UIManager.CrearMenu(self.Entities.items(), "Menu Seleccio Inicial", ("Tipus Entitat", "Playable"))
-        # identifier = None
-        # while identifier == None:
-        #     identifier = UIManager.MostrarMenus(UIManager.Menus["Menu Seleccio Inicial"], False)
-        #     if identifier == None:
-        #         print("Has de seleccionar una de les opcions")
-        if first == True:
+        # nom = self.SeleccioText("Com et dius?")
+        # ubicacio = self.Zones["dawn_village"]
+        # team = {}
+        
+        # self.jugador = Player.Player(nom, team, ubicacio)
+
+        # # # Afegim algun objecte al jugador de base
+        # self.jugador.AfegirObjecte(self.Objects["Combat"]["inferior_potion"], 2)
+    
+        self.SeleccionarEntitat()
+
+    def SeleccionarEntitat(self):
+
+        UIManager.CrearMenu(self.Entities.items(), "Seleccio Entitats", ("Tipus Entitat", "Playable"))
+        self.CanviarMenu(UIManager.Menus["Seleccio Entitats"])
+        self.Menu.dibuixar_menus_seleccio_entitats()
+
+    def SeleccioText(self, textMostrat):
+        print()
+        # En acabar necessito que al pressionar enter en la casella del text o un boto de d'acord
+        # M'envii a Seleccionar Entitat per a seleccionar el personatge principal
+
+    def CrearEntitatAliada(self):
+        if len(self.jugador.Team) < 1:
             id = "Player"
+            nom = self.jugador.Name
         else:
             id = f"ally_{len(self.jugador.Team)}"
         playableentity = Entitat.Entity(id, nom, 5, True, self.Entities["mage"])

@@ -12,12 +12,12 @@ import os
 filepath = os.path.dirname(__file__)
 
 class Menu():
-    def __init__(self, app, canvas, ident, opcions, imatge = None, limitfila = 10):
+    def __init__(self, app, canvas, ident, opcions, imatgeFons = None, limitfila = 10):
         self.app = app
         self.canvas = canvas
         self.id = ident
         self.opcions = opcions
-        self.imatge = imatge
+        self.imatge = imatgeFons
         self.limitopcfila = limitfila
         self.index = 0
         self.columnes = len(self.opcions) // limitfila if len(self.opcions) > limitfila else 1
@@ -29,6 +29,7 @@ class Menu():
         # Estats Dialeg
         self.Esciribint = False
         self.Parpadeig = None
+        self.SeleccioEntitats = False
     
     def dibuixar(self, x = None, y = None):
         self.canvas.delete("menu_interactiu")
@@ -125,7 +126,7 @@ class Menu():
             )
         self.parpadeig_id = self.app.root.after(150, lambda: self.ComencarParpadeig(not visible))
 
-    def PulsarEnter(self):
+    def PulsarEnter(self):  # Funcio per a determinar que ocurreix si estem en un menu i es presiona enter...
         if self.Escribint:
             self.app.root.after_cancel(self.after_id)
             self.Escribint = False
@@ -144,7 +145,131 @@ class Menu():
             self.canvas.delete("dialeg")
             self.app.DialegActiu = False
 
+    # Crear funcio de dibuix de seleccio de personatges, amb imatge i label per al nom i descripcio, que canvii
+    # sera un menu de entitats, on s'utilitzaran les imatges descripcions i mostres d'estats base
+    # Principalment per a crear el personatge, investigar com afegir per a demanar un text per al nom del jugador...
+    #
+    def dibuixar_menus_seleccio_entitats(self):
+        # Activem que estem en el menu de seleccio d'entitats
+        self.SeleccioEntitats = True
+
+        # Borrem el que ja tinguem en el canvas
+        self.canvas.delete("all")
+
+        # Creem el fons de pantalla del menu...
+        self.app.RedimensionarFons()
+
+        self.ActualitzarImatgesSeleccio()
     
+    def ActualitzarImatgesSeleccio(self):
+        self.canvas.delete("clase")
+
+        prev = (self.index - 1) % len(self.opcions)
+        seg = (self.index + 1) % len(self.opcions)
+
+        # Declarem les imatges de les opcions...
+        self.opcions[prev].imatge = self.app.RedimensionarImatge(
+                                        self.opcions[prev].Imatge,
+                                        120, 100, True
+                                        )
+
+        self.opcions[seg].imatge = self.app.RedimensionarImatge(
+                                        self.opcions[seg].Imatge,
+                                        120, 100, True
+                                        )
+    
+        self.opcions[self.index].imatge = self.app.RedimensionarImatge(
+                                        self.opcions[self.index].Imatge,
+                                        120, 100
+                                        )
+
+        # Creem les imatges
+
+        self.canvas.create_image(
+            150, 270,
+            image=self.opcions[prev].Imatge,
+            tags="clase"
+        )
+
+        self.canvas.create_image(
+            300, 270,
+            image=self.opcions[seg].Imatge,
+            tags="clase"
+        )
+
+        self.canvas.create_image(
+            450, 250,
+            image=self.opcions[self.index].Imatge,
+            tags="clase"
+        )
+
+        self.DibuixarInfo()
+    
+    def DibuixarInfo(self):
+        posicionsCaixa = (600, 5)
+        
+
+        self.canvas.create_rectangle(
+            posicionsCaixa[0], posicionsCaixa[1],
+            self.app.Ancho - 5, 
+            self.app.Alto - 185,
+            fill="white", outline="black",
+            width=4, tags="clase"
+        )
+
+        # Creem el recuadre de la descripcio
+        self.canvas.create_rectangle(
+            5, 420,
+            self.app.Ancho - 5, 
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=4, tags="clase"
+        )
+
+        # Mostrem les estadistiques
+        stats_clase = (
+            f"Estadistiques Base\n"
+            f"HP:   {self.app.Entities[self.opcions[self.index].id].Health}\n"
+            f"Mana: {self.app.Entities[self.opcions[self.index].id].Magic}\n"
+            f"ATK:  {self.app.Entities[self.opcions[self.index].id].Attack}\n"
+            f"INT:  {self.app.Entities[self.opcions[self.index].id].Intel}\n"
+            f"DEF:  {self.app.Entities[self.opcions[self.index].id].Defense}\n"
+            f"SPD:  {self.app.Entities[self.opcions[self.index].id].Speed}\n"
+        )
+
+        self.canvas.create_text(
+            posicionsCaixa[0] + 60, posicionsCaixa[1] + 150,
+            text=stats_clase,
+            fill="black",
+            font=("Courier", 16, "bold"),
+            anchor="nw", tags="clase"
+        )
+
+        # Mostrem el nom
+        self.canvas.create_text(
+            posicionsCaixa[0] + 30, posicionsCaixa[1] + 30,
+            text=self.app.Entities[self.opcions[self.index].id].EntityName,
+            fill="black",
+            font=("Courier", 28, "bold"),
+            anchor="nw", tags="clase"
+        )
+
+        # Mostrem la descripcio
+        self.canvas.create_text(
+            30, 450,
+            text=self.app.Entities[self.opcions[self.index].id].EntityDescription,
+            fill="black",
+            font=("Courier", 20, "bold"),
+            anchor="nw", tags="clase"
+        )
+
+    
+
+
+    # Crear potser algun menu especialitzat en ocupar tota la pantalla, com el de combat o el de objectes, sempre es podria
+    # modificar el ja existent i donar-li possibles valors segons com fos, però crec que millor es creao un de nou...
+
+
     def dibuixar_fons_menus(self):
         
         bbox = self.canvas.bbox("menu_interactiu")
@@ -172,24 +297,33 @@ class Menu():
             self.canvas.tag_lower(rect, "menu_interactiu")
 
     def Moviment(self, direccio):
-        if direccio == "w":
-            self.index = (self.index -1) % len(self.opcions)
-        elif direccio == "s":
-            self.index = (self.index +1) % len(self.opcions)
-        elif direccio == "a" and self.index % self.columnes != 0:
-            self.index -= 1
-        elif direccio == "a" and (self.index + 1) % self.columnes != 0 and self.index + 1 < len(self.opcions):
-            self.index -= 1
+        if self.SeleccioEntitats == True:
+            if direccio == "a":
+                self.index = (self.index - 1) % len(self.opcions)
+            elif direccio == "d":
+                self.index = (self.index + 1) % len(self.opcions)
 
-        self.dibuixar()
+            self.ActualitzarImatgesSeleccio()
+        else:
+            if direccio == "w":
+                self.index = (self.index - 1) % len(self.opcions)
+            elif direccio == "s":
+                self.index = (self.index + 1) % len(self.opcions)
+            elif direccio == "a" and self.index % self.columnes != 0:
+                self.index -= 1
+            elif direccio == "d" and (self.index + 1) % self.columnes != 0 and self.index + 1 < len(self.opcions):
+                self.index -= 1
+
+            self.dibuixar()
         
 
 
 class OpcioMenu():
-    def __init__(self,iden, nom, habilitat, descripcio, condicio_habilitat = False):
+    def __init__(self,iden, nom, habilitat, descripcio, imatge = None, condicio_habilitat = False):
         self.id = iden
         self.Nom = nom
         self.Descripcio = descripcio
+        self.Imatge = imatge
         self.Habilitat = habilitat
         if condicio_habilitat == True:
             self.Habilitat = True

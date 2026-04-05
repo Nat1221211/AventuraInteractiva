@@ -237,7 +237,7 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
     elif filtre == "Entitat":
         for i in llista:
             if isinstance(i[1], Entitat.Entity):
-                options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription))
+                options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription, i[1].base.ImageFrontal))
     elif filtre == "Moves":
         for i in llista:
             if isinstance(i[1], Characteristics.Moves):
