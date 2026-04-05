@@ -136,11 +136,11 @@ class App():
                     (x, y), Image.Resampling.LANCZOS
                 )
 
+                if borros == True:
+                    redim_image.filter(ImageFilter.GaussianBlur(radius=3))
+
                 # Convertim a format compatible
                 imatge_redimensionada = ImageTk.PhotoImage(redim_image)
-
-                if borros == True:
-                    imatge_redimensionada.filter(ImageFilter.GaussianBlur(radius=3))
 
                 return imatge_redimensionada
                 # En acabar el return encara cal crear la imatge al canvas i colocar-la...

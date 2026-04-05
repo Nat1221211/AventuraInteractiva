@@ -233,11 +233,11 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
             if isinstance(filtre, tuple) and isinstance(i[1], EntityType.EntityType):
                 if filtre[1] == "Playable" and i[1].isPlayable != True:
                     continue
-                options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription))
+                options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription, i[1].Images["Frontal"]))
     elif filtre == "Entitat":
         for i in llista:
             if isinstance(i[1], Entitat.Entity):
-                options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription, i[1].base.ImageFrontal))
+                options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription))
     elif filtre == "Moves":
         for i in llista:
             if isinstance(i[1], Characteristics.Moves):

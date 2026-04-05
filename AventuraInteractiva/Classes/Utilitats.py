@@ -168,18 +168,18 @@ class Menu():
         seg = (self.index + 1) % len(self.opcions)
 
         # Declarem les imatges de les opcions...
-        self.opcions[prev].imatge = self.app.RedimensionarImatge(
-                                        self.opcions[prev].Imatge,
+        self.opcions[prev].Imatge["Carregada"] = self.app.RedimensionarImatge(
+                                        self.opcions[prev].Imatge["Path"],
                                         120, 100, True
                                         )
 
-        self.opcions[seg].imatge = self.app.RedimensionarImatge(
-                                        self.opcions[seg].Imatge,
+        self.opcions[seg].Imatge["Carregada"] = self.app.RedimensionarImatge(
+                                        self.opcions[seg].Imatge["Path"],
                                         120, 100, True
                                         )
     
-        self.opcions[self.index].imatge = self.app.RedimensionarImatge(
-                                        self.opcions[self.index].Imatge,
+        self.opcions[self.index].Imatge["Carregada"] = self.app.RedimensionarImatge(
+                                        self.opcions[self.index].Imatge["Path"],
                                         120, 100
                                         )
 
@@ -187,21 +187,23 @@ class Menu():
 
         self.canvas.create_image(
             150, 270,
-            image=self.opcions[prev].Imatge,
+            image=self.opcions[prev].Imatge["Carregada"],
             tags="clase"
         )
 
         self.canvas.create_image(
             300, 270,
-            image=self.opcions[seg].Imatge,
+            image=self.opcions[seg].Imatge["Carregada"],
             tags="clase"
         )
 
         self.canvas.create_image(
-            450, 250,
-            image=self.opcions[self.index].Imatge,
+            250, 250,
+            image=self.opcions[self.index].Imatge["Carregada"],
             tags="clase"
         )
+
+        self.canvas.tag_raise("clase")
 
         self.DibuixarInfo()
     
@@ -229,6 +231,7 @@ class Menu():
         # Mostrem les estadistiques
         stats_clase = (
             f"Estadistiques Base\n"
+            f"\n"
             f"HP:   {self.app.Entities[self.opcions[self.index].id].Health}\n"
             f"Mana: {self.app.Entities[self.opcions[self.index].id].Magic}\n"
             f"ATK:  {self.app.Entities[self.opcions[self.index].id].Attack}\n"
@@ -238,7 +241,7 @@ class Menu():
         )
 
         self.canvas.create_text(
-            posicionsCaixa[0] + 60, posicionsCaixa[1] + 150,
+            posicionsCaixa[0] + 40, posicionsCaixa[1] + 150,
             text=stats_clase,
             fill="black",
             font=("Courier", 16, "bold"),
@@ -328,7 +331,10 @@ class OpcioMenu():
         self.id = iden
         self.Nom = nom
         self.Descripcio = descripcio
-        self.Imatge = imatge
+        self.Imatge = {
+            "Path": imatge,
+            "Carregada": None
+        }
         self.Habilitat = habilitat
         if condicio_habilitat == True:
             self.Habilitat = True

@@ -21,6 +21,7 @@ from Classes import Zones
 from Classes import Utilitats
 import PrepararCridar as Call
 
+from PIL import Image
 
 
 def CallCSV(cami):
@@ -74,9 +75,23 @@ def CallEntity(movements):
                     "Lv": n
                 }
                 moves.update({m: dictio})
+        
+        base_path = os.path.dirname(__file__)
+        ruta_imatges_entitat = os.path.join(base_path, f"/Assets/Entities/{i["id"]}")
 
         entitat = EntityType.EntityType(i["id"], i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
                                         i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
+        # if os.path.exists("ruta_imatges_entitat"):
+        imatges = {}
+        if os.path.exists(os.path.join(ruta_imatges_entitat, f"/front.png")):
+            imatges.update({"Frontal": os.path.join(ruta_imatges_entitat, f"/front.png")})
+        if os.path.exists(os.path.join(ruta_imatges_entitat, f"/back.png")):
+            imatges.update({"back": os.path.join(ruta_imatges_entitat, f"/back.png")})
+        if os.path.exists(os.path.join(ruta_imatges_entitat, f"/mini.png")):
+            imatges.update({"mini": os.path.join(ruta_imatges_entitat, f"/mini.png")})
+
+            entitat.AddImages(imatges)
+
         entities.update({i["id"]: entitat})
     return entities
 
