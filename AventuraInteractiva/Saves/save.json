@@ -1,8 +1,8 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "south_forest",
-    "Or": 2000,
-    "Ultim_Visitat": "dawn_village",
+    "Ubicacio": "knightshire",
+    "Or": 2150,
+    "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
     "Missions_Disponibles": {
@@ -15,13 +15,17 @@
     },
     "Llocs_Trobats": [
         "dawn_village",
-        "south_forest"
+        "south_forest",
+        "greenwoods",
+        "knightshire"
     ],
     "Llocs_Visitats": [
         "dawn_village",
         "Bosc del Sud",
         "Dawn Village",
-        "Bosc del Sud"
+        "Bosc del Sud",
+        "Bosc de Fusta Verda",
+        "Knightshire"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],

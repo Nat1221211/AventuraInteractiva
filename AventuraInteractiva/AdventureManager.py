@@ -50,9 +50,9 @@ def ExplorarTrobaroNo(app):
             tipus = app.jugador.Ubicacio.Objectes[trobat[0]]["type"]
             identif = trobat[0]
 
-            app.jugador.AfegirObjecte(app.objects[tipus][identif], 1)
+            app.jugador.AfegirObjecte(app.Objects[tipus][identif], 1)
             app.jugador.Ubicacio.ObjecteTrobat(trobat[0])
-            app.Menu.SeguentDialeg = f"Has trobat {app.objects[tipus][identif].ObjectName}."
+            app.Menu.SeguentDialeg = f"Has trobat {app.Objects[tipus][identif].ObjectName}."
 
 
     if perTrobar == 0 or choice == ["res"]:
