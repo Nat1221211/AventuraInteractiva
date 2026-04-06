@@ -4,7 +4,7 @@
 # Descripcio:
 # Creem la classe Tipus d'entitat.
 
-import random
+import os
 
 class EntityType():
     
@@ -40,7 +40,8 @@ class EntityType():
         self.EntityMoves = moves
         self.Companions = {}
         self.Images = {
-            "Frontal": ""
+            "Frontal": "",
+            "Back": ""
         }
     
     def AddImages(self, images):

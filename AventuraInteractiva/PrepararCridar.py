@@ -81,16 +81,21 @@ def CallEntity(movements):
 
         entitat = EntityType.EntityType(i["id"], i["Nom"],  i["Playable?"], i["Vida"], i["Mana"], i["ATK"], i["INT"], 
                                         i["DEF"], i["SPD"], i["XP"], i["Groups"],  i["Descripcio"], moves)
+        
+        
+        imatges = {}
         if os.path.exists(ruta_imatges_entitat):
-            imatges = {}
             if os.path.exists(os.path.join(ruta_imatges_entitat, f"front.png")):
                 imatges.update({"Frontal": os.path.join(ruta_imatges_entitat, f"front.png")})
             if os.path.exists(os.path.join(ruta_imatges_entitat, f"back.png")):
                 imatges.update({"Back": os.path.join(ruta_imatges_entitat, f"back.png")})
             if os.path.exists(os.path.join(ruta_imatges_entitat, f"mini.png")):
                 imatges.update({"Mini": os.path.join(ruta_imatges_entitat, f"mini.png")})
+        else:
+            imatges.update({"Frontal": os.path.join(base_path, f"Assets/Entities/undefined_sprite/front.png")})
+            imatges.update({"Back": os.path.join(ruta_imatges_entitat, f"Assets/Entities/undefined_sprite/back.png")})
 
-            entitat.AddImages(imatges)
+        entitat.AddImages(imatges)
 
         entities.update({i["id"]: entitat})
     return entities

@@ -131,14 +131,16 @@ class App():
         if imatge != None:
             if os.path.exists(imatge):
                 image = Image.open(imatge)
+                    
+                if borros == True:
+                    image.filter(ImageFilter.GaussianBlur(radius=15))
+
                     # Redimensionem a la mida de la pantalla, i li donem format LANCZOS (de bona qualitat)
                 redim_image = image.resize(
                     (x, y), Image.Resampling.LANCZOS
                 )
 
-                if borros == True:
-                    redim_image.filter(ImageFilter.GaussianBlur(radius=3))
-
+                
                 # Convertim a format compatible
                 imatge_redimensionada = ImageTk.PhotoImage(redim_image)
 
