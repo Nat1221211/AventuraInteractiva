@@ -15,6 +15,7 @@ class Menu():
     def __init__(self, app, canvas, ident, opcions, imatgeFons = None, limitfila = 10):
         self.app = app
         self.canvas = canvas
+        self.MenuAnterior = None
         self.id = ident
         self.opcions = opcions
         self.imatge = imatgeFons

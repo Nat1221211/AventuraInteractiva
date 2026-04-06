@@ -100,11 +100,15 @@ class App():
             AdventureManager.CanviarZona(self, seleccionat)
         
         
-    
-
+    def Enrere(self):
+        self.Menu = self.Menu.MenuAnterior
+        self.MostrarMenu()
 
     def CanviarMenu(self, menu):
+        menuAnterior = self.Menu
         self.Menu = Utilitats.Menu(self, self.canvas, menu["id"], menu["opcions"])
+
+        self.Menu.MenuAnterior = menuAnterior
 
     def MostrarMenu(self):
         self.Menu.dibuixar()
@@ -205,15 +209,21 @@ class App():
         if self.DialegActiu == True:
             if tecla.keysym == "Return":
                 self.Menu.PulsarEnter()
+            if tecla.keysym == "BackSpace": 
+                self.Menu.PulsarEnter()
+
         elif self.Menu.PantallaEscriure == True:
             self.Menu.TeclatEscritura(tecla)
+
         else:
             if tecla.keysym == "w": self.Menu.Moviment("w")
             if tecla.keysym == "s": self.Menu.Moviment("s")
             if tecla.keysym == "a": self.Menu.Moviment("a")
             if tecla.keysym == "d": self.Menu.Moviment("d")
             if tecla.keysym == "Return": self.ConfirmarSeleccio()
-            if tecla.keysym == "BackSpace": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace":
+                if self.Menu.id not in ["Menu Wild", "Menu Poble", "Seleccio Partida", "Seleccio Entitats"]:
+                    self.Enrere()
 
 
     def SeleccionarPartida(self):
