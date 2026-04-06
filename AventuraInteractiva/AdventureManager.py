@@ -25,15 +25,15 @@ def CanviarZona(App, seleccio):
     UIManager.MostrarMenuPrincipal(App)
     
 
-def OcurrenciaMisio(misio, jugador, missions, event, objectes, exits):
+def OcurrenciaMisio(misio, app):
     if type(misio) == Missions.KillMission:        
-        CombatManager.Lluitar(jugador, misio.Enemic, event, missions, objectes, exits)
+        CombatManager.Lluitar(app.jugador, misio.Enemic, app)
     elif type(misio) == Missions.FindMission:
-        print(f"Has trobat en/la {misio.Objective["find"]}")
-        event.CridarEvent("Persona Missio Trobada", misio.Objective["find"], jugador, missions)
+        app.Menu.CrearDialeg(f"Has trobat en/la {misio.Objective["find"]}")
+        app.event.CridarEvent("Persona Missio Trobada", misio.Objective["find"], app.jugador, app.missions)
     elif type(misio) == Missions.ObjectMission:
-        print(f"Has trobat l'objecte {misio.Objective["ObjName"]}")
-        event.CridarEvent("Objecte Missio Trobat", misio.Objective["object"], jugador, missions)
+        app.Menu.CrearDialeg(f"Has trobat l'objecte {misio.Objective["ObjName"]}")
+        app.event.CridarEvent("Objecte Missio Trobat", misio.Objective["object"], app.jugador, app.missions)
     if type(misio) != Missions.KillMission:
         input("Presiona per a Continuar...")
 
@@ -52,16 +52,16 @@ def ExplorarTrobaroNo(app):
 
             app.jugador.AfegirObjecte(app.Objects[tipus][identif], 1)
             app.jugador.Ubicacio.ObjecteTrobat(trobat[0])
-            app.Menu.SeguentDialeg.append(f"Has trobat {app.Objects[tipus][identif].ObjectName}.")
+            app.Menu.CrearDialeg(f"Has trobat {app.Objects[tipus][identif].ObjectName}.")
 
 
     if perTrobar == 0 or choice == ["res"]:
-        app.Menu.SeguentDialeg.append(f"No has trobat res...")
+        app.Menu.CrearDialeg(f"No has trobat res...")
 
 
 def Explorar(app):
 
-    app.Menu.dibuixar_dialeg(f"Has començat a explorar la zona...") 
+    app.Menu.CrearDialeg(f"Has començat a explorar la zona...") 
     prob = random.randrange(1, 100)
     choice = [""]
     if prob <= 20:  # Or
@@ -83,7 +83,7 @@ def Explorar(app):
                 misio = random.choice(llista)
                 OcurrenciaMisio(misio, app)
         if len(llista) == 0 or choice == ["res"]:
-            app.Menu.SeguentDialeg.append(f"Has començat a buscar objectes")
+            app.Menu.CrearDialeg(f"Has començat a buscar objectes")
             ExplorarTrobaroNo(app)
     elif prob > 70 and prob <= 95:  # Lluitar
         CombatManager.GenerarEnemic(app)
@@ -110,9 +110,9 @@ def DesbloquejarRutaPerExploracions(app):
         
         if rutaTrobada == True:
             if len(rutes) > 1:
-                app.Menu.SeguentDialeg.append(f"Has trobat un cami a {app.Zones[i].NameZone}.")
+                app.Menu.CrearDialeg(f"Has trobat un cami a {app.Zones[i].NameZone}.")
             else:
-                app.Menu.SeguentDialeg.append(f"Has trobat un cami a {app.Zones[i].NameZone}.")
+                app.Menu.CrearDialeg(f"Has trobat un cami a {app.Zones[i].NameZone}.")
             
 def TrobarSeguentZona(app):
     posiblesRutesATrobar = []
@@ -124,11 +124,11 @@ def TrobarSeguentZona(app):
         if i in app.jugador.LlocsTrobats:
             rutesTrobades.append(i)
     if len(posiblesRutesATrobar) == 0:
-        app.Menu.SeguentDialeg.append(f"No sembla haver-hi cap altre ruta per trobar...")
+        app.Menu.CrearDialeg(f"No sembla haver-hi cap altre ruta per trobar...")
     else:
         trobat = random.choice(posiblesRutesATrobar)
         app.jugador.LlocsTrobats.append(trobat)
-        app.Menu.SeguentDialeg.append(f"Has trobat una ruta a {app.Zones[trobat].NameZone}")
+        app.Menu.CrearDialeg(f"Has trobat una ruta a {app.Zones[trobat].NameZone}")
         
 
     
@@ -154,6 +154,6 @@ def TrobarOr(app):
     
     app.jugador.Gold += found * mult[monedaTrobada[0]]
     if monedaTrobada[0] in ["Bronze", "Plata"]:
-        app.Menu.SeguentDialeg.append(f"Has trobat {found} monedes de {monedaTrobada[0]}")
+        app.Menu.CrearDialeg(f"Has trobat {found} monedes de {monedaTrobada[0]}")
     else:
-        app.Menu.SeguentDialeg.append(f"Has trobat {found} monedes d'{monedaTrobada[0]}")
+        app.Menu.CrearDialeg(f"Has trobat {found} monedes d'{monedaTrobada[0]}")

@@ -180,6 +180,14 @@ class Menu():
                     self.SeguentDialeg.remove(i)
                     self.dibuixar_dialeg(passarDialeg)
 
+    def CrearDialeg(self, text):
+        if self.app.DialegActiu == True:
+            self.SeguentDialeg.append(text)
+        else:
+            self.dibuixar_dialeg(text)
+
+
+
     # Crear funcio de dibuix de seleccio de personatges, amb imatge i label per al nom i descripcio, que canvii
     # sera un menu de entitats, on s'utilitzaran les imatges descripcions i mostres d'estats base
     # Principalment per a crear el personatge, investigar com afegir per a demanar un text per al nom del jugador...
