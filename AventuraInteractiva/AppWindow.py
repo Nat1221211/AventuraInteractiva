@@ -214,6 +214,7 @@ class App():
             if tecla.keysym == "w": self.Menu.Moviment("w")
             if tecla.keysym == "s": self.Menu.Moviment("s")
             if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace": self.Enrere()
 
         elif self.DialegActiu == True:
             if tecla.keysym == "Return":

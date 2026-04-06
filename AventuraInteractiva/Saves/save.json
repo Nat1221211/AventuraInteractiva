@@ -1,6 +1,6 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "greenwoods",
+    "Ubicacio": "knightshire",
     "Or": 2430,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {},
@@ -30,7 +30,9 @@
         "Knightshire",
         "Bosc de Fusta Verda",
         "Knightshire",
-        "Bosc de Fusta Verda"
+        "Bosc de Fusta Verda",
+        "knightshire",
+        "greenwoods"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],

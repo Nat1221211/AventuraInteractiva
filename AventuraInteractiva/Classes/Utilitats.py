@@ -167,14 +167,7 @@ class Menu():
         self.parpadeig_id = self.app.root.after(150, lambda: self.ComencarParpadeig(not visible))
 
     def PulsarEnter(self, tecla = None):  # Funcio per a determinar que ocurreix si estem en un menu i es presiona enter...
-        if self.app.Confirmacio == True:
-            if tecla in ["s", "w", "Return"]:
-                if tecla == "s" or tecla == "w":
-                    self.Moviment(tecla)
-                elif tecla == "Return":
-                    self.Confirmacio = False
-                    self.app.ConfirmarSeleccio()
-
+        
         if self.Escribint:
             self.app.root.after_cancel(self.after_id)
             self.Escribint = False
@@ -199,6 +192,15 @@ class Menu():
                     self.dibuixar_dialeg(passarDialeg)
             if self.app.DialegActiu == False:
                 self.dibuixar()
+        
+        if self.app.Confirmacio == True:
+            if tecla in ["s", "w", "Return"]:
+                if tecla == "s" or tecla == "w":
+                    self.Moviment(tecla)
+                elif tecla == "Return":
+                    self.Confirmacio = False
+                    self.app.ConfirmarSeleccio()
+
        
 
     def CrearDialeg(self, text):
@@ -368,6 +370,17 @@ class Menu():
             self.canvas.tag_lower(rect, "menu_interactiu")
 
     def Moviment(self, direccio):
+        if self.app.DialegActiu == True:
+            self.app.root.after_cancel(self.after_id)
+            self.Escribint = False
+            self.canvas.delete("text_animat")
+            self.canvas.create_text(
+                30, 450,
+                text=self.textdialeg, fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("dialeg", "text_animat")
+            )
+
         if self.SeleccioEntitats == True:
             prev_ind = self.index
             if direccio == "a":
@@ -386,7 +399,8 @@ class Menu():
                 self.index -= 1
             elif direccio == "d" and (self.index + 1) % self.columnes != 0 and self.index + 1 < len(self.opcions):
                 self.index -= 1
-            
+
+
             while self.opcions[self.index].Habilitat != True:
                 if direccio == "w":
                     self.index = (self.index - 1) % len(self.opcions)
