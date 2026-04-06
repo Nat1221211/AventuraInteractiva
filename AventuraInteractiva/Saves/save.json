@@ -1,7 +1,7 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "knightshire",
-    "Or": 2150,
+    "Ubicacio": "greenwoods",
+    "Or": 2290,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -25,7 +25,8 @@
         "Dawn Village",
         "Bosc del Sud",
         "Bosc de Fusta Verda",
-        "Knightshire"
+        "Knightshire",
+        "Bosc de Fusta Verda"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
@@ -41,7 +42,13 @@
             "XP": 0
         }
     ],
-    "Inventari": [],
+    "Inventari": [
+        {
+            "id": "high_potion",
+            "Amount": 2,
+            "Clase": "Combat"
+        }
+    ],
     "Titols": [],
     "Estadistiques": {},
     "Increment_Stats": {

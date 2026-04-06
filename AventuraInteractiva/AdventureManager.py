@@ -52,11 +52,11 @@ def ExplorarTrobaroNo(app):
 
             app.jugador.AfegirObjecte(app.Objects[tipus][identif], 1)
             app.jugador.Ubicacio.ObjecteTrobat(trobat[0])
-            app.Menu.SeguentDialeg = f"Has trobat {app.Objects[tipus][identif].ObjectName}."
+            app.Menu.SeguentDialeg.append(f"Has trobat {app.Objects[tipus][identif].ObjectName}.")
 
 
     if perTrobar == 0 or choice == ["res"]:
-        app.Menu.SeguentDialeg = f"No has trobat res..." 
+        app.Menu.SeguentDialeg.append(f"No has trobat res...")
 
 
 def Explorar(app):
@@ -83,7 +83,7 @@ def Explorar(app):
                 misio = random.choice(llista)
                 OcurrenciaMisio(misio, app)
         if len(llista) == 0 or choice == ["res"]:
-            app.Menu.SeguentDialeg = f"Has començat a buscar objectes" 
+            app.Menu.SeguentDialeg.append(f"Has començat a buscar objectes")
             ExplorarTrobaroNo(app)
     elif prob > 70 and prob <= 95:  # Lluitar
         CombatManager.GenerarEnemic(app)
@@ -110,9 +110,9 @@ def DesbloquejarRutaPerExploracions(app):
         
         if rutaTrobada == True:
             if len(rutes) > 1:
-                app.Menu.SeguentDialeg = f"Has trobat un cami a {app.Zones[i].NameZone}." 
+                app.Menu.SeguentDialeg.append(f"Has trobat un cami a {app.Zones[i].NameZone}.")
             else:
-                app.Menu.SeguentDialeg = f"Has trobat un cami a {app.Zones[i].NameZone}."
+                app.Menu.SeguentDialeg.append(f"Has trobat un cami a {app.Zones[i].NameZone}.")
             
 def TrobarSeguentZona(app):
     posiblesRutesATrobar = []
@@ -124,11 +124,11 @@ def TrobarSeguentZona(app):
         if i in app.jugador.LlocsTrobats:
             rutesTrobades.append(i)
     if len(posiblesRutesATrobar) == 0:
-        app.Menu.SeguentDialeg = f"No sembla haver-hi cap altre ruta per trobar..."
+        app.Menu.SeguentDialeg.append(f"No sembla haver-hi cap altre ruta per trobar...")
     else:
         trobat = random.choice(posiblesRutesATrobar)
         app.jugador.LlocsTrobats.append(trobat)
-        app.Menu.SeguentDialeg = f"Has trobat una ruta a {app.Zones[trobat].NameZone}"
+        app.Menu.SeguentDialeg.append(f"Has trobat una ruta a {app.Zones[trobat].NameZone}")
         
 
     
@@ -154,6 +154,6 @@ def TrobarOr(app):
     
     app.jugador.Gold += found * mult[monedaTrobada[0]]
     if monedaTrobada[0] in ["Bronze", "Plata"]:
-        app.Menu.SeguentDialeg = f"Has trobat {found} monedes de {monedaTrobada[0]}"
+        app.Menu.SeguentDialeg.append(f"Has trobat {found} monedes de {monedaTrobada[0]}")
     else:
-        app.Menu.SeguentDialeg = f"Has trobat {found} monedes d'{monedaTrobada[0]}"
+        app.Menu.SeguentDialeg.append(f"Has trobat {found} monedes d'{monedaTrobada[0]}")

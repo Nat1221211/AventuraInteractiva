@@ -32,7 +32,7 @@ class Menu():
         self.Parpadeig = None
         self.SeleccioEntitats = False
         self.PantallaEscriure = False
-        self.SeguentDialeg = None
+        self.SeguentDialeg = []
     
     def dibuixar(self, x = None, y = None):
         self.canvas.delete("all")
@@ -174,10 +174,11 @@ class Menu():
             self.parpadeig_id = None
             self.canvas.delete("dialeg")
             self.app.DialegActiu = False
-            if self.SeguentDialeg != None:
-                passarDialeg = self.SeguentDialeg
-                self.SeguentDialeg = None
-                self.dibuixar_dialeg(passarDialeg)
+            if len(self.SeguentDialeg) > 0:
+                for i in self.SeguentDialeg:
+                    passarDialeg = i
+                    self.SeguentDialeg.remove(i)
+                    self.dibuixar_dialeg(passarDialeg)
 
     # Crear funcio de dibuix de seleccio de personatges, amb imatge i label per al nom i descripcio, que canvii
     # sera un menu de entitats, on s'utilitzaran les imatges descripcions i mostres d'estats base
