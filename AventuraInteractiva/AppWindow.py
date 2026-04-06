@@ -225,6 +225,11 @@ class App():
             ruta = os.path.join(ruta_base, "Saves/save.json")
             self.CarregarPartida(ruta)
             UIManager.MostrarMenuPrincipal(self)
+        elif seleccionat.id == "sortir":
+            self.TancarJoc()
+
+    def TancarJoc(self):
+        self.root.quit()
 
     def NovaPartida(self):
         self.SeleccioText("Com et dius?")
