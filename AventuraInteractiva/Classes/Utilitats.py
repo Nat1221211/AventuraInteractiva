@@ -33,8 +33,12 @@ class Menu():
         self.SeleccioEntitats = False
         self.PantallaEscriure = False
         self.SeguentDialeg = []
-    
-    def dibuixar(self, x = None, y = None):
+
+        # estats Confirmacio
+        self.CaixaConfirmacio = False
+        self.Confirmacio = False
+
+    def dibuixar(self, dialeg = None, x = None, y = None):
         self.canvas.delete("all")
         self.labels = []
 
@@ -67,35 +71,41 @@ class Menu():
                 )
                 self.labels.append(label)
         if self.id == "Menu Poble" or self.id == "Menu Wild":
-
-            nomZona = self.app.jugador.Ubicacio.NameZone
-
-            self.canvas.create_text(
-                30, 20,
-                text=nomZona,
-                anchor="nw",
-                font=("Courier", 16, "bold"),
-                fill="black",
-                tags="text_zona"
-            )
-
-            bbox = self.canvas.bbox("text_zona")
-
-            if bbox:
-                margin = 20
-
-                self.canvas.create_rectangle(
-                    5, 
-                    5, 
-                    bbox[2] + margin, 
-                    bbox[3] + margin - 5,
-                    fill="white", outline="black",
-                    width=4, tags="text_zona_fons"
-                )
-            self.canvas.tag_raise("text_zona")
-            self.canvas.tag_lower("text_zona_fons", "menu_interactiu")
+            self.DibuixarNomZona()
+        
+        elif self.id == "Confirmacio":
+            if dialeg != None:
+                self.CrearDialeg(dialeg)
         
         self.dibuixar_fons_menus()
+        
+    def DibuixarNomZona(self):
+        nomZona = self.app.jugador.Ubicacio.NameZone
+
+        self.canvas.create_text(
+            30, 20,
+            text=nomZona,
+            anchor="nw",
+            font=("Courier", 16, "bold"),
+            fill="black",
+            tags="text_zona"
+        )
+
+        bbox = self.canvas.bbox("text_zona")
+
+        if bbox:
+            margin = 20
+
+            self.canvas.create_rectangle(
+                5, 
+                5, 
+                bbox[2] + margin, 
+                bbox[3] + margin - 5,
+                fill="white", outline="black",
+                width=4, tags="text_zona_fons"
+            )
+        self.canvas.tag_raise("text_zona")
+        self.canvas.tag_lower("text_zona_fons", "menu_interactiu")
     
     def dibuixar_dialeg(self, dialeg):
         self.textdialeg = dialeg
@@ -156,7 +166,15 @@ class Menu():
             )
         self.parpadeig_id = self.app.root.after(150, lambda: self.ComencarParpadeig(not visible))
 
-    def PulsarEnter(self):  # Funcio per a determinar que ocurreix si estem en un menu i es presiona enter...
+    def PulsarEnter(self, tecla = None):  # Funcio per a determinar que ocurreix si estem en un menu i es presiona enter...
+        if self.app.Confirmacio == True:
+            if tecla in ["s", "w", "Return"]:
+                if tecla == "s" or tecla == "w":
+                    self.Moviment(tecla)
+                elif tecla == "Return":
+                    self.Confirmacio = False
+                    self.app.ConfirmarSeleccio()
+
         if self.Escribint:
             self.app.root.after_cancel(self.after_id)
             self.Escribint = False
@@ -181,6 +199,7 @@ class Menu():
                     self.dibuixar_dialeg(passarDialeg)
             if self.app.DialegActiu == False:
                 self.dibuixar()
+       
 
     def CrearDialeg(self, text):
         if self.app.DialegActiu == True:
@@ -192,8 +211,7 @@ class Menu():
 
     # Crear funcio de dibuix de seleccio de personatges, amb imatge i label per al nom i descripcio, que canvii
     # sera un menu de entitats, on s'utilitzaran les imatges descripcions i mostres d'estats base
-    # Principalment per a crear el personatge, investigar com afegir per a demanar un text per al nom del jugador...
-    #
+
     def dibuixar_menus_seleccio_entitats(self):
         # Activem que estem en el menu de seleccio d'entitats
         self.SeleccioEntitats = True

@@ -96,7 +96,7 @@ Menus = {
     },
 
     "Confirmacio":{
-        "id": "",
+        "id": "Confirmacio",
         "opcions":
         [
             Utilitats.OpcioMenu("si", "Si", True, ""),

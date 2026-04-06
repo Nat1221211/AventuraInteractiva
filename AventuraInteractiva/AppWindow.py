@@ -59,6 +59,7 @@ class App():
 
         # ALtres
         self.DialegActiu = False
+        self.Confirmacio = False
 
         # Midas pantalla
         self.Alto = 600 # Declarem mides en variables per a utilitzarles facilment.
@@ -89,6 +90,9 @@ class App():
         
         if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
             self.SeleccionarPartida()
+        
+        elif self.Menu.id == "Confirmacio":
+            SaveGame.GuardarPartida(self, self.jugador, self.Missions)
 
         elif self.Menu.id == "Seleccio Entitats":
             self.CrearEntitatAliada(seleccionat)
@@ -110,8 +114,8 @@ class App():
 
         self.Menu.MenuAnterior = menuAnterior
 
-    def MostrarMenu(self):
-        self.Menu.dibuixar()
+    def MostrarMenu(self, dialeg = None):
+        self.Menu.dibuixar(dialeg)
 
     def RedimensionarFons(self, image = None):
 
@@ -206,7 +210,12 @@ class App():
         self.MostrarMenu()
     
     def ControlBinds(self, tecla):
-        if self.DialegActiu == True:
+        if self.Confirmacio == True:
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+
+        elif self.DialegActiu == True:
             if tecla.keysym == "Return":
                 self.Menu.PulsarEnter()
             if tecla.keysym == "BackSpace": 
@@ -214,7 +223,7 @@ class App():
 
         elif self.Menu.PantallaEscriure == True:
             self.Menu.TeclatEscritura(tecla)
-
+        
         else:
             if tecla.keysym == "w": self.Menu.Moviment("w")
             if tecla.keysym == "s": self.Menu.Moviment("s")
@@ -276,11 +285,15 @@ class App():
         UIManager.MostrarMenuPrincipal(self)
 
     def GuardarPartida(self):
-        SaveGame.GuardarPartida(self, self.jugador, self.Missions)
+        # 
+        self.MenuConfirmacio("Vols Guardar la Partida?\nFer-ho sobrescriura la ultima partida guardada...")
     
 
     def PrepararExplorar(self):
         self.canvas.delete("all")
         self.RedimensionarFons()
-
-        
+    
+    def MenuConfirmacio(self, dialeg = None):
+        self.Confirmacio = True
+        self.CanviarMenu(UIManager.Menus["Confirmacio"])
+        self.MostrarMenu(dialeg)

@@ -16,10 +16,8 @@ from Classes import Objectes
 import UIManager
 from Classes import Utilitats
 
-
 def GuardarPartida(App, jugador, missions):
 
-    App.Menu.dibuixar_dialeg("Guardant la partida...")
     dades = {
         # Detalls Generals
         "Nom": jugador.Name,
@@ -59,11 +57,7 @@ def GuardarPartida(App, jugador, missions):
     with open(ruta_final, "w", encoding="utf-8") as save:
         json.dump(dades, save, indent=4, ensure_ascii=False)
     
-    
-
-    # else:
-    #     print("Surts del menu de guardat...")
-    #     input("Presiona per a continuar...")
+    App.Enrere()
 
 def CarregarPartida(partida, missions, objectes, zones, entitats):
     with open(partida, "r", encoding="utf-8") as save:

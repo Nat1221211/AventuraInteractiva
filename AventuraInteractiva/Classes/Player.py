@@ -66,7 +66,8 @@ class Player():
     def ActualitzarUltimPobleVisitat(self):
         if self.Ubicacio.ZoneType == "Poble":
             self.UltimPobleVisitat = self.Ubicacio
-        self.LlocsVisitats.append(self.Ubicacio.NameZone)
+        if self.Ubicacio.id not in self.LlocsVisitats:
+            self.LlocsVisitats.append(self.Ubicacio.id)
 
     def MostrarObjectes(self):
         os.system("cls")
