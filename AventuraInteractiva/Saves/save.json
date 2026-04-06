@@ -26,7 +26,7 @@
         {
             "id": "Player",
             "Nom": "Nat",
-            "Base": "archer",
+            "Base": "priest",
             "Lv": 5,
             "Lv_Limit": 100,
             "Moves": [],

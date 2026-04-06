@@ -188,12 +188,12 @@ class App():
             )
 
          # Interaccions
-        self.root.bind("<w>", lambda event: self.ControlBinds("<w>"))
-        self.root.bind("<s>", lambda event: self.ControlBinds("<s>"))
-        self.root.bind("<a>", lambda event: self.ControlBinds("<a>"))
-        self.root.bind("<d>", lambda event: self.ControlBinds("<d>"))
-        self.root.bind("<Return>", lambda event: self.ControlBinds("<Return>"))
-        self.root.bind("<BackSpace>", lambda event: self.ControlBinds("<BackSpace>"))
+        self.root.bind("<w>", self.ControlBinds)
+        self.root.bind("<s>", self.ControlBinds)
+        self.root.bind("<a>", self.ControlBinds)
+        self.root.bind("<d>", self.ControlBinds)
+        self.root.bind("<Return>", self.ControlBinds)
+        self.root.bind("<BackSpace>", self.ControlBinds)
 
         
         self.CanviarMenu(UIManager.Menus["Seleccio Partida"])
@@ -201,15 +201,17 @@ class App():
     
     def ControlBinds(self, tecla):
         if self.DialegActiu == True:
-            if tecla == "<Return>":
+            if tecla.keysym == "Return":
                 self.Menu.PulsarEnter()
+        elif self.Menu.PantallaEscriure == True:
+            self.Menu.TeclatEscritura(tecla)
         else:
-            if tecla == "<w>": self.Menu.Moviment("w")
-            if tecla == "<s>": self.Menu.Moviment("s")
-            if tecla == "<a>": self.Menu.Moviment("a")
-            if tecla == "<d>": self.Menu.Moviment("d")
-            if tecla == "<Return>": self.ConfirmarSeleccio()
-            if tecla == "<BackSpace>": self.ConfirmarSeleccio()
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+            if tecla.keysym == "a": self.Menu.Moviment("a")
+            if tecla.keysym == "d": self.Menu.Moviment("d")
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace": self.ConfirmarSeleccio()
 
 
     def SeleccionarPartida(self):
@@ -223,7 +225,7 @@ class App():
             UIManager.MostrarMenuPrincipal(self)
 
     def NovaPartida(self):
-        self.SeleccionarEntitat()
+        self.SeleccioText("Com et dius?")
 
     def SeleccionarEntitat(self):
 
@@ -231,10 +233,8 @@ class App():
         self.CanviarMenu(UIManager.Menus["Seleccio Entitats"])
         self.Menu.dibuixar_menus_seleccio_entitats()
 
-    def SeleccioText(self, textMostrat):
-        print()
-        # En acabar necessito que al pressionar enter en la casella del text o un boto de d'acord
-        # M'envii a Seleccionar Entitat per a seleccionar el personatge principal
+    def SeleccioText(self, textMostrar):
+        self.Menu.dibuixar_pantalla_menu_text(textMostrar)
 
     def CrearEntitatAliada(self, id_entitat, nom = None):
         if len(self.jugador.Team) < 1:
@@ -247,6 +247,7 @@ class App():
         self.jugador.Team.update({id: playableentity})
         self.jugador.Ubicacio = self.Zones["dawn_village"]
         self.jugador.UltimPobleVisitat = self.Zones["dawn_village"]
+        self.Menu.SeleccioEntitats = False
 
         UIManager.MostrarMenuPrincipal(self)
 

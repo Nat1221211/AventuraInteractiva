@@ -30,6 +30,7 @@ class Menu():
         self.Esciribint = False
         self.Parpadeig = None
         self.SeleccioEntitats = False
+        self.PantallaEscriure = False
     
     def dibuixar(self, x = None, y = None):
         self.canvas.delete("all")
@@ -322,7 +323,75 @@ class Menu():
                 self.index -= 1
 
             self.dibuixar()
+    
+    def dibuixar_pantalla_menu_text(self, mostrar):
+        self.PantallaEscriure = True
+        self.canvas.delete("all")
+        self.app.root.unbind("<Key>")
+
+        self.app.RedimensionarFons()
+        self.textEscrit = ""
+
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 5,
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=4, tags="finestra_escriptura"
+        )
+
+        font = tkfont.Font(family="Courier", size=16, weight="bold")
+        mida = font.measure(mostrar)
+
+        self.canvas.create_text(
+            self.app.Ancho // 2 - (mida // 2), 200,
+            text=mostrar, fill="black",
+            font=("Courier", 16, "bold"),
+            anchor="w", tags="finestra_escriptura"
+        )
+
+        self.canvas.create_rectangle(
+            400, 300,
+            600,
+            600,
+            fill="white", outline="black",
+            width=8, tags="finestra_escriptura"
+        )
+
+        self.MostrarText = self.canvas.create_text(
+            430, 330,
+            text="_", fill="black",
+            font=("Courier", 16, "bold"),
+            anchor="w", tags=("finestra_escriptura", "textescrit")
+        )
+
+        self.app.root.bind("<Key>", self.TeclatEscritura)
+    
+    def TeclatEscritura(self, tecla):
+        if self.PantallaEscriure == False:
+            return
+    
+        # Si presiona enter finalitzem el nom.
+        if tecla.keysym == "Return" and len(self.textEscrit) > 0:
+            self.FinalitzarEscrituraTeclat()
         
+        # Borrar Lletres
+        elif tecla.keysym == "BackSpace":
+            self.textEscrit = self.textEscrit[:-1]
+        
+        # Afegir lletres
+        elif len(tecla.char) == 1 and tecla.char.isalnum() and len(self.textEscrit) < 12:
+            self.textEscrit += tecla.char
+
+
+        self.canvas.itemconfig(self.MostrarText, text=self.textEscrit + "_")
+    
+    def FinalitzarEscrituraTeclat(self):
+        self.PantallaEscriure = False
+        self.app.root.unbind("<Key>")
+
+        self.app.NomEntitat = self.textEscrit
+        self.app.SeleccionarEntitat()
 
 
 class OpcioMenu():
