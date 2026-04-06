@@ -23,12 +23,12 @@ Menus = {
         "opcions":
         [
             Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona."),
-            Utilitats.OpcioMenu("motxila", "Motxila", True, "Veure els objectes i utilitzar-los."),
-            Utilitats.OpcioMenu("hostal", "Hostal", True, "Anar al hostal a descansar (Recuperar Salut i altres...)"),
-            Utilitats.OpcioMenu("botiga", "Botiga", True, "Comprar Objectes."),
+            Utilitats.OpcioMenu("motxila", "Motxila", False, "Veure els objectes i utilitzar-los."),
+            Utilitats.OpcioMenu("hostal", "Hostal", False, "Anar al hostal a descansar (Recuperar Salut i altres...)"),
+            Utilitats.OpcioMenu("botiga", "Botiga", False, "Comprar Objectes."),
             Utilitats.OpcioMenu("estat", "Estat", True, "Veure el estat dels personatges del jugador..."),
-            Utilitats.OpcioMenu("missions", "Missions", True, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
-            Utilitats.OpcioMenu("exits", "Éxits", True, "Veure els exits que pots i has adquirit..."),
+            Utilitats.OpcioMenu("missions", "Missions", False, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
+            Utilitats.OpcioMenu("exits", "Éxits", False, "Veure els exits que pots i has adquirit..."),
             Utilitats.OpcioMenu("guardar", "Guardar", True, "Guardar la Partida."),
             Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del menu.")
         ]

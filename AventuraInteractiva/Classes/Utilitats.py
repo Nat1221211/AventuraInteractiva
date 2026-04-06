@@ -56,6 +56,7 @@ class Menu():
                     y = self.y_inicial + (fila * self.espaiat_y)
 
                 color = "blue" if self.index == i else "black"
+                color = "grey" if opcio.Habilitat != True else color
 
                 label = self.canvas.create_text(
                     x, y + (i*40),
@@ -351,6 +352,12 @@ class Menu():
                 self.index -= 1
             elif direccio == "d" and (self.index + 1) % self.columnes != 0 and self.index + 1 < len(self.opcions):
                 self.index -= 1
+            
+            while self.opcions[self.index].Habilitat != True:
+                if direccio == "w":
+                    self.index = (self.index - 1) % len(self.opcions)
+                elif direccio == "s":
+                    self.index = (self.index + 1) % len(self.opcions)
 
             self.dibuixar()
     
