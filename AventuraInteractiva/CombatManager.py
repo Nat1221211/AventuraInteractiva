@@ -14,15 +14,15 @@ from Classes import Entitat
 import UIManager
 
 
-def GenerarEnemic(Entities, jugador, event, missions, objectes, exits):
+def GenerarEnemic(app):
 
     pesos = []
-    for j in jugador.Ubicacio.Enemies.values():
+    for j in app.jugador.Ubicacio.Enemies.values():
         pesos.append(j["prob"])
-    opcions = list(jugador.Ubicacio.Enemies.keys())
+    opcions = list(app.jugador.Ubicacio.Enemies.keys())
     seleccio = random.choices(opcions, pesos)
     
-    prob = jugador.Ubicacio.Enemies[seleccio[0]]["group_probs"]
+    prob = app.jugador.Ubicacio.Enemies[seleccio[0]]["group_probs"]
     
     num = []
     count = 1
@@ -35,15 +35,15 @@ def GenerarEnemic(Entities, jugador, event, missions, objectes, exits):
     enemy.update({
         "enemy_0":
         Entitat.Entity("enemy_0", "", random.randrange(
-            jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0], 
-            jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][1] + 1), 
+            app.jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0], 
+            app.jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][1] + 1), 
             False, 
-            Entities[seleccio[0]])})
+            app.Entities[seleccio[0]])})
 
     probs = []
     opcionsPosib = []
 
-    for v in jugador.Ubicacio.Enemies[seleccio[0]]["companions"]:
+    for v in app.jugador.Ubicacio.Enemies[seleccio[0]]["companions"]:
         probs.append(v[1])
         opcionsPosib.append(v[0])
 
@@ -56,12 +56,12 @@ def GenerarEnemic(Entities, jugador, event, missions, objectes, exits):
                 apareix = seleccio[0]
             entitat = Entitat.Entity(f"enemy_{l+1}","", 
                         random.randrange(
-                            jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0] - 2, enemy["enemy_0"].Lv), 
-                            False, Entities[apareix])
+                            app.jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0] - 2, enemy["enemy_0"].Lv), 
+                            False, app.Entities[apareix])
             
             enemy.update({entitat.id: entitat})
     
-    Lluitar(jugador, enemy, event, missions, objectes, exits)
+    Lluitar(app.jugador, enemy, app)
 
 
 

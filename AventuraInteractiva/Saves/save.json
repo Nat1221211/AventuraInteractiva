@@ -1,6 +1,6 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "dawn_village",
+    "Ubicacio": "south_forest",
     "Or": 2000,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
@@ -20,7 +20,8 @@
     "Llocs_Visitats": [
         "dawn_village",
         "Bosc del Sud",
-        "Dawn Village"
+        "Dawn Village",
+        "Bosc del Sud"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],

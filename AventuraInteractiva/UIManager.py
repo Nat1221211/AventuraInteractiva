@@ -39,12 +39,12 @@ Menus = {
         "opcions":
         [
             Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("motxila","Motxila", True, "Veure els objectes i utilitzar-los."),
+            Utilitats.OpcioMenu("motxila","Motxila", False, "Veure els objectes i utilitzar-los."),
             Utilitats.OpcioMenu("explorar","Explorar", True, "Anar a explorar la zona, pots trobar or, enemics i involucrar-te en missions..."),
-            Utilitats.OpcioMenu("lluitar","Lluitar", True, "Entrar forçosament en combat amb un dels enemcis de la zona..."),
+            Utilitats.OpcioMenu("lluitar","Lluitar", False, "Entrar forçosament en combat amb un dels enemcis de la zona..."),
             Utilitats.OpcioMenu("estat","Estat", True, "Veure el estat dels personatges del jugador..."),
-            Utilitats.OpcioMenu("missions", "Missions", True, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
-            Utilitats.OpcioMenu("exits", "Éxits", True, "Veure els exits que pots i has adquirit..."),
+            Utilitats.OpcioMenu("missions", "Missions", False, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
+            Utilitats.OpcioMenu("exits", "Éxits", False, "Veure els exits que pots i has adquirit..."),
             Utilitats.OpcioMenu("guardar", "Guardar", True, "Guardar la Partida."),
             Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del menu.")
 
@@ -60,7 +60,6 @@ Menus = {
             Utilitats.OpcioMenu("status", "Veure Estat", True, "veure l'estat d'un dels jugadors de l'equip.."),
             Utilitats.OpcioMenu("fugir", "Fugir", True, "Intentar fugir del enemic..."),
             Utilitats.OpcioMenu("pasar", "Pasar Torn", True, "Deixar pasar el torn sense fer res..."),
-            Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del menu.")
         ]
     },
 
@@ -86,15 +85,6 @@ Menus = {
         ]
     },
 
-    "Posada":{
-        "id": "",
-        "opcions":        
-        [
-            Utilitats.OpcioMenu("si", "Descansar al hostal",  True, "Recupera als jugadors a canvi de 100 d'or."),
-            Utilitats.OpcioMenu("no", "No descansar al hostal",  True, "Surt del hostal."),
-        ]
-    },
-
     "Exits":{
         "id": "",
         "opcions":
@@ -105,13 +95,12 @@ Menus = {
         ]
     },
 
-    "Guardar":{
+    "Confirmacio":{
         "id": "",
         "opcions":
         [
-            Utilitats.OpcioMenu("si", "Si", True, "Sobrescriu la ultima partida guardada, permetint accedir a la nova..."),
-            Utilitats.OpcioMenu("no", "No", True, "Decideix no sobrescriure la anterior partida guardada, mantenint la ultima si n'hi ha una..."),
-            Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del menu.")
+            Utilitats.OpcioMenu("si", "Si", True, ""),
+            Utilitats.OpcioMenu("no", "No", True, ""),
         ]
     },
 

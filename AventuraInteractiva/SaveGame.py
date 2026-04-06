@@ -19,7 +19,7 @@ from Classes import Utilitats
 
 def GuardarPartida(App, jugador, missions):
 
-    App.Menu.dibuixar_sense_borrar("Guardant la partida...")
+    App.Menu.dibuixar_dialeg("Guardant la partida...")
     dades = {
         # Detalls Generals
         "Nom": jugador.Name,
