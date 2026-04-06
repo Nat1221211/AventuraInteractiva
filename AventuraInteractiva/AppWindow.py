@@ -106,8 +106,8 @@ class App():
     def CanviarMenu(self, menu):
         self.Menu = Utilitats.Menu(self, self.canvas, menu["id"], menu["opcions"])
 
-    def MostrarMenu(self, text = ""):
-        self.Menu.dibuixar(text)
+    def MostrarMenu(self):
+        self.Menu.dibuixar()
 
     def RedimensionarFons(self, image = None):
 
