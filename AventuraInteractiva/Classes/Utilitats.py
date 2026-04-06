@@ -351,15 +351,15 @@ class Menu():
         )
 
         self.canvas.create_rectangle(
-            400, 300,
+            300, 300,
             600,
-            600,
+            370,
             fill="white", outline="black",
             width=8, tags="finestra_escriptura"
         )
 
         self.MostrarText = self.canvas.create_text(
-            430, 330,
+            330, 330,
             text="_", fill="black",
             font=("Courier", 16, "bold"),
             anchor="w", tags=("finestra_escriptura", "textescrit")

@@ -236,12 +236,14 @@ class App():
     def SeleccioText(self, textMostrar):
         self.Menu.dibuixar_pantalla_menu_text(textMostrar)
 
-    def CrearEntitatAliada(self, id_entitat, nom = None):
+    def CrearEntitatAliada(self, id_entitat):
         if len(self.jugador.Team) < 1:
             id = "Player"
+            self.jugador.Name = self.NomEntitat
             nom = self.jugador.Name
         else:
             id = f"ally_{len(self.jugador.Team)}"
+            nom = self.NomEntitat
         playableentity = Entitat.Entity(id, nom, 5, True, self.Entities[id_entitat.id])
 
         self.jugador.Team.update({id: playableentity})

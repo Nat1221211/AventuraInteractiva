@@ -1,5 +1,5 @@
 {
-    "Nom": "Nat",
+    "Nom": "Bernat",
     "Ubicacio": "dawn_village",
     "Or": 2000,
     "Ultim_Visitat": "dawn_village",
@@ -25,8 +25,8 @@
     "Team": [
         {
             "id": "Player",
-            "Nom": "Nat",
-            "Base": "priest",
+            "Nom": "Bernat",
+            "Base": "warrior",
             "Lv": 5,
             "Lv_Limit": 100,
             "Moves": [],
