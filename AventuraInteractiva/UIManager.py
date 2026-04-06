@@ -138,7 +138,7 @@ def MostrarMenuPrincipal(App):
     elif App.jugador.Ubicacio.ZoneType != "Poble":
        App.CanviarMenu(Menus["Menu Wild"])
 
-    App.MostrarMenu()
+    App.MostrarMenu("Main Menu")
 
 def CridarAccioMenuPrincipal(App, accio):
     # Executem acció seleccionada

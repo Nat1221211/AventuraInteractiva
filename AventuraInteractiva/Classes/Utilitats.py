@@ -32,7 +32,7 @@ class Menu():
         self.SeleccioEntitats = False
         self.PantallaEscriure = False
     
-    def dibuixar(self, x = None, y = None):
+    def dibuixar(self, window, x = None, y = None):
         self.canvas.delete("all")
         self.labels = []
 
@@ -63,6 +63,30 @@ class Menu():
                     anchor="w", tags="menu_interactiu"
                 )
                 self.labels.append(label)
+        if window == "Main Menu":
+            self.canvas.create_text(
+                30, 30,
+                text=self.app.jugador.Ubicacio.NameZone,
+                font=("Courier", 16, "bold"),
+                fill="black",
+                width=400, tags="text_zona"
+            )
+
+            bbox = self.canvas.bbox("text_zona")
+
+            if bbox:
+                margin = 25
+
+                self.canvas.create_rectangle(
+                    5, 
+                    5, 
+                    bbox[2] + margin, 
+                    bbox[3] + margin,
+                    fill="white", outline="black",
+                    width=4, tags="text_zona_fons"
+                )
+            self.canvas.tag_raise("text_zona")
+            self.canvas.tag_lower("text_zona_fons", "menu_interactiu")
         
         self.dibuixar_fons_menus()
     
@@ -87,6 +111,7 @@ class Menu():
 
             # Enviem a davant del tot el tag
         self.canvas.tag_raise("dialeg")
+        self.canvas.tag_raise("text_zona")
 
             # Enviem rectangle sota el tag 
         self.canvas.tag_lower(rect2, "dialeg")
@@ -322,7 +347,7 @@ class Menu():
             elif direccio == "d" and (self.index + 1) % self.columnes != 0 and self.index + 1 < len(self.opcions):
                 self.index -= 1
 
-            self.dibuixar()
+            self.dibuixar("Main Menu")
     
     def dibuixar_pantalla_menu_text(self, mostrar):
         self.PantallaEscriure = True
