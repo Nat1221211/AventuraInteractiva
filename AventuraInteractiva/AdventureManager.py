@@ -60,7 +60,7 @@ def ExplorarTrobaroNo(app):
 
 
 def Explorar(app):
-
+    app.PrepararExplorar()
     app.Menu.CrearDialeg(f"Has començat a explorar la zona...") 
     prob = random.randrange(1, 100)
     choice = [""]

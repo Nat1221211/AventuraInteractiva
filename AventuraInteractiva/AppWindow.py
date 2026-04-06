@@ -277,5 +277,10 @@ class App():
 
     def GuardarPartida(self):
         SaveGame.GuardarPartida(self, self.jugador, self.Missions)
+    
+
+    def PrepararExplorar(self):
+        self.canvas.delete("all")
+        self.RedimensionarFons()
 
         

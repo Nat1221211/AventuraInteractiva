@@ -179,6 +179,8 @@ class Menu():
                     passarDialeg = i
                     self.SeguentDialeg.remove(i)
                     self.dibuixar_dialeg(passarDialeg)
+            if self.app.DialegActiu == False:
+                self.dibuixar()
 
     def CrearDialeg(self, text):
         if self.app.DialegActiu == True:

@@ -1,6 +1,6 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "knightshire",
+    "Ubicacio": "greenwoods",
     "Or": 2430,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {},
@@ -27,7 +27,8 @@
         "Bosc de Fusta Verda",
         "Knightshire",
         "Bosc de Fusta Verda",
-        "Knightshire"
+        "Knightshire",
+        "Bosc de Fusta Verda"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
@@ -47,6 +48,11 @@
         {
             "id": "high_potion",
             "Amount": 3,
+            "Clase": "Combat"
+        },
+        {
+            "id": "complete_potion",
+            "Amount": 1,
             "Clase": "Combat"
         }
     ],
