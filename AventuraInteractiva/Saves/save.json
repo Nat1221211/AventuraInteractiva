@@ -26,7 +26,7 @@
         {
             "id": "Player",
             "Nom": "Nat",
-            "Base": "mage",
+            "Base": "archer",
             "Lv": 5,
             "Lv_Limit": 100,
             "Moves": [],
@@ -34,13 +34,7 @@
             "XP": 0
         }
     ],
-    "Inventari": [
-        {
-            "id": "inferior_potion",
-            "Amount": 2,
-            "Clase": "Combat"
-        }
-    ],
+    "Inventari": [],
     "Titols": [],
     "Estadistiques": {},
     "Increment_Stats": {

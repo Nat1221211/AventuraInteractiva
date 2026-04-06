@@ -29,13 +29,13 @@ filepath = os.path.dirname(__file__)
 class App():
     
     # Metodes
-    def __init__(self, player = Player.Player):
+    def __init__(self):
         self.root = tk.Tk()
         self.root.title = "RPG Python Game"
 
 
         # Declarar Logiques del Joc (Llistes Objectes i altres...)
-        self.jugador = player
+        self.jugador = Player.Player("Nat", {}, "")
         self.Objects = Call.CallObject()
         self.Effects = Call.CallEfect()
         self.Movements = Call.CallMovement(self.Effects)
@@ -90,8 +90,8 @@ class App():
         if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
             self.SeleccionarPartida()
 
-        elif self.Menu.id == "Seleccio Entitat":
-            print("Cridar funcio de crear entitat")
+        elif self.Menu.id == "Seleccio Entitats":
+            self.CrearEntitatAliada(seleccionat)
 
         elif self.Menu.id == "Menu Poble" or self.Menu.id == "Menu Wild":
             UIManager.CridarAccioMenuPrincipal(self, seleccionat)
@@ -181,8 +181,6 @@ class App():
 
         self.canvas.delete("all") # Borrem el que tingues el canvas
 
-        self.RedimensionarFons()
-
         ruta = os.path.join(filepath, "Saves/save.json")
         if os.path.isfile(ruta):
             UIManager.Menus["Seleccio Partida"]["opcions"].insert(1,
@@ -244,9 +242,14 @@ class App():
             nom = self.jugador.Name
         else:
             id = f"ally_{len(self.jugador.Team)}"
-        playableentity = Entitat.Entity(id, nom, 5, True, self.Entities[id_entitat])
+        playableentity = Entitat.Entity(id, nom, 5, True, self.Entities[id_entitat.id])
 
         self.jugador.Team.update({id: playableentity})
+        self.jugador.Ubicacio = self.Zones["dawn_village"]
+        self.jugador.UltimPobleVisitat = self.Zones["dawn_village"]
+
+        UIManager.MostrarMenuPrincipal(self)
+
     
     def CarregarPartida(self, partida):
         self.jugador = SaveGame.CarregarPartida(partida, self.Missions, self.Objects, self.Zones, self.Entities)

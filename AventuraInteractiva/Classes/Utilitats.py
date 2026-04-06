@@ -32,13 +32,10 @@ class Menu():
         self.SeleccioEntitats = False
     
     def dibuixar(self, x = None, y = None):
-        self.canvas.delete("menu_interactiu")
+        self.canvas.delete("all")
         self.labels = []
 
-        if self.imatge != None:
-            ruta = os.path.join(filepath, self.imatge)
-            self.app.RedimensionarFons(ruta)
-
+        self.app.RedimensionarFons()
 
         font = tkfont.Font(family="Courier", size=18, weight="bold")
 
@@ -306,12 +303,14 @@ class Menu():
 
     def Moviment(self, direccio):
         if self.SeleccioEntitats == True:
+            prev_ind = self.index
             if direccio == "a":
                 self.index = (self.index - 1) % len(self.opcions)
             elif direccio == "d":
                 self.index = (self.index + 1) % len(self.opcions)
 
-            self.ActualitzarImatgesSeleccio()
+            if prev_ind != self.index:
+                self.ActualitzarImatgesSeleccio()
         else:
             if direccio == "w":
                 self.index = (self.index - 1) % len(self.opcions)
