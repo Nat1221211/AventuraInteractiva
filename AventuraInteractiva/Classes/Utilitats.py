@@ -188,7 +188,7 @@ class Menu():
                     self.dibuixar_dialeg(passarDialeg)
             
             if self.app.Confirmacio == True:
-                self.dibuixar()
+                self.dibuixar(self.app.Ancho - 60, self.app.Alto - 265)
             else:
                 if self.id == "Confirmacio":
                     self.canvas.delete("all")

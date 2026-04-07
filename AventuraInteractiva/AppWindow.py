@@ -94,11 +94,18 @@ class App():
         
         elif self.Menu.id == "Confirmacio":
             self.Confirmacio = False
-            if seleccionat.id == "si":
-                if self.QuinaConfirmacio == "Guardar":
+            if  self.QuinaConfirmacio == "Guardar":
+                if seleccionat.id == "si":
                     SaveGame.GuardarPartida(self, self.jugador, self.Missions)
-            elif seleccionat.id == "no":
-                self.Menu.CrearDialeg("Has decidit no guardar la partida...")
+                elif seleccionat.id == "no":
+                    self.Menu.CrearDialeg("Has decidit no guardar la partida...")
+            
+            elif  self.QuinaConfirmacio == "Hostal":
+                if seleccionat.id == "si":
+                    TUtManager.Posada(self)
+                elif seleccionat.id == "no":
+                    self.Menu.CrearDialeg("Has decidit no quedar-te al hostal...")
+            
 
         elif self.Menu.id == "Seleccio Entitats":
             self.CrearEntitatAliada(seleccionat)
