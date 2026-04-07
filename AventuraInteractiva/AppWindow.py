@@ -60,6 +60,7 @@ class App():
         # ALtres
         self.DialegActiu = False
         self.Confirmacio = False
+        self.QuinaConfirmacio = ""
 
         # Midas pantalla
         self.Alto = 600 # Declarem mides en variables per a utilitzarles facilment.
@@ -94,7 +95,8 @@ class App():
         elif self.Menu.id == "Confirmacio":
             self.Confirmacio = False
             if seleccionat.id == "si":
-                SaveGame.GuardarPartida(self, self.jugador, self.Missions)
+                if self.QuinaConfirmacio == "Guardar":
+                    SaveGame.GuardarPartida(self, self.jugador, self.Missions)
             elif seleccionat.id == "no":
                 self.Menu.CrearDialeg("Has decidit no guardar la partida...")
 
@@ -285,7 +287,7 @@ class App():
         UIManager.MostrarMenuPrincipal(self)
 
     def GuardarPartida(self):
-        # 
+        self.QuinaConfirmacio = "Guardar"
         self.MenuConfirmacio("Vols Guardar la Partida?\nFer-ho sobrescriura la ultima partida guardada...")
     
 
