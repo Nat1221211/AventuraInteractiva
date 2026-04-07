@@ -326,10 +326,76 @@ class Menu():
         )
 
     
+    def mostrar_estat_equip(self):
+        self.canvas.delete("all")
+        self.app.MostrarEstat = True
 
+    # Zones de la finestra d'estat en forma de rectangles...
+        self.canvas.create_rectangle(
+            self.app.Ancho - 200, 5,
+            self.app.Ancho - 5, 
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=4, tags=("zona_seleccio", "mostrar_estat")
+        )
 
-    # Crear potser algun menu especialitzat en ocupar tota la pantalla, com el de combat o el de objectes, sempre es podria
-    # modificar el ja existent i donar-li possibles valors segons com fos, però crec que millor es creao un de nou...
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 205, 
+            self.app.Alto - 185,
+            fill="white", outline="black",
+            width=4, tags=("zona_estat", "mostrar_estat")
+        )
+
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 205, 
+            self.app.Alto - 185,
+            fill="white", outline="black",
+            width=4, tags=("zona_descripcio", "mostrar_estat")
+        )
+
+        self.ActualitzarEstat()
+    
+    def ActualitzarEstat(self):
+        self.canvas.delete("ent_estat")
+
+        prev = (self.index - 1) % len(self.opcions)
+        seg = (self.index + 1) % len(self.opcions)
+
+        # Declarem les imatges de les opcions...
+        
+
+        # Creem les imatges
+
+        
+        y = 50
+        for i, opc in enumerate(self.opcions):
+            x = self.app.Ancho - 160
+            if i == self.index: 
+                x -= 20
+            
+            opc.Imatge["Carregada"] = self.app.RedimensionarImatge(
+                                        opc.Objecte.base.Images["Frontal"],
+                                        100, 150, False, 3
+                                        )
+
+            self.canvas.create_image(
+                x, y,
+                image=opc.Imatge["Carregada"],
+                anchor="nw",
+                tags=("ent_estat", "mostrar_estat")
+            )
+            y += 200
+
+        self.canvas.tag_lower("zona_seleccio")
+        self.canvas.tag_raise("ent_estat")
+
+        self.DibuixarEstat()
+    
+    def DibuixarEstat(self):
+        print()
+
 
 
     def dibuixar_fons_menus(self):
@@ -469,7 +535,7 @@ class Menu():
 
 
 class OpcioMenu():
-    def __init__(self,iden, nom, habilitat, descripcio, imatge = None, condicio_habilitat = False):
+    def __init__(self,iden, nom, habilitat, descripcio, imatge = None, objecte = None, condicio_habilitat = False):
         self.id = iden
         self.Nom = nom
         self.Descripcio = descripcio
@@ -477,6 +543,7 @@ class OpcioMenu():
             "Path": imatge,
             "Carregada": None
         }
+        self.Objecte = objecte
         self.Habilitat = habilitat
         if condicio_habilitat == True:
             self.Habilitat = True

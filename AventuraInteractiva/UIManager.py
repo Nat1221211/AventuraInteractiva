@@ -137,7 +137,7 @@ def CridarAccioMenuPrincipal(App, accio):
         "explorar": lambda: AdventureManager.Explorar(App),
         "hostal": lambda: TUtManager.CridarPosada(App),
         "botiga": lambda: TUtManager.Botiga(App.jugador, App.Objects),
-        # "estat": lambda: VeureEstatus(App.jugador)
+        "estat": lambda: VeureEstatus(App),
         # "missions": lambda: MenuMisions(App)
         "lluitar": lambda: CombatManager.GenerarEnemic(App),
         "guardar": lambda: App.GuardarPartida(),
@@ -226,7 +226,7 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
     elif filtre == "Entitat":
         for i in llista:
             if isinstance(i[1], Entitat.Entity):
-                options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription))
+                options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription, None, i[1]))
     elif filtre == "Moves":
         for i in llista:
             if isinstance(i[1], Characteristics.Moves):
@@ -370,16 +370,7 @@ def BattleScreenShow(teamlis):
             saltdeLinia = True
     print("\n")
 
-# def VeureEstatus(jugador, combat = False):
-#     ClearScreen()
-#     CrearMenu(jugador.Team.items(), "Seleccio Equip", "Entitat")
-
-#     seleccio = MostrarMenus(Menus["Seleccio Equip"])
-
-#     if seleccio != None:
-#         if combat == False:
-#             jugador.Team[seleccio].ShowStatus(jugador)
-#         else:
-#             jugador.Team[seleccio].ShowStatus(jugador, True)
-#     else:
-#         input("Has sortit del menu d'estatus...")
+def VeureEstatus(App, combat = False):
+    CrearMenu(App.jugador.Team.items(), "Seleccio Equip", "Entitat")
+    App.CanviarMenu(Menus["Seleccio Equip"])
+    App.Menu.mostrar_estat_equip()

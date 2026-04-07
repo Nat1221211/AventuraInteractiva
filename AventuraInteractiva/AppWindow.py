@@ -61,6 +61,7 @@ class App():
         self.DialegActiu = False
         self.Confirmacio = False
         self.QuinaConfirmacio = ""
+        self.MostrarEstat = False
 
         # Midas pantalla
         self.Alto = 600 # Declarem mides en variables per a utilitzarles facilment.
@@ -148,7 +149,7 @@ class App():
         self.canvas.create_image(0, 0, image=self.fondo, anchor="nw", tags="fondo")
         self.canvas.tag_lower("fondo")
     
-    def RedimensionarImatge(self, imatge, x, y, borros=False):
+    def RedimensionarImatge(self, imatge, x, y, borros=False, scale = None):
 
         if imatge != None:
             if os.path.exists(imatge):
@@ -156,6 +157,10 @@ class App():
                     
                 if borros == True:
                     image.filter(ImageFilter.GaussianBlur(radius=15))
+
+                if scale != None:
+                    x = image.height // scale
+                    y = image.width // scale
 
                     # Redimensionem a la mida de la pantalla, i li donem format LANCZOS (de bona qualitat)
                 redim_image = image.resize(
