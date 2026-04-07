@@ -129,6 +129,7 @@ class App():
         self.Menu.MenuAnterior = menuAnterior
 
     def MostrarMenu(self, dialeg = None):
+        self.canvas.delete("all")
         self.Menu.dibuixar(dialeg)
 
     def RedimensionarFons(self, image = None):
@@ -234,6 +235,14 @@ class App():
                 self.Menu.PulsarEnter()
             if tecla.keysym == "BackSpace": 
                 self.Menu.PulsarEnter()
+        elif self.MostrarEstat == True:
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+            # if tecla.keysym == "a": self.Menu.Moviment("a")
+            # if tecla.keysym == "d": self.Menu.Moviment("d")
+            if tecla.keysym == "BackSpace":
+                self.MostrarEstat = False
+                self.Enrere()
 
         elif self.Menu.PantallaEscriure == True:
             self.Menu.TeclatEscritura(tecla)

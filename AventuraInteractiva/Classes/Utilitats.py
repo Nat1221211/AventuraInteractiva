@@ -496,8 +496,10 @@ class Menu():
                     self.index = (self.index - 1) % len(self.opcions)
                 elif direccio == "s":
                     self.index = (self.index + 1) % len(self.opcions)
-
-            self.dibuixar()
+            if self.app.MostrarEstat == True:
+                self.DibuixarEstat()
+            else:
+                self.dibuixar()
     
     def dibuixar_pantalla_menu_text(self, mostrar):
         self.PantallaEscriure = True
