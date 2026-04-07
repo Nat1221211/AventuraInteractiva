@@ -139,7 +139,7 @@ class Menu():
             mostrat = self.textdialeg[:index]
 
             self.canvas.delete("text_animat")
-            self.canvas.create_text(
+            self.dialeg = self.canvas.create_text(
                 30, 450,
                 text=mostrat, fill="black",
                 font=("Courier", 16, "bold"),
@@ -164,7 +164,7 @@ class Menu():
 
     def PulsarEnter(self, tecla = None):  # Funcio per a determinar que ocurreix si estem en un menu i es presiona enter...
         
-        if self.Escribint:
+        if self.Escribint == True:
             self.app.root.after_cancel(self.after_id)
             self.Escribint = False
             self.canvas.delete("text_animat")
@@ -189,14 +189,16 @@ class Menu():
             
             if self.app.Confirmacio == True:
                 self.dibuixar()
+            else:
+                if self.id == "Confirmacio":
+                    self.canvas.delete("all")
+                    self.app.Enrere()
 
     def CrearDialeg(self, text):
         if self.app.DialegActiu == True:
             self.SeguentDialeg.append(text)
         else:
             self.dibuixar_dialeg(text)
-
-
 
     # Crear funcio de dibuix de seleccio de personatges, amb imatge i label per al nom i descripcio, que canvii
     # sera un menu de entitats, on s'utilitzaran les imatges descripcions i mostres d'estats base

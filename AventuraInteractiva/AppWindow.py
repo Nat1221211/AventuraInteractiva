@@ -92,7 +92,11 @@ class App():
             self.SeleccionarPartida()
         
         elif self.Menu.id == "Confirmacio":
-            SaveGame.GuardarPartida(self, self.jugador, self.Missions)
+            self.Confirmacio = False
+            if seleccionat.id == "si":
+                SaveGame.GuardarPartida(self, self.jugador, self.Missions)
+            elif seleccionat.id == "no":
+                self.Menu.CrearDialeg("Has decidit no guardar la partida...")
 
         elif self.Menu.id == "Seleccio Entitats":
             self.CrearEntitatAliada(seleccionat)
@@ -133,6 +137,7 @@ class App():
 
         # Posicionem la imatge en la finestra
         self.canvas.create_image(0, 0, image=self.fondo, anchor="nw", tags="fondo")
+        self.canvas.tag_lower("fondo")
     
     def RedimensionarImatge(self, imatge, x, y, borros=False):
 

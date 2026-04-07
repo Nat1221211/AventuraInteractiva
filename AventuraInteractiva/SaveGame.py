@@ -18,6 +18,8 @@ from Classes import Utilitats
 
 def GuardarPartida(App, jugador, missions):
 
+    App.Menu.CrearDialeg("Guardant Partida...")
+
     dades = {
         # Detalls Generals
         "Nom": jugador.Name,
@@ -56,8 +58,6 @@ def GuardarPartida(App, jugador, missions):
     ruta_final = os.path.join(ruta, "Saves/save.json")
     with open(ruta_final, "w", encoding="utf-8") as save:
         json.dump(dades, save, indent=4, ensure_ascii=False)
-    
-    App.Enrere()
 
 def CarregarPartida(partida, missions, objectes, zones, entitats):
     with open(partida, "r", encoding="utf-8") as save:
