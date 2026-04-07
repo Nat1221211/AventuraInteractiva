@@ -210,13 +210,7 @@ class App():
         self.MostrarMenu()
     
     def ControlBinds(self, tecla):
-        if self.Confirmacio == True:
-            if tecla.keysym == "w": self.Menu.Moviment("w")
-            if tecla.keysym == "s": self.Menu.Moviment("s")
-            if tecla.keysym == "Return": self.ConfirmarSeleccio()
-            if tecla.keysym == "BackSpace": self.Enrere()
-
-        elif self.DialegActiu == True:
+        if self.DialegActiu == True:
             if tecla.keysym == "Return":
                 self.Menu.PulsarEnter()
             if tecla.keysym == "BackSpace": 
@@ -297,4 +291,4 @@ class App():
     def MenuConfirmacio(self, dialeg = None):
         self.Confirmacio = True
         self.CanviarMenu(UIManager.Menus["Confirmacio"])
-        self.MostrarMenu(dialeg)
+        self.Menu.CrearDialeg(dialeg)

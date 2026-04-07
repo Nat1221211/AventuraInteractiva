@@ -38,8 +38,8 @@ class Menu():
         self.CaixaConfirmacio = False
         self.Confirmacio = False
 
-    def dibuixar(self, dialeg = None, x = None, y = None):
-        self.canvas.delete("all")
+    def dibuixar(self, x = None, y = None):
+        self.canvas.delete("menu_interactiu")
         self.labels = []
 
         self.app.RedimensionarFons()
@@ -72,10 +72,6 @@ class Menu():
                 self.labels.append(label)
         if self.id == "Menu Poble" or self.id == "Menu Wild":
             self.DibuixarNomZona()
-        
-        elif self.id == "Confirmacio":
-            if dialeg != None:
-                self.CrearDialeg(dialeg)
         
         self.dibuixar_fons_menus()
         
@@ -183,25 +179,16 @@ class Menu():
         elif self.parpadeig_id != None:
             self.app.root.after_cancel(self.parpadeig_id)
             self.parpadeig_id = None
-            self.canvas.delete("dialeg")
             self.app.DialegActiu = False
             if len(self.SeguentDialeg) > 0:
                 for i in self.SeguentDialeg:
+                    self.canvas.delete("dialeg")
                     passarDialeg = i
                     self.SeguentDialeg.remove(i)
                     self.dibuixar_dialeg(passarDialeg)
-            if self.app.DialegActiu == False:
+            
+            if self.app.Confirmacio == True:
                 self.dibuixar()
-        
-        if self.app.Confirmacio == True:
-            if tecla in ["s", "w", "Return"]:
-                if tecla == "s" or tecla == "w":
-                    self.Moviment(tecla)
-                elif tecla == "Return":
-                    self.Confirmacio = False
-                    self.app.ConfirmarSeleccio()
-
-       
 
     def CrearDialeg(self, text):
         if self.app.DialegActiu == True:
