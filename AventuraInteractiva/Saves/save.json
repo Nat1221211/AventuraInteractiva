@@ -1,7 +1,7 @@
 {
     "Nom": "Aishia",
     "Ubicacio": "knightshire",
-    "Or": 2430,
+    "Or": 2330,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -51,7 +51,7 @@
     "Inventari": [
         {
             "id": "high_potion",
-            "Amount": 3,
+            "Amount": 5,
             "Clase": "Combat"
         },
         {

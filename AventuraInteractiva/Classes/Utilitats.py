@@ -185,7 +185,11 @@ class Menu():
                     passarDialeg = i
                     self.SeguentDialeg.remove(i)
                     self.dibuixar_dialeg(passarDialeg)
-            
+            else:
+                if self.app.Confirmacio != True:
+                    self.canvas.delete("all")
+                    self.dibuixar()
+
             if self.app.Confirmacio == True:
                 self.dibuixar()
             else:
