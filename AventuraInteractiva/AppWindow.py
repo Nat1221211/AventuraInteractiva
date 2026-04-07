@@ -122,15 +122,15 @@ class App():
         self.Menu = self.Menu.MenuAnterior
         self.MostrarMenu()
 
-    def CanviarMenu(self, menu):
+    def CanviarMenu(self, menu, x = 300, y = 50):
         menuAnterior = self.Menu
-        self.Menu = Utilitats.Menu(self, self.canvas, menu["id"], menu["opcions"])
+        self.Menu = Utilitats.Menu(self, self.canvas, menu["id"], menu["opcions"], x, y)
 
         self.Menu.MenuAnterior = menuAnterior
 
-    def MostrarMenu(self, dialeg = None):
+    def MostrarMenu(self):
         self.canvas.delete("all")
-        self.Menu.dibuixar(dialeg)
+        self.Menu.dibuixar()
 
     def RedimensionarFons(self, image = None):
 
@@ -318,5 +318,5 @@ class App():
     
     def MenuConfirmacio(self, dialeg = None):
         self.Confirmacio = True
-        self.CanviarMenu(UIManager.Menus["Confirmacio"])
+        self.CanviarMenu(UIManager.Menus["Confirmacio"], 60, self.Alto - 265)
         self.Menu.CrearDialeg(dialeg)

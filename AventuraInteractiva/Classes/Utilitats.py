@@ -12,7 +12,7 @@ import os
 filepath = os.path.dirname(__file__)
 
 class Menu():
-    def __init__(self, app, canvas, ident, opcions, imatgeFons = None, limitfila = 10):
+    def __init__(self, app, canvas, ident, opcions, x = 300, y = 50, imatgeFons = None, limitfila = 10):
         self.app = app
         self.canvas = canvas
         self.MenuAnterior = None
@@ -23,9 +23,9 @@ class Menu():
         self.index = 0
         self.columnes = len(self.opcions) // limitfila if len(self.opcions) > limitfila else 1
         self.espaiat_x = 250
-        self.espaiat_y = 40
-        self.x_inicial = self.app.Ancho - 300
-        self.y_inicial = 50
+        self.espaiat_y = 0
+        self.x_inicial = self.app.Ancho - x
+        self.y_inicial = y
 
         # Estats Dialeg
         self.Esciribint = False
@@ -38,7 +38,7 @@ class Menu():
         self.CaixaConfirmacio = False
         self.Confirmacio = False
 
-    def dibuixar(self, x = None, y = None):
+    def dibuixar(self):
         self.canvas.delete("menu_interactiu")
         self.labels = []
 
@@ -56,9 +56,8 @@ class Menu():
                 colum = i % self.columnes
                 fila = i // self.columnes
 
-                if x == None or y == None:
-                    x = self.x_inicial + (colum * self.espaiat_x)
-                    y = self.y_inicial + (fila * self.espaiat_y)
+                x = self.x_inicial + (colum * self.espaiat_x)
+                y = self.y_inicial + (fila * self.espaiat_y)
 
                 color = "blue" if self.index == i else "black"
                 color = "grey" if opcio.Habilitat != True else color
@@ -188,7 +187,7 @@ class Menu():
                     self.dibuixar_dialeg(passarDialeg)
             
             if self.app.Confirmacio == True:
-                self.dibuixar(self.app.Ancho - 60, self.app.Alto - 265)
+                self.dibuixar()
             else:
                 if self.id == "Confirmacio":
                     self.canvas.delete("all")
