@@ -348,9 +348,9 @@ class Menu():
         )
 
         self.canvas.create_rectangle(
-            5, 5,
+            5, self.app.Alto - 180,
             self.app.Ancho - 205, 
-            self.app.Alto - 185,
+            self.app.Alto - 5,
             fill="white", outline="black",
             width=4, tags=("zona_descripcio", "mostrar_estat")
         )
@@ -359,16 +359,7 @@ class Menu():
     
     def ActualitzarEstat(self):
         self.canvas.delete("ent_estat")
-
-        prev = (self.index - 1) % len(self.opcions)
-        seg = (self.index + 1) % len(self.opcions)
-
-        # Declarem les imatges de les opcions...
-        
-
-        # Creem les imatges
-
-        
+ 
         y = 50
         for i, opc in enumerate(self.opcions):
             x = self.app.Ancho - 160
@@ -394,7 +385,51 @@ class Menu():
         self.DibuixarEstat()
     
     def DibuixarEstat(self):
-        print()
+        self.canvas.delete("ent_info")
+
+        # Mostrem el nom
+        self.canvas.create_text(
+            30, 30,
+            text=self.opcions[self.index].Objecte.nom,
+            fill="black",
+            font=("Courier", 28, "bold"),
+            anchor="nw", tags=("ent_info", "mostrar_estat")
+        )
+
+        stats_colors = ["green", "green", "blue", "blue", "red", "purple", "yellow", "black"]
+        y = 100
+        for pos, stat in enumerate(self.opcions[self.index].Objecte.StatsCombat.items()):
+            if stat[0] in ["MaxHP", "MaxMana"]:
+                if "MaxHP":
+                    text_mostrat = f"HP: {self.opcions[self.index].Objecte.StatsCombat["CurHP"]} / {stat[1]}"
+                else:
+                    text_mostrat = f"Mana: {self.opcions[self.index].Objecte.StatsCombat["Mana"]} / {stat[1]}"
+            else:
+                text_mostrat = f"{stat[0]}: {stat[1]}"
+            if stat[0] in ["CurHP", "Mana"]:
+                continue
+
+            self.canvas.create_text(
+                30, y,
+                text=text_mostrat,
+                fill=stats_colors[pos],
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("ent_info", "mostrar_estat")
+            )
+            y += 20
+
+        # Mostrem la descripcio
+        self.canvas.create_text(
+            30, self.app.Alto - 150,
+            width=self.app.Ancho - 265,
+            text=self.opcions[self.index].Objecte.base.EntityDescription, fill="black",
+            font=("Courier", 16, "bold"),
+            anchor="nw", tags=("ent_info", "mostrar_estat")
+        )
+
+        self.canvas.tag_lower("zona_descripcio")
+        self.canvas.tag_lower("zona_estat")
+        self.canvas.tag_raise("ent_info")
 
 
 
