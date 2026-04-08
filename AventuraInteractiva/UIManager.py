@@ -154,6 +154,7 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
                     options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, True, zones[i].Description))
                 else:
                     options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, False, zones[i].Description))
+        options.append(Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del Menu"))
     elif filtre[0] == "Tipus Entitat":
         for i in llista:
             if isinstance(filtre, tuple) and isinstance(i[1], EntityType.EntityType):
@@ -183,7 +184,10 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
                 options[tipus]={"Nom Menu": tipus, "Objectes": []}
             
             options[tipus]["Objectes"].append(Utilitats.OpcioMenu(i[1]["objecte"].id, i[1]["objecte"].ObjectName, True, i[1]["objecte"].ObjectDescription, None, i[1]))
-    
+        for j in options.items():
+            options[j[0]]["Objectes"].append(Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del Menu"))
+
+
     
     elif filtre == "Botigues":
         for id, val in llista:

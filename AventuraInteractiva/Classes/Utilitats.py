@@ -482,6 +482,7 @@ class Menu():
 
             if prev_ind != self.index:
                 self.ActualitzarImatgesSeleccio()
+        
         elif self.app.Motxila == True:
             if direccio == "w":
                 self.index = (self.index - 1) % len(self.llistaobjectes)
@@ -489,7 +490,7 @@ class Menu():
                 self.index = (self.index + 1) % len(self.llistaobjectes)
             elif direccio == "a":
                 self.IndexColumna = (self.IndexColumna - 1) % len(self.opcions.keys())
-            elif direccio == "d" and (self.index + 1) % self.columnes != 0 and self.index + 1 < len(self.opcions):
+            elif direccio == "d":
                 self.IndexColumna = (self.IndexColumna + 1) % len(self.opcions.keys())
             self.OmplirInformacioMotxila()
             
@@ -647,9 +648,11 @@ class Menu():
 
                 self.llistaobjectes = opc[1]["Objectes"]
 
-                if self.index > len(self.llistaobjectes):
-                    self.index = len(self.llistaobjectes)
-
+                if self.index > len(self.llistaobjectes) - 1:
+                    self.index = len(self.llistaobjectes) -1
+                elif len(self.llistaobjectes) == 0:
+                    self.index = 0
+                
                 qty_mostrar = 8
                 if self.index > qty_mostrar:
                     limit_sup = self.index + qty_mostrar
@@ -665,9 +668,14 @@ class Menu():
                     if self.index == j:
                         color_obj = "blue"
 
+                    if obj.id != "sortir":
+                        text = obj.Objecte["objecte"].ObjectName
+                    else:
+                        text = obj.Nom
+
                     self.canvas.create_text(
                         self.app.Ancho - 415, y_obj,
-                        text=obj.Objecte["objecte"].ObjectName, fill=color_obj,
+                        text=text, fill=color_obj,
                         font=("Courier", 16, "bold"),
                         anchor="nw", tags=("titol_menu", "informacio_motxila", "menu_motxila")
                     )
