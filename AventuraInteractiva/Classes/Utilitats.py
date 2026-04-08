@@ -316,7 +316,6 @@ class Menu():
 
         font = tkfont.Font(family="Courier", size=18, weight="bold")
 
-
         descripcio = self.app.Entities[self.opcions[self.index].id].EntityDescription
 
         # Mostrem la descripcio
@@ -646,6 +645,11 @@ class Menu():
                     anchor="w", tags=("titol_menu", "informacio_motxila", "menu_motxila")
                 )
 
+                self.llistaobjectes = opc[1]["Objectes"]
+
+                if self.index > len(self.llistaobjectes):
+                    self.index = len(self.llistaobjectes)
+
                 qty_mostrar = 8
                 if self.index > qty_mostrar:
                     limit_sup = self.index + qty_mostrar
@@ -655,7 +659,7 @@ class Menu():
                     limit_inf = 0
 
                 y_obj = 95
-                self.llistaobjectes = opc[1]["Objectes"]
+                
                 for j, obj in enumerate(self.llistaobjectes[limit_inf:limit_sup]):
                     color_obj = "black"
                     if self.index == j:

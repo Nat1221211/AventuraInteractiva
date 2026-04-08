@@ -1,8 +1,8 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "knightshire",
-    "Or": 2330,
-    "Ultim_Visitat": "knightshire",
+    "Ubicacio": "dawn_village",
+    "Or": 1900,
+    "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
     "Missions_Disponibles": {
@@ -15,24 +15,10 @@
     },
     "Llocs_Trobats": [
         "dawn_village",
-        "south_forest",
-        "greenwoods",
-        "knightshire"
+        "south_forest"
     ],
     "Llocs_Visitats": [
-        "dawn_village",
-        "Bosc del Sud",
-        "Dawn Village",
-        "Bosc del Sud",
-        "Bosc de Fusta Verda",
-        "Knightshire",
-        "Bosc de Fusta Verda",
-        "Knightshire",
-        "Bosc de Fusta Verda",
-        "Knightshire",
-        "Bosc de Fusta Verda",
-        "knightshire",
-        "greenwoods"
+        "dawn_village"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
@@ -49,17 +35,22 @@
         }
     ],
     "Inventari": [
-        {
-            "id": "high_potion",
-            "Amount": 5,
-            "Clase": "Combat"
-        },
-        {
-            "id": "complete_potion",
-            "Amount": 1,
-            "Clase": "Combat"
-        }
-    ],
+                {
+                "id": "complete_potion",
+                "Amount": 2,
+                "Clase": "Combat"
+                },
+                {
+                "id": "silver_amulet",
+                "Amount": 1,
+                "Clase": "Clau"
+                },
+                {
+                "id": "intermediate_potion",
+                "Amount": 4,
+                "Clase": "Combat"
+                }
+        ],
     "Titols": [],
     "Estadistiques": {},
     "Increment_Stats": {
