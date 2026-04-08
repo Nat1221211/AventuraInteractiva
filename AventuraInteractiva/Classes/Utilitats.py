@@ -572,6 +572,50 @@ class Menu():
 
         self.app.NomEntitat = self.textEscrit
         self.app.SeleccionarEntitat()
+    
+    def DibuixarMenuMotxila(self):
+        self.canvas.delete("all")
+        
+        # Barra SUperior on es mostraran els menus disponibles dins de la motxila
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 405,
+            60,
+            fill="white", outline="black",
+            width=5, tags=("zona_nommenu", "menu_motxila")
+        )
+
+        self.canvas.create_rectangle(
+            self.app.Ancho - 400, 5,
+            self.app.Ancho - 5,
+            60,
+            fill="white", outline="black",
+            width=5, tags=("zona_submenus", "menu_motxila")
+        )
+
+        self.canvas.create_rectangle(
+            5, 65,
+            self.app.Ancho - 450,
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=5, tags=("zona_entitats", "menu_motxila")
+        )
+
+        self.canvas.create_rectangle(
+            self.app.Ancho - 445, 65,
+            self.app.Ancho - 5,
+            self.app.Alto - 150,
+            fill="white", outline="black",
+            width=5, tags=("zona_objectes", "menu_motxila")
+        )
+
+        self.canvas.create_rectangle(
+            self.app.Ancho - 445, self.app.Alto - 145,
+            self.app.Ancho - 5,
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=5, tags=("zona_descripcio", "menu_motxila")
+        )
 
 
 class OpcioMenu():

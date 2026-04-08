@@ -61,35 +61,12 @@ class Player():
             self.objectes[afegit.id]["amount"] += quantitat
         else:
             self.objectes.update({afegit.id: {"objecte": afegit, "amount": quantitat}})
-        UIManager.CrearMenu(self.objectes.items(), "Motxila", "Objectes")
     
     def ActualitzarUltimPobleVisitat(self):
         if self.Ubicacio.ZoneType == "Poble":
             self.UltimPobleVisitat = self.Ubicacio
         if self.Ubicacio.id not in self.LlocsVisitats:
             self.LlocsVisitats.append(self.Ubicacio.id)
-
-    def MostrarObjectes(self):
-        os.system("cls")
-        for i in self.objectes.items():
-            print(f"{i[0].ObjectName}, Qty: {i[1]}")
-            print(f"{i[0].ObjectDescription}")
-            print("\n")
-
-    def ObjectesMochila(self, objectes, combat = False):
-            obj = ""
-            while obj != None:
-                obj = UIManager.MostrarMenus(UIManager.Menus["Motxila"])
-                if obj != None:
-                    objecte = objectes[obj["type"]][obj["id"]]
-                    if combat == False:
-                        obj = CombatManager.UseObject(self, self.Team, objecte)
-                    else:
-                        return objecte
-                else:
-                    input("Has sortit de la motxila...")
-                    if combat == True:
-                        return None
 
             
                 

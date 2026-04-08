@@ -23,7 +23,7 @@ Menus = {
         "opcions":
         [
             Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona."),
-            Utilitats.OpcioMenu("motxila", "Motxila", False, "Veure els objectes i utilitzar-los."),
+            Utilitats.OpcioMenu("motxila", "Motxila", True, "Veure els objectes i utilitzar-los."),
             Utilitats.OpcioMenu("hostal", "Hostal", True, "Anar al hostal a descansar (Recuperar Salut i altres...)"),
             Utilitats.OpcioMenu("botiga", "Botiga", False, "Comprar Objectes."),
             Utilitats.OpcioMenu("estat", "Estat", True, "Veure el estat dels personatges del jugador..."),
@@ -39,7 +39,7 @@ Menus = {
         "opcions":
         [
             Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
-            Utilitats.OpcioMenu("motxila","Motxila", False, "Veure els objectes i utilitzar-los."),
+            Utilitats.OpcioMenu("motxila","Motxila", True, "Veure els objectes i utilitzar-los."),
             Utilitats.OpcioMenu("explorar","Explorar", True, "Anar a explorar la zona, pots trobar or, enemics i involucrar-te en missions..."),
             Utilitats.OpcioMenu("lluitar","Lluitar", False, "Entrar forçosament en combat amb un dels enemcis de la zona..."),
             Utilitats.OpcioMenu("estat","Estat", True, "Veure el estat dels personatges del jugador..."),
@@ -114,11 +114,6 @@ Menus = {
     }
 }
 
-
-def ClearScreen():
-    os.system("cls" if os.name == "nt" else "clear")
-
-
 def MostrarMenuPrincipal(App):
     
     # Seleccionem la accio
@@ -142,70 +137,12 @@ def CridarAccioMenuPrincipal(App, accio):
         "lluitar": lambda: CombatManager.GenerarEnemic(App),
         "guardar": lambda: App.GuardarPartida(),
         # "exits": lambda: MostrarExits(App.achievements, App.jugador)
-        "motxila": lambda: App.jugador.ObjectesMochila(App.Objects, False),
+        "motxila": lambda: App.MenuMotxila(),
         "sortir": lambda: App.TancarJoc()
     }
 
     if accio.id in accions:
         accions[accio.id]()
-
-# def MenuMisions(jugador, missions, event, objects, exits):
-#     sel = ""
-#     while sel != None:
-#         sel = MostrarMenus(Menus["Missions"])
-
-#         if sel == "aceptar":
-#             CrearMenuMissions(missions, "Aceptar Missions", jugador.MissionsDisponibles, None, 4)
-#             try:
-#                 res = MostrarMenus(Menus["Aceptar Missions"])
-#                 if res != None:
-#                     jugador.MisionsAcceptades.append(res)
-#                     jugador.MissionsDisponibles.remove(res)
-#                 else:
-#                     print("Has sortit del Menu")
-#                     input("Presiona per a continuar...")
-#             except ValueError:
-#                 print("Ha ocurregut un error...")
-#         elif sel == "veure":
-#             res = ""
-#             while res != None:
-#                 res = MostrarMenus(Menus["Veure Missions"])
-#                 if res == "disponibles":
-#                     CrearMenuMissions(missions, "Missions Disponibles", jugador.MissionsDisponibles, None, 6)
-#                     res = MostrarMenus(Menus["Missions Disponibles"], True, False, None, "", False)
-#                 elif res == "completades":
-#                     CrearMenuMissions(missions, "Missions Completades", jugador.MissionsFinalitzades, None, 6)
-#                     res = MostrarMenus(Menus["Missions Completades"], True, False, None, "", False)
-#                 elif res == "acceptades":
-#                     CrearMenuMissions(missions, "Missions Acceptades", jugador.MisionsAcceptades, None, 6)
-#                     res = MostrarMenus(Menus["Missions Acceptades"], True, False, None, "", False)
-        
-#         elif sel == "reclamar":
-#             CrearMenuMissions(missions, "Reclamar Missions", jugador.MisionsAcceptades, "Pendent Reclamar", 4)
-#             dictio = {"id": None, "tipus": None}
-#             while isinstance(dictio, dict) and dictio["id"] == None and dictio["tipus"] == None:
-#                 dictio = MostrarMenus(Menus["Reclamar Missions"])
-#                 if isinstance(dictio, dict):
-#                     if dictio["id"] != None or dictio["tipus"] != None:
-#                         missions[dictio["tipus"]][dictio["id"]].Reclamar(jugador, objects, event, exits)
-#                         event.CridarEvent("Missio Finalitzada", dictio["id"], jugador, missions)
-#                     else:
-#                         sel = None
-#                 else:
-#                     input("Has sortit del menu missions...")
-
-# def MostrarExits(exits, jugador):
-#     sel = ""
-#     while sel != None:
-#         sel = MostrarMenus(Menus["Exits"])
-
-#         if sel == "acquired":
-#             CrearMenu(exits.items(), "Acquired Achievements", ("achievements", "acquirits"), jugador, None, 8)
-#             MostrarMenus(Menus["Acquired Achievements"], True, False, None, None, "", False)
-#         elif sel == "locked":
-#             CrearMenu(exits.items(), "Unacquired Achievements", ("achievements", "locked"), jugador, None, 8)
-#             MostrarMenus(Menus["Unacquired Achievements"], True, False, None, None, "", False)
-
 
 def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
     options = []
@@ -235,13 +172,17 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
                 options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, description))
     elif filtre == "Objectes":
         for i in llista:
-            espaiat = 30 - len(i[1]["objecte"].ObjectName)
-            mostrar = f"{i[1]["objecte"].ObjectName}" + " "*espaiat + f"{i[1]["amount"]}"
+            options = {}
             if isinstance(i[1]["objecte"], Objectes.ObjecteCombat):
                 tipus = "Combat"
             else:
                 tipus = "Clau"
-            options.append(Utilitats.OpcioMenu({"id": i[1]["objecte"].id, "type": tipus}, mostrar, (100, 100), True, i[1]["objecte"].ObjectDescription))
+            if tipus not in options.keys():
+                options[tipus]=[]
+            
+            options[tipus].append(Utilitats.OpcioMenu(i[1]["objecte"].id, i[1]["objecte"].ObjectName, True, i[1]["objecte"].ObjectDescription, None, i[1]))
+    
+    
     elif filtre == "Botigues":
         for id, val in llista:
             options.append(Utilitats.OpcioMenu(id, val["name"],(100, 100), True, val["description"]))
@@ -281,6 +222,7 @@ def CrearMenuProductes(botiga, NomMenu, opcionsvisibles = 5):
             }
         }
     )
+
 def CrearMenuMissions(llistamissions, NomMenu, filtre, estat = None, opcionsvisibles = 6):
     opcions = []
     for i in llistamissions.items():

@@ -62,6 +62,7 @@ class App():
         self.Confirmacio = False
         self.QuinaConfirmacio = ""
         self.MostrarEstat = False
+        self.Motxila = False
 
         # Midas pantalla
         self.Alto = 600 # Declarem mides en variables per a utilitzarles facilment.
@@ -320,3 +321,9 @@ class App():
         self.Confirmacio = True
         self.CanviarMenu(UIManager.Menus["Confirmacio"], 60, self.Alto - 265)
         self.Menu.CrearDialeg(dialeg)
+
+    def MenuMotxila(self):
+        self.Motxila = True
+        UIManager.CrearMenu(self.jugador.objectes.items(), "Motxila", "Objectes")
+        self.CanviarMenu(UIManager.Menus["Motxila"])
+        self.Menu.DibuixarMenuMotxila()
