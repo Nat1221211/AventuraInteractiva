@@ -483,6 +483,17 @@ class Menu():
 
             if prev_ind != self.index:
                 self.ActualitzarImatgesSeleccio()
+        elif self.app.Motxila == True:
+            if direccio == "w":
+                self.index = (self.index - 1) % len(self.llistaobjectes)
+            elif direccio == "s":
+                self.index = (self.index + 1) % len(self.llistaobjectes)
+            elif direccio == "a":
+                self.IndexColumna = (self.IndexColumna - 1) % len(self.opcions.keys())
+            elif direccio == "d" and (self.index + 1) % self.columnes != 0 and self.index + 1 < len(self.opcions):
+                self.IndexColumna = (self.IndexColumna + 1) % len(self.opcions.keys())
+            self.OmplirInformacioMotxila()
+            
         else:
             if direccio == "w":
                 self.index = (self.index - 1) % len(self.opcions)
@@ -644,24 +655,32 @@ class Menu():
                     limit_inf = 0
 
                 y_obj = 95
-                for i, obj in enumerate(opc[1]["Objectes"][limit_inf:limit_sup]):
+                self.llistaobjectes = opc[1]["Objectes"]
+                for j, obj in enumerate(self.llistaobjectes[limit_inf:limit_sup]):
+                    color_obj = "black"
+                    if self.index == j:
+                        color_obj = "blue"
+
                     self.canvas.create_text(
-                    self.app.Ancho - 445, y_obj,
-                    text=obj.Objecte["objecte"].ObjectName, fill="black",
-                    font=("Courier", 16, "bold"),
-                    anchor="w", tags=("titol_menu", "informacio_motxila", "menu_motxila")
+                        self.app.Ancho - 415, y_obj,
+                        text=obj.Objecte["objecte"].ObjectName, fill=color_obj,
+                        font=("Courier", 16, "bold"),
+                        anchor="nw", tags=("titol_menu", "informacio_motxila", "menu_motxila")
                     )
                     
                     y_obj += 30
-            else:
-                self.canvas.create_text(
-                    self.app.Ancho - 445, 30,
-                    text=opc[0], fill=color,
-                    font=("Courier", 16, "bold"),
-                    anchor="w", tags=("titol_menu", "informacio_motxila", "menu_motxila")
-                )
 
-            x+=40
+            self.canvas.create_text(
+                x, 30,
+                text=opc[0], fill=color,
+                font=("Courier", 16, "bold"),
+                anchor="w", tags=("titol_menu", "informacio_motxila", "menu_motxila")
+            )
+
+            font = tkfont.Font(family="Courier", size=16, weight="bold")
+
+            midatext = font.measure(opc[0])
+            x+=midatext + 30
         
         
 

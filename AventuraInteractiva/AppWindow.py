@@ -93,6 +93,9 @@ class App():
         
         if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
             self.SeleccionarPartida()
+
+        elif self.Menu.id == "Motxila":
+            print()
         
         elif self.Menu.id == "Confirmacio":
             self.Confirmacio = False
@@ -247,6 +250,16 @@ class App():
 
         elif self.Menu.PantallaEscriure == True:
             self.Menu.TeclatEscritura(tecla)
+
+        elif self.Motxila == True:
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+            if tecla.keysym == "a": self.Menu.Moviment("a")
+            if tecla.keysym == "d": self.Menu.Moviment("d")
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace":
+                    self.Enrere()
+                    self.Motxila = False
         
         else:
             if tecla.keysym == "w": self.Menu.Moviment("w")
