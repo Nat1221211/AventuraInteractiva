@@ -575,6 +575,7 @@ class Menu():
     
     def DibuixarMenuMotxila(self):
         self.canvas.delete("all")
+        self.IndexColumna = 0
         
         # Barra SUperior on es mostraran els menus disponibles dins de la motxila
         self.canvas.create_rectangle(
@@ -616,6 +617,53 @@ class Menu():
             fill="white", outline="black",
             width=5, tags=("zona_descripcio", "menu_motxila")
         )
+
+        self.OmplirInformacioMotxila()
+    
+    def OmplirInformacioMotxila(self):
+        self.canvas.delete("informacio_motxila")
+
+        x = self.app.Ancho - 370
+        for i, opc in enumerate(self.opcions.items()):
+            color = "black"
+            if i == self.IndexColumna:
+                color = "blue"
+                self.canvas.create_text(
+                    30, 30,
+                    text="Objectes " + str(opc[0]), fill="black",
+                    font=("Courier", 16, "bold"),
+                    anchor="w", tags=("titol_menu", "informacio_motxila", "menu_motxila")
+                )
+
+                qty_mostrar = 8
+                if self.index > qty_mostrar:
+                    limit_sup = self.index + qty_mostrar
+                    limit_inf = self.index
+                else:
+                    limit_sup = qty_mostrar
+                    limit_inf = 0
+
+                y_obj = 95
+                for i, obj in enumerate(opc[1]["Objectes"][limit_inf:limit_sup]):
+                    self.canvas.create_text(
+                    self.app.Ancho - 445, y_obj,
+                    text=obj.Objecte["objecte"].ObjectName, fill="black",
+                    font=("Courier", 16, "bold"),
+                    anchor="w", tags=("titol_menu", "informacio_motxila", "menu_motxila")
+                    )
+                    
+                    y_obj += 30
+            else:
+                self.canvas.create_text(
+                    self.app.Ancho - 445, 30,
+                    text=opc[0], fill=color,
+                    font=("Courier", 16, "bold"),
+                    anchor="w", tags=("titol_menu", "informacio_motxila", "menu_motxila")
+                )
+
+            x+=40
+        
+        
 
 
 class OpcioMenu():

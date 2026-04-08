@@ -172,15 +172,17 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
                 options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, description))
     elif filtre == "Objectes":
         for i in llista:
-            options = {}
+            options = {"Combat": {"Nom Menu": "Combat", "Objectes": []},
+                       "Clau": {"Nom Menu": "Clau", "Objectes": []},
+                       "Altres": {"Nom Menu": tipus, "Objectes": []}} # Aquest Varis sera a futur diversos menus altres...
             if isinstance(i[1]["objecte"], Objectes.ObjecteCombat):
                 tipus = "Combat"
             else:
                 tipus = "Clau"
             if tipus not in options.keys():
-                options[tipus]=[]
+                options[tipus]={"Nom Menu": tipus, "Objectes": []}
             
-            options[tipus].append(Utilitats.OpcioMenu(i[1]["objecte"].id, i[1]["objecte"].ObjectName, True, i[1]["objecte"].ObjectDescription, None, i[1]))
+            options[tipus]["Objectes"].append(Utilitats.OpcioMenu(i[1]["objecte"].id, i[1]["objecte"].ObjectName, True, i[1]["objecte"].ObjectDescription, None, i[1]))
     
     
     elif filtre == "Botigues":
