@@ -29,9 +29,9 @@
     "Team": [
         {
             "id": "Player",
-            "Nom": "aaaaaa",
-            "Base": "mage",
-            "Lv": 5,
+            "Nom": "Aishia",
+            "Base": "archer",
+            "Lv": 10,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],

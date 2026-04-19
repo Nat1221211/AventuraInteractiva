@@ -350,7 +350,7 @@ class Menu():
             if ent.id != "sortir":
                 self.canvas.create_rectangle(
                 x, y,
-                self.app.Ancho - 200, 
+                self.app.Ancho - 120, 
                 y + 130,
                 fill="white", outline="grey",
                 width=4, tags="recuadre_entitat"
@@ -385,7 +385,7 @@ class Menu():
                 )
                 
                 self.canvas.create_text(
-                    self.app.Ancho - 450, y + 35,
+                    self.app.Ancho - 400, y + 35,
                     text=f"HP: {self.opcions[self.index].Objecte.StatsCombat["MaxHP"]} / {self.opcions[self.index].Objecte.StatsCombat["CurHP"]}",
                     fill="black",
                     font=("Courier", 16, "bold"),
@@ -393,7 +393,7 @@ class Menu():
                 )
 
                 self.canvas.create_text(
-                    self.app.Ancho - 450, y + 65,
+                    self.app.Ancho - 400, y + 65,
                     text=f"Mana: {self.opcions[self.index].Objecte.StatsCombat["MaxHP"]} / {self.opcions[self.index].Objecte.StatsCombat["CurHP"]}",
                     fill="black",
                     font=("Courier", 16, "bold"),
@@ -455,22 +455,23 @@ class Menu():
  
         y = 50
         for i, opc in enumerate(self.opcions):
-            x = self.app.Ancho - 160
-            if i == self.index: 
-                x -= 20
-            
-            opc.Imatge["Carregada"] = self.app.RedimensionarImatge(
-                                        opc.Objecte.base.Images["Frontal"],
-                                        100, 150, False, 3
-                                        )
+            if opc.id != "sortir":
+                x = self.app.Ancho - 160
+                if i == self.index: 
+                    x -= 20
+                
+                opc.Imatge["Carregada"] = self.app.RedimensionarImatge(
+                                            opc.Objecte.base.Images["Frontal"],
+                                            100, 150, False, 3
+                                            )
 
-            self.canvas.create_image(
-                x, y,
-                image=opc.Imatge["Carregada"],
-                anchor="nw",
-                tags=("ent_estat", "mostrar_estat")
-            )
-            y += 200
+                self.canvas.create_image(
+                    x, y,
+                    image=opc.Imatge["Carregada"],
+                    anchor="nw",
+                    tags=("ent_estat", "mostrar_estat")
+                )
+                y += 200
 
         self.canvas.tag_lower("zona_seleccio")
         self.canvas.tag_raise("ent_estat")
@@ -488,17 +489,44 @@ class Menu():
             font=("Courier", 28, "bold"),
             anchor="nw", tags=("ent_info", "mostrar_estat")
         )
+        
+        self.canvas.create_text(
+                30, 70,
+                text=f"Clase: {self.opcions[self.index].Objecte.base.EntityName}",
+                fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("ent_info", "mostrar_estat")
+            )
 
-        stats_colors = ["green", "green", "blue", "blue", "red", "purple", "yellow", "black"]
-        y = 100
+        text_nivell = f"Nivell: {self.opcions[self.index].Objecte.Lv} / {self.opcions[self.index].Objecte.LvLimit}"
+        self.canvas.create_text(
+                30, 100,
+                text=text_nivell,
+                fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("ent_info", "mostrar_estat")
+            )
+        
+        text_xp = f"XP: {self.opcions[self.index].Objecte.Xp} / {self.opcions[self.index].Objecte.XpRequired}"
+        self.canvas.create_text(
+                30, 130,
+                text=text_xp,
+                fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("ent_info", "mostrar_estat")
+            )
+
+        stats_colors = ["green", "green", "blue", "blue", "red", "purple", "orange", "cyan"]
+        y = 170
         for pos, stat in enumerate(self.opcions[self.index].Objecte.StatsCombat.items()):
             if stat[0] in ["MaxHP", "MaxMana"]:
-                if "MaxHP":
+                if stat[0] == "MaxHP":
                     text_mostrat = f"HP: {self.opcions[self.index].Objecte.StatsCombat["CurHP"]} / {stat[1]}"
                 else:
                     text_mostrat = f"Mana: {self.opcions[self.index].Objecte.StatsCombat["Mana"]} / {stat[1]}"
             else:
                 text_mostrat = f"{stat[0]}: {stat[1]}"
+
             if stat[0] in ["CurHP", "Mana"]:
                 continue
 

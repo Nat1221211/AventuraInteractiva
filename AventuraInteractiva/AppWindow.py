@@ -113,6 +113,14 @@ class App():
                     TUtManager.Posada(self)
                 elif seleccionat.id == "no":
                     self.Menu.CrearDialeg("Has decidit no quedar-te al hostal...")
+        
+        elif self.Menu.id == "Seleccio Equip":
+            if self.SeleccioAliat == True:
+                self.SeleccioAliat = False
+                if seleccionat.id == "sortir":
+                    self.Enrere()
+                else:
+                    self.Menu.mostrar_estat_equip()
             
 
         elif self.Menu.id == "Seleccio Entitats":
@@ -246,6 +254,10 @@ class App():
         elif self.SeleccioAliat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")
             if tecla.keysym == "s": self.Menu.Moviment("s")
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace":
+                if self.Menu.id not in ["Menu Wild", "Menu Poble", "Seleccio Partida", "Seleccio Entitats"]:
+                    self.Enrere()
 
         elif self.MostrarEstat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")
