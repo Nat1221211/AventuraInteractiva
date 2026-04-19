@@ -356,8 +356,20 @@ class Menu():
                 width=4, tags="recuadre_entitat"
                 )
 
+                ent.Imatge["Carregada"] = self.app.RedimensionarImatge(
+                                        ent.Objecte.base.Images["Frontal"],
+                                        40, 60, False, 3
+                                        )
+
+                self.canvas.create_image(
+                    x + 10, y + 10,
+                    image=ent.Imatge["Carregada"],
+                    anchor="nw",
+                    tags=("ent_estat", "mostrar_estat")
+                )
+
                 self.canvas.create_text(
-                    self.app.Ancho - 670, y + 20,
+                    self.app.Ancho - 670, y + 35,
                     text=f"Name: {self.opcions[self.index].Objecte.nom}",
                     fill=color,
                     font=("Courier", 16, "bold"),
@@ -365,7 +377,7 @@ class Menu():
                 )
 
                 self.canvas.create_text(
-                    self.app.Ancho - 670, y + 50,
+                    self.app.Ancho - 670, y + 65,
                     text=f"Level: {self.opcions[self.index].Objecte.Lv} / {self.opcions[self.index].Objecte.LvLimit}",
                     fill="black",
                     font=("Courier", 16, "bold"),
@@ -373,7 +385,7 @@ class Menu():
                 )
                 
                 self.canvas.create_text(
-                    self.app.Ancho - 450, y + 20,
+                    self.app.Ancho - 450, y + 35,
                     text=f"HP: {self.opcions[self.index].Objecte.StatsCombat["MaxHP"]} / {self.opcions[self.index].Objecte.StatsCombat["CurHP"]}",
                     fill="black",
                     font=("Courier", 16, "bold"),
@@ -381,7 +393,7 @@ class Menu():
                 )
 
                 self.canvas.create_text(
-                    self.app.Ancho - 450, y + 50,
+                    self.app.Ancho - 450, y + 65,
                     text=f"Mana: {self.opcions[self.index].Objecte.StatsCombat["MaxHP"]} / {self.opcions[self.index].Objecte.StatsCombat["CurHP"]}",
                     fill="black",
                     font=("Courier", 16, "bold"),
