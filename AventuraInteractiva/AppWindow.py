@@ -92,14 +92,22 @@ class App():
         self.MostrarPantallaInicial()
     
     def ConfirmarSeleccio(self, event = None):
-        seleccionat = self.Menu.opcions[self.Menu.index]
-        
+        if self.Menu.id not in ["Motxila"]:
+            seleccionat = self.Menu.opcions[self.Menu.index]
+       
+
         if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
             self.SeleccionarPartida()
 
         elif self.Menu.id == "Motxila":
-            print()
-        
+            if self.Menu.llistaobjectes[self.Menu.index].id != "sortir":
+                seleccionat = self.Menu.llistaobjectes[self.Menu.index].Objecte["objecte"]
+                print(seleccionat.ObjectName)
+            
+            else:
+                self.Motxila = False
+                self.Enrere()
+            
         elif self.Menu.id == "Confirmacio":
             self.Confirmacio = False
             if  self.QuinaConfirmacio == "Guardar":
@@ -118,6 +126,7 @@ class App():
             if self.SeleccioAliat == True:
                 self.SeleccioAliat = False
                 if seleccionat.id == "sortir":
+                    self.Motxila = False
                     self.Enrere()
                 else:
                     self.Menu.mostrar_estat_equip()
@@ -257,6 +266,7 @@ class App():
             if tecla.keysym == "Return": self.ConfirmarSeleccio()
             if tecla.keysym == "BackSpace":
                 if self.Menu.id not in ["Menu Wild", "Menu Poble", "Seleccio Partida", "Seleccio Entitats"]:
+                    self.SeleccioAliat = False
                     self.Enrere()
 
         elif self.MostrarEstat == True:
@@ -278,8 +288,8 @@ class App():
             if tecla.keysym == "d": self.Menu.Moviment("d")
             if tecla.keysym == "Return": self.ConfirmarSeleccio()
             if tecla.keysym == "BackSpace":
-                    self.Enrere()
-                    self.Motxila = False
+                self.Enrere()
+                self.Motxila = False
         
         else:
             if tecla.keysym == "w": self.Menu.Moviment("w")
