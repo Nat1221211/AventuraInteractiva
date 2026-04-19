@@ -418,7 +418,6 @@ class Menu():
                     anchor="nw", tags=("recuadre_entitat", "sortir")
                 )
 
-
     def mostrar_estat_equip(self):
         self.canvas.delete("all")
         self.app.MostrarEstat = True
