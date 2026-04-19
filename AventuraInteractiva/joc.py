@@ -19,6 +19,7 @@ def main():
     print("!! - Joc Interactiu - !!")
 
     App.root.mainloop()
+    
         
 
 if __name__ == "__main__":

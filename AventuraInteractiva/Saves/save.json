@@ -1,7 +1,7 @@
 {
-    "Nom": "Aishia",
-    "Ubicacio": "dawn_village",
-    "Or": 1900,
+    "Nom": "aaaaaa",
+    "Ubicacio": "greenwoods",
+    "Or": 2100,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -15,18 +15,22 @@
     },
     "Llocs_Trobats": [
         "dawn_village",
-        "south_forest"
+        "south_forest",
+        "greenwoods",
+        "knightshire"
     ],
     "Llocs_Visitats": [
-        "dawn_village"
+        "dawn_village",
+        "south_forest",
+        "greenwoods"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
     "Team": [
         {
             "id": "Player",
-            "Nom": "Aishia",
-            "Base": "archer",
+            "Nom": "aaaaaa",
+            "Base": "mage",
             "Lv": 5,
             "Lv_Limit": 100,
             "Moves": [],
@@ -35,22 +39,12 @@
         }
     ],
     "Inventari": [
-                {
-                "id": "complete_potion",
-                "Amount": 2,
-                "Clase": "Combat"
-                },
-                {
-                "id": "silver_amulet",
-                "Amount": 1,
-                "Clase": "Clau"
-                },
-                {
-                "id": "intermediate_potion",
-                "Amount": 4,
-                "Clase": "Combat"
-                }
-        ],
+        {
+            "id": "complete_potion",
+            "Amount": 1,
+            "Clase": "Combat"
+        }
+    ],
     "Titols": [],
     "Estadistiques": {},
     "Increment_Stats": {

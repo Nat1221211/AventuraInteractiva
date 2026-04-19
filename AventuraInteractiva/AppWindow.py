@@ -63,6 +63,9 @@ class App():
         self.QuinaConfirmacio = ""
         self.MostrarEstat = False
         self.Motxila = False
+        self.SubMenu = False
+        self.ActiveSubMenu = ""
+        self.SeleccioAliat = False
 
         # Midas pantalla
         self.Alto = 600 # Declarem mides en variables per a utilitzarles facilment.
@@ -239,6 +242,11 @@ class App():
                 self.Menu.PulsarEnter()
             if tecla.keysym == "BackSpace": 
                 self.Menu.PulsarEnter()
+        
+        elif self.SeleccioAliat == True:
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+
         elif self.MostrarEstat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")
             if tecla.keysym == "s": self.Menu.Moviment("s")

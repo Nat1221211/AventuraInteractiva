@@ -165,6 +165,7 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
         for i in llista:
             if isinstance(i[1], Entitat.Entity):
                 options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription, None, i[1]))
+        options.append(Utilitats.OpcioMenu("sortir", "Sortir", True, i[1].base.EntityDescription, None, i[1]))
     elif filtre == "Moves":
         for i in llista:
             if isinstance(i[1], Characteristics.Moves):
@@ -321,4 +322,4 @@ def BattleScreenShow(teamlis):
 def VeureEstatus(App, combat = False):
     CrearMenu(App.jugador.Team.items(), "Seleccio Equip", "Entitat")
     App.CanviarMenu(Menus["Seleccio Equip"])
-    App.Menu.mostrar_estat_equip()
+    App.Menu.dibuixar_menu_equip()

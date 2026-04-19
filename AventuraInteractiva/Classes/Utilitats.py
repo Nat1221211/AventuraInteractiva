@@ -327,7 +327,86 @@ class Menu():
             anchor="nw", tags="clase"
         )
 
-    
+    def dibuixar_menu_equip(self):
+        self.canvas.delete("all")
+
+        self.app.SeleccioAliat = True
+
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 5, 
+            self.app.Alto - 5,
+            fill="black", outline="black",
+            width=4, tags="background_equip"
+        )
+
+        x = 60
+        y = 50
+        for i, ent in enumerate(self.opcions):
+            color = "black"
+            if i == self.index:
+                color = "blue"
+
+            if ent.id != "sortir":
+                self.canvas.create_rectangle(
+                x, y,
+                self.app.Ancho - 200, 
+                y + 130,
+                fill="white", outline="grey",
+                width=4, tags="recuadre_entitat"
+                )
+
+                self.canvas.create_text(
+                    self.app.Ancho - 670, y + 20,
+                    text=f"Name: {self.opcions[self.index].Objecte.nom}",
+                    fill=color,
+                    font=("Courier", 16, "bold"),
+                    anchor="nw", tags=("recuadre_entitat", "stats")
+                )
+
+                self.canvas.create_text(
+                    self.app.Ancho - 670, y + 50,
+                    text=f"Level: {self.opcions[self.index].Objecte.Lv} / {self.opcions[self.index].Objecte.LvLimit}",
+                    fill="black",
+                    font=("Courier", 16, "bold"),
+                    anchor="nw", tags=("recuadre_entitat", "stats")
+                )
+                
+                self.canvas.create_text(
+                    self.app.Ancho - 450, y + 20,
+                    text=f"HP: {self.opcions[self.index].Objecte.StatsCombat["MaxHP"]} / {self.opcions[self.index].Objecte.StatsCombat["CurHP"]}",
+                    fill="black",
+                    font=("Courier", 16, "bold"),
+                    anchor="nw", tags=("recuadre_entitat", "stats")
+                )
+
+                self.canvas.create_text(
+                    self.app.Ancho - 450, y + 50,
+                    text=f"Mana: {self.opcions[self.index].Objecte.StatsCombat["MaxHP"]} / {self.opcions[self.index].Objecte.StatsCombat["CurHP"]}",
+                    fill="black",
+                    font=("Courier", 16, "bold"),
+                    anchor="nw", tags=("recuadre_entitat", "stats")
+                )
+                
+                y+= 150
+            else:
+                self.canvas.create_rectangle(
+                760, 520,
+                self.app.Ancho - 20, 
+                self.app.Alto - 20,
+                fill="white", outline="grey",
+                width=4, tags="recuadre_entitat"
+                )
+
+                self.canvas.create_text(
+                    780, 540,
+                    text="Sortir",
+                    fill=color,
+                    font=("Courier", 16, "bold"),
+                    anchor="nw", tags=("recuadre_entitat", "sortir")
+                )
+
+
     def mostrar_estat_equip(self):
         self.canvas.delete("all")
         self.app.MostrarEstat = True
@@ -433,8 +512,6 @@ class Menu():
         self.canvas.tag_lower("zona_estat")
         self.canvas.tag_raise("ent_info")
 
-
-
     def dibuixar_fons_menus(self):
         
         bbox = self.canvas.bbox("menu_interactiu")
@@ -472,7 +549,7 @@ class Menu():
                 font=("Courier", 16, "bold"),
                 anchor="nw", tags=("dialeg", "text_animat")
             )
-
+        
         if self.SeleccioEntitats == True:
             prev_ind = self.index
             if direccio == "a":
@@ -482,7 +559,7 @@ class Menu():
 
             if prev_ind != self.index:
                 self.ActualitzarImatgesSeleccio()
-        
+
         elif self.app.Motxila == True:
             if direccio == "w":
                 self.index = (self.index - 1) % len(self.llistaobjectes)
@@ -504,14 +581,16 @@ class Menu():
             elif direccio == "d" and (self.index + 1) % self.columnes != 0 and self.index + 1 < len(self.opcions):
                 self.index -= 1
 
-
             while self.opcions[self.index].Habilitat != True:
                 if direccio == "w":
                     self.index = (self.index - 1) % len(self.opcions)
                 elif direccio == "s":
                     self.index = (self.index + 1) % len(self.opcions)
+
             if self.app.MostrarEstat == True:
                 self.DibuixarEstat()
+            elif self.app.SeleccioAliat == True:
+                self.dibuixar_menu_equip()
             else:
                 self.dibuixar()
     
