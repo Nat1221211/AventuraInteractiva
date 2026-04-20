@@ -45,17 +45,17 @@ class ObjecteCombat(Objecte):
         self.Preu = price
         self.OutCombat = usableoutcombat
     
-    def Utilitzar(self, jugador):
+    def Utilitzar(self, aliat):
         for k, v in self.Effects.items():
             if k in ["HP", "Mana"]:
                 if v == str and v.endswith("%"):
                     rec = int(v.replace("%", ""))
-                    if jugador.StatsCombat[k] + ((jugador.StatsCombat[k] * rec) / 100) > jugador.StatsCombat[max]:
-                        jugador.StatsCombat[k] = jugador.StatsCombat[max]
+                    if aliat.StatsCombat[k] + ((aliat.StatsCombat[k] * rec) / 100) > aliat.StatsCombat[max]:
+                        aliat.StatsCombat[k] = aliat.StatsCombat[max]
                         input("Has recuperat tota la vida...")
                     else:
-                        recup = ((jugador.StatsCombat[k] * rec) / 100)
-                        jugador.StatsCombat[k] += recup
+                        recup = ((aliat.StatsCombat[k] * rec) / 100)
+                        aliat.StatsCombat[k] += recup
                         input(f"Has recuperat {recup} punts de vida...")
                 else:
                     cur = k
@@ -63,11 +63,11 @@ class ObjecteCombat(Objecte):
                         cur = "Cur" + k
                     max = "Max" + k
                     v = float(v)
-                    if jugador.StatsCombat[cur] + v > jugador.StatsCombat[max]:
-                        jugador.StatsCombat[cur] = jugador.StatsCombat[max]
+                    if aliat.StatsCombat[cur] + v > aliat.StatsCombat[max]:
+                        aliat.StatsCombat[cur] = aliat.StatsCombat[max]
                         input("Has recuperat tota la vida...")
                     else:
-                        jugador.StatsCombat[cur] += v
+                        aliat.StatsCombat[cur] += v
                         input(f"Has recuperat {v} punts de vida...")
             if k == "Flee":
                 print("")

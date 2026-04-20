@@ -66,6 +66,7 @@ class App():
         self.SubMenu = False
         self.ActiveSubMenu = ""
         self.SeleccioAliat = False
+        self.UltimObjecteSeleccionat = None
 
         # Midas pantalla
         self.Alto = 600 # Declarem mides en variables per a utilitzarles facilment.
@@ -102,7 +103,10 @@ class App():
         elif self.Menu.id == "Motxila":
             if self.Menu.llistaobjectes[self.Menu.index].id != "sortir":
                 seleccionat = self.Menu.llistaobjectes[self.Menu.index].Objecte["objecte"]
+                self.Motxila = False
                 print(seleccionat.ObjectName)
+                self.UltimObjecteSeleccionat = seleccionat
+                UIManager.VeureEstatus(self, False)
             
             else:
                 self.Motxila = False
@@ -126,8 +130,15 @@ class App():
             if self.SeleccioAliat == True:
                 self.SeleccioAliat = False
                 if seleccionat.id == "sortir":
-                    self.Motxila = False
+                    if self.Menu.MenuAnterior.id == "Motxila":
+                        self.Motxila = True
                     self.Enrere()
+                elif self.Menu.MenuAnterior.id == "Motxila":
+                    if seleccionat.id == "sortir":
+                        self.Motxila = True
+                        self.Enrere()
+                    else:
+                        self.UltimObjecteSeleccionat.Utilitzar(seleccionat)
                 else:
                     self.Menu.mostrar_estat_equip()
             
