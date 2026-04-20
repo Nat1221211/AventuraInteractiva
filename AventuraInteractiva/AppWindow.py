@@ -110,7 +110,7 @@ class App():
             
             else:
                 self.Motxila = False
-                self.Enrere()
+                UIManager.MostrarMenuPrincipal(self)
             
         elif self.Menu.id == "Confirmacio":
             self.Confirmacio = False
@@ -132,7 +132,9 @@ class App():
                 if seleccionat.id == "sortir":
                     if self.Menu.MenuAnterior.id == "Motxila":
                         self.Motxila = True
-                    self.Enrere()
+                        self.MenuMotxila()
+                    else:
+                        self.Enrere()
                 elif self.Menu.MenuAnterior.id == "Motxila":
                     if seleccionat.id == "sortir":
                         self.Motxila = True
@@ -278,7 +280,11 @@ class App():
             if tecla.keysym == "BackSpace":
                 if self.Menu.id not in ["Menu Wild", "Menu Poble", "Seleccio Partida", "Seleccio Entitats"]:
                     self.SeleccioAliat = False
-                    self.Enrere()
+                    if self.Menu.MenuAnterior.id == "Motxila":
+                        self.Motxila = True
+                        self.MenuMotxila()
+                    else:
+                        self.Enrere()
 
         elif self.MostrarEstat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")
