@@ -45,34 +45,33 @@ class ObjecteCombat(Objecte):
         self.Preu = price
         self.OutCombat = usableoutcombat
     
-    def Utilitzar(self, aliat):
+    def Utilitzar(self, app, aliat):
+        aliat = aliat.Objecte
         for k, v in self.Effects.items():
             if k in ["HP", "Mana"]:
-                if v == str and v.endswith("%"):
-                    rec = int(v.replace("%", ""))
-                    if aliat.StatsCombat[k] + ((aliat.StatsCombat[k] * rec) / 100) > aliat.StatsCombat[max]:
-                        aliat.StatsCombat[k] = aliat.StatsCombat[max]
-                        input("Has recuperat tota la vida...")
+                cur = k
+                if k == "HP":
+                    cur = "Cur" + k
+                max = "Max" + k
+                if isinstance(v, str) and v.endswith("%"):
+                    rec = v.replace("%", "")
+                    rec = int(rec)
+                    if aliat.StatsCombat[cur] + ((aliat.StatsCombat[max] * rec) / 100) > aliat.StatsCombat[max]:
+                        aliat.StatsCombat[cur] = aliat.StatsCombat[max]
                     else:
-                        recup = ((aliat.StatsCombat[k] * rec) / 100)
-                        aliat.StatsCombat[k] += recup
-                        input(f"Has recuperat {recup} punts de vida...")
+                        recup = ((aliat.StatsCombat[max] * rec) / 100)
+                        aliat.StatsCombat[cur] += recup
                 else:
-                    cur = k
-                    if k == "HP":
-                        cur = "Cur" + k
-                    max = "Max" + k
                     v = float(v)
                     if aliat.StatsCombat[cur] + v > aliat.StatsCombat[max]:
                         aliat.StatsCombat[cur] = aliat.StatsCombat[max]
-                        input("Has recuperat tota la vida...")
                     else:
                         aliat.StatsCombat[cur] += v
-                        input(f"Has recuperat {v} punts de vida...")
             if k == "Flee":
                 print("")
             if k in ["ATK","SPD","DEF","INT"]:
                 print()
+        app.MenuMotxila()
 
 class ObjecteEquipment(Objecte):
 

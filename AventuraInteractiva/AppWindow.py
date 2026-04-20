@@ -138,7 +138,7 @@ class App():
                         self.Motxila = True
                         self.Enrere()
                     else:
-                        self.UltimObjecteSeleccionat.Utilitzar(seleccionat)
+                        self.UltimObjecteSeleccionat.Utilitzar(self, seleccionat)
                 else:
                     self.Menu.mostrar_estat_equip()
             
@@ -299,7 +299,7 @@ class App():
             if tecla.keysym == "d": self.Menu.Moviment("d")
             if tecla.keysym == "Return": self.ConfirmarSeleccio()
             if tecla.keysym == "BackSpace":
-                self.Enrere()
+                UIManager.MostrarMenuPrincipal(self)
                 self.Motxila = False
         
         else:
