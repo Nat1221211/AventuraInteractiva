@@ -35,7 +35,17 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 0
+            "XP": 0,
+            "StatsCombat": {
+                "MaxHP": 34.0,
+                "CurHP": 20.0,
+                "MaxMana": 38.0,
+                "Mana": 38.0,
+                "ATK": 38.0,
+                "INT": 30.0,
+                "DEF": 38.0,
+                "SPD": 34.0
+            }
         }
     ],
     "Inventari": [

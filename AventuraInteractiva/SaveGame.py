@@ -65,11 +65,14 @@ def CarregarPartida(partida, missions, objectes, zones, entitats):
 
     equip = {}
     for i in dades["Team"]:
+        entitat = Entitat.Entity(i["id"], i["Nom"], i["Lv"], True,
+                                entitats[i["Base"]], i["Lv_Limit"],
+                                i["XP"])
+
+        entitat.StatsCombat = i["StatsCombat"]
+
         equip.update({
-                i["id"]:
-                Entitat.Entity(i["id"], i["Nom"], i["Lv"], True,
-                               entitats[i["Base"]], i["Lv_Limit"],
-                               i["XP"])
+                i["id"]: entitat
             }
         )
 
@@ -183,6 +186,7 @@ def GuardarPersonatges(personatges):
                 "Moves": [],
                 "Afected": afected,
                 "XP": val.Xp,
+                "StatsCombat": val.StatsCombat
             }
         )
 

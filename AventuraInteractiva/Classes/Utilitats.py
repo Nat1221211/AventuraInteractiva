@@ -386,7 +386,7 @@ class Menu():
                 
                 self.canvas.create_text(
                     self.app.Ancho - 400, y + 35,
-                    text=f"HP: {self.opcions[self.index].Objecte.StatsCombat["MaxHP"]} / {self.opcions[self.index].Objecte.StatsCombat["CurHP"]}",
+                    text=f"HP: {self.opcions[self.index].Objecte.StatsCombat["CurHP"]} / {self.opcions[self.index].Objecte.StatsCombat["MaxHP"]}",
                     fill="black",
                     font=("Courier", 16, "bold"),
                     anchor="nw", tags=("recuadre_entitat", "stats")
@@ -394,7 +394,7 @@ class Menu():
 
                 self.canvas.create_text(
                     self.app.Ancho - 400, y + 65,
-                    text=f"Mana: {self.opcions[self.index].Objecte.StatsCombat["MaxHP"]} / {self.opcions[self.index].Objecte.StatsCombat["CurHP"]}",
+                    text=f"Mana: {self.opcions[self.index].Objecte.StatsCombat["Mana"]} / {self.opcions[self.index].Objecte.StatsCombat["MaxMana"]}",
                     fill="black",
                     font=("Courier", 16, "bold"),
                     anchor="nw", tags=("recuadre_entitat", "stats")
