@@ -1,7 +1,7 @@
 {
     "Nom": "aaaaaa",
     "Ubicacio": "greenwoods",
-    "Or": 2100,
+    "Or": 2130,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -41,7 +41,7 @@
     "Inventari": [
         {
             "id": "complete_potion",
-            "Amount": 1,
+            "Amount": 2,
             "Clase": "Combat"
         }
     ],

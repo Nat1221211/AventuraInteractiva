@@ -709,16 +709,14 @@ class Menu():
         # Barra SUperior on es mostraran els menus disponibles dins de la motxila
         self.canvas.create_rectangle(
             5, 5,
-            self.app.Ancho - 405,
-            60,
+            self.app.Ancho - 650, 60,
             fill="white", outline="black",
             width=5, tags=("zona_nommenu", "menu_motxila")
         )
 
         self.canvas.create_rectangle(
-            self.app.Ancho - 400, 5,
-            self.app.Ancho - 5,
-            60,
+            self.app.Ancho - 645, 5,
+            self.app.Ancho - 5, 60,
             fill="white", outline="black",
             width=5, tags=("zona_submenus", "menu_motxila")
         )
@@ -726,33 +724,68 @@ class Menu():
         self.canvas.create_rectangle(
             5, 65,
             self.app.Ancho - 450,
-            self.app.Alto - 5,
-            fill="white", outline="black",
-            width=5, tags=("zona_entitats", "menu_motxila")
-        )
-
-        self.canvas.create_rectangle(
-            self.app.Ancho - 445, 65,
-            self.app.Ancho - 5,
-            self.app.Alto - 150,
+            self.app.Alto - 190,
             fill="white", outline="black",
             width=5, tags=("zona_objectes", "menu_motxila")
         )
 
         self.canvas.create_rectangle(
-            self.app.Ancho - 445, self.app.Alto - 145,
+            self.app.Ancho - 445, 65,
             self.app.Ancho - 5,
-            self.app.Alto - 5,
+            self.app.Alto - 190,
+            fill="white", outline="black",
+            width=5, tags=("zona_inventari", "menu_motxila")
+        )
+
+        self.canvas.create_rectangle(
+            5, self.app.Alto - 185,
+            self.app.Ancho - 5,
+            self.app.Alto - 45,
             fill="white", outline="black",
             width=5, tags=("zona_descripcio", "menu_motxila")
         )
+
+        self.canvas.create_rectangle(
+            5, self.app.Alto - 40,
+            self.app.Ancho - 5,
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=5, tags=("zona_instruccions", "menu_motxila")
+        )
+
+        self.canvas.create_text(
+            15, self.app.Alto - 25,
+            text="Return per a Utilitzar un Objecte, <-- Per a sortir del menu, a-d per a canviar de submenu, w-s canviar d'objecte.", 
+            fill="black",
+            width=self.app.Ancho - 20,
+            font=("Courier", 8, "bold"),
+            anchor="nw", tags=("zona_instruccions", "menu_motxila", "instruccions")
+        )
+
+        y_inv = 85
+        inventari = ["Titol", f"Or: {self.app.jugador.Gold}"]
+
+        for i, inv_obj in enumerate(inventari):
+            textfont = ("Courier", 16, "bold")
+            if i == 0:
+                textfont = ("Courier", 18, "bold")
+
+            self.canvas.create_text(
+                self.app.Ancho - 415, y_inv,
+                text=inv_obj,
+                fill="black",
+                width=self.app.Ancho - 20,
+                font= textfont,
+                anchor="nw", tags=("zona_inventari", "menu_motxila", "inventari")
+            )
+            y_inv += 30
 
         self.OmplirInformacioMotxila()
     
     def OmplirInformacioMotxila(self):
         self.canvas.delete("informacio_motxila")
 
-        x = self.app.Ancho - 370
+        x = 280
         for i, opc in enumerate(self.opcions.items()):
             color = "black"
             if i == self.IndexColumna:
@@ -786,19 +819,32 @@ class Menu():
                     if self.index == j:
                         color_obj = "blue"
 
+                        descript = "Selecciona per a sortir de la motxila..."
+                        if obj.id != "sortir":
+                            descript = obj.Objecte["objecte"].ObjectDescription
+
+                        self.canvas.create_text(
+                            200, self.app.Alto - 165,
+                            text=descript, 
+                            fill=color_obj,
+                            width=self.app.Ancho - 35,
+                            font=("Courier", 16, "bold"),
+                            anchor="nw", tags=("descripcio_objecte", "informacio_motxila", "menu_motxila")
+                        )
+
                     if obj.id != "sortir":
                         text = obj.Objecte["objecte"].ObjectName
                     else:
                         text = obj.Nom
 
                     self.canvas.create_text(
-                        self.app.Ancho - 415, y_obj,
+                        30, y_obj,
                         text=text, fill=color_obj,
                         font=("Courier", 16, "bold"),
-                        anchor="nw", tags=("titol_menu", "informacio_motxila", "menu_motxila")
+                        anchor="nw", tags=("objecte_inventari", "informacio_motxila", "menu_motxila")
                     )
                     
-                    y_obj += 30
+                    y_obj += 30                
 
             self.canvas.create_text(
                 x, 30,
