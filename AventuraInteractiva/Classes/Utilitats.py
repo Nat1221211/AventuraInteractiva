@@ -34,6 +34,10 @@ class Menu():
         self.PantallaEscriure = False
         self.SeguentDialeg = []
 
+        # estats Animacio Recuperació Vida
+        self.healthanimation = None
+
+
         # estats Confirmacio
         self.CaixaConfirmacio = False
         self.Confirmacio = False
@@ -339,9 +343,26 @@ class Menu():
             fill="black", outline="black",
             width=4, tags="background_equip"
         )
+        self.ActualitzarEstatMenuEquip()
 
+       
+    
+    def ActualitzarEstatMenuEquip(self, objecte = None, recup = None, cur = None, max = None, rec_actual = 0):
         x = 60
         y = 50
+
+        self.app.SeleccioAliat = True
+
+        if self.app.RecuperantVida == True:
+            if rec_actual < recup:
+                rec_actual += recup / 10
+                if (recup / 10) + objecte.StatsCombat[cur] < objecte.StatsCombat[max]:
+                    objecte.StatsCombat[cur] += recup / 10
+                else:
+                    objecte.StatsCombat[cur] = objecte.StatsCombat[max]
+            else:
+                self.app.RecuperantVida = False
+
         for i, ent in enumerate(self.opcions):
             color = "black"
             if i == self.index:
@@ -386,18 +407,18 @@ class Menu():
                 
                 self.canvas.create_text(
                     self.app.Ancho - 400, y + 35,
-                    text=f"HP: {self.opcions[self.index].Objecte.StatsCombat["CurHP"]} / {self.opcions[self.index].Objecte.StatsCombat["MaxHP"]}",
+                    text=f"HP: {round(self.opcions[self.index].Objecte.StatsCombat["CurHP"], 2)} / {round(self.opcions[self.index].Objecte.StatsCombat["MaxHP"], 2)}",
                     fill="black",
                     font=("Courier", 16, "bold"),
-                    anchor="nw", tags=("recuadre_entitat", "stats")
+                    anchor="nw", tags=("recuadre_entitat", "stats", "hp")
                 )
 
                 self.canvas.create_text(
                     self.app.Ancho - 400, y + 65,
-                    text=f"Mana: {self.opcions[self.index].Objecte.StatsCombat["Mana"]} / {self.opcions[self.index].Objecte.StatsCombat["MaxMana"]}",
+                    text=f"Mana: {round(self.opcions[self.index].Objecte.StatsCombat["Mana"], 2)} / {round(self.opcions[self.index].Objecte.StatsCombat["MaxMana"], 2)}",
                     fill="black",
                     font=("Courier", 16, "bold"),
-                    anchor="nw", tags=("recuadre_entitat", "stats")
+                    anchor="nw", tags=("recuadre_entitat", "stats", "mana")
                 )
                 
                 y+= 150
@@ -417,7 +438,17 @@ class Menu():
                     font=("Courier", 16, "bold"),
                     anchor="nw", tags=("recuadre_entitat", "sortir")
                 )
-
+            
+        if self.app.RecuperantVida == True:
+            self.healthanimation = self.app.root.after(50, lambda: self.ActualitzarEstatMenuEquip(objecte, recup, cur, max, rec_actual))
+        else:
+            if self.healthanimation != None:
+                self.app.root.after_cancel(self.healthanimation)
+                self.healthanimation = None
+                self.app.Motxila = True
+                self.app.SeleccioAliat = False
+                self.app.root.after(200, self.app.MenuMotxila())
+   
     def mostrar_estat_equip(self):
         self.canvas.delete("all")
         self.app.MostrarEstat = True

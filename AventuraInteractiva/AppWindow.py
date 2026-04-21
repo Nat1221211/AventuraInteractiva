@@ -67,6 +67,7 @@ class App():
         self.ActiveSubMenu = ""
         self.SeleccioAliat = False
         self.UltimObjecteSeleccionat = None
+        self.RecuperantVida = False
 
         # Midas pantalla
         self.Alto = 600 # Declarem mides en variables per a utilitzarles facilment.
@@ -104,7 +105,6 @@ class App():
             if self.Menu.llistaobjectes[self.Menu.index].id != "sortir":
                 seleccionat = self.Menu.llistaobjectes[self.Menu.index].Objecte["objecte"]
                 self.Motxila = False
-                print(seleccionat.ObjectName)
                 self.UltimObjecteSeleccionat = seleccionat
                 UIManager.VeureEstatus(self, False)
             
@@ -140,6 +140,7 @@ class App():
                         self.Motxila = True
                         self.Enrere()
                     else:
+                        self.Motxila = True
                         self.UltimObjecteSeleccionat.Utilitzar(self, seleccionat)
                 else:
                     self.Menu.mostrar_estat_equip()
@@ -278,13 +279,14 @@ class App():
             if tecla.keysym == "s": self.Menu.Moviment("s")
             if tecla.keysym == "Return": self.ConfirmarSeleccio()
             if tecla.keysym == "BackSpace":
-                if self.Menu.id not in ["Menu Wild", "Menu Poble", "Seleccio Partida", "Seleccio Entitats"]:
-                    self.SeleccioAliat = False
-                    if self.Menu.MenuAnterior.id == "Motxila":
-                        self.Motxila = True
-                        self.MenuMotxila()
-                    else:
-                        self.Enrere()
+                if self.Menu.healthanimation == None:
+                    if self.Menu.id not in ["Menu Wild", "Menu Poble", "Seleccio Partida", "Seleccio Entitats"]:
+                        self.SeleccioAliat = False
+                        if self.Menu.MenuAnterior.id == "Motxila":
+                            self.Motxila = True
+                            self.MenuMotxila()
+                        else:
+                            self.Enrere()
 
         elif self.MostrarEstat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")
@@ -305,8 +307,8 @@ class App():
             if tecla.keysym == "d": self.Menu.Moviment("d")
             if tecla.keysym == "Return": self.ConfirmarSeleccio()
             if tecla.keysym == "BackSpace":
-                UIManager.MostrarMenuPrincipal(self)
                 self.Motxila = False
+                UIManager.MostrarMenuPrincipal(self)
         
         else:
             if tecla.keysym == "w": self.Menu.Moviment("w")

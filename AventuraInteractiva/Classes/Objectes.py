@@ -46,7 +46,7 @@ class ObjecteCombat(Objecte):
         self.OutCombat = usableoutcombat
     
     def Utilitzar(self, app, aliat):
-        aliat = aliat.Objecte
+        objecte = aliat.Objecte
         for k, v in self.Effects.items():
             if k in ["HP", "Mana"]:
                 cur = k
@@ -56,22 +56,21 @@ class ObjecteCombat(Objecte):
                 if isinstance(v, str) and v.endswith("%"):
                     rec = v.replace("%", "")
                     rec = int(rec)
-                    if aliat.StatsCombat[cur] + ((aliat.StatsCombat[max] * rec) / 100) > aliat.StatsCombat[max]:
-                        aliat.StatsCombat[cur] = aliat.StatsCombat[max]
-                    else:
-                        recup = ((aliat.StatsCombat[max] * rec) / 100)
-                        aliat.StatsCombat[cur] += recup
+                    recup = ((objecte.StatsCombat[max] * rec) / 100)
                 else:
-                    v = float(v)
-                    if aliat.StatsCombat[cur] + v > aliat.StatsCombat[max]:
-                        aliat.StatsCombat[cur] = aliat.StatsCombat[max]
-                    else:
-                        aliat.StatsCombat[cur] += v
+                    recup = float(v)
+
+                if objecte.StatsCombat[cur] + recup > objecte.StatsCombat[max]:
+                    recup = objecte.StatsCombat[max] - objecte.StatsCombat[cur]
+                
+                app.RecuperantVida = True
+                app.Motxila = False
+                app.Menu.ActualitzarEstatMenuEquip(objecte, recup, cur, max)
             if k == "Flee":
                 print("")
             if k in ["ATK","SPD","DEF","INT"]:
                 print()
-        app.MenuMotxila()
+        
 
 class ObjecteEquipment(Objecte):
 
