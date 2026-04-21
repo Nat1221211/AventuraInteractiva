@@ -896,9 +896,97 @@ class Menu():
 
             midatext = font.measure(opc[0])
             x+=midatext + 30
-        
-        
+    
+    def CrearMenuExits(self):
+        self.canvas.delete("all")
+        self.IndexColumna = 0
 
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 5, 
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=5, tags=("fons_exits", "menu_exits")
+        )
+
+        self.OmplirInformacioExits()
+    
+    def OmplirInformacioExits(self):
+        self.canvas.delete("informacio_exits")
+
+        x = 280
+        for i, opc in enumerate(self.opcions):
+            color = "black"
+            if i == self.IndexColumna:
+                color = "blue"
+                self.canvas.create_text(
+                    30, 30,
+                    text=str(opc) + "Exits", fill="black",
+                    font=("Courier", 16, "bold"),
+                    anchor="w", tags=("titol_menu", "informacio_exits", "menu_exits")
+                )
+
+                self.llistaexits = self.opcions[opc]["achievements"]
+
+                if self.index > len(self.llistaexits) - 1:
+                    self.index = len(self.llistaexits) -1
+                elif len(self.llistaexits) == 0:
+                    self.index = 0
+                
+                qty_mostrar = 8
+                if self.index > qty_mostrar:
+                    limit_sup = self.index + qty_mostrar
+                    limit_inf = self.index
+                else:
+                    limit_sup = qty_mostrar
+                    limit_inf = 0
+
+                y_obj = 95
+                
+                for j, exit in enumerate(self.llistaexits[limit_inf:limit_sup]):
+                    color_obj = "black"
+                    if self.index == j:
+                        color_obj = "blue"
+
+                        descript = "Selecciona per a sortir de la finestra d'exits..."
+                        if exit.id != "sortir":
+                            descript = exit.Objecte.Description
+
+                        self.canvas.create_text(
+                            200, self.app.Alto - 165,
+                            text=descript, 
+                            fill="black",
+                            width=self.app.Ancho - 35,
+                            font=("Courier", 16, "bold"),
+                            anchor="nw", tags=("descripcio_objecte", "informacio_motxila", "menu_motxila")
+                        )
+
+                    if exit.id != "sortir":
+                        text = exit.Objecte.Name
+                    else:
+                        text = exit.Nom
+
+                    self.canvas.create_text(
+                        30, y_obj,
+                        text=text, fill=color_obj,
+                        font=("Courier", 16, "bold"),
+                        anchor="nw", tags=("objecte_inventari", "informacio_motxila", "menu_motxila")
+                    )
+                    
+                    y_obj += 30                
+
+            self.canvas.create_text(
+                x, 30,
+                text=str(opc), fill=color,
+                font=("Courier", 16, "bold"),
+                anchor="w", tags=("titol_menu", "informacio_motxila", "menu_motxila")
+            )
+
+            font = tkfont.Font(family="Courier", size=16, weight="bold")
+
+            midatext = font.measure(opc[0])
+            x+=midatext + 30
+        self.IndexColumna = 0
 
 class OpcioMenu():
     def __init__(self,iden, nom, habilitat, descripcio, imatge = None, objecte = None, condicio_habilitat = False):

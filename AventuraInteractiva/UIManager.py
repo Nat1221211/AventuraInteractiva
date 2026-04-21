@@ -28,7 +28,7 @@ Menus = {
             Utilitats.OpcioMenu("botiga", "Botiga", False, "Comprar Objectes."),
             Utilitats.OpcioMenu("estat", "Estat", True, "Veure el estat dels personatges del jugador..."),
             Utilitats.OpcioMenu("missions", "Missions", False, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
-            Utilitats.OpcioMenu("exits", "Éxits", False, "Veure els exits que pots i has adquirit..."),
+            Utilitats.OpcioMenu("exits", "Éxits", True, "Veure els exits que pots i has adquirit..."),
             Utilitats.OpcioMenu("guardar", "Guardar", True, "Guardar la Partida."),
             Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del menu.")
         ]
@@ -44,7 +44,7 @@ Menus = {
             Utilitats.OpcioMenu("lluitar","Lluitar", False, "Entrar forçosament en combat amb un dels enemcis de la zona..."),
             Utilitats.OpcioMenu("estat","Estat", True, "Veure el estat dels personatges del jugador..."),
             Utilitats.OpcioMenu("missions", "Missions", False, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
-            Utilitats.OpcioMenu("exits", "Éxits", False, "Veure els exits que pots i has adquirit..."),
+            Utilitats.OpcioMenu("exits", "Éxits", True, "Veure els exits que pots i has adquirit..."),
             Utilitats.OpcioMenu("guardar", "Guardar", True, "Guardar la Partida."),
             Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del menu.")
 
@@ -131,12 +131,12 @@ def CridarAccioMenuPrincipal(App, accio):
         "mapa": lambda: AdventureManager.Mapa(App),
         "explorar": lambda: AdventureManager.Explorar(App),
         "hostal": lambda: TUtManager.CridarPosada(App),
-        "botiga": lambda: TUtManager.Botiga(App.jugador, App.Objects),
+        #"botiga": lambda: TUtManager.Botiga(App.jugador, App.Objects),
         "estat": lambda: VeureEstatus(App),
         # "missions": lambda: MenuMisions(App)
         "lluitar": lambda: CombatManager.GenerarEnemic(App),
         "guardar": lambda: App.GuardarPartida(),
-        # "exits": lambda: MostrarExits(App.achievements, App.jugador)
+        "exits": lambda: MostrarExits(App),
         "motxila": lambda: App.MenuMotxila(),
         "sortir": lambda: App.TancarJoc()
     }
@@ -155,23 +155,27 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
                 else:
                     options.append(Utilitats.OpcioMenu(i, zones[i].NameZone, False, zones[i].Description))
         options.append(Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del Menu"))
+
     elif filtre[0] == "Tipus Entitat":
         for i in llista:
             if isinstance(filtre, tuple) and isinstance(i[1], EntityType.EntityType):
                 if filtre[1] == "Playable" and i[1].isPlayable != True:
                     continue
                 options.append(Utilitats.OpcioMenu(i[1].id, i[1].EntityName, True, i[1].EntityDescription, i[1].Images["Frontal"]))
+    
     elif filtre == "Entitat":
         for i in llista:
             if isinstance(i[1], Entitat.Entity):
                 options.append(Utilitats.OpcioMenu(i[1].id, f"{i[1].nom}, Lv {i[1].Lv}", True, i[1].base.EntityDescription, None, i[1]))
         options.append(Utilitats.OpcioMenu("sortir", "Sortir", True, i[1].base.EntityDescription, None, i[1]))
+    
     elif filtre == "Moves":
         for i in llista:
             if isinstance(i[1], Characteristics.Moves):
                 description = f"{i[1].Description}\n Characteristics: \n Potencia: {i[1].Power}, Precisio: {i[1].Precision}, Mana Cost: {i[1].Cost}"
 
                 options.append(Utilitats.OpcioMenu(i[1].id, i[1].Name, True, description))
+    
     elif filtre == "Objectes":
         options = {"Combat": {"Nom Menu": "Combat", "Objectes": []},
                     "Clau": {"Nom Menu": "Clau", "Objectes": []},
@@ -189,22 +193,21 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
             options[j[0]]["Objectes"].append(Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del Menu"))
 
 
-    
     elif filtre == "Botigues":
         for id, val in llista:
             options.append(Utilitats.OpcioMenu(id, val["name"],(100, 100), True, val["description"]))
 
-    elif isinstance(filtre, tuple):
-        if filtre[0] == "achievements":
-            if filtre[1] == "acquirits":
-                for id, value in llista:
-                    if value["achievement"].Obtained == True:
-                        options.append(Utilitats.OpcioMenu(value["achievement"].id,value["achievement"].Name, (100, 100), True, value["achievement"].Description))
-            if filtre[1] == "locked":
-                for id, value in llista:
-                    if value["achievement"].Obtained == False:
-                        options.append(Utilitats.OpcioMenu(value["achievement"].id, value["achievement"].Name,(100, 100), True, value["achievement"].Description))
-
+    
+    elif filtre == "achievements":
+        options = {}
+        for id, value in llista:
+            if value["achievement"].UnlockRequirements["Type"] not in options.keys():
+                options[value["achievement"].UnlockRequirements["Type"]]={
+                    "categoria": value["achievement"].UnlockRequirements["Type"],
+                    "achievements": [],
+                }
+            achiev = Utilitats.OpcioMenu(value["achievement"].id, value["achievement"].Name, (100, 100), True, value["achievement"].Description, None, value["achievement"])
+            options[value["achievement"].UnlockRequirements["Type"]]["achievements"].append(achiev)
         
     Menus.update({NomMenu: {
                 "id": NomMenu,
@@ -212,6 +215,11 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
             }
         }
     )
+
+def MostrarExits(App):
+    CrearMenu(App.Achievements.items(), "Menu Exits", "achievements")
+    App.CanviarMenu(Menus["Menu Exits"])
+    App.Menu.CrearMenuExits()
 
 def CrearMenuProductes(botiga, NomMenu, opcionsvisibles = 5):
     opcions = []
