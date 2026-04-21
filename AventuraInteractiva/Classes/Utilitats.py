@@ -345,8 +345,6 @@ class Menu():
         )
         self.ActualitzarEstatMenuEquip()
 
-       
-    
     def ActualitzarEstatMenuEquip(self, objecte = None, recup = None, cur = None, max = None, rec_actual = 0):
         x = 60
         y = 50
@@ -795,7 +793,7 @@ class Menu():
         )
 
         y_inv = 85
-        inventari = ["Titol", f"Or: {self.app.jugador.Gold}"]
+        inventari = ["Informació de Grup", f"Or: {self.app.jugador.Gold}"]
 
         for i, inv_obj in enumerate(inventari):
             textfont = ("Courier", 16, "bold")
@@ -858,20 +856,29 @@ class Menu():
                         self.canvas.create_text(
                             200, self.app.Alto - 165,
                             text=descript, 
-                            fill=color_obj,
+                            fill="black",
                             width=self.app.Ancho - 35,
                             font=("Courier", 16, "bold"),
                             anchor="nw", tags=("descripcio_objecte", "informacio_motxila", "menu_motxila")
                         )
 
+                    qty = None
                     if obj.id != "sortir":
                         text = obj.Objecte["objecte"].ObjectName
+                        qty = obj.Objecte["amount"]
                     else:
                         text = obj.Nom
 
                     self.canvas.create_text(
                         30, y_obj,
                         text=text, fill=color_obj,
+                        font=("Courier", 16, "bold"),
+                        anchor="nw", tags=("objecte_inventari", "informacio_motxila", "menu_motxila")
+                    )
+                    if qty != None:
+                        self.canvas.create_text(
+                        400, y_obj,
+                        text=f"x{qty}", fill=color_obj,
                         font=("Courier", 16, "bold"),
                         anchor="nw", tags=("objecte_inventari", "informacio_motxila", "menu_motxila")
                     )
