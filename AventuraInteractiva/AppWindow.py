@@ -286,7 +286,7 @@ class App():
                             self.Motxila = True
                             self.MenuMotxila()
                         else:
-                            self.Enrere()
+                            self.Menu.dibuixar_menu_equip()
 
         elif self.MostrarEstat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")
