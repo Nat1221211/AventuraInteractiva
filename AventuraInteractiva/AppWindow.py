@@ -286,7 +286,7 @@ class App():
                             self.Motxila = True
                             self.MenuMotxila()
                         else:
-                            self.Menu.dibuixar_menu_equip()
+                            self.Enrere()
 
         elif self.MostrarEstat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")
@@ -295,7 +295,7 @@ class App():
             # if tecla.keysym == "d": self.Menu.Moviment("d")
             if tecla.keysym == "BackSpace":
                 self.MostrarEstat = False
-                self.Enrere()
+                self.Menu.dibuixar_menu_equip()
 
         elif self.Menu.PantallaEscriure == True:
             self.Menu.TeclatEscritura(tecla)

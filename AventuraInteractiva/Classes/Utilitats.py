@@ -451,6 +451,7 @@ class Menu():
    
     def mostrar_estat_equip(self):
         self.canvas.delete("all")
+        self.app.SeleccioAliat = False
         self.app.MostrarEstat = True
 
     # Zones de la finestra d'estat en forma de rectangles...
