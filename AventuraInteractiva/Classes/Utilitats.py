@@ -846,30 +846,30 @@ class Menu():
                     self.index = 0
                 
                 qty_mostrar = 8
-                if self.index > qty_mostrar:
-                    limit_sup = self.index + qty_mostrar
-                    limit_inf = self.index
+                if self.index >= qty_mostrar:
+                    limit_inf = self.index - (qty_mostrar)
+                    limit_sup = self.index + 1
                 else:
-                    limit_sup = qty_mostrar
+                    limit_sup = qty_mostrar + 1
                     limit_inf = 0
 
                 y_obj = 95
                 
                 for j, obj in enumerate(self.llistaobjectes[limit_inf:limit_sup]):
                     color_obj = "black"
-                    if self.index == self.llistaexits.index(obj):
+                    if self.index == self.llistaobjectes.index(obj):
                         color_obj = "blue"
 
                         descript = "Selecciona per a sortir de la motxila..."
                         if obj.id != "sortir":
                             descript = obj.Objecte["objecte"].ObjectDescription
-
+                            
                         self.canvas.create_text(
                             200, self.app.Alto - 165,
                             text=descript, 
                             fill="black",
-                            width=self.app.Ancho - 35,
                             font=("Courier", 16, "bold"),
+                            width=self.app.Ancho - 35,
                             anchor="nw", tags=("descripcio_objecte", "informacio_motxila", "menu_motxila")
                         )
 
@@ -946,11 +946,11 @@ class Menu():
                     self.index = 0
                 
                 qty_mostrar = 8
-                if self.index > qty_mostrar -1:
-                    limit_sup = self.index + qty_mostrar
-                    limit_inf = self.index
+                if self.index >= qty_mostrar:
+                    limit_inf = self.index - (qty_mostrar)
+                    limit_sup = self.index + 1
                 else:
-                    limit_sup = qty_mostrar
+                    limit_sup = qty_mostrar + 1
                     limit_inf = 0
 
                 y_obj = 95
