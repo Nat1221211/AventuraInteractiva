@@ -639,6 +639,17 @@ class Menu():
             elif direccio == "d":
                 self.IndexColumna = (self.IndexColumna + 1) % len(self.opcions.keys())
             self.OmplirInformacioMotxila()
+
+        elif self.app.MenuExits == True:
+            if direccio == "w":
+                self.index = (self.index - 1) % len(self.llistaexits)
+            elif direccio == "s":
+                self.index = (self.index + 1) % len(self.llistaexits)
+            elif direccio == "a":
+                self.IndexColumna = (self.IndexColumna - 1) % len(self.opcions.keys())
+            elif direccio == "d":
+                self.IndexColumna = (self.IndexColumna + 1) % len(self.opcions.keys())
+            self.OmplirInformacioExits()
             
         else:
             if direccio == "w":
@@ -846,7 +857,7 @@ class Menu():
                 
                 for j, obj in enumerate(self.llistaobjectes[limit_inf:limit_sup]):
                     color_obj = "black"
-                    if self.index == j:
+                    if self.index == self.llistaexits.index(obj):
                         color_obj = "blue"
 
                         descript = "Selecciona per a sortir de la motxila..."
@@ -899,6 +910,7 @@ class Menu():
     
     def CrearMenuExits(self):
         self.canvas.delete("all")
+        self.app.MenuExits = True
         self.IndexColumna = 0
 
         self.canvas.create_rectangle(
@@ -921,7 +933,7 @@ class Menu():
                 color = "blue"
                 self.canvas.create_text(
                     30, 30,
-                    text=str(opc) + "Exits", fill="black",
+                    text=str(opc) + " Exits", fill="black",
                     font=("Courier", 16, "bold"),
                     anchor="w", tags=("titol_menu", "informacio_exits", "menu_exits")
                 )
@@ -934,7 +946,7 @@ class Menu():
                     self.index = 0
                 
                 qty_mostrar = 8
-                if self.index > qty_mostrar:
+                if self.index > qty_mostrar -1:
                     limit_sup = self.index + qty_mostrar
                     limit_inf = self.index
                 else:
@@ -945,7 +957,7 @@ class Menu():
                 
                 for j, exit in enumerate(self.llistaexits[limit_inf:limit_sup]):
                     color_obj = "black"
-                    if self.index == j:
+                    if self.index == self.llistaexits.index(exit):
                         color_obj = "blue"
 
                         descript = "Selecciona per a sortir de la finestra d'exits..."
@@ -958,7 +970,7 @@ class Menu():
                             fill="black",
                             width=self.app.Ancho - 35,
                             font=("Courier", 16, "bold"),
-                            anchor="nw", tags=("descripcio_objecte", "informacio_motxila", "menu_motxila")
+                            anchor="nw", tags=("descripcio_exit", "informacio_exits", "menu_exits")
                         )
 
                     if exit.id != "sortir":
@@ -970,7 +982,7 @@ class Menu():
                         30, y_obj,
                         text=text, fill=color_obj,
                         font=("Courier", 16, "bold"),
-                        anchor="nw", tags=("objecte_inventari", "informacio_motxila", "menu_motxila")
+                        anchor="nw", tags=("exit", "informacio_exits", "menu_exits")
                     )
                     
                     y_obj += 30                
@@ -979,14 +991,13 @@ class Menu():
                 x, 30,
                 text=str(opc), fill=color,
                 font=("Courier", 16, "bold"),
-                anchor="w", tags=("titol_menu", "informacio_motxila", "menu_motxila")
+                anchor="w", tags=("titol_exits", "informacio_exits", "menu_exits")
             )
 
             font = tkfont.Font(family="Courier", size=16, weight="bold")
 
-            midatext = font.measure(opc[0])
+            midatext = font.measure(opc)
             x+=midatext + 30
-        self.IndexColumna = 0
 
 class OpcioMenu():
     def __init__(self,iden, nom, habilitat, descripcio, imatge = None, objecte = None, condicio_habilitat = False):

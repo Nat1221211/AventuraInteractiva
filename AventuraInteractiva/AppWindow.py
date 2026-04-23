@@ -68,6 +68,7 @@ class App():
         self.SeleccioAliat = False
         self.UltimObjecteSeleccionat = None
         self.RecuperantVida = False
+        self.MenuExits = False
 
         # Midas pantalla
         self.Alto = 600 # Declarem mides en variables per a utilitzarles facilment.

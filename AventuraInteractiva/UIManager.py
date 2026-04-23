@@ -206,8 +206,12 @@ def CrearMenu(llista, NomMenu, filtre, jugador = None, zones = None):
                     "categoria": value["achievement"].UnlockRequirements["Type"],
                     "achievements": [],
                 }
-            achiev = Utilitats.OpcioMenu(value["achievement"].id, value["achievement"].Name, (100, 100), True, value["achievement"].Description, None, value["achievement"])
+            achiev = Utilitats.OpcioMenu(value["achievement"].id, value["achievement"].Name, True, value["achievement"].Description, None, value["achievement"])
             options[value["achievement"].UnlockRequirements["Type"]]["achievements"].append(achiev)
+        
+        sorti = Utilitats.OpcioMenu("sortir", "Sortir", True, "Presiona per a sortir del menu")
+        for id in options.keys():
+            options[id]["achievements"].append(sorti)
         
     Menus.update({NomMenu: {
                 "id": NomMenu,
