@@ -13,6 +13,13 @@ import random
 from Classes import Entitat
 import UIManager
 
+def StartCombat(app, canvas, ident, misio = False, enemic = None):
+    app.Combat = True
+    app.MenuCombat = MenuCombat(app, canvas, ident)
+    if misio == False:
+        app.MenuCombat.GenerarEnemic()
+    else:
+        app.MenuCombat.CarregarEnemic(enemic)
 
 class MenuCombat():
     def __init__(self, app, canvas, ident):
@@ -21,6 +28,29 @@ class MenuCombat():
         self.id = ident
         self.equip = self.app.jugador.Team
         self.enemic = {}
+    
+    def CarregarEnemic(self, enemic):
+        self.enemic = enemic
+    
+    def dibuixar_combat(self):
+        self.canvas.delete("all")
+        self.app.RedimensionarFons()
+        
+        self.canvas.create_rectangle(
+            300, 200,
+            self.app.Ancho - 300, 
+            self.app.Alto - 200,
+            fill="white", outline="black",
+            width=5, tags="combat"
+        )
+
+        self.canvas.create_text(
+            450, 400,
+            text="Menu COmbat",
+            fill="black",
+            font=("Courier", 16, "bold"),
+            anchor="nw", tags="combat"
+        )
 
     def GenerarEnemic(self):
 
@@ -40,7 +70,7 @@ class MenuCombat():
         qty = random.choices(num, prob)
         enemy = {}
 
-        self.enemy.update({
+        self.enemic.update({
             "enemy_0":
             Entitat.Entity("enemy_0", "", random.randrange(
                 self.app.jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0], 
@@ -67,9 +97,10 @@ class MenuCombat():
                                 self.app.jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0] - 2, enemy["enemy_0"].Lv), 
                                 False, self.app.Entities[apareix])
                 
-                self.enemy.update({entitat.id: entitat})
+                self.enemic.update({entitat.id: entitat})
         
-        self.Lluitar(self)
+        self.dibuixar_combat()
+
 
     def PrepararPerCombat(jugador, enemy):
         for i in jugador.Team.values():
@@ -88,7 +119,7 @@ class MenuCombat():
 
         for i in jugador.Team.values():
             if i.StatsCombat["SPD"] == maxSpeed:
-            i.Priority = 100
+                i.Priority = 100
             else:
                 i.Priority = (i.StatsCombat["SPD"] / maxSpeed) * 100
         
@@ -100,7 +131,7 @@ class MenuCombat():
 
         return enemy
 
-    def Lluitar(jugador, enemy, event, missions, objectes, exits):
+    def Lluitar(self):
 
         teamderr = 0
         enemyderr = 0

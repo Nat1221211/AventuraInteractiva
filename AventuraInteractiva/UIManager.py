@@ -41,7 +41,7 @@ Menus = {
             Utilitats.OpcioMenu("mapa", "Mapa", True, "Veure el Mapa i Canviar de Zona"),
             Utilitats.OpcioMenu("motxila","Motxila", True, "Veure els objectes i utilitzar-los."),
             Utilitats.OpcioMenu("explorar","Explorar", True, "Anar a explorar la zona, pots trobar or, enemics i involucrar-te en missions..."),
-            Utilitats.OpcioMenu("lluitar","Lluitar", False, "Entrar forçosament en combat amb un dels enemcis de la zona..."),
+            Utilitats.OpcioMenu("lluitar","Lluitar", True, "Entrar forçosament en combat amb un dels enemcis de la zona..."),
             Utilitats.OpcioMenu("estat","Estat", True, "Veure el estat dels personatges del jugador..."),
             Utilitats.OpcioMenu("missions", "Missions", False, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
             Utilitats.OpcioMenu("exits", "Éxits", True, "Veure els exits que pots i has adquirit..."),
@@ -134,7 +134,7 @@ def CridarAccioMenuPrincipal(App, accio):
         #"botiga": lambda: TUtManager.Botiga(App.jugador, App.Objects),
         "estat": lambda: VeureEstatus(App),
         # "missions": lambda: MenuMisions(App)
-        "lluitar": lambda: CombatManager.GenerarEnemic(App),
+        "lluitar": lambda: CombatManager.StartCombat(App, App.canvas, "menu_combat"),
         "guardar": lambda: App.GuardarPartida(),
         "exits": lambda: MostrarExits(App),
         "motxila": lambda: App.MenuMotxila(),
