@@ -288,6 +288,15 @@ class App():
                             self.MenuMotxila()
                         else:
                             self.Enrere()
+        
+        elif self.MenuExits == True:
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+            if tecla.keysym == "a": self.Menu.Moviment("a")
+            if tecla.keysym == "d": self.Menu.Moviment("d")
+            if tecla.keysym == "BackSpace":
+                self.MenuExits = False
+                UIManager.MostrarMenuPrincipal(self)
 
         elif self.MostrarEstat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")

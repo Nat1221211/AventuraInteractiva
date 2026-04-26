@@ -43,7 +43,7 @@ id1;Serp Marina;;150;180;150;180;140;120;False;220;Monster, Aquatic;bite: 1
 id1;Leviathan;;420;400;400;420;420;300;False;4000;Divine, Aquatic;bite: 1
 id1;Cranc Aberrant;;140;100;150;120;130;100;False;150;Aquatic, Monster;bite: 1
 id1;Gran Cranc Aberrant;;180;150;180;160;180;120;False;370;Aquatic, Monster;bite: 1
-id1;Os Monstruos;;160;80;160;80;170;110;False;200;Monster, Beast;bite: 4
+id1;Os Monstruos;;160;80;160;80;170;110;False;200;Monster, Beast;bite: 1
 id1;Os de Fang;;240;240;240;240;240;200;False;600;Artificial, Monster;bite: 1
 id1;Aguila Terrorifica;;120;120;120;120;100;150;False;100;Monster, Beast;bite: 1
 id1;Aguila Platejada;;170;170;180;120;130;180;False;400;Spirit, Beast;bite: 1

@@ -1,5 +1,5 @@
 {
-    "Nom": "aaaaaa",
+    "Nom": "Aishia",
     "Ubicacio": "greenwoods",
     "Or": 2130,
     "Ultim_Visitat": "dawn_village",
@@ -37,8 +37,8 @@
             "Afected": [],
             "XP": 0,
             "StatsCombat": {
-                "MaxHP": 1.0,
-                "CurHP": 20.0,
+                "MaxHP": 34.0,
+                "CurHP": 33.999999999999986,
                 "MaxMana": 38.0,
                 "Mana": 38.0,
                 "ATK": 38.0,
@@ -51,7 +51,12 @@
     "Inventari": [
         {
             "id": "complete_potion",
-            "Amount": 2,
+            "Amount": 3,
+            "Clase": "Combat"
+        },
+        {
+            "id": "high_potion",
+            "Amount": 1,
             "Clase": "Combat"
         }
     ],
