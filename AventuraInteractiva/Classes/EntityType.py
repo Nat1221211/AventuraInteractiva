@@ -43,6 +43,7 @@ class EntityType():
             "Frontal": "",
             "Back": ""
         }
+        
     
     def AddImages(self, images):
         self.Images = images

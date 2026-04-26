@@ -100,6 +100,8 @@ class Entity():
             "Accesory_2": "",
         }
 
+        self.ImatgeAjustada = {}
+
     def Recuperacio(self):
         self.StatsCombat["CurHP"] = self.StatsCombat["MaxHP"]
         self.StatsCombat["Mana"] = self.StatsCombat["MaxMana"]

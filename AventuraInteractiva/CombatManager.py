@@ -21,6 +21,15 @@ def StartCombat(app, canvas, ident, misio = False, enemic = None):
     else:
         app.MenuCombat.CarregarEnemic(enemic)
 
+
+class OpcionsCombat():
+    def __init__(self, ident, nom, habilitat, descript, moviment = None):
+        self.id = ident
+        self.Nom = nom
+        self.Descripcio = descript
+        self.Habilitat = habilitat
+        self.Moviment = moviment
+
 class MenuCombat():
     def __init__(self, app, canvas, ident):
         self.app = app
@@ -28,6 +37,13 @@ class MenuCombat():
         self.id = ident
         self.equip = self.app.jugador.Team
         self.enemic = {}
+        self.OpcionsCombat = [
+            OpcionsCombat("atacar", "Atacar", True, ""),
+            OpcionsCombat("motxila", "Motxila", True, ""),
+            OpcionsCombat("estat", "Veure Estat", True, ""),
+            OpcionsCombat("fugir", "Fugir", True, ""),
+            OpcionsCombat("pasar", "Pasar Torn", True, "")
+        ]
     
     def CarregarEnemic(self, enemic):
         self.enemic = enemic
@@ -35,22 +51,80 @@ class MenuCombat():
     def dibuixar_combat(self):
         self.canvas.delete("all")
         self.app.RedimensionarFons()
-        
+
+        self.dibuixar_entitats()
+
         self.canvas.create_rectangle(
-            300, 200,
-            self.app.Ancho - 300, 
-            self.app.Alto - 200,
+            5, self.app.Alto - 200,
+            self.app.Ancho - 5, 
+            self.app.Alto - 5,
             fill="white", outline="black",
-            width=5, tags="combat"
+            width=5, tags=("zona_info", "combat")
         )
 
-        self.canvas.create_text(
-            450, 400,
-            text="Menu COmbat",
-            fill="black",
-            font=("Courier", 16, "bold"),
-            anchor="nw", tags="combat"
+        
+
+    
+    def dibuixar_entitats(self):
+        y = self.app.Alto - 340
+        x = 350 if len(self.equip) == 1 else 200
+        for i, ent in enumerate(self.equip.items()):
+            ent[1].ImatgeAjustada.update({
+                "Back":
+                self.app.RedimensionarImatge(
+                ent[1].base.Images["Back"],
+                160, 240, False
+                )
+            })
+            
+            self.canvas.create_image(
+                    x + 10, y + 10,
+                    image=ent[1].ImatgeAjustada["Back"],
+                    anchor="nw",
+                    tags=("ent_estat", "mostrar_estat")
+                )
+            x += 200
+        
+        y = 20
+        x = 350 if len(self.enemic) == 1 else 200
+        for i, ent in enumerate(self.enemic.items()):
+            ent[1].ImatgeAjustada.update({
+                "Frontal":
+                self.app.RedimensionarImatge(
+                ent[1].base.Images["Frontal"],
+                160, 240, False
+                )
+            })
+            
+            self.canvas.create_image(
+                    x + 10, y + 10,
+                    image=ent[1].ImatgeAjustada["Frontal"],
+                    anchor="nw",
+                    tags=("ent_estat", "mostrar_estat")
+                )
+            x += 200        
+    
+    def dibuixar_seleccio_accio(self):
+        self.canvas.create_rectangle(
+            5, self.app.Alto - 200,
+            self.app.Ancho - 5, 
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=5, tags=("zona_seleccio", "combat")
         )
+
+        self.canvas.create_rectangle(
+            5, self.app.Alto - 200,
+            self.app.Ancho - 5, 
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=5, tags=("zona_descripcio", "combat")
+        )
+
+        for i in self.OpcionsCombat:
+            pass
+
+
 
     def GenerarEnemic(self):
 
@@ -94,7 +168,7 @@ class MenuCombat():
                     apareix = seleccio[0]
                 entitat = Entitat.Entity(f"enemy_{l+1}","", 
                             random.randrange(
-                                self.app.jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0] - 2, enemy["enemy_0"].Lv), 
+                                self.app.jugador.Ubicacio.Enemies[seleccio[0]]["level_range"][0] - 2, self.enemic["enemy_0"].Lv), 
                                 False, self.app.Entities[apareix])
                 
                 self.enemic.update({entitat.id: entitat})
