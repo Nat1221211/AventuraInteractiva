@@ -91,6 +91,8 @@ class App():
         self.fondo = None
 
         self.Menu = Utilitats.Menu(self, self.canvas, "", [])
+        self.MostrarCombat = 
+        self.Combat = False
 
         self.MostrarPantallaInicial()
     
