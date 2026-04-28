@@ -100,6 +100,8 @@ class Entity():
             "Accesory_2": "",
         }
 
+        # Carregar Imatges individualment
+        self.Imatges = self.base.Images
         self.ImatgeAjustada = {}
 
     def Recuperacio(self):

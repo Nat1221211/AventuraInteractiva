@@ -1,7 +1,7 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "greenwoods",
-    "Or": 2130,
+    "Ubicacio": "dawn_village",
+    "Or": 2000,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -15,14 +15,10 @@
     },
     "Llocs_Trobats": [
         "dawn_village",
-        "south_forest",
-        "greenwoods",
-        "knightshire"
+        "south_forest"
     ],
     "Llocs_Visitats": [
-        "dawn_village",
-        "south_forest",
-        "greenwoods"
+        "dawn_village"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
@@ -31,35 +27,24 @@
             "id": "Player",
             "Nom": "Aishia",
             "Base": "archer",
-            "Lv": 10,
+            "Lv": 5,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
             "XP": 0,
             "StatsCombat": {
-                "MaxHP": 34.0,
-                "CurHP": 33.999999999999986,
-                "MaxMana": 38.0,
-                "Mana": 38.0,
-                "ATK": 38.0,
-                "INT": 30.0,
-                "DEF": 38.0,
-                "SPD": 34.0
+                "MaxHP": 22.0,
+                "CurHP": 22.0,
+                "MaxMana": 24.0,
+                "Mana": 24.0,
+                "ATK": 24.0,
+                "INT": 20.0,
+                "DEF": 24.0,
+                "SPD": 22.0
             }
         }
     ],
-    "Inventari": [
-        {
-            "id": "complete_potion",
-            "Amount": 3,
-            "Clase": "Combat"
-        },
-        {
-            "id": "high_potion",
-            "Amount": 1,
-            "Clase": "Combat"
-        }
-    ],
+    "Inventari": [],
     "Titols": [],
     "Estadistiques": {},
     "Increment_Stats": {

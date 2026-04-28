@@ -8,7 +8,7 @@
     "enemies": {
         "wolf": {
             "prob": 40,
-            "group_probs": [1, 1, 98],
+            "group_probs": [40, 50, 10],
             "companions": {},
             "drops": {
 
@@ -18,7 +18,7 @@
 
         "slime": {
             "prob": 30,
-            "group_probs": [1, 1, 98],
+            "group_probs": [80, 20],
             "companions": {},
             "drops": {
 
@@ -28,7 +28,7 @@
 
         "conill": {
             "prob": 30,
-            "group_probs": [1, 1, 98],
+            "group_probs": [90, 10],
             "companions": {},
             "drops": {
 
@@ -38,7 +38,7 @@
 
         "jabali": {
             "prob": 30,
-            "group_probs": [1, 1, 98],
+            "group_probs": [90, 10],
             "companions": {},
             "drops": {
 

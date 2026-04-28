@@ -55,11 +55,38 @@ class MenuCombat():
         self.dibuixar_entitats()
 
         self.canvas.create_rectangle(
-            5, self.app.Alto - 200,
+            5, self.app.Alto - 150,
             self.app.Ancho - 5, 
             self.app.Alto - 5,
             fill="white", outline="black",
             width=5, tags=("zona_info", "combat")
+        )
+
+        self.dibuixar_info_entitats()
+
+    def dibuixar_info_entitats(self):
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 5, 
+            60,
+            fill="white", outline="black",
+            width=5, tags=("zona_accio", "combat")
+        )
+
+        self.canvas.create_rectangle(
+            5, 65,
+            200, 
+            self.app.Alto - 155,
+            fill="white", outline="black",
+            width=5, tags=("zona_enemics", "combat")
+        )
+
+        self.canvas.create_rectangle(
+            self.app.Ancho - 200, 65,
+            self.app.Ancho - 5, 
+            self.app.Alto - 155,
+            fill="white", outline="black",
+            width=5, tags=("zona_aliats", "combat")
         )
 
         
@@ -69,17 +96,20 @@ class MenuCombat():
         y = self.app.Alto - 340
         x = 350 if len(self.equip) == 1 else 200
         for i, ent in enumerate(self.equip.items()):
-            ent[1].ImatgeAjustada.update({
+            if "Combat" not in ent[1].ImatgeAjustada.keys():
+                ent[1].ImatgeAjustada["Combat"]={}
+
+            ent[1].ImatgeAjustada["Combat"].update({
                 "Back":
                 self.app.RedimensionarImatge(
-                ent[1].base.Images["Back"],
+                ent[1].Imatges["Back"],
                 160, 240, False
                 )
             })
             
             self.canvas.create_image(
                     x + 10, y + 10,
-                    image=ent[1].ImatgeAjustada["Back"],
+                    image=ent[1].ImatgeAjustada["Combat"]["Back"],
                     anchor="nw",
                     tags=("ent_estat", "mostrar_estat")
                 )
@@ -88,21 +118,25 @@ class MenuCombat():
         y = 20
         x = 350 if len(self.enemic) == 1 else 200
         for i, ent in enumerate(self.enemic.items()):
-            ent[1].ImatgeAjustada.update({
+            if "Combat" not in ent[1].ImatgeAjustada.keys():
+                ent[1].ImatgeAjustada["Combat"]={}
+
+            ent[1].ImatgeAjustada["Combat"].update({
                 "Frontal":
                 self.app.RedimensionarImatge(
-                ent[1].base.Images["Frontal"],
+                ent[1].Imatges["Frontal"],
                 160, 240, False
                 )
             })
             
             self.canvas.create_image(
                     x + 10, y + 10,
-                    image=ent[1].ImatgeAjustada["Frontal"],
+                    image=ent[1].ImatgeAjustada["Combat"]["Frontal"],
                     anchor="nw",
                     tags=("ent_estat", "mostrar_estat")
                 )
-            x += 200        
+            x += 200
+            
     
     def dibuixar_seleccio_accio(self):
         self.canvas.create_rectangle(
