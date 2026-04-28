@@ -9,6 +9,10 @@ import json
 import os
 import random
 
+import tkinter as Tk
+from tkinter import font as tkfont
+
+
 # Importar Classes
 from Classes import Entitat
 import UIManager
@@ -264,6 +268,19 @@ class MenuCombat():
             )
             self.canvas.tag_raise("vida_actual_entitats", "vida_entitats")
 
+            font = tkfont.Font(family="Courier", size=11, weight="bold")
+
+            texthealth = f"{round(ent[1].StatsCombat["CurHP"])}/{round(ent[1].StatsCombat["MaxHP"])}"
+            midatext = font.measure(texthealth)
+
+            self.canvas.create_text(
+                self.app.Ancho - 20 - midatext, y + 65,
+                text=texthealth,
+                fill="black",
+                font=("Courier", 11, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+
             self.canvas.create_text(
                 x + 10, y + 88,
                 text=f"Mana:",
@@ -292,6 +309,19 @@ class MenuCombat():
                 width=2, tags=("mana_actual_entitats", "info_enemics", "zona_enemics", "combat")
             )
             self.canvas.tag_raise("mana_actual_entitats", "mana_entitats")
+
+            textmana = f"{round(ent[1].StatsCombat["Mana"])}/{round(ent[1].StatsCombat["MaxMana"])}"
+            midatext = font.measure(textmana)
+
+            self.canvas.create_text(
+                self.app.Ancho - 20 - midatext, y + 90,
+                text=textmana,
+                fill="black",
+                font=("Courier", 11, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+
+
             y += salt
     
     def dibuixar_entitats(self):
