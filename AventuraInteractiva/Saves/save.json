@@ -34,9 +34,9 @@
             "XP": 0,
             "StatsCombat": {
                 "MaxHP": 22.0,
-                "CurHP": 22.0,
+                "CurHP": 5.0,
                 "MaxMana": 24.0,
-                "Mana": 24.0,
+                "Mana": 12.0,
                 "ATK": 24.0,
                 "INT": 20.0,
                 "DEF": 24.0,
@@ -54,9 +54,9 @@
             "XP": 0,
             "StatsCombat": {
                 "MaxHP": 18.0,
-                "CurHP": 18.0,
+                "CurHP": 9.0,
                 "MaxMana": 30.0,
-                "Mana": 30.0,
+                "Mana": 5.0,
                 "ATK": 12.0,
                 "INT": 28.0,
                 "DEF": 18.0,

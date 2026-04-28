@@ -142,27 +142,35 @@ class MenuCombat():
             )
 
             self.canvas.create_text(
-                x + 20, y + 58,
+                x + 10, y + 58,
                 text=f"Lv: {ent[1].Lv}",
                 fill="black",
                 font=("Courier", 16, "bold"),
                 anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
             )
 
+            self.canvas.create_text(
+                x + 10, y + 83,
+                text=f"HP: ",
+                fill="black",
+                font=("Courier", 12, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+
             self.canvas.create_rectangle(
-                x + 20, y + 85,
-                x + 20 + 100, 
+                x + 40, y + 85,
+                x + 40 + 95, 
                 y + 100,
                 fill="white", outline="black",
                 width=2, tags=("vida_entitats", "info_enemics", "zona_enemics", "combat")
             )
 
             health = ent[1].StatsCombat["CurHP"] / ent[1].StatsCombat["MaxHP"]
-            mida = 100 * health
+            mida = 95 * health
 
             self.canvas.create_rectangle(
-                x + 20, y + 85,
-                x + 20 + mida, 
+                x + 40, y + 85,
+                x + 40 + mida, 
                 y + 100,
                 fill="green", outline="black",
                 width=2, tags=("vida_actual_entitats", "info_enemics", "zona_enemics", "combat")
@@ -220,32 +228,70 @@ class MenuCombat():
             )
 
             self.canvas.create_text(
-                x + 20, y + 58,
+                x + 50, y + 35,
                 text=f"Lv: {ent[1].Lv}",
                 fill="black",
                 font=("Courier", 16, "bold"),
                 anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
             )
 
+            self.canvas.create_text(
+                x + 28, y + 63,
+                text=f"HP:",
+                fill="black",
+                font=("Courier", 13, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+
             self.canvas.create_rectangle(
-                x + 20, y + 85,
-                x + 20 + 160, 
-                y + 100,
+                x + 60, y + 65,
+                self.app.Ancho - 15, 
+                y + 80,
                 fill="white", outline="black",
                 width=2, tags=("vida_entitats", "info_enemics", "zona_enemics", "combat")
             )
 
             health = ent[1].StatsCombat["CurHP"] / ent[1].StatsCombat["MaxHP"]
-            mida = 160 * health
+            amplada = (self.app.Ancho - 15) - (x + 60)
+            mida = amplada * health
 
             self.canvas.create_rectangle(
-                x + 20, y + 85,
-                x + 20 + mida, 
-                y + 100,
+                x + 60, y + 65,
+                x + 60 + mida, 
+                y + 80,
                 fill="green", outline="black",
                 width=2, tags=("vida_actual_entitats", "info_enemics", "zona_enemics", "combat")
             )
             self.canvas.tag_raise("vida_actual_entitats", "vida_entitats")
+
+            self.canvas.create_text(
+                x + 10, y + 88,
+                text=f"Mana:",
+                fill="black",
+                font=("Courier", 13, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+
+            self.canvas.create_rectangle(
+                x + 60, y + 90,
+                self.app.Ancho - 15, 
+                y + 105,
+                fill="white", outline="black",
+                width=2, tags=("mana_entitats", "info_enemics", "zona_enemics", "combat")
+            )
+
+            mana = ent[1].StatsCombat["Mana"] / ent[1].StatsCombat["MaxMana"]
+            amplada = (self.app.Ancho - 15) - (x + 60)
+            mida = amplada * mana
+
+            self.canvas.create_rectangle(
+                x + 60, y + 90,
+                x + 60 + mida, 
+                y + 105,
+                fill="cyan", outline="black",
+                width=2, tags=("mana_actual_entitats", "info_enemics", "zona_enemics", "combat")
+            )
+            self.canvas.tag_raise("mana_actual_entitats", "mana_entitats")
             y += salt
     
     def dibuixar_entitats(self):
