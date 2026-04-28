@@ -100,7 +100,6 @@ class App():
         if self.Menu.id not in ["Motxila"]:
             seleccionat = self.Menu.opcions[self.Menu.index]
        
-
         if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
             self.SeleccionarPartida()
 
@@ -271,6 +270,12 @@ class App():
         self.MostrarMenu()
     
     def ControlBinds(self, tecla):
+        if self.Combat == True:
+            pass
+        else:
+            self.ControlBindsMenus(tecla)
+
+    def ControlBindsMenus(self, tecla):
         if self.DialegActiu == True:
             if tecla.keysym == "Return":
                 self.Menu.PulsarEnter()
