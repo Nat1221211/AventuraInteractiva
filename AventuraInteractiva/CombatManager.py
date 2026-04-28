@@ -62,9 +62,9 @@ class MenuCombat():
             width=5, tags=("zona_info", "combat")
         )
 
-        self.dibuixar_info_entitats()
+        self.dibuixar_recuadres_informacio()
 
-    def dibuixar_info_entitats(self):
+    def dibuixar_recuadres_informacio(self):
         self.canvas.create_rectangle(
             5, 5,
             self.app.Ancho - 5, 
@@ -89,8 +89,164 @@ class MenuCombat():
             width=5, tags=("zona_aliats", "combat")
         )
 
-        
+        self.dibuixar_info_enemics()
+        self.dibuixar_info_aliats()
 
+    def dibuixar_info_enemics(self):
+
+        x = 5
+        y = 100
+        self.canvas.create_text(
+            x + 20, y - 30,
+            text="Enemics",
+            fill="black",
+            font=("Courier", 18, "bold"),
+            anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+        )
+        salt = 115
+
+        for i, ent in enumerate(self.enemic.items()):
+            if "Mini" not in ent[1].ImatgeAjustada.keys():
+                ent[1].ImatgeAjustada["Mini"]={}
+
+            ent[1].ImatgeAjustada["Mini"].update({
+                "Frontal":
+                self.app.RedimensionarImatge(
+                ent[1].Imatges["Frontal"],
+                33, 50, False
+                )
+            })
+
+            self.canvas.create_rectangle(
+                x, y,
+                200, 
+                y + salt,
+                fill="white", outline="black",
+                width=5, tags=("info_enemics", "zona_enemics", "combat")
+            )
+            
+            self.canvas.create_image(
+                x + 10, y + 10,
+                image=ent[1].ImatgeAjustada["Mini"]["Frontal"],
+                anchor="nw",
+                tags=("ent_estat", "mostrar_estat")
+            )
+            
+            self.canvas.create_text(
+                x + 50, y + 15,
+                text=ent[1].nom,
+                fill="black",
+                width=180,
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+
+            self.canvas.create_text(
+                x + 20, y + 58,
+                text=f"Lv: {ent[1].Lv}",
+                fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+
+            self.canvas.create_rectangle(
+                x + 20, y + 85,
+                x + 20 + 160, 
+                y + 100,
+                fill="white", outline="black",
+                width=2, tags=("vida_entitats", "info_enemics", "zona_enemics", "combat")
+            )
+
+            health = ent[1].StatsCombat["CurHP"] / ent[1].StatsCombat["MaxHP"]
+            mida = 160 * health
+
+            self.canvas.create_rectangle(
+                x + 20, y + 85,
+                x + 20 + mida, 
+                y + 100,
+                fill="green", outline="black",
+                width=2, tags=("vida_actual_entitats", "info_enemics", "zona_enemics", "combat")
+            )
+            self.canvas.tag_raise("vida_actual_entitats", "vida_entitats")
+            y += salt
+        
+    def dibuixar_info_aliats(self):
+
+        x = self.app.Ancho - 200
+        y = 100
+        self.canvas.create_text(
+            x + 20, y - 30,
+            text="Aliats",
+            fill="black",
+            font=("Courier", 18, "bold"),
+            anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+        )
+        salt = 115
+
+        for i, ent in enumerate(self.equip.items()):
+            if "Mini" not in ent[1].ImatgeAjustada.keys():
+                ent[1].ImatgeAjustada["Mini"]={}
+
+            ent[1].ImatgeAjustada["Mini"].update({
+                "Frontal":
+                self.app.RedimensionarImatge(
+                ent[1].Imatges["Frontal"],
+                33, 50, False
+                )
+            })
+
+            self.canvas.create_rectangle(
+                x, y,
+                self.app.Ancho - 5, 
+                y + salt,
+                fill="white", outline="black",
+                width=5, tags=("info_enemics", "zona_enemics", "combat")
+            )
+            
+            self.canvas.create_image(
+                x + 10, y + 10,
+                image=ent[1].ImatgeAjustada["Mini"]["Frontal"],
+                anchor="nw",
+                tags=("ent_estat", "mostrar_estat")
+            )
+            
+            self.canvas.create_text(
+                x + 50, y + 15,
+                text=ent[1].nom,
+                fill="black",
+                width=180,
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+
+            self.canvas.create_text(
+                x + 20, y + 58,
+                text=f"Lv: {ent[1].Lv}",
+                fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+
+            self.canvas.create_rectangle(
+                x + 20, y + 85,
+                x + 20 + 160, 
+                y + 100,
+                fill="white", outline="black",
+                width=2, tags=("vida_entitats", "info_enemics", "zona_enemics", "combat")
+            )
+
+            health = ent[1].StatsCombat["CurHP"] / ent[1].StatsCombat["MaxHP"]
+            mida = 160 * health
+
+            self.canvas.create_rectangle(
+                x + 20, y + 85,
+                x + 20 + mida, 
+                y + 100,
+                fill="green", outline="black",
+                width=2, tags=("vida_actual_entitats", "info_enemics", "zona_enemics", "combat")
+            )
+            self.canvas.tag_raise("vida_actual_entitats", "vida_entitats")
+            y += salt
     
     def dibuixar_entitats(self):
         y = self.app.Alto - 280
@@ -116,7 +272,7 @@ class MenuCombat():
             x += 150 if len(self.equip) > 1 else 210
         
         y = 50
-        x = 350 if len(self.enemic) == 0 else 270 if len(self.enemic) == 1 else 200
+        x = 350 if len(self.enemic) == 1 else 270 if len(self.enemic) == 2 else 200
 
         for i, ent in enumerate(self.enemic.items()):
             if "Combat" not in ent[1].ImatgeAjustada.keys():
