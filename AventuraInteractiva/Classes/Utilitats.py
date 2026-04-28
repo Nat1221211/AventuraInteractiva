@@ -376,7 +376,7 @@ class Menu():
                 )
 
                 ent.Imatge["Carregada"] = self.app.RedimensionarImatge(
-                                        ent.Objecte.base.Images["Frontal"],
+                                        ent.Objecte.Imatges["Frontal"],
                                         40, 60, False, 3
                                         )
 
@@ -490,7 +490,7 @@ class Menu():
                     x -= 20
                 
                 opc.Imatge["Carregada"] = self.app.RedimensionarImatge(
-                                            opc.Objecte.base.Images["Frontal"],
+                                            opc.Objecte.Imatges["Frontal"],
                                             100, 150, False, 3
                                             )
 
