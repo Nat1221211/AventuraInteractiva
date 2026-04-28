@@ -75,14 +75,14 @@ class MenuCombat():
 
         self.canvas.create_rectangle(
             5, 65,
-            200, 
+            150, 
             self.app.Alto - 155,
             fill="white", outline="black",
             width=5, tags=("zona_enemics", "combat")
         )
 
         self.canvas.create_rectangle(
-            self.app.Ancho - 200, 65,
+            self.app.Ancho - 250, 65,
             self.app.Ancho - 5, 
             self.app.Alto - 155,
             fill="white", outline="black",
@@ -119,7 +119,7 @@ class MenuCombat():
 
             self.canvas.create_rectangle(
                 x, y,
-                200, 
+                150, 
                 y + salt,
                 fill="white", outline="black",
                 width=5, tags=("info_enemics", "zona_enemics", "combat")
@@ -136,7 +136,7 @@ class MenuCombat():
                 x + 50, y + 15,
                 text=ent[1].nom,
                 fill="black",
-                width=180,
+                width=150,
                 font=("Courier", 16, "bold"),
                 anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
             )
@@ -151,14 +151,14 @@ class MenuCombat():
 
             self.canvas.create_rectangle(
                 x + 20, y + 85,
-                x + 20 + 160, 
+                x + 20 + 100, 
                 y + 100,
                 fill="white", outline="black",
                 width=2, tags=("vida_entitats", "info_enemics", "zona_enemics", "combat")
             )
 
             health = ent[1].StatsCombat["CurHP"] / ent[1].StatsCombat["MaxHP"]
-            mida = 160 * health
+            mida = 100 * health
 
             self.canvas.create_rectangle(
                 x + 20, y + 85,
@@ -172,7 +172,7 @@ class MenuCombat():
         
     def dibuixar_info_aliats(self):
 
-        x = self.app.Ancho - 200
+        x = self.app.Ancho - 250
         y = 100
         self.canvas.create_text(
             x + 20, y - 30,
@@ -250,7 +250,7 @@ class MenuCombat():
     
     def dibuixar_entitats(self):
         y = self.app.Alto - 280
-        x = 350 if len(self.equip) == 1 else 270 if len(self.equip) == 2 else 200
+        x = 300 if len(self.equip) == 1 else 220 if len(self.equip) == 2 else 150
         for i, ent in enumerate(self.equip.items()):
             if "Combat" not in ent[1].ImatgeAjustada.keys():
                 ent[1].ImatgeAjustada["Combat"]={}
@@ -272,7 +272,7 @@ class MenuCombat():
             x += 150 if len(self.equip) > 1 else 210
         
         y = 50
-        x = 350 if len(self.enemic) == 1 else 270 if len(self.enemic) == 2 else 200
+        x = 300 if len(self.enemic) == 1 else 220 if len(self.enemic) == 2 else 150
 
         for i, ent in enumerate(self.enemic.items()):
             if "Combat" not in ent[1].ImatgeAjustada.keys():
