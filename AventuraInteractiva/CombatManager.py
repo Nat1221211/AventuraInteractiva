@@ -24,6 +24,7 @@ def StartCombat(app, canvas, ident, misio = False, enemic = None):
         app.MenuCombat.GenerarEnemic()
     else:
         app.MenuCombat.CarregarEnemic(enemic)
+        app.MenuCombat.dibuixar_combat()
 
 
 class OpcionsCombat():
@@ -56,6 +57,15 @@ class MenuCombat():
         self.canvas.delete("all")
         self.app.RedimensionarFons()
 
+        # Preparacions Inicials del COmbat
+        self.PrepararPerCombat()
+        self.teamderr = 0
+        self.enemyderr = 0
+            
+        self.fugir = [False]
+        self.combat = True
+
+        # Començem el combat
         self.dibuixar_entitats()
 
         self.canvas.create_rectangle(
@@ -67,6 +77,8 @@ class MenuCombat():
         )
 
         self.dibuixar_recuadres_informacio()
+        self.PrioritatInicial()
+
 
     def dibuixar_recuadres_informacio(self):
         self.canvas.create_rectangle(
@@ -75,6 +87,14 @@ class MenuCombat():
             60,
             fill="white", outline="black",
             width=5, tags=("zona_accio", "combat")
+        )
+
+        self.canvas.create_rectangle(
+            40, 15,
+            self.app.Ancho - 40, 
+            20,
+            fill="black", outline="black",
+            width=5, tags=("barra_accio", "zona_accio", "combat")
         )
 
         self.canvas.create_rectangle(
@@ -370,7 +390,6 @@ class MenuCombat():
                 )
             x += 150 if len(self.equip) > 1 else 210
             
-    
     def dibuixar_seleccio_accio(self):
         self.canvas.create_rectangle(
             5, self.app.Alto - 200,
@@ -390,8 +409,6 @@ class MenuCombat():
 
         for i in self.OpcionsCombat:
             pass
-
-
 
     def GenerarEnemic(self):
 
@@ -442,108 +459,158 @@ class MenuCombat():
         
         self.dibuixar_combat()
 
-
-    def PrepararPerCombat(jugador, enemy):
-        for i in jugador.Team.values():
+    def PrepararPerCombat(self):
+        for i in self.equip.values():
             i.DefinirCombatStats()
         
-        for j in enemy.values():
+        for j in self.enemic.values():
             j.DefinirCombatStats()
         
-        return enemy
-
-    def PrioritatInicial(jugador, enemy):
-        maxSpeedPlayer = max(jugador.Team.values(), key=lambda j: j.StatsCombat["SPD"])
-        maxSpeedEnemies = max(enemy.values(), key=lambda e: e.StatsCombat["SPD"])
+    def PrioritatInicial(self):
+        maxSpeedPlayer = max(self.equip.values(), key=lambda j: j.StatsCombat["SPD"])
+        maxSpeedEnemies = max(self.enemic.values(), key=lambda e: e.StatsCombat["SPD"])
 
         maxSpeed = max(maxSpeedPlayer.StatsCombat["SPD"], maxSpeedEnemies.StatsCombat["SPD"])
 
-        for i in jugador.Team.values():
+        y = 25
+        for i in self.equip.values():
             if i.StatsCombat["SPD"] == maxSpeed:
                 i.Priority = 100
             else:
                 i.Priority = (i.StatsCombat["SPD"] / maxSpeed) * 100
-        
-        for j in enemy.values():
+
+            amplada = self.app.Ancho - 80
+            x = amplada * (i.Priority / 100)
+
+            if "Accio" not in i.ImatgeAjustada.keys():
+                i.ImatgeAjustada["Accio"]={}
+
+            i.ImatgeAjustada["Accio"].update({
+                "Frontal":
+                self.app.RedimensionarImatge(
+                i.Imatges["Frontal"],
+                20, 30, False
+                )
+            })
+            
+            self.canvas.create_rectangle(
+                x, y,
+                x - 2, 
+                y + 2,
+                fill="black", outline="black",
+                width=5, tags=("accio_entitat", "barra_accio", "zona_accio", "combat")
+            )
+
+            self.canvas.create_rectangle(
+                x, y,
+                x - 30, 
+                55,
+                fill="white", outline="gray",
+                width=1, tags=("accio_entitat", "barra_accio", "zona_accio", "combat")
+            )
+
+            self.canvas.create_image(
+                x - 25, y,
+                image=i.ImatgeAjustada["Accio"]["Frontal"],
+                anchor="nw",
+                tags=("ent_estat", "mostrar_estat")
+            )
+
+
+        for j in self.enemic.values():
             if j.StatsCombat["SPD"] == maxSpeed:
                 j.Priority = 100
             else:
                 j.Priority = (j.StatsCombat["SPD"] / maxSpeed) * 100
 
-        return enemy
+            amplada = self.app.Ancho - 80
+            x = amplada * (j.Priority / 100)
+
+            if "Accio" not in j.ImatgeAjustada.keys():
+                j.ImatgeAjustada["Accio"]={}
+
+            j.ImatgeAjustada["Accio"].update({
+                "Frontal":
+                self.app.RedimensionarImatge(
+                j.Imatges["Frontal"],
+                20, 30, False
+                )
+            })
+            
+            self.canvas.create_rectangle(
+                x, y,
+                x - 2, 
+                y + 2,
+                fill="black", outline="black",
+                width=5, tags=("accio_entitat", "barra_accio", "zona_accio", "combat")
+            )
+
+            self.canvas.create_rectangle(
+                x, y,
+                x - 30, 
+                55,
+                fill="white", outline="gray",
+                width=1, tags=("accio_entitat", "barra_accio", "zona_accio", "combat")
+            )
+
+            self.canvas.create_image(
+                x - 25, y,
+                image=j.ImatgeAjustada["Accio"]["Frontal"],
+                anchor="nw",
+                tags=("ent_estat", "mostrar_estat")
+            )
 
     def Lluitar(self):
-
-        teamderr = 0
-        enemyderr = 0
-
-        enemy = PrepararPerCombat(jugador, enemy)
-
-        enemy = PrioritatInicial(jugador, enemy)
-
-        primer = False
-        for i in jugador.Team.values():
-            if i.Priority >= 100:
-                primer = True
-        
-        if primer == False:
-            print(f"Has estat emboscat per {enemy.keys()}s.")
-        else:
-            print(f"Han aparegut {enemy.keys()}s.")
-            
-        fugir = [False]
-        combat = True
-        while combat == True and fugir[0] == False: 
+        if self.combat == True and self.fugir[0] == False: 
             # Turn Aliat
-            
-            for i in jugador.Team.values():
-                if i.Priority >= 100 and len(enemy) >= 1 and i.StatsCombat["CurHP"] > 0.1 and combat == True:
+            for aliat in self.equip.values():
+                if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1 and self.combat == True:
                     turn = True
                     while turn == True:
-                        UIManager.ClearScreen()
-                        UIManager.BattleScreenShow(jugador.Team)
-                        UIManager.BattleScreenShow(enemy)
                         turn = False
-                        i, enemy, turn, fugir, enemyderr = AccionsLluita(i, jugador, enemy, enemyderr, objectes, event, exits)
+                        self.AccionsLluita(aliat)
                         
                         if turn == False:
-                            i.Priority = 0
-                    UIManager.ClearScreen()
-                if combat == True:
-                    combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr, event, missions, jugador)
+                            aliat.Priority = 0
+                if self.combat == True:
+                    self.ComprobarFiCombat()
 
             # Turn enemic
-            for j in enemy.values():
-                if j.Priority >= 100 and fugir[0] == False and len(jugador.Team) >= 1 and j.StatsCombat["CurHP"] > 0 and combat == True:
-                    UIManager.ClearScreen()
-                    UIManager.BattleScreenShow(jugador.Team)
-                    UIManager.BattleScreenShow(enemy)
-                    enemyMove = random.choice([e for e in j.Moves.values()])
-                    targetable = [e.id for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
-                    # for e in jugador.Team.values():
-                    #     if e.StatsCombat["CurHP"] > 0:
-                    #         targetable.append(e)
-                    target = random.choice(targetable)
-                    jugador.Team, derrotats = j.atacar(jugador.Team, target, enemyMove)
-                    j.Priority = 0
-                    j, derrotats = ComprobarEfectEstat(j, derrotats)
-                    teamderr = DescartarDerrotats(derrotats, teamderr, jugador, event, exits)
-                    UIManager.ClearScreen()
-                if combat == True:
-                    combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr, event, missions, jugador)
+            for j in self.enemic.values():
+                if j.Priority >= 100 and self.fugir[0] == False and len(self.equip) >= 1 and j.StatsCombat["CurHP"] > 0 and self.combat == True:
+                    pass
+                    # UIManager.ClearScreen()
+                    # UIManager.BattleScreenShow(jugador.Team)
+                    # UIManager.BattleScreenShow(enemy)
+                    # enemyMove = random.choice([e for e in j.Moves.values()])
+                    # targetable = [e.id for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
+                    # # for e in jugador.Team.values():
+                    # #     if e.StatsCombat["CurHP"] > 0:
+                    # #         targetable.append(e)
+                    # target = random.choice(targetable)
+                    # jugador.Team, derrotats = j.atacar(jugador.Team, target, enemyMove)
+                    # j.Priority = 0
+                    # j, derrotats = ComprobarEfectEstat(j, derrotats)
+                    # teamderr = DescartarDerrotats(derrotats, teamderr, jugador, event, exits)
+                    # UIManager.ClearScreen()
+                # if combat == True:
+                #     combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr, event, missions, jugador)
             
-            enemy = IncrementarPrioritat(jugador, enemy)
-        finalitzarCombat(jugador.Team, jugador)
+            self.IncrementarPrioritat()
+        # self.finalitzarCombat()
 
-    def IncrementarPrioritat(jugador, enemy):
-        for i in jugador.Team.values():
+    def IncrementarPrioritat(self):
+        for i in self.equip.values():
             if i.StatsCombat["CurHP"] > 0:
-                i.Priority += i.StatsCombat["SPD"] / 100  
+                i.Priority += i.StatsCombat["SPD"] / 100
+
         
-        for j in enemy.values():
+        for j in self.enemic.values():
             if j.StatsCombat["CurHP"] > 0:
                 j.Priority += j.StatsCombat["SPD"] / 100
-        return enemy
+
+        
+        self.app.root.after()
 
     def DescartarDerrotats(llista, derr, jugador, event, exits):
         for p in llista:
