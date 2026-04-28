@@ -389,7 +389,7 @@ class Menu():
 
                 self.canvas.create_text(
                     self.app.Ancho - 670, y + 35,
-                    text=f"Name: {self.opcions[self.index].Objecte.nom}",
+                    text=f"Name: {ent.Objecte.nom}",
                     fill=color,
                     font=("Courier", 16, "bold"),
                     anchor="nw", tags=("recuadre_entitat", "stats")
@@ -397,7 +397,7 @@ class Menu():
 
                 self.canvas.create_text(
                     self.app.Ancho - 670, y + 65,
-                    text=f"Level: {self.opcions[self.index].Objecte.Lv} / {self.opcions[self.index].Objecte.LvLimit}",
+                    text=f"Level: {ent.Objecte.Lv} / {ent.Objecte.LvLimit}",
                     fill="black",
                     font=("Courier", 16, "bold"),
                     anchor="nw", tags=("recuadre_entitat", "stats")
@@ -405,7 +405,7 @@ class Menu():
                 
                 self.canvas.create_text(
                     self.app.Ancho - 400, y + 35,
-                    text=f"HP: {round(self.opcions[self.index].Objecte.StatsCombat["CurHP"], 2)} / {round(self.opcions[self.index].Objecte.StatsCombat["MaxHP"], 2)}",
+                    text=f"HP: {round(ent.Objecte.StatsCombat["CurHP"], 2)} / {round(ent.Objecte.StatsCombat["MaxHP"], 2)}",
                     fill="black",
                     font=("Courier", 16, "bold"),
                     anchor="nw", tags=("recuadre_entitat", "stats", "hp")
@@ -413,7 +413,7 @@ class Menu():
 
                 self.canvas.create_text(
                     self.app.Ancho - 400, y + 65,
-                    text=f"Mana: {round(self.opcions[self.index].Objecte.StatsCombat["Mana"], 2)} / {round(self.opcions[self.index].Objecte.StatsCombat["MaxMana"], 2)}",
+                    text=f"Mana: {round(ent.Objecte.StatsCombat["Mana"], 2)} / {round(ent.Objecte.StatsCombat["MaxMana"], 2)}",
                     fill="black",
                     font=("Courier", 16, "bold"),
                     anchor="nw", tags=("recuadre_entitat", "stats", "mana")
@@ -668,6 +668,11 @@ class Menu():
                     self.index = (self.index + 1) % len(self.opcions)
 
             if self.app.MostrarEstat == True:
+                if self.opcions[self.index].id == "sortir":
+                    if direccio == "w":
+                        self.index = (self.index - 1) % len(self.opcions)
+                    elif direccio == "s":
+                        self.index = (self.index + 1) % len(self.opcions)
                 self.DibuixarEstat()
             elif self.app.SeleccioAliat == True:
                 self.dibuixar_menu_equip()
