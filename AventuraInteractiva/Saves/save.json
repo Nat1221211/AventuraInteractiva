@@ -62,26 +62,6 @@
                 "DEF": 18.0,
                 "SPD": 18.0
             }
-        },
-        {
-            "id": "ally_2",
-            "Nom": "Milim",
-            "Base": "archer",
-            "Lv": 5,
-            "Lv_Limit": 100,
-            "Moves": [],
-            "Afected": [],
-            "XP": 0,
-            "StatsCombat": {
-                "MaxHP": 22.0,
-                "CurHP": 22.0,
-                "MaxMana": 24.0,
-                "Mana": 24.0,
-                "ATK": 24.0,
-                "INT": 20.0,
-                "DEF": 24.0,
-                "SPD": 22.0
-            }
         }
     ],
     "Inventari": [],

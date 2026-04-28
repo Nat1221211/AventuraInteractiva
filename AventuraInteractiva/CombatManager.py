@@ -94,7 +94,7 @@ class MenuCombat():
     
     def dibuixar_entitats(self):
         y = self.app.Alto - 280
-        x = 350 if len(self.equip) == 1 else 200
+        x = 350 if len(self.equip) == 1 else 270 if len(self.equip) == 2 else 200
         for i, ent in enumerate(self.equip.items()):
             if "Combat" not in ent[1].ImatgeAjustada.keys():
                 ent[1].ImatgeAjustada["Combat"]={}
@@ -113,10 +113,11 @@ class MenuCombat():
                     anchor="nw",
                     tags=("ent_estat", "mostrar_estat")
                 )
-            x += 170 if len(self.equip) > 2 else 240
+            x += 150 if len(self.equip) > 1 else 210
         
         y = 50
-        x = 350 if len(self.enemic) == 1 else 200
+        x = 350 if len(self.enemic) == 0 else 270 if len(self.enemic) == 1 else 200
+
         for i, ent in enumerate(self.enemic.items()):
             if "Combat" not in ent[1].ImatgeAjustada.keys():
                 ent[1].ImatgeAjustada["Combat"]={}
@@ -135,7 +136,7 @@ class MenuCombat():
                     anchor="nw",
                     tags=("ent_estat", "mostrar_estat")
                 )
-            x += 170 if len(self.equip) > 2 else 240
+            x += 150 if len(self.equip) > 1 else 210
             
     
     def dibuixar_seleccio_accio(self):
