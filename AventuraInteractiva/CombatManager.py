@@ -498,7 +498,7 @@ class MenuCombat():
                 x - 2, 
                 y + 2,
                 fill="black", outline="black",
-                width=5, tags=(f"accio_entitat_aliada_{pos}", "barra_accio", "zona_accio", "combat")
+                width=5, tags=(f"action_x_ally_{i.id}", f"accio_entitat_aliada_{i.id}", "barra_accio", "zona_accio", "combat")
             )
 
             self.canvas.create_rectangle(
@@ -506,14 +506,14 @@ class MenuCombat():
                 x - 30, 
                 55,
                 fill="white", outline="gray",
-                width=1, tags=(f"accio_entitat_aliada_{pos}", "barra_accio", "zona_accio", "combat")
+                width=1, tags=(f"accio_entitat_aliada_{i.id}", "barra_accio", "zona_accio", "combat")
             )
 
             self.canvas.create_image(
                 x - 25, y,
                 image=i.ImatgeAjustada["Accio"]["Frontal"],
                 anchor="nw",
-                tags=(f"accio_entitat_aliada_{pos}", "ent_estat", "mostrar_estat")
+                tags=(f"accio_entitat_aliada_{i.id}", "ent_estat", "mostrar_estat")
             )
 
 
@@ -542,7 +542,7 @@ class MenuCombat():
                 x - 2, 
                 y + 2,
                 fill="black", outline="black",
-                width=5, tags=(f"accio_entitat_enemiga_{pos}", "barra_accio", "zona_accio", "combat")
+                width=5, tags=(f"action_x_enemy_{j.id}", f"accio_entitat_enemiga_{j.id}", "barra_accio", "zona_accio", "combat")
             )
 
             self.canvas.create_rectangle(
@@ -550,27 +550,29 @@ class MenuCombat():
                 x - 30, 
                 55,
                 fill="white", outline="gray",
-                width=1, tags=(f"accio_entitat_enemiga_{pos}", "barra_accio", "zona_accio", "combat")
+                width=1, tags=(f"accio_entitat_enemiga_{j.id}", "barra_accio", "zona_accio", "combat")
             )
 
             self.canvas.create_image(
                 x - 25, y,
                 image=j.ImatgeAjustada["Accio"]["Frontal"],
                 anchor="nw",
-                tags=(f"accio_entitat_enemiga_{pos}", "ent_estat", "mostrar_estat")
+                tags=(f"accio_entitat_enemiga_{j.id}", "ent_estat", "mostrar_estat")
             )
+
+            self.Lluitar()
 
     def IncrementarPrioritat(self):
         for pos, i in enumerate(self.equip.values()):
             if i.StatsCombat["CurHP"] > 0:
                 i.Priority += i.StatsCombat["SPD"] / 100
                 amplada = self.app.Ancho - 80
-                x = amplada * (j.Priority / 100)
+                x = amplada * (i.Priority / 100)
 
-                old_x = self.canvas.coords(f"accio_entitat_aliada_{pos}")
+                old_x = self.canvas.coords(f"action_x_ally_{i.id}")
                 x -= old_x[0]
 
-                self.canvas.move(f"accio_entitat_aliada_{pos}", x, 0)
+                self.canvas.move(f"accio_entitat_aliada_{i.id}", x, 0)
         
         for pos, j in enumerate(self.enemic.values()):
             if j.StatsCombat["CurHP"] > 0:
@@ -578,10 +580,10 @@ class MenuCombat():
                 amplada = self.app.Ancho - 80
                 x = amplada * (j.Priority / 100)
 
-                old_x = self.canvas.coords(f"accio_entitat_enemiga_{pos}")
+                old_x = self.canvas.coords(f"action_x_enemy_{j.id}")
                 x -= old_x[0]
 
-                self.canvas.move(f"accio_entitat_enemiga_{pos}", x, 0)
+                self.canvas.move(f"accio_entitat_enemiga_{j.id}", x, 0)
         
         self.app.root.after(10, self.Lluitar)
 
@@ -589,7 +591,7 @@ class MenuCombat():
         if self.combat == True and self.fugir[0] == False: 
             # Turn Aliat
             for aliat in self.equip.values():
-                # if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1 and self.combat == True:
+                if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1 and self.combat == True:
                 #     turn = True
                 #     while turn == True:
                 #         turn = False
@@ -599,12 +601,11 @@ class MenuCombat():
                 #             aliat.Priority = 0
                 # if self.combat == True:
                 #     self.ComprobarFiCombat()
-                aliat.Priority = 0
+                    aliat.Priority = 0
 
             # Turn enemic
             for j in self.enemic.values():
                 if j.Priority >= 100 and self.fugir[0] == False and len(self.equip) >= 1 and j.StatsCombat["CurHP"] > 0 and self.combat == True:
-                    pass
                     # UIManager.ClearScreen()
                     # UIManager.BattleScreenShow(jugador.Team)
                     # UIManager.BattleScreenShow(enemy)
@@ -615,7 +616,7 @@ class MenuCombat():
                     # #         targetable.append(e)
                     # target = random.choice(targetable)
                     # jugador.Team, derrotats = j.atacar(jugador.Team, target, enemyMove)
-                    # j.Priority = 0
+                    j.Priority = 0
                     # j, derrotats = ComprobarEfectEstat(j, derrotats)
                     # teamderr = DescartarDerrotats(derrotats, teamderr, jugador, event, exits)
                     # UIManager.ClearScreen()
