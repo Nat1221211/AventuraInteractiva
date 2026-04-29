@@ -536,7 +536,7 @@ class MenuCombat():
                 20, 30, False
                 )
             })
-            
+                        
             self.canvas.create_rectangle(
                 x, y,
                 x - 2, 
@@ -560,7 +560,7 @@ class MenuCombat():
                 tags=(f"accio_entitat_enemiga_{j.id}", "ent_estat", "mostrar_estat")
             )
 
-            self.Lluitar()
+        self.Lluitar()
 
     def IncrementarPrioritat(self):
         for pos, i in enumerate(self.equip.values()):
