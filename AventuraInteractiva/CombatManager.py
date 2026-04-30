@@ -93,7 +93,6 @@ class MenuCombat():
         self.dibuixar_recuadres_informacio()
         self.PrioritatInicial()
 
-
     def dibuixar_recuadres_informacio(self):
         self.canvas.create_rectangle(
             5, 5,

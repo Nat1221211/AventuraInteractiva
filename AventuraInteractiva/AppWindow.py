@@ -271,7 +271,7 @@ class App():
     
     def ControlBinds(self, tecla):
         if self.Combat == True:
-            self.MenuCombat.MovimentAccions(tecla)
+            self.MenuCombat.MovimentAccions(tecla.keysym)
         else:
             self.ControlBindsMenus(tecla)
 
