@@ -480,7 +480,7 @@ class MenuCombat():
                 i.Priority = (i.StatsCombat["SPD"] / maxSpeed) * 100
 
             amplada = self.app.Ancho - 80
-            x = amplada * (i.Priority / 100)
+            x = 40 + (amplada * (i.Priority / 100))
 
             if "Accio" not in i.ImatgeAjustada.keys():
                 i.ImatgeAjustada["Accio"]={}
@@ -524,7 +524,7 @@ class MenuCombat():
                 j.Priority = (j.StatsCombat["SPD"] / maxSpeed) * 100
 
             amplada = self.app.Ancho - 80
-            x = amplada * (j.Priority / 100)
+            x = 40 + (amplada * (j.Priority / 100))
 
             if "Accio" not in j.ImatgeAjustada.keys():
                 j.ImatgeAjustada["Accio"]={}
@@ -563,11 +563,13 @@ class MenuCombat():
         self.Lluitar()
 
     def IncrementarPrioritat(self):
+        divVel = 140
+
         for pos, i in enumerate(self.equip.values()):
             if i.StatsCombat["CurHP"] > 0:
-                i.Priority += i.StatsCombat["SPD"] / 100
+                i.Priority += i.StatsCombat["SPD"] / divVel
                 amplada = self.app.Ancho - 80
-                x = amplada * (i.Priority / 100)
+                x = 40 + (amplada * (i.Priority / 100))
 
                 old_x = self.canvas.coords(f"action_x_ally_{i.id}")
                 x -= old_x[0]
@@ -576,9 +578,9 @@ class MenuCombat():
         
         for pos, j in enumerate(self.enemic.values()):
             if j.StatsCombat["CurHP"] > 0:
-                j.Priority += j.StatsCombat["SPD"] / 100
+                j.Priority += j.StatsCombat["SPD"] / divVel
                 amplada = self.app.Ancho - 80
-                x = amplada * (j.Priority / 100)
+                x = 40 + (amplada * (j.Priority / 100))
 
                 old_x = self.canvas.coords(f"action_x_enemy_{j.id}")
                 x -= old_x[0]
