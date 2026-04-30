@@ -194,11 +194,14 @@ class Menu():
                     self.SeguentDialeg.remove(i)
                     self.dibuixar_dialeg(passarDialeg)
             else:
-                if self.app.Confirmacio != True:
+                if self.app.Confirmacio != True and self.app.Combat == False:
                     self.canvas.delete("all")
                     self.dibuixar()
+            
+            if self.app.Combat == True:
+                self.app.MenuCombat.Lluitar()
 
-            if self.app.Confirmacio == True:
+            if self.app.Confirmacio == True and self.app.Combat == False:
                 self.dibuixar()
             else:
                 if self.id == "Confirmacio":

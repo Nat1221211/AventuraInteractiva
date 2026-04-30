@@ -279,9 +279,21 @@ class App():
     
     def ControlBinds(self, tecla):
         if self.Combat == True:
-            self.MenuCombat.MovimentAccions(tecla.keysym)
+            self.ControlBindCombat(tecla)
         else:
             self.ControlBindsMenus(tecla)
+    
+    def ControlBindCombat(self, tecla):
+        if self.DialegActiu == True:
+            if tecla.keysym == "Return":
+                self.Menu.PulsarEnter()
+            if tecla.keysym == "BackSpace": 
+                self.Menu.PulsarEnter()
+                
+        if self.MenuCombat.AccioAliat == True:
+            self.MenuCombat.MovimentAccions(tecla.keysym)
+        
+
 
     def ControlBindsMenus(self, tecla):
         if self.DialegActiu == True:
