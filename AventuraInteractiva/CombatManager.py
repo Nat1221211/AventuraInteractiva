@@ -618,37 +618,41 @@ class MenuCombat():
         self.app.root.after(10, self.Lluitar)
 
     def Lluitar(self):
+        accioFeta = False
         if self.combat == True and self.fugir[0] == False: 
             # Turn Aliat
-            for aliat in self.equip.values():
-                if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1 and self.combat == True:
-                #     turn = True
-                #     while turn == True:
-                #         turn = False
-                #         self.AccionsLluita(aliat)
-                        
-                #         if turn == False:
-                #             aliat.Priority = 0
-                # if self.combat == True:
-                #     self.ComprobarFiCombat()
-                    aliat.Priority = 0
+            if accioFeta == False:
+                for aliat in self.equip.values():
+                    if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1 and self.combat == True:
+                    #     turn = True
+                    #     while turn == True:
+                    #         turn = False
+                    #         self.AccionsLluita(aliat)
+                            
+                    #         if turn == False:
+                    #             aliat.Priority = 0
+                    # if self.combat == True:
+                    #     self.ComprobarFiCombat()
+                        aliat.Priority = 0
+                        accioFeta = True
 
             # Turn enemic
-            for j in self.enemic.values():
-                if j.Priority >= 100 and self.fugir[0] == False and len(self.equip) >= 1 and j.StatsCombat["CurHP"] > 0 and self.combat == True:
-                    # enemyMove = random.choice([e for e in j.Moves.values()])
-                    # targetable = [e.id for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
-                    # # for e in jugador.Team.values():
-                    # #     if e.StatsCombat["CurHP"] > 0:
-                    # #         targetable.append(e)
-                    # target = random.choice(targetable)
-                    # jugador.Team, derrotats = j.atacar(jugador.Team, target, enemyMove)
-                    j.Priority = 0
-                    # j, derrotats = ComprobarEfectEstat(j, derrotats)
-                    # teamderr = DescartarDerrotats(derrotats, teamderr, jugador, event, exits)
-                    # UIManager.ClearScreen()
-                # if combat == True:
-                #     combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr, event, missions, jugador)
+                for j in self.enemic.values():
+                    if j.Priority >= 100 and self.fugir[0] == False and len(self.equip) >= 1 and j.StatsCombat["CurHP"] > 0 and self.combat == True:
+                        # enemyMove = random.choice([e for e in j.Moves.values()])
+                        # targetable = [e.id for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
+                        # # for e in jugador.Team.values():
+                        # #     if e.StatsCombat["CurHP"] > 0:
+                        # #         targetable.append(e)
+                        # target = random.choice(targetable)
+                        # jugador.Team, derrotats = j.atacar(jugador.Team, target, enemyMove)
+                        j.Priority = 0
+                        accioFeta = True
+                        # j, derrotats = ComprobarEfectEstat(j, derrotats)
+                        # teamderr = DescartarDerrotats(derrotats, teamderr, jugador, event, exits)
+                        # UIManager.ClearScreen()
+                    # if combat == True:
+                    #     combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr, event, missions, jugador)
             
             self.IncrementarPrioritat()
         # self.finalitzarCombat()
