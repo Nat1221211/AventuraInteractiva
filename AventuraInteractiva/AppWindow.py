@@ -199,7 +199,6 @@ class App():
         self.canvas.tag_lower("fondo")
     
     def RedimensionarImatge(self, imatge, x, y, borros=False, scale = None):
-
         if imatge != None:
             if os.path.exists(imatge):
                 image = Image.open(imatge)
@@ -289,7 +288,7 @@ class App():
                 self.Menu.PulsarEnter()
             if tecla.keysym == "BackSpace": 
                 self.Menu.PulsarEnter()
-                
+
         if self.MenuCombat.AccioAliat == True:
             self.MenuCombat.MovimentAccions(tecla.keysym)
         
