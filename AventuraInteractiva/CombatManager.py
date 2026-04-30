@@ -62,6 +62,22 @@ class MenuCombat():
         self.AccioEnemic = False
         self.DialegActiu = False
 
+        self.fugir = [False]
+        self.combat = False
+
+        # Altres variables necessaries
+        self.AtacantAliat = None
+
+
+    def CridarMenuSegonsAccio(self, accio):
+        AccionsDisponibles={
+            "atacar": lambda: self.dibuixar_seleccio_Moviment,
+            "motxila": lambda: "",
+            "estat": lambda: "",
+            "fugir": lambda: self.AccioFugir,
+            "pasar": lambda: ""
+        }
+
 
     
     def CarregarEnemic(self, enemic):
@@ -614,7 +630,7 @@ class MenuCombat():
                 tags=(f"accio_entitat_enemiga_{j.id}", "ent_estat", "mostrar_estat")
             )
 
-        self.Lluitar()
+        # self.Lluitar()
 
     def IncrementarPrioritat(self):
         divVel = 100    # Variable que controla quina part de la velocitat es suma cada cop a la prioritat.
@@ -662,10 +678,10 @@ class MenuCombat():
                     # if self.combat == True:
                     #     self.ComprobarFiCombat()
                         accioFeta = True
+                        self.AtacantAliat = aliat
                         self.dibuixar_seleccio_accio_aliat()
                         aliat.Priority = 0
                         
-
         # Turn enemic
             for j in self.enemic.values():
                 if accioFeta == False:
@@ -751,82 +767,12 @@ class MenuCombat():
     #             entitat.afected.remove(j)
     #     return entitat, derrotats
 
-    # def MenuAtacar(personatge):
-    #     UIManager.ClearScreen()
+    def dibuixar_seleccio_Moviment(self):
+        pass
         
-    #     UIManager.CrearMenu(personatge.Moves.items(), "Moviments", "Moves")
-
-    #     sel = UIManager.MostrarMenus(UIManager.Menus["Moviments"])
-    #     if sel != None:
-    #         use = personatge.Moves[sel]
-    #         if use.Cost > personatge.StatsCombat["Mana"]:
-    #             print("No tens suficient Mana per a realitzar aquest atac...")
-    #             input("Presiona per a continuar...")
-    #             return None
-    #         else:
-    #             return use
-    #     else:
-    #         return sel
-        
-    # def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes, event, exits):
-    #     print(f"És el torn de {atacant.nom}")
-        
-    #     seleccio = UIManager.MostrarMenus(UIManager.Menus["Accions Lluita"], False, True, jugador, enemy)
-        
-    #     turn = False
-    #     fugir = [False]
-        
-    #     print("\n")
-    #     if seleccio == "atacar":
-    #         move = MenuAtacar(atacant)
-    #         target = None
-    #         UIManager.ClearScreen()
-    #         UIManager.BattleScreenShow(jugador.Team)
-    #         UIManager.BattleScreenShow(enemy)
-    #         print("\n")
-    #         if move != None:
-    #             if move.MultiTarget == False:
-    #                 if move.Healing == False and move.Protective == False:
-    #                     if len(enemy) > 1:
-    #                         target = TriarObjectius(enemy)
-    #                     else:
-    #                         target = "enemy_0"
-    #                 elif move.Healing == True or move.Protective == True:
-    #                     target = TriarObjectius(jugador.Team)
-    #             else:
-    #                 target = "All"
-    #             if target != None:
-    #                 if move.Healing == False and move.Protective == False:
-    #                     enemy, derrotats = atacant.atacar(enemy, target, move)
-    #                     enemyderr = DescartarDerrotats(derrotats, enemyderr, jugador, event, exits)
-    #                 else:
-    #                     jugador.Team = atacant.MoveProtHeal(jugador.Team, target, move)
-            
-    #         if move == None or target == None:
-    #             turn = True
-    #         else:
-    #             atacant.StatsCombat["Mana"] -= move.Cost
-
-    #     elif seleccio == "fugir":
-    #         fugir = Fugir(enemy, jugador)
-    #         if fugir[0] == False:
-    #             atacant, derrotats = ComprobarEfectEstat(atacant)
-    #     elif seleccio == "motxila":
-    #         obj = jugador.ObjectesMochila(objectes, True)
-    #         used = None
-
-    #         if obj != None:
-    #             used = UseObject(jugador, jugador.Team, obj, True)
-    #         if obj == None or used == None:
-    #             turn = True
-    #     elif seleccio == "status":
-    #         UIManager.VeureEstatus(jugador, True)
-    #         turn = True
-    #     elif seleccio == "pasar":
-    #         print("Has decidit pasar torn...")
-    #         input("Presiona per a continuar...")
-        
-    #     return atacant, enemy, turn, fugir, enemyderr
+    def AccioPasarTorn(self):
+        # Cridar un dialeg que mostri amb text que s'ha passat el torn...
+        pass
 
     # def TriarObjectius(list):
 
@@ -839,23 +785,23 @@ class MenuCombat():
             
     #     return target
 
-    # def Fugir(enemy, jugador):
-    #     print("Has intentat Fugir...")
-    #     teamSPD = 0
-    #     for i in jugador.Team.values():
-    #         teamSPD += i.StatsCombat["SPD"]
-    #     enemySPD = 0
-    #     for j in enemy.values():
-    #         enemySPD += j.StatsCombat["SPD"]
-    #     prob = jugador.fleeProb * (teamSPD / enemySPD)   # fleeProb = 75 de base
+    def AccioFugir(self):
+        print("Has intentat Fugir...")
+        teamSPD = 0
+        for i in self.equip.values():
+            teamSPD += i.StatsCombat["SPD"]
+        enemySPD = 0
+        for j in self.enemic.values():
+            enemySPD += j.StatsCombat["SPD"]
+        prob = self.app.jugador.fleeProb * (teamSPD / enemySPD)   # fleeProb = 75 de base
     
-    #     # 75% base * resultat de velocitat del jugador entre la del enemic. (75 * (22 / 20) = 1.1) = 82.5)
-    #     if prob < 100:
-    #         fugir = random.choices([True, False], cum_weights=[prob, 100 - prob])
-    #     else:
-    #         fugir = [True]
-    #     if fugir[0] == True:
-    #         print("Has aconseguit escapar !!")
-    #     else:
-    #         print("No has aconseguit escapar...")
-    #     return fugir
+        # 75% base * resultat de velocitat del jugador entre la del enemic. (75 * (22 / 20) = 1.1) = 82.5)
+        if prob < 100:
+            fugir = random.choices([True, False], cum_weights=[prob, 100 - prob])
+        else:
+            fugir = [True]
+        if fugir[0] == True:
+            print("Has aconseguit escapar !!")
+        else:
+            print("No has aconseguit escapar...")
+        self.Fugir = fugir

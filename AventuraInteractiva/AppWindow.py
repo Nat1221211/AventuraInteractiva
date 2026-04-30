@@ -98,65 +98,73 @@ class App():
         self.MostrarPantallaInicial()
     
     def ConfirmarSeleccio(self, event = None):
-        if self.Menu.id not in ["Motxila"]:
-            seleccionat = self.Menu.opcions[self.Menu.index]
-       
-        if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
-            self.SeleccionarPartida()
-
-        elif self.Menu.id == "Motxila":
-            if self.Menu.llistaobjectes[self.Menu.index].id != "sortir":
-                seleccionat = self.Menu.llistaobjectes[self.Menu.index].Objecte["objecte"]
-                self.Motxila = False
-                self.UltimObjecteSeleccionat = seleccionat
-                UIManager.VeureEstatus(self, False)
-            
-            else:
-                self.Motxila = False
-                UIManager.MostrarMenuPrincipal(self)
-            
-        elif self.Menu.id == "Confirmacio":
-            self.Confirmacio = False
-            if  self.QuinaConfirmacio == "Guardar":
-                if seleccionat.id == "si":
-                    SaveGame.GuardarPartida(self, self.jugador, self.Missions)
-                elif seleccionat.id == "no":
-                    self.Menu.CrearDialeg("Has decidit no guardar la partida...")
-            
-            elif  self.QuinaConfirmacio == "Hostal":
-                if seleccionat.id == "si":
-                    TUtManager.Posada(self)
-                elif seleccionat.id == "no":
-                    self.Menu.CrearDialeg("Has decidit no quedar-te al hostal...")
+        if self.Combat == False:
+            if self.Menu.id not in ["Motxila"]:
+                seleccionat = self.Menu.opcions[self.Menu.index]
         
-        elif self.Menu.id == "Seleccio Equip":
-            if self.SeleccioAliat == True:
-                self.SeleccioAliat = False
-                if seleccionat.id == "sortir":
-                    if self.Menu.MenuAnterior.id == "Motxila":
-                        self.Motxila = True
-                        self.MenuMotxila()
-                    else:
-                        self.Enrere()
-                elif self.Menu.MenuAnterior.id == "Motxila":
-                    if seleccionat.id == "sortir":
-                        self.Motxila = True
-                        self.Enrere()
-                    else:
-                        self.Motxila = True
-                        self.UltimObjecteSeleccionat.Utilitzar(self, seleccionat)
+            if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
+                self.SeleccionarPartida()
+
+            elif self.Menu.id == "Motxila":
+                if self.Menu.llistaobjectes[self.Menu.index].id != "sortir":
+                    seleccionat = self.Menu.llistaobjectes[self.Menu.index].Objecte["objecte"]
+                    self.Motxila = False
+                    self.UltimObjecteSeleccionat = seleccionat
+                    UIManager.VeureEstatus(self, False)
+                
                 else:
-                    self.Menu.mostrar_estat_equip()
+                    self.Motxila = False
+                    UIManager.MostrarMenuPrincipal(self)
+                
+            elif self.Menu.id == "Confirmacio":
+                self.Confirmacio = False
+                if  self.QuinaConfirmacio == "Guardar":
+                    if seleccionat.id == "si":
+                        SaveGame.GuardarPartida(self, self.jugador, self.Missions)
+                    elif seleccionat.id == "no":
+                        self.Menu.CrearDialeg("Has decidit no guardar la partida...")
+                
+                elif  self.QuinaConfirmacio == "Hostal":
+                    if seleccionat.id == "si":
+                        TUtManager.Posada(self)
+                    elif seleccionat.id == "no":
+                        self.Menu.CrearDialeg("Has decidit no quedar-te al hostal...")
             
+            elif self.Menu.id == "Seleccio Equip":
+                if self.SeleccioAliat == True:
+                    self.SeleccioAliat = False
+                    if seleccionat.id == "sortir":
+                        if self.Menu.MenuAnterior.id == "Motxila":
+                            self.Motxila = True
+                            self.MenuMotxila()
+                        else:
+                            self.Enrere()
+                    elif self.Menu.MenuAnterior.id == "Motxila":
+                        if seleccionat.id == "sortir":
+                            self.Motxila = True
+                            self.Enrere()
+                        else:
+                            self.Motxila = True
+                            self.UltimObjecteSeleccionat.Utilitzar(self, seleccionat)
+                    else:
+                        self.Menu.mostrar_estat_equip()
+                
 
-        elif self.Menu.id == "Seleccio Entitats":
-            self.CrearEntitatAliada(seleccionat)
+            elif self.Menu.id == "Seleccio Entitats":
+                self.CrearEntitatAliada(seleccionat)
 
-        elif self.Menu.id == "Menu Poble" or self.Menu.id == "Menu Wild":
-            UIManager.CridarAccioMenuPrincipal(self, seleccionat)
-        
-        elif self.Menu.id == "Mapa":
-            AdventureManager.CanviarZona(self, seleccionat)
+            elif self.Menu.id == "Menu Poble" or self.Menu.id == "Menu Wild":
+                UIManager.CridarAccioMenuPrincipal(self, seleccionat)
+            
+            elif self.Menu.id == "Mapa":
+                AdventureManager.CanviarZona(self, seleccionat)
+        else:
+            self.ConfirmarSeleccioCombat(event)
+    
+    def ConfirmarSeleccioCombat(self, event = None):
+        if self.MenuCombat.AccioAliat == True:
+            seleccio = self.MenuCombat.AccionsCombat[self.MenuCombat.IndexAccio]
+            
          
     def Enrere(self):
         self.Menu = self.Menu.MenuAnterior
