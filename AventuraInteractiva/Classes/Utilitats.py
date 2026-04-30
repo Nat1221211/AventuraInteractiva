@@ -142,12 +142,16 @@ class Menu():
         if not self.Escribint == True:
             return
         
-        if index <= len(self.textdialeg):  
+        if index <= len(self.textdialeg):
             mostrat = self.textdialeg[:index]
+
+            y = 450
+            if self.app.Combat == True:
+                y = 470
 
             self.canvas.delete("text_animat")
             self.dialeg = self.canvas.create_text(
-                30, 450,
+                30, y,
                 text=mostrat, fill="black",
                 font=("Courier", 16, "bold"),
                 anchor="nw", tags=("dialeg", "text_animat")
@@ -175,8 +179,13 @@ class Menu():
             self.app.root.after_cancel(self.after_id)
             self.Escribint = False
             self.canvas.delete("text_animat")
+
+            y = 450
+            if self.app.Combat == True:
+                y = 470
+
             self.canvas.create_text(
-                30, 450,
+                30, y,
                 text=self.textdialeg, fill="black",
                 font=("Courier", 16, "bold"),
                 anchor="nw", tags=("dialeg", "text_animat")
@@ -198,8 +207,8 @@ class Menu():
                     self.canvas.delete("all")
                     self.dibuixar()
             
-            if self.app.Combat == True:
-                self.app.MenuCombat.Lluitar()
+                if self.app.Combat == True:
+                    self.app.MenuCombat.Lluitar()
 
             if self.app.Confirmacio == True and self.app.Combat == False:
                 self.dibuixar()

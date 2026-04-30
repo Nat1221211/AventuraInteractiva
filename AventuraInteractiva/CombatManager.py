@@ -630,7 +630,18 @@ class MenuCombat():
                 tags=(f"accio_entitat_enemiga_{j.id}", "ent_estat", "mostrar_estat")
             )
 
-        self.app.Menu.CrearDialeg(f"Has entrat en combat...")
+        if maxSpeedPlayer.StatsCombat["SPD"] > maxSpeedEnemies.StatsCombat["SPD"]:
+            self.app.Menu.CrearDialeg(f"Has entrat en combat...")
+            if len(self.enemic) < 2 and pos == 0:
+                self.app.Menu.CrearDialeg(f"És un unic enemic, un/a {self.enemic["enemy_0"].nom}.")
+                
+            else:
+                self.app.Menu.CrearDialeg(f"És un grup d'enemics...")
+            
+
+        else:
+            self.app.Menu.CrearDialeg(f"Has estat emboscat...")
+
 
     def IncrementarPrioritat(self):
         divVel = 100    # Variable que controla quina part de la velocitat es suma cada cop a la prioritat.
