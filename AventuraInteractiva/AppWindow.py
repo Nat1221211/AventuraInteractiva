@@ -13,6 +13,7 @@ import SaveGame
 import UIManager
 import AdventureManager
 import TownUtilitiesManager as TUtManager
+import CombatManager
 
 
 from Classes import Player
@@ -91,7 +92,7 @@ class App():
         self.fondo = None
 
         self.Menu = Utilitats.Menu(self, self.canvas, "", [])
-        self.MenuCombat = None
+        self.MenuCombat = CombatManager.MenuCombat
         self.Combat = False
 
         self.MostrarPantallaInicial()
@@ -156,8 +157,7 @@ class App():
         
         elif self.Menu.id == "Mapa":
             AdventureManager.CanviarZona(self, seleccionat)
-        
-        
+         
     def Enrere(self):
         self.Menu = self.Menu.MenuAnterior
         self.MostrarMenu()
@@ -271,7 +271,7 @@ class App():
     
     def ControlBinds(self, tecla):
         if self.Combat == True:
-            pass
+            self.MenuCombat.MovimentAccions(tecla)
         else:
             self.ControlBindsMenus(tecla)
 

@@ -37,11 +37,16 @@ class OpcionsCombat():
 
 class MenuCombat():
     def __init__(self, app, canvas, ident):
+        
+        # Obligatoris
         self.app = app
         self.canvas = canvas
         self.id = ident
         self.equip = self.app.jugador.Team
         self.enemic = {}
+        
+        # Lllistes permanents, probablement només aquesta...
+        self.IndexAccio = 0
         self.AccionsCombat = [
             OpcionsCombat("atacar", "Atacar", True, ""),
             OpcionsCombat("motxila", "Motxila", True, ""),
@@ -49,6 +54,15 @@ class MenuCombat():
             OpcionsCombat("fugir", "Fugir", True, ""),
             OpcionsCombat("pasar", "Pasar Torn", True, "")
         ]
+
+        self.IndexMoviment = 0
+
+        # Estats, seran booleanes.
+        self.AccioAliat = False
+        self.AccioEnemic = False
+        self.DialegActiu = False
+
+
     
     def CarregarEnemic(self, enemic):
         self.enemic = enemic
@@ -407,7 +421,9 @@ class MenuCombat():
                 )
             x += 150 if len(self.equip) > 1 else 210
             
-    def dibuixar_seleccio_accio(self):
+    def dibuixar_seleccio_accio_aliat(self):
+        self.AccioAliat = True
+
         self.canvas.create_rectangle(
             5, self.app.Alto - 150,
             self.app.Ancho - 205, 
@@ -427,14 +443,26 @@ class MenuCombat():
         x = 25
         y = self.app.Alto - 130
         for pos, opcio in enumerate(self.AccionsCombat):
+            color = "black"
+            if self.IndexAccio == pos:
+                color = "blue"
+
             self.canvas.create_text(
-                20, 20,
+                x, y,
                 text=opcio.Nom,
-                fill="black",
+                fill=color,
                 font=("Courier", 16, "bold"),
                 anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
             )
             y += 20
+            
+    def MovimentAccions(self, direccio):
+        if self.AccioAliat == True:
+            if direccio == "w":
+                self.IndexAccio = (self.IndexAccio - 1) % len(self.AccionsCombat)
+            elif direccio == "s":
+                self.IndexAccio = (self.IndexAccio + 1) % len(self.AccionsCombat)
+            self.dibuixar_seleccio_accio_aliat()
             
 
     def GenerarEnemic(self):
@@ -621,8 +649,9 @@ class MenuCombat():
         accioFeta = False
         if self.combat == True and self.fugir[0] == False: 
             # Turn Aliat
-            if accioFeta == False:
-                for aliat in self.equip.values():
+            
+            for aliat in self.equip.values():
+                if accioFeta == False:
                     if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1 and self.combat == True:
                     #     turn = True
                     #     while turn == True:
@@ -633,11 +662,14 @@ class MenuCombat():
                     #             aliat.Priority = 0
                     # if self.combat == True:
                     #     self.ComprobarFiCombat()
-                        aliat.Priority = 0
                         accioFeta = True
+                        self.dibuixar_seleccio_accio_aliat()
+                        aliat.Priority = 0
+                        
 
-            # Turn enemic
-                for j in self.enemic.values():
+        # Turn enemic
+            for j in self.enemic.values():
+                if accioFeta == False:
                     if j.Priority >= 100 and self.fugir[0] == False and len(self.equip) >= 1 and j.StatsCombat["CurHP"] > 0 and self.combat == True:
                         # enemyMove = random.choice([e for e in j.Moves.values()])
                         # targetable = [e.id for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
@@ -646,184 +678,185 @@ class MenuCombat():
                         # #         targetable.append(e)
                         # target = random.choice(targetable)
                         # jugador.Team, derrotats = j.atacar(jugador.Team, target, enemyMove)
-                        j.Priority = 0
                         accioFeta = True
+                        j.Priority = 0
                         # j, derrotats = ComprobarEfectEstat(j, derrotats)
                         # teamderr = DescartarDerrotats(derrotats, teamderr, jugador, event, exits)
                         # UIManager.ClearScreen()
                     # if combat == True:
                     #     combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr, event, missions, jugador)
             
-            self.IncrementarPrioritat()
+            if self.AccioAliat == False and self.AccioEnemic == False:
+                self.IncrementarPrioritat()
         # self.finalitzarCombat()
 
-    def DescartarDerrotats(llista, derr, jugador, event, exits):
-        for p in llista:
-            if p.StatsCombat["CurHP"] <= 0.1:
-                derr += 1
-                if p.isPlayer == False:
-                    UIManager.ClearScreen()
-                    alive = 0
-                    for i in jugador.Team.values(): 
-                        if i.StatsCombat["CurHP"] > 0:
-                            i.LvlUp(event, jugador, exits, p)
-                            alive += 1
-                    if alive >= 1:
-                        jugador.Gold += p.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
-                        print(f"Has guanyat {p.Lv * 10} gold.")
-                        input("Presiona per a continuar...")
-        return derr
+    # def DescartarDerrotats(llista, derr, jugador, event, exits):
+    #     for p in llista:
+    #         if p.StatsCombat["CurHP"] <= 0.1:
+    #             derr += 1
+    #             if p.isPlayer == False:
+    #                 UIManager.ClearScreen()
+    #                 alive = 0
+    #                 for i in jugador.Team.values(): 
+    #                     if i.StatsCombat["CurHP"] > 0:
+    #                         i.LvlUp(event, jugador, exits, p)
+    #                         alive += 1
+    #                 if alive >= 1:
+    #                     jugador.Gold += p.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
+    #                     print(f"Has guanyat {p.Lv * 10} gold.")
+    #                     input("Presiona per a continuar...")
+    #     return derr
 
-    def ComprobarFiCombat(combat, enemyderr, enemy, teamderr, event, missions, jugador):
-        if enemyderr == len(enemy) or teamderr == len(jugador.Team):
-            combat = False
-            if len(enemy) == enemyderr:
-                UIManager.ClearScreen()
-                print("Tos els enemics han estat derrotats !!")
-                input("Presiona per a continuar")
-                for id, val in enemy.items():
-                    event.CridarEvent("Derrotar Enemic", val, jugador, missions)
-        return combat
+    # def ComprobarFiCombat(combat, enemyderr, enemy, teamderr, event, missions, jugador):
+    #     if enemyderr == len(enemy) or teamderr == len(jugador.Team):
+    #         combat = False
+    #         if len(enemy) == enemyderr:
+    #             UIManager.ClearScreen()
+    #             print("Tos els enemics han estat derrotats !!")
+    #             input("Presiona per a continuar")
+    #             for id, val in enemy.items():
+    #                 event.CridarEvent("Derrotar Enemic", val, jugador, missions)
+    #     return combat
 
 
-    def finalitzarCombat(clon, jugador):
-        for i in jugador.Team.keys(): 
-            # if i in clon.keys():
-            #     jugador.Team[i].StatsCombat["CurHP"] = clon[i].StatsCombat["CurHP"]
-            #     jugador.Team[i].StatsCombat["Mana"] = clon[i].StatsCombat["Mana"]
-            # else:
-            #     i.StatsCombat["CurHP"] = 0
-            #     i.StatsCombat["Mana"] = 0
-            jugador.Team[i].afected = []
-            jugador.Team[i].DefinirCombatStats()
+    # def finalitzarCombat(clon, jugador):
+    #     for i in jugador.Team.keys(): 
+    #         # if i in clon.keys():
+    #         #     jugador.Team[i].StatsCombat["CurHP"] = clon[i].StatsCombat["CurHP"]
+    #         #     jugador.Team[i].StatsCombat["Mana"] = clon[i].StatsCombat["Mana"]
+    #         # else:
+    #         #     i.StatsCombat["CurHP"] = 0
+    #         #     i.StatsCombat["Mana"] = 0
+    #         jugador.Team[i].afected = []
+    #         jugador.Team[i].DefinirCombatStats()
 
-    def ComprobarEfectEstat(entitat, derrotats = []):
-        if len(entitat.afected) > 0:
-            eliminar = []
-            for i in entitat.afected:
-                if i.RemainingTurns <= 0 and i.Turns > 0:
-                    statsafected = entitat.afected.StatEffects[1][0]
-                    eliminar.append(i)
-                    # Regenerar Estadistiques
-                    print(f"{entitat.nom}, ja no esta afectat per {i.Name}, les seves estadistiques han retornat al que eren...")
-                elif entitat.StatsCombat["CurHP"] > 0:
-                    if i.Damage > 0:
-                        damagepereffect = ((entitat.StatsCombat["MaxHP"] / 100) * i.Damage)
-                        entitat.StatsCombat["CurHP"] -= damagepereffect
-                        print(f"{entitat.nom}, ha perdut {round(damagepereffect, 2)} HP degut a la {i.Name}.")
-                        if entitat.StatsCombat["CurHP"] <= 0:
-                            print(f"{entitat.nom}, ha estat derrotat per {i.Name}.")
-                            derrotats.append(entitat)
-                    i.RemainingTurns -= 1
-            for j in eliminar:
-                entitat.afected.remove(j)
-        return entitat, derrotats
+    # def ComprobarEfectEstat(entitat, derrotats = []):
+    #     if len(entitat.afected) > 0:
+    #         eliminar = []
+    #         for i in entitat.afected:
+    #             if i.RemainingTurns <= 0 and i.Turns > 0:
+    #                 statsafected = entitat.afected.StatEffects[1][0]
+    #                 eliminar.append(i)
+    #                 # Regenerar Estadistiques
+    #                 print(f"{entitat.nom}, ja no esta afectat per {i.Name}, les seves estadistiques han retornat al que eren...")
+    #             elif entitat.StatsCombat["CurHP"] > 0:
+    #                 if i.Damage > 0:
+    #                     damagepereffect = ((entitat.StatsCombat["MaxHP"] / 100) * i.Damage)
+    #                     entitat.StatsCombat["CurHP"] -= damagepereffect
+    #                     print(f"{entitat.nom}, ha perdut {round(damagepereffect, 2)} HP degut a la {i.Name}.")
+    #                     if entitat.StatsCombat["CurHP"] <= 0:
+    #                         print(f"{entitat.nom}, ha estat derrotat per {i.Name}.")
+    #                         derrotats.append(entitat)
+    #                 i.RemainingTurns -= 1
+    #         for j in eliminar:
+    #             entitat.afected.remove(j)
+    #     return entitat, derrotats
 
-    def MenuAtacar(personatge):
-        UIManager.ClearScreen()
+    # def MenuAtacar(personatge):
+    #     UIManager.ClearScreen()
         
-        UIManager.CrearMenu(personatge.Moves.items(), "Moviments", "Moves")
+    #     UIManager.CrearMenu(personatge.Moves.items(), "Moviments", "Moves")
 
-        sel = UIManager.MostrarMenus(UIManager.Menus["Moviments"])
-        if sel != None:
-            use = personatge.Moves[sel]
-            if use.Cost > personatge.StatsCombat["Mana"]:
-                print("No tens suficient Mana per a realitzar aquest atac...")
-                input("Presiona per a continuar...")
-                return None
-            else:
-                return use
-        else:
-            return sel
+    #     sel = UIManager.MostrarMenus(UIManager.Menus["Moviments"])
+    #     if sel != None:
+    #         use = personatge.Moves[sel]
+    #         if use.Cost > personatge.StatsCombat["Mana"]:
+    #             print("No tens suficient Mana per a realitzar aquest atac...")
+    #             input("Presiona per a continuar...")
+    #             return None
+    #         else:
+    #             return use
+    #     else:
+    #         return sel
         
-    def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes, event, exits):
-        print(f"És el torn de {atacant.nom}")
+    # def AccionsLluita(atacant, jugador, enemy, enemyderr, objectes, event, exits):
+    #     print(f"És el torn de {atacant.nom}")
         
-        seleccio = UIManager.MostrarMenus(UIManager.Menus["Accions Lluita"], False, True, jugador, enemy)
+    #     seleccio = UIManager.MostrarMenus(UIManager.Menus["Accions Lluita"], False, True, jugador, enemy)
         
-        turn = False
-        fugir = [False]
+    #     turn = False
+    #     fugir = [False]
         
-        print("\n")
-        if seleccio == "atacar":
-            move = MenuAtacar(atacant)
-            target = None
-            UIManager.ClearScreen()
-            UIManager.BattleScreenShow(jugador.Team)
-            UIManager.BattleScreenShow(enemy)
-            print("\n")
-            if move != None:
-                if move.MultiTarget == False:
-                    if move.Healing == False and move.Protective == False:
-                        if len(enemy) > 1:
-                            target = TriarObjectius(enemy)
-                        else:
-                            target = "enemy_0"
-                    elif move.Healing == True or move.Protective == True:
-                        target = TriarObjectius(jugador.Team)
-                else:
-                    target = "All"
-                if target != None:
-                    if move.Healing == False and move.Protective == False:
-                        enemy, derrotats = atacant.atacar(enemy, target, move)
-                        enemyderr = DescartarDerrotats(derrotats, enemyderr, jugador, event, exits)
-                    else:
-                        jugador.Team = atacant.MoveProtHeal(jugador.Team, target, move)
+    #     print("\n")
+    #     if seleccio == "atacar":
+    #         move = MenuAtacar(atacant)
+    #         target = None
+    #         UIManager.ClearScreen()
+    #         UIManager.BattleScreenShow(jugador.Team)
+    #         UIManager.BattleScreenShow(enemy)
+    #         print("\n")
+    #         if move != None:
+    #             if move.MultiTarget == False:
+    #                 if move.Healing == False and move.Protective == False:
+    #                     if len(enemy) > 1:
+    #                         target = TriarObjectius(enemy)
+    #                     else:
+    #                         target = "enemy_0"
+    #                 elif move.Healing == True or move.Protective == True:
+    #                     target = TriarObjectius(jugador.Team)
+    #             else:
+    #                 target = "All"
+    #             if target != None:
+    #                 if move.Healing == False and move.Protective == False:
+    #                     enemy, derrotats = atacant.atacar(enemy, target, move)
+    #                     enemyderr = DescartarDerrotats(derrotats, enemyderr, jugador, event, exits)
+    #                 else:
+    #                     jugador.Team = atacant.MoveProtHeal(jugador.Team, target, move)
             
-            if move == None or target == None:
-                turn = True
-            else:
-                atacant.StatsCombat["Mana"] -= move.Cost
+    #         if move == None or target == None:
+    #             turn = True
+    #         else:
+    #             atacant.StatsCombat["Mana"] -= move.Cost
 
-        elif seleccio == "fugir":
-            fugir = Fugir(enemy, jugador)
-            if fugir[0] == False:
-                atacant, derrotats = ComprobarEfectEstat(atacant)
-        elif seleccio == "motxila":
-            obj = jugador.ObjectesMochila(objectes, True)
-            used = None
+    #     elif seleccio == "fugir":
+    #         fugir = Fugir(enemy, jugador)
+    #         if fugir[0] == False:
+    #             atacant, derrotats = ComprobarEfectEstat(atacant)
+    #     elif seleccio == "motxila":
+    #         obj = jugador.ObjectesMochila(objectes, True)
+    #         used = None
 
-            if obj != None:
-                used = UseObject(jugador, jugador.Team, obj, True)
-            if obj == None or used == None:
-                turn = True
-        elif seleccio == "status":
-            UIManager.VeureEstatus(jugador, True)
-            turn = True
-        elif seleccio == "pasar":
-            print("Has decidit pasar torn...")
-            input("Presiona per a continuar...")
+    #         if obj != None:
+    #             used = UseObject(jugador, jugador.Team, obj, True)
+    #         if obj == None or used == None:
+    #             turn = True
+    #     elif seleccio == "status":
+    #         UIManager.VeureEstatus(jugador, True)
+    #         turn = True
+    #     elif seleccio == "pasar":
+    #         print("Has decidit pasar torn...")
+    #         input("Presiona per a continuar...")
         
-        return atacant, enemy, turn, fugir, enemyderr
+    #     return atacant, enemy, turn, fugir, enemyderr
 
-    def TriarObjectius(list):
+    # def TriarObjectius(list):
 
-        UIManager.ClearScreen()
-        targetable = [i for i in list.items() if i[1].StatsCombat["CurHP"] > 0]
+    #     UIManager.ClearScreen()
+    #     targetable = [i for i in list.items() if i[1].StatsCombat["CurHP"] > 0]
         
-        UIManager.CrearMenu(targetable, "Qui és l'objectiu?", "Entitat")
+    #     UIManager.CrearMenu(targetable, "Qui és l'objectiu?", "Entitat")
 
-        target = UIManager.MostrarMenus(UIManager.Menus["Qui és l'objectiu?"], True)
+    #     target = UIManager.MostrarMenus(UIManager.Menus["Qui és l'objectiu?"], True)
             
-        return target
+    #     return target
 
-    def Fugir(enemy, jugador):
-        print("Has intentat Fugir...")
-        teamSPD = 0
-        for i in jugador.Team.values():
-            teamSPD += i.StatsCombat["SPD"]
-        enemySPD = 0
-        for j in enemy.values():
-            enemySPD += j.StatsCombat["SPD"]
-        prob = jugador.fleeProb * (teamSPD / enemySPD)   # fleeProb = 75 de base
+    # def Fugir(enemy, jugador):
+    #     print("Has intentat Fugir...")
+    #     teamSPD = 0
+    #     for i in jugador.Team.values():
+    #         teamSPD += i.StatsCombat["SPD"]
+    #     enemySPD = 0
+    #     for j in enemy.values():
+    #         enemySPD += j.StatsCombat["SPD"]
+    #     prob = jugador.fleeProb * (teamSPD / enemySPD)   # fleeProb = 75 de base
     
-        # 75% base * resultat de velocitat del jugador entre la del enemic. (75 * (22 / 20) = 1.1) = 82.5)
-        if prob < 100:
-            fugir = random.choices([True, False], cum_weights=[prob, 100 - prob])
-        else:
-            fugir = [True]
-        if fugir[0] == True:
-            print("Has aconseguit escapar !!")
-        else:
-            print("No has aconseguit escapar...")
-        return fugir
+    #     # 75% base * resultat de velocitat del jugador entre la del enemic. (75 * (22 / 20) = 1.1) = 82.5)
+    #     if prob < 100:
+    #         fugir = random.choices([True, False], cum_weights=[prob, 100 - prob])
+    #     else:
+    #         fugir = [True]
+    #     if fugir[0] == True:
+    #         print("Has aconseguit escapar !!")
+    #     else:
+    #         print("No has aconseguit escapar...")
+    #     return fugir
