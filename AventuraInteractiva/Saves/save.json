@@ -62,6 +62,26 @@
                 "DEF": 18.0,
                 "SPD": 18.0
             }
+        },
+        {
+            "id": "ally_2",
+            "Nom": "Celia",
+            "Base": "priest",
+            "Lv": 5,
+            "Lv_Limit": 100,
+            "Moves": [],
+            "Afected": [],
+            "XP": 0,
+            "StatsCombat": {
+                "MaxHP": 18.0,
+                "CurHP": 9.0,
+                "MaxMana": 30.0,
+                "Mana": 5.0,
+                "ATK": 12.0,
+                "INT": 28.0,
+                "DEF": 18.0,
+                "SPD": 18.0
+            }
         }
     ],
     "Inventari": [],

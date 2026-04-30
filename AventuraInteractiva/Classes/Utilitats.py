@@ -391,14 +391,14 @@ class Menu():
                 width=4, tags="recuadre_entitat"
                 )
 
-                ent.Imatge["Carregada"] = self.app.RedimensionarImatge(
+                ent.Objecte.ImatgeAjustada["MenuEstat"] = self.app.RedimensionarImatge(
                                         ent.Objecte.Imatges["Frontal"],
-                                        40, 60, False, 3
+                                        75, 108, False
                                         )
 
                 self.canvas.create_image(
-                    x + 10, y + 10,
-                    image=ent.Imatge["Carregada"],
+                    x + 20, y + 10,
+                    image=ent.Objecte.ImatgeAjustada["MenuEstat"],
                     anchor="nw",
                     tags=("ent_estat", "mostrar_estat")
                 )
@@ -505,18 +505,18 @@ class Menu():
                 if i == self.index: 
                     x -= 20
                 
-                opc.Imatge["Carregada"] = self.app.RedimensionarImatge(
+                opc.Objecte.ImatgeAjustada["VeureEstat"] = self.app.RedimensionarImatge(
                                             opc.Objecte.Imatges["Frontal"],
-                                            100, 150, False, 3
+                                            100, 150, False
                                             )
 
                 self.canvas.create_image(
                     x, y,
-                    image=opc.Imatge["Carregada"],
+                    image=opc.Objecte.ImatgeAjustada["VeureEstat"],
                     anchor="nw",
                     tags=("ent_estat", "mostrar_estat")
                 )
-                y += 200
+                y += 175
 
         self.canvas.tag_lower("zona_seleccio")
         self.canvas.tag_raise("ent_estat")
