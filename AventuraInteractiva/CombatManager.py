@@ -630,7 +630,7 @@ class MenuCombat():
                 tags=(f"accio_entitat_enemiga_{j.id}", "ent_estat", "mostrar_estat")
             )
 
-        # self.Lluitar()
+        self.app.Menu.CrearDialeg(f"Has entrat en combat...")
 
     def IncrementarPrioritat(self):
         divVel = 100    # Variable que controla quina part de la velocitat es suma cada cop a la prioritat.

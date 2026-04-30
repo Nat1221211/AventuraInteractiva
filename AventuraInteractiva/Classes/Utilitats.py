@@ -106,12 +106,16 @@ class Menu():
         self.canvas.tag_raise("text_zona")
         self.canvas.tag_lower("text_zona_fons", "menu_interactiu")
     
-    def dibuixar_dialeg(self, dialeg, midacuadre = 180):
+    def dibuixar_dialeg(self, dialeg):
         self.textdialeg = dialeg
         self.mostrat = ""
         self.canvas.delete("dialeg")
         self.Escribint = True
         self.app.DialegActiu = True
+
+        midacuadre = 180
+        if self.app.Combat == True:
+            midacuadre = 150
         
         rect2 = self.canvas.create_rectangle(
             5, self.app.Alto - midacuadre,
