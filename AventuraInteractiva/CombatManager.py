@@ -42,7 +42,7 @@ class MenuCombat():
         self.id = ident
         self.equip = self.app.jugador.Team
         self.enemic = {}
-        self.OpcionsCombat = [
+        self.AccionsCombat = [
             OpcionsCombat("atacar", "Atacar", True, ""),
             OpcionsCombat("motxila", "Motxila", True, ""),
             OpcionsCombat("estat", "Veure Estat", True, ""),
@@ -95,6 +95,23 @@ class MenuCombat():
             20,
             fill="black", outline="black",
             width=5, tags=("barra_accio", "zona_accio", "combat")
+        )
+
+        self.canvas.create_text(
+            30, 25,
+            text="0%",
+            fill="black",
+            font=("Courier", 14, "bold"),
+            anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+        )
+
+        self.canvas.create_text(
+            self.app.Ancho - 55, 
+            25,
+            text="100%",
+            fill="black",
+            font=("Courier", 14, "bold"),
+            anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
         )
 
         self.canvas.create_rectangle(
@@ -392,23 +409,33 @@ class MenuCombat():
             
     def dibuixar_seleccio_accio(self):
         self.canvas.create_rectangle(
-            5, self.app.Alto - 200,
-            self.app.Ancho - 5, 
+            5, self.app.Alto - 150,
+            self.app.Ancho - 205, 
             self.app.Alto - 5,
             fill="white", outline="black",
             width=5, tags=("zona_seleccio", "combat")
         )
 
         self.canvas.create_rectangle(
-            5, self.app.Alto - 200,
+            400, self.app.Alto - 150,
             self.app.Ancho - 5, 
             self.app.Alto - 5,
             fill="white", outline="black",
             width=5, tags=("zona_descripcio", "combat")
         )
 
-        for i in self.OpcionsCombat:
-            pass
+        x = 25
+        y = self.app.Alto - 130
+        for pos, opcio in enumerate(self.AccionsCombat):
+            self.canvas.create_text(
+                20, 20,
+                text=opcio.Nom,
+                fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+            y += 20
+            
 
     def GenerarEnemic(self):
 
@@ -563,7 +590,8 @@ class MenuCombat():
         self.Lluitar()
 
     def IncrementarPrioritat(self):
-        divVel = 140
+        divVel = 100    # Variable que controla quina part de la velocitat es suma cada cop a la prioritat.
+                        # Quan mes alta sigui més lent recorren la barra d'acció.
 
         for pos, i in enumerate(self.equip.values()):
             if i.StatsCombat["CurHP"] > 0:
@@ -608,9 +636,6 @@ class MenuCombat():
             # Turn enemic
             for j in self.enemic.values():
                 if j.Priority >= 100 and self.fugir[0] == False and len(self.equip) >= 1 and j.StatsCombat["CurHP"] > 0 and self.combat == True:
-                    # UIManager.ClearScreen()
-                    # UIManager.BattleScreenShow(jugador.Team)
-                    # UIManager.BattleScreenShow(enemy)
                     # enemyMove = random.choice([e for e in j.Moves.values()])
                     # targetable = [e.id for e in jugador.Team.values() if e.StatsCombat["CurHP"] > 0]
                     # # for e in jugador.Team.values():
@@ -777,21 +802,6 @@ class MenuCombat():
         target = UIManager.MostrarMenus(UIManager.Menus["Qui és l'objectiu?"], True)
             
         return target
-
-    def UseObject(jugador, equip, obj, combat = False):
-        target = TriarObjectius(equip)
-        if target != None:
-            obj.Utilitzar(jugador.Team[target])
-            if jugador.objectes[obj.id]["amount"] > 1:
-                jugador.objectes[obj.id]["amount"] -= 1
-            else:
-                jugador.objectes.pop(obj)
-            UIManager.CrearMenu(jugador.objectes.items(), "Motxila", "Objectes", opcionsvisibles=6)
-            if combat == False:
-                return ""
-        else:
-            return None
-            
 
     def Fugir(enemy, jugador):
         print("Has intentat Fugir...")
