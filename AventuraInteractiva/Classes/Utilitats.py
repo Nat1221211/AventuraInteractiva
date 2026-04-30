@@ -689,7 +689,7 @@ class Menu():
                         self.index = (self.index - 1) % len(self.opcions)
                     elif direccio == "s":
                         self.index = (self.index + 1) % len(self.opcions)
-                self.DibuixarEstat()
+                self.ActualitzarEstat()
             elif self.app.SeleccioAliat == True:
                 self.dibuixar_menu_equip()
             else:
