@@ -69,6 +69,7 @@ class MenuCombat():
 
         # Altres variables necessaries
         self.AtacantAliat = None
+        self.AtacantEnemic = None
 
 
     def CridarMenuSegonsAccio(self, accio):
@@ -472,6 +473,15 @@ class MenuCombat():
                 anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
             )
             y += 20
+        
+        self.canvas.create_text(
+                420, self.app.Alto - 130,
+                text=f"És el torn de {self.AtacantAliat.nom}, que vols fer?",
+                fill="black",
+                width= 350,
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
             
     def MovimentAccions(self, direccio):
         if self.AccioAliat == True:
@@ -672,6 +682,12 @@ class MenuCombat():
         
         self.app.root.after(10, self.Lluitar)
 
+    def ColocarVistaLiniaPrioritat(self):
+        if self.AtacantEnemic != None:
+            self.canvas.tag_raise(f"accio_entitat_aliada_{self.AtacantEnemic.id}", "all")
+        if self.AtacantAliat != None:
+            self.canvas.tag_raise(f"accio_entitat_aliada_{self.AtacantAliat.id}", "all")
+    
     def Lluitar(self):
         accioFeta = False
         if self.combat == True and self.fugir[0] == False: 
@@ -682,8 +698,8 @@ class MenuCombat():
                     if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1 and self.combat == True:
                         accioFeta = True
                         self.AtacantAliat = aliat
+                        self.ColocarVistaLiniaPrioritat()
                         self.dibuixar_seleccio_accio_aliat()
-                        self.AtacantAliat.Priority = 0
                         
         # Turn enemic
             for j in self.enemic.values():
@@ -692,6 +708,7 @@ class MenuCombat():
                         accioFeta = True
                         self.AccioEnemic = True
                         self.AtacantEnemic = j
+                        self.ColocarVistaLiniaPrioritat()
                         self.AccioEnemiga()
                         
                     # if combat == True:
@@ -702,6 +719,7 @@ class MenuCombat():
         # self.finalitzarCombat()
     
     def AccioEnemiga(self):
+        self.AccioEnemic = False
         self.AtacantEnemic.Priority = 0
 
     # def DescartarDerrotats(llista, derr, jugador, event, exits):
@@ -772,8 +790,24 @@ class MenuCombat():
         
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
-        print("Passar Torn")
+        self.PassarTorn = True
         self.app.Menu.CrearDialeg("Has decidit passar el torn")
+
+    def EleccioDespresPostDialegIntern(self):
+        if self.AccioAliat == True:
+            if self.PassarTorn == True: self.PasarTornSystem()
+            # if self.PassarTorn == True: se
+        else:
+            self.Lluitar()
+
+    
+    def PasarTornSystem(self):
+        print("Arribat a aqui...")
+        self.PassarTorn = False
+        self.AccioAliat = False
+        self.AtacantAliat.Priority = 0
+        self.Lluitar()
+
 
     # def TriarObjectius(list):
 

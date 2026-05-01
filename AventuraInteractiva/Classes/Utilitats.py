@@ -209,7 +209,7 @@ class Menu():
             
                 if self.app.Combat == True:
                     self.canvas.delete("dialeg")
-                    self.app.MenuCombat.Lluitar()
+                    self.app.MenuCombat.EleccioDespresPostDialegIntern()
 
             if self.app.Confirmacio == True and self.app.Combat == False:
                 self.dibuixar()
