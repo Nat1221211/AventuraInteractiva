@@ -345,6 +345,12 @@ class App():
             if tecla.keysym == "Return": 
                 self.ConfirmarSeleccio()
         
+        elif self.MenuCombat.PantallaFICombat == True:
+            if tecla.keysym == "Return":
+                self.Combat = False
+                UIManager.MostrarMenuPrincipal(self)
+
+        
 
 
     def ControlBindsMenus(self, tecla):

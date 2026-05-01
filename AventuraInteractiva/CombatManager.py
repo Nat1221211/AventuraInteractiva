@@ -65,8 +65,9 @@ class MenuCombat():
         self.Atacar = False
         self.PassarTorn = False
         self.MenuAccioAliat = False
+        self.PantallaFICombat = False
 
-        self.fugir = [False]
+        self.Fugir = [False]
         self.combat = False
 
         # Altres variables necessaries
@@ -695,7 +696,7 @@ class MenuCombat():
     def Lluitar(self):
         accioFeta = False
         
-        if self.combat == True and self.fugir[0] == False: 
+        if self.combat == True and self.Fugir[0] == False: 
             # Turn Aliat
             
             for aliat in self.equip.values():
@@ -722,7 +723,27 @@ class MenuCombat():
             if self.AccioAliat == False and self.AccioEnemic == False:
                 self.IncrementarPrioritat()
         # self.finalitzarCombat()
+        else:
+            if self.Fugir[0] == True:
+                print("Has fugit...")
+                self.dibuixar_Pantalla_fi_combat()
     
+    def dibuixar_Pantalla_fi_combat(self):
+        self.PantallaFICombat = True
+
+        self.AccioAliat = False
+        self.AccioFugirEstat = False
+
+        self.canvas.delete("all")
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 5, 
+            self.app.Alto -5,
+            fill="white", outline="black",
+            width=5, tags=("fi_combat_fons", "fi_combat")
+        )
+
+
     def AccioEnemiga(self):
         self.AccioEnemic = False
         self.AtacantEnemic.Priority = 0
@@ -801,7 +822,10 @@ class MenuCombat():
     def EleccioDespresPostDialegIntern(self):
         if self.AccioAliat == True:
             if self.PassarTorn == True: self.PasarTornSystem()
-            # if self.PassarTorn == True: se
+            if self.AccioFugirEstat == True:
+                if self.Fugir[0] == True:
+                    self.dibuixar_Pantalla_fi_combat()
+
         else:
             self.Lluitar()
 
@@ -824,6 +848,7 @@ class MenuCombat():
             
     #     return target
 
+
     def AccioFugir(self):
         print("Has intentat Fugir...")
         self.AccioFugirEstat = True
@@ -840,8 +865,12 @@ class MenuCombat():
             fugir = random.choices([True, False], cum_weights=[prob, 100 - prob])
         else:
             fugir = [True]
-        if fugir[0] == True:
-            print("Has aconseguit escapar !!")
-        else:
-            print("No has aconseguit escapar...")
+
         self.Fugir = fugir
+
+        if self.Fugir[0] == True:
+            self.app.Menu.CrearDialeg("Has conseguit Fugir !!")
+        else:
+            self.app.Menu.CrearDialeg("No has aconseguit fugir...")
+
+        
