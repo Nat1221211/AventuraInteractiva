@@ -25,7 +25,7 @@
             "level_range": [3, 5]
         },
 
-        "conill": {
+        "rabbit": {
             "prob": 30,
             "group_probs": [70, 25, 5],
             "companions": {},

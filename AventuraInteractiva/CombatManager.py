@@ -424,12 +424,12 @@ class MenuCombat():
                 "Frontal":
                 self.app.RedimensionarImatge(
                 ent[1].Imatges["Frontal"],
-                160, 240, False
+                100, 150, False
                 )
             })
             
             self.canvas.create_image(
-                    x + 10, y + 10,
+                    x + 10, y + 50,
                     image=ent[1].ImatgeAjustada["Combat"]["Frontal"],
                     anchor="nw",
                     tags=("ent_estat", "mostrar_estat")
