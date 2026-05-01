@@ -45,6 +45,14 @@ class MenuCombat():
         self.id = ident
         self.equip = self.app.jugador.Team
         self.enemic = {}
+        self.Recompenses = {
+            "XP": 0,
+            "Objects": {},
+        }
+
+        # Llistat de derrotats
+        self.EnemicsDerrotats = {}
+        self.AliatsDerrotats = {}
         
         # Lllistes permanents, probablement només aquesta...
         self.IndexAccio = 0
@@ -701,7 +709,7 @@ class MenuCombat():
             
             for aliat in self.equip.values():
                 if accioFeta == False:
-                    if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1 and self.combat == True:
+                    if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1:
                         accioFeta = True
                         self.AtacantAliat = aliat
                         self.ColocarVistaLiniaPrioritat()
@@ -710,19 +718,19 @@ class MenuCombat():
         # Turn enemic
             for j in self.enemic.values():
                 if accioFeta == False:
-                    if j.Priority >= 100 and self.fugir[0] == False and len(self.equip) >= 1 and j.StatsCombat["CurHP"] > 0 and self.combat == True:
+                    if j.Priority >= 100 and len(self.equip) >= 1 and j.StatsCombat["CurHP"] > 0:
                         accioFeta = True
                         self.AccioEnemic = True
                         self.AtacantEnemic = j
                         self.ColocarVistaLiniaPrioritat()
                         self.AccioEnemiga()
                         
-                    # if combat == True:
-                    #     combat = ComprobarFiCombat(combat, enemyderr, enemy, teamderr, event, missions, jugador)
+            if combat == True:
+                combat = self.ComprobarFiCombat()
             
             if self.AccioAliat == False and self.AccioEnemic == False:
                 self.IncrementarPrioritat()
-        # self.finalitzarCombat()
+
         else:
             if self.Fugir[0] == True:
                 print("Has fugit...")
@@ -730,6 +738,7 @@ class MenuCombat():
     
     def dibuixar_Pantalla_fi_combat(self):
         self.PantallaFICombat = True
+        self.finalitzarCombat()
 
         self.AccioAliat = False
         self.AccioFugirEstat = False
@@ -748,45 +757,31 @@ class MenuCombat():
         self.AccioEnemic = False
         self.AtacantEnemic.Priority = 0
 
-    # def DescartarDerrotats(llista, derr, jugador, event, exits):
-    #     for p in llista:
-    #         if p.StatsCombat["CurHP"] <= 0.1:
-    #             derr += 1
-    #             if p.isPlayer == False:
-    #                 UIManager.ClearScreen()
-    #                 alive = 0
-    #                 for i in jugador.Team.values(): 
-    #                     if i.StatsCombat["CurHP"] > 0:
-    #                         i.LvlUp(event, jugador, exits, p)
-    #                         alive += 1
-    #                 if alive >= 1:
-    #                     jugador.Gold += p.Lv * 10 # 10 monedes per cada nivell, representa que es ven el derrotat.
-    #                     print(f"Has guanyat {p.Lv * 10} gold.")
-    #                     input("Presiona per a continuar...")
-    #     return derr
+    def DescartarDerrotats(self):
+        for id, ally in self.equip.items():
+            if ally.StatsCombat["CurHP"] <= 0.1:
+                if id not in self.AliatsDerrotats.keys():
+                    self.AliatsDerrotats[id]=ally
 
-    # def ComprobarFiCombat(combat, enemyderr, enemy, teamderr, event, missions, jugador):
-    #     if enemyderr == len(enemy) or teamderr == len(jugador.Team):
-    #         combat = False
-    #         if len(enemy) == enemyderr:
-    #             UIManager.ClearScreen()
-    #             print("Tos els enemics han estat derrotats !!")
-    #             input("Presiona per a continuar")
-    #             for id, val in enemy.items():
-    #                 event.CridarEvent("Derrotar Enemic", val, jugador, missions)
-    #     return combat
+        for id, enemy in self.enemic.items():
+            if enemy.StatsCombat["CurHP"] <= 0.1:
+                if id not in self.EnemicsDerrotats.keys():
+                    self.EnemicsDerrotats[id]=enemy
+        
+        
+    def ComprobarFiCombat(self):
+        if len(self.EnemicsDerrotats) == len(self.enemic) or len(self.AliatsDerrotats) == len(self.equip):
+            self.combat = False
+            # if len(self.enemic) == self.enemyderr:
+            #     for id, val in self.enemic.items():
+            #         self.app.event.CridarEvent("Derrotar Enemic", val, self.app)
 
 
-    # def finalitzarCombat(clon, jugador):
-    #     for i in jugador.Team.keys(): 
-    #         # if i in clon.keys():
-    #         #     jugador.Team[i].StatsCombat["CurHP"] = clon[i].StatsCombat["CurHP"]
-    #         #     jugador.Team[i].StatsCombat["Mana"] = clon[i].StatsCombat["Mana"]
-    #         # else:
-    #         #     i.StatsCombat["CurHP"] = 0
-    #         #     i.StatsCombat["Mana"] = 0
-    #         jugador.Team[i].afected = []
-    #         jugador.Team[i].DefinirCombatStats()
+
+    def finalitzarCombat(self):
+        for i in self.equip.values():
+            i.afected = []
+            i.DefinirCombatStats()
 
     # def ComprobarEfectEstat(entitat, derrotats = []):
     #     if len(entitat.afected) > 0:

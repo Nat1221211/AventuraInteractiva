@@ -18,7 +18,7 @@ class ControladorEvents():
         else:
             self.Events[event] = [accio]
     
-    def CridarEvent(self, event, dades, jugador, llistat):
+    def CridarEvent(self, event, dades, app):
         if event in self.Events.keys():
             for accio in self.Events[event]:
-                accio(dades, jugador, llistat)
+                accio(dades, app)
