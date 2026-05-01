@@ -349,7 +349,8 @@ class Menu():
         )
 
     def dibuixar_menu_equip(self):
-        self.canvas.delete("all")
+        if self.app.Combat == False:
+            self.canvas.delete("all")
 
         self.app.SeleccioAliat = True
 
@@ -358,7 +359,7 @@ class Menu():
             self.app.Ancho - 5, 
             self.app.Alto - 5,
             fill="black", outline="black",
-            width=4, tags="background_equip"
+            width=4, tags=("background_equip", "mostrar_equip")
         )
         self.ActualitzarEstatMenuEquip()
 
@@ -389,7 +390,7 @@ class Menu():
                 self.app.Ancho - 120, 
                 y + 130,
                 fill="white", outline="grey",
-                width=4, tags="recuadre_entitat"
+                width=4, tags=("recuadre_entitat", "mostrar_equip")
                 )
 
                 ent.Objecte.ImatgeAjustada["MenuEstat"] = self.app.RedimensionarImatge(
@@ -401,7 +402,7 @@ class Menu():
                     x + 20, y + 10,
                     image=ent.Objecte.ImatgeAjustada["MenuEstat"],
                     anchor="nw",
-                    tags=("ent_estat", "mostrar_estat")
+                    tags=("ent_estat", "mostrar_estat", "mostrar_equip")
                 )
 
                 self.canvas.create_text(
@@ -409,7 +410,7 @@ class Menu():
                     text=f"Name: {ent.Objecte.nom}",
                     fill=color,
                     font=("Courier", 16, "bold"),
-                    anchor="nw", tags=("recuadre_entitat", "stats")
+                    anchor="nw", tags=("recuadre_entitat", "stats", "mostrar_equip")
                 )
 
                 self.canvas.create_text(
@@ -417,7 +418,7 @@ class Menu():
                     text=f"Level: {ent.Objecte.Lv} / {ent.Objecte.LvLimit}",
                     fill="black",
                     font=("Courier", 16, "bold"),
-                    anchor="nw", tags=("recuadre_entitat", "stats")
+                    anchor="nw", tags=("recuadre_entitat", "stats", "mostrar_equip")
                 )
                 
                 self.canvas.create_text(
@@ -425,7 +426,7 @@ class Menu():
                     text=f"HP: {round(ent.Objecte.StatsCombat["CurHP"], 2)} / {round(ent.Objecte.StatsCombat["MaxHP"], 2)}",
                     fill="black",
                     font=("Courier", 16, "bold"),
-                    anchor="nw", tags=("recuadre_entitat", "stats", "hp")
+                    anchor="nw", tags=("recuadre_entitat", "stats", "hp", "mostrar_equip")
                 )
 
                 self.canvas.create_text(
@@ -433,7 +434,7 @@ class Menu():
                     text=f"Mana: {round(ent.Objecte.StatsCombat["Mana"], 2)} / {round(ent.Objecte.StatsCombat["MaxMana"], 2)}",
                     fill="black",
                     font=("Courier", 16, "bold"),
-                    anchor="nw", tags=("recuadre_entitat", "stats", "mana")
+                    anchor="nw", tags=("recuadre_entitat", "stats", "mana", "mostrar_equip")
                 )
                 
                 y+= 150
@@ -443,7 +444,7 @@ class Menu():
                 self.app.Ancho - 20, 
                 self.app.Alto - 20,
                 fill="white", outline="grey",
-                width=4, tags="recuadre_entitat"
+                width=4, tags=("recuadre_entitat", "mostrar_equip")
                 )
 
                 self.canvas.create_text(
@@ -451,7 +452,7 @@ class Menu():
                     text="Sortir",
                     fill=color,
                     font=("Courier", 16, "bold"),
-                    anchor="nw", tags=("recuadre_entitat", "sortir")
+                    anchor="nw", tags=("recuadre_entitat", "sortir", "mostrar_equip")
                 )
             
         if self.app.RecuperantVida == True:
@@ -465,9 +466,21 @@ class Menu():
                 self.app.root.after(200, self.app.MenuMotxila())
    
     def mostrar_estat_equip(self):
-        self.canvas.delete("all")
+        if self.app.Combat == False:
+            self.canvas.delete("all")
+        else:
+            self.canvas.delete("mostrar_equip")
+
         self.app.SeleccioAliat = False
         self.app.MostrarEstat = True
+
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 5, 
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=4, tags=("zona_seleccio", "mostrar_estat")
+        )
 
     # Zones de la finestra d'estat en forma de rectangles...
         self.canvas.create_rectangle(
@@ -494,6 +507,7 @@ class Menu():
             width=4, tags=("zona_descripcio", "mostrar_estat")
         )
 
+
         self.ActualitzarEstat()
     
     def ActualitzarEstat(self):
@@ -518,9 +532,6 @@ class Menu():
                     tags=("ent_estat", "mostrar_estat")
                 )
                 y += 175
-
-        self.canvas.tag_lower("zona_seleccio")
-        self.canvas.tag_raise("ent_estat")
 
         self.DibuixarEstat()
     

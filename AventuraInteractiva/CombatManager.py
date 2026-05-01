@@ -11,6 +11,7 @@ import random
 
 import tkinter as Tk
 from tkinter import font as tkfont
+import UIManager
 
 
 # Importar Classes
@@ -63,6 +64,7 @@ class MenuCombat():
         self.DialegActiu = False
         self.Atacar = False
         self.PassarTorn = False
+        self.MenuAccioAliat = False
 
         self.fugir = [False]
         self.combat = False
@@ -73,10 +75,11 @@ class MenuCombat():
 
 
     def CridarMenuSegonsAccio(self, accio):
+        self.MenuAccioAliat = False
         AccionsDisponibles={
             "atacar": lambda: self.dibuixar_seleccio_Moviment(),
             # "motxila": lambda: "",
-            # "estat": lambda: "",
+            "estat": lambda: UIManager.VeureEstatus(self.app),
             "fugir": lambda: self.AccioFugir(),
             "pasar": lambda: self.AccioPasarTorn()
         }
@@ -202,7 +205,7 @@ class MenuCombat():
                 x + 10, y + 10,
                 image=ent[1].ImatgeAjustada["Mini"]["Frontal"],
                 anchor="nw",
-                tags=("ent_estat", "mostrar_estat")
+                tags=("ent_estat_combat", "combat")
             )
             
             self.canvas.create_text(
@@ -288,7 +291,7 @@ class MenuCombat():
                 x + 10, y + 10,
                 image=ent[1].ImatgeAjustada["Mini"]["Frontal"],
                 anchor="nw",
-                tags=("ent_estat", "mostrar_estat")
+                tags=("ent_estat_combat", "combat")
             )
             
             self.canvas.create_text(
@@ -412,7 +415,7 @@ class MenuCombat():
                     x + 10, y + 10,
                     image=ent[1].ImatgeAjustada["Combat"]["Back"],
                     anchor="nw",
-                    tags=("ent_estat", "mostrar_estat")
+                    tags=("ent_estat_combat", "combat")
                 )
             x += 150 if len(self.equip) > 1 else 210
         
@@ -435,12 +438,13 @@ class MenuCombat():
                     x + 10, y + 50,
                     image=ent[1].ImatgeAjustada["Combat"]["Frontal"],
                     anchor="nw",
-                    tags=("ent_estat", "mostrar_estat")
+                    tags=("ent_estat_combat", "combat")
                 )
             x += 150 if len(self.equip) > 1 else 210
             
     def dibuixar_seleccio_accio_aliat(self):
         self.AccioAliat = True
+        self.MenuAccioAliat = True
 
         self.canvas.create_rectangle(
             5, self.app.Alto - 150,
@@ -595,7 +599,7 @@ class MenuCombat():
                 x - 25, y,
                 image=i.ImatgeAjustada["Accio"]["Frontal"],
                 anchor="nw",
-                tags=(f"accio_entitat_aliada_{i.id}", "ent_estat", "mostrar_estat")
+                tags=(f"accio_entitat_aliada_{i.id}", "ent_estat_combat", "combat")
             )
 
 
@@ -639,7 +643,7 @@ class MenuCombat():
                 x - 25, y,
                 image=j.ImatgeAjustada["Accio"]["Frontal"],
                 anchor="nw",
-                tags=(f"accio_entitat_enemiga_{j.id}", "ent_estat", "mostrar_estat")
+                tags=(f"accio_entitat_enemiga_{j.id}", "ent_estat_combat", "combat")
             )
 
         if maxSpeedPlayer.StatsCombat["SPD"] > maxSpeedEnemies.StatsCombat["SPD"]:
@@ -679,7 +683,7 @@ class MenuCombat():
                 x -= old_x[0]
 
                 self.canvas.move(f"accio_entitat_enemiga_{j.id}", x, 0)
-        
+
         self.app.root.after(10, self.Lluitar)
 
     def ColocarVistaLiniaPrioritat(self):
@@ -690,6 +694,7 @@ class MenuCombat():
     
     def Lluitar(self):
         accioFeta = False
+        
         if self.combat == True and self.fugir[0] == False: 
             # Turn Aliat
             

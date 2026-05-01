@@ -163,9 +163,36 @@ class App():
         
     
     def ConfirmarSeleccioCombat(self, event = None):
-        seleccio = self.MenuCombat.AccionsCombat[self.MenuCombat.IndexAccio]
+        if self.Menu.id not in ["Motxila"]:
+            seleccio = self.Menu.opcions[self.Menu.index]
+
+
         if self.MenuCombat.AccioAliat == True:
-            self.MenuCombat.CridarMenuSegonsAccio(seleccio)   
+            if self.MenuCombat.MenuAccioAliat == True:
+                seleccio = self.MenuCombat.AccionsCombat[self.MenuCombat.IndexAccio]
+                self.MenuCombat.CridarMenuSegonsAccio(seleccio)
+            
+            
+            elif self.Menu.id == "Seleccio Equip":
+                if self.SeleccioAliat == True:
+                    self.SeleccioAliat = False
+                    if seleccio.id == "sortir":
+                        if self.Menu.MenuAnterior.id == "Motxila":
+                            self.Motxila = True
+                            self.MenuMotxila()
+                        else:
+                            self.canvas.delete("mostrar_equip")
+                            self.MenuCombat.Lluitar()
+                    elif self.Menu.MenuAnterior.id == "Motxila":
+                        if seleccio.id == "sortir":
+                            self.Motxila = True
+                            self.Enrere()
+                        else:
+                            self.Motxila = True
+                            self.UltimObjecteSeleccionat.Utilitzar(self, seleccio)
+                    else:
+                        self.Menu.mostrar_estat_equip()
+               
          
     def Enrere(self):
         self.Menu = self.Menu.MenuAnterior
@@ -289,6 +316,28 @@ class App():
                 self.Menu.PulsarEnter()
             if tecla.keysym == "BackSpace": 
                 self.Menu.PulsarEnter()
+        
+        elif self.SeleccioAliat == True:
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace":
+                if self.Menu.healthanimation == None:
+                    self.SeleccioAliat = False
+                    if self.Menu.MenuAnterior.id == "Motxila":
+                        self.Motxila = True
+                        self.MenuMotxila()
+                    else:
+                        self.canvas.delete("mostrar_equip")
+                        self.MenuCombat.Lluitar()
+        
+        elif self.MostrarEstat == True:
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+            if tecla.keysym == "BackSpace":
+                self.MostrarEstat = False
+                self.canvas.delete("mostrar_estat")
+                self.Menu.dibuixar_menu_equip()
 
         elif self.MenuCombat.AccioAliat == True:
             if tecla.keysym == "w": self.MenuCombat.MovimentAccions(tecla.keysym)
