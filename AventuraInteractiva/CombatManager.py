@@ -802,7 +802,6 @@ class MenuCombat():
 
     
     def PasarTornSystem(self):
-        print("Arribat a aqui...")
         self.PassarTorn = False
         self.AccioAliat = False
         self.AtacantAliat.Priority = 0

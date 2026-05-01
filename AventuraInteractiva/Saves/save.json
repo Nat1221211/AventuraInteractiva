@@ -57,10 +57,10 @@
                 "CurHP": 9.0,
                 "MaxMana": 30.0,
                 "Mana": 5.0,
-                "ATK": 12.0,
+                "ATK": 16.0,
                 "INT": 28.0,
-                "DEF": 18.0,
-                "SPD": 18.0
+                "DEF": 20.0,
+                "SPD": 20.0
             }
         },
         {
@@ -73,13 +73,13 @@
             "Afected": [],
             "XP": 0,
             "StatsCombat": {
-                "MaxHP": 18.0,
-                "CurHP": 9.0,
-                "MaxMana": 30.0,
+                "MaxHP": 22.0,
+                "CurHP": 1000.0,
+                "MaxMana": 26.0,
                 "Mana": 5.0,
-                "ATK": 12.0,
-                "INT": 28.0,
-                "DEF": 18.0,
+                "ATK": 18.0,
+                "INT": 22.0,
+                "DEF": 42.0,
                 "SPD": 18.0
             }
         }
