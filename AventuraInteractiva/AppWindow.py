@@ -98,7 +98,9 @@ class App():
         self.MostrarPantallaInicial()
     
     def ConfirmarSeleccio(self, event = None):
-        if self.Combat == False:
+        if self.Combat == True:
+            self.ConfirmarSeleccioCombat(event)
+        else:
             if self.Menu.id not in ["Motxila"]:
                 seleccionat = self.Menu.opcions[self.Menu.index]
         
@@ -158,13 +160,12 @@ class App():
             
             elif self.Menu.id == "Mapa":
                 AdventureManager.CanviarZona(self, seleccionat)
-        else:
-            self.ConfirmarSeleccioCombat(event)
+        
     
     def ConfirmarSeleccioCombat(self, event = None):
+        seleccio = self.MenuCombat.AccionsCombat[self.MenuCombat.IndexAccio]
         if self.MenuCombat.AccioAliat == True:
-            seleccio = self.MenuCombat.AccionsCombat[self.MenuCombat.IndexAccio]
-            
+            self.MenuCombat.CridarMenuSegonsAccio(seleccio)   
          
     def Enrere(self):
         self.Menu = self.Menu.MenuAnterior
@@ -289,8 +290,11 @@ class App():
             if tecla.keysym == "BackSpace": 
                 self.Menu.PulsarEnter()
 
-        if self.MenuCombat.AccioAliat == True:
-            self.MenuCombat.MovimentAccions(tecla.keysym)
+        elif self.MenuCombat.AccioAliat == True:
+            if tecla.keysym == "w": self.MenuCombat.MovimentAccions(tecla.keysym)
+            if tecla.keysym == "s": self.MenuCombat.MovimentAccions(tecla.keysym)
+            if tecla.keysym == "Return": 
+                self.ConfirmarSeleccio()
         
 
 

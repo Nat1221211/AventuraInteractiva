@@ -61,6 +61,8 @@ class MenuCombat():
         self.AccioAliat = False
         self.AccioEnemic = False
         self.DialegActiu = False
+        self.Atacar = False
+        self.PassarTorn = False
 
         self.fugir = [False]
         self.combat = False
@@ -71,14 +73,14 @@ class MenuCombat():
 
     def CridarMenuSegonsAccio(self, accio):
         AccionsDisponibles={
-            "atacar": lambda: self.dibuixar_seleccio_Moviment,
-            "motxila": lambda: "",
-            "estat": lambda: "",
-            "fugir": lambda: self.AccioFugir,
-            "pasar": lambda: ""
+            "atacar": lambda: self.dibuixar_seleccio_Moviment(),
+            # "motxila": lambda: "",
+            # "estat": lambda: "",
+            "fugir": lambda: self.AccioFugir(),
+            "pasar": lambda: self.AccioPasarTorn()
         }
-
-
+        if accio.id in AccionsDisponibles:
+            AccionsDisponibles[accio.id]()
     
     def CarregarEnemic(self, enemic):
         self.enemic = enemic
@@ -765,11 +767,13 @@ class MenuCombat():
     #     return entitat, derrotats
 
     def dibuixar_seleccio_Moviment(self):
-        pass
+        self.Atacar = True
+        self.app.Menu.CrearDialeg("Has atacat")
         
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
-        pass
+        print("Passar Torn")
+        self.app.Menu.CrearDialeg("Has decidit passar el torn")
 
     # def TriarObjectius(list):
 
@@ -784,6 +788,7 @@ class MenuCombat():
 
     def AccioFugir(self):
         print("Has intentat Fugir...")
+        self.AccioFugirEstat = True
         teamSPD = 0
         for i in self.equip.values():
             teamSPD += i.StatsCombat["SPD"]

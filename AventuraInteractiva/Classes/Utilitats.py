@@ -208,6 +208,7 @@ class Menu():
                     self.dibuixar()
             
                 if self.app.Combat == True:
+                    self.canvas.delete("dialeg")
                     self.app.MenuCombat.Lluitar()
 
             if self.app.Confirmacio == True and self.app.Combat == False:
