@@ -75,6 +75,7 @@ class MenuCombat():
         self.PassarTorn = False
         self.MenuAccioAliat = False
         self.PantallaFICombat = False
+        self.Derrotat = False
 
         self.Fugir = [False]
         self.combat = False
@@ -795,6 +796,7 @@ class MenuCombat():
             #     for id, val in self.enemic.items():
             #         self.app.event.CridarEvent("Derrotar Enemic", val, self.app)
             if len(self.AliatsDerrotats) == len(self.equip):
+                self.Derrotat = True
                 self.app.Menu.CrearDialeg("Has estat derrotat...")
                 self.app.Menu.CrearDialeg("Algú t'ha trobat i portat a una posada, no ha deixat pista sobre qui és...")
 
@@ -845,6 +847,7 @@ class MenuCombat():
             if self.AccioFugirEstat == True:
                 if self.Fugir[0] == True:
                     self.dibuixar_Pantalla_fi_combat()
+            
 
         else:
             self.Lluitar()

@@ -8,6 +8,7 @@ import random
 import tkinter as tk
 from tkinter import font as tkfont
 import os
+import UIManager
 
 filepath = os.path.dirname(__file__)
 

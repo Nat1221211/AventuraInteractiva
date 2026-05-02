@@ -12,7 +12,7 @@ import PrepararCridar as Call
 import SaveGame
 import UIManager
 import AdventureManager
-import TownUtilitiesManager as TUtManager
+import TownUtilitiesManager as TUTManager
 import CombatManager
 
 
@@ -128,7 +128,7 @@ class App():
                 
                 elif  self.QuinaConfirmacio == "Hostal":
                     if seleccionat.id == "si":
-                        TUtManager.Posada(self)
+                        TUTManager.Posada(self)
                     elif seleccionat.id == "no":
                         self.Menu.CrearDialeg("Has decidit no quedar-te al hostal...")
             
@@ -347,10 +347,13 @@ class App():
         
         elif self.MenuCombat.PantallaFICombat == True:
             if tecla.keysym == "Return":
-                self.Combat = False
-                UIManager.MostrarMenuPrincipal(self)
-
-        
+                    self.Combat = False
+                    if self.MenuCombat.Derrotat == True:
+                        self.jugador.Ubicacio = self.jugador.UltimPobleVisitat
+                        UIManager.MostrarMenuPrincipal(self)
+                        TUTManager.Posada(self, True)
+                    else:
+                        UIManager.MostrarMenuPrincipal(self)
 
 
     def ControlBindsMenus(self, tecla):
