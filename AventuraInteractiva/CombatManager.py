@@ -88,6 +88,9 @@ class MenuCombat():
 
     def CridarMenuSegonsAccio(self, accio):
         self.MenuAccioAliat = False
+
+        self.canvas.delete("seleccio_accio_aliat")
+
         AccionsDisponibles={
             "atacar": lambda: self.dibuixar_seleccio_Moviment(),
             # "motxila": lambda: "",
@@ -463,7 +466,7 @@ class MenuCombat():
             self.app.Ancho - 205, 
             self.app.Alto - 5,
             fill="white", outline="black",
-            width=5, tags=("zona_seleccio", "combat")
+            width=5, tags=("zona_seleccio", "seleccio_accio_aliat", "combat")
         )
 
         self.canvas.create_rectangle(
@@ -471,7 +474,7 @@ class MenuCombat():
             self.app.Ancho - 5, 
             self.app.Alto - 5,
             fill="white", outline="black",
-            width=5, tags=("zona_descripcio", "combat")
+            width=5, tags=("zona_descripcio", "seleccio_accio_aliat", "combat")
         )
 
         x = 25
@@ -486,7 +489,7 @@ class MenuCombat():
                 text=opcio.Nom,
                 fill=color,
                 font=("Courier", 16, "bold"),
-                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+                anchor="nw", tags=("accions_aliat", "seleccio_accio_aliat", "combat")
             )
             y += 20
         
@@ -496,7 +499,7 @@ class MenuCombat():
                 fill="black",
                 width= 350,
                 font=("Courier", 16, "bold"),
-                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+                anchor="nw", tags=("info_turn_aliat","seleccio_accio_aliat", "combat")
             )
             
     def MovimentAccions(self, direccio):
@@ -572,47 +575,48 @@ class MenuCombat():
 
         y = 25
         for pos, i in enumerate(self.equip.values()):
-            if i.StatsCombat["SPD"] == maxSpeed:
-                i.Priority = 100
-            else:
-                i.Priority = (i.StatsCombat["SPD"] / maxSpeed) * 100
+            if i.StatsCombat["CurHP"] > 0:
+                if i.StatsCombat["SPD"] == maxSpeed:
+                    i.Priority = 100
+                else:
+                    i.Priority = (i.StatsCombat["SPD"] / maxSpeed) * 100
 
-            amplada = self.app.Ancho - 80
-            x = 40 + (amplada * (i.Priority / 100))
+                amplada = self.app.Ancho - 80
+                x = 40 + (amplada * (i.Priority / 100))
 
-            if "Accio" not in i.ImatgeAjustada.keys():
-                i.ImatgeAjustada["Accio"]={}
+                if "Accio" not in i.ImatgeAjustada.keys():
+                    i.ImatgeAjustada["Accio"]={}
 
-            i.ImatgeAjustada["Accio"].update({
-                "Frontal":
-                self.app.RedimensionarImatge(
-                i.Imatges["Frontal"],
-                20, 30, False
+                i.ImatgeAjustada["Accio"].update({
+                    "Frontal":
+                    self.app.RedimensionarImatge(
+                    i.Imatges["Frontal"],
+                    20, 30, False
+                    )
+                })
+                
+                self.canvas.create_rectangle(
+                    x, y,
+                    x - 2, 
+                    y + 2,
+                    fill="black", outline="black",
+                    width=5, tags=(f"action_x_ally_{i.id}", f"accio_entitat_aliada_{i.id}", "barra_accio", "zona_accio", "combat")
                 )
-            })
-            
-            self.canvas.create_rectangle(
-                x, y,
-                x - 2, 
-                y + 2,
-                fill="black", outline="black",
-                width=5, tags=(f"action_x_ally_{i.id}", f"accio_entitat_aliada_{i.id}", "barra_accio", "zona_accio", "combat")
-            )
 
-            self.canvas.create_rectangle(
-                x, y,
-                x - 30, 
-                55,
-                fill="white", outline="gray",
-                width=1, tags=(f"accio_entitat_aliada_{i.id}", "barra_accio", "zona_accio", "combat")
-            )
+                self.canvas.create_rectangle(
+                    x, y,
+                    x - 30, 
+                    55,
+                    fill="white", outline="gray",
+                    width=1, tags=(f"accio_entitat_aliada_{i.id}", "barra_accio", "zona_accio", "combat")
+                )
 
-            self.canvas.create_image(
-                x - 25, y,
-                image=i.ImatgeAjustada["Accio"]["Frontal"],
-                anchor="nw",
-                tags=(f"accio_entitat_aliada_{i.id}", "ent_estat_combat", "combat")
-            )
+                self.canvas.create_image(
+                    x - 25, y,
+                    image=i.ImatgeAjustada["Accio"]["Frontal"],
+                    anchor="nw",
+                    tags=(f"accio_entitat_aliada_{i.id}", "ent_estat_combat", "combat")
+                )
 
 
         for pos, j in enumerate(self.enemic.values()):
@@ -763,6 +767,7 @@ class MenuCombat():
         for id, enemy in self.enemic.items():
             if enemy.StatsCombat["CurHP"] <= 0.1:
                 if id not in self.EnemicsDerrotats.keys():
+                    self.EliminarVistaAccioDescartats(enemy, True)
                     self.EnemicsDerrotats[id]=enemy
                     self.app.jugador.gold += enemy.Lv * 10
                     comprobat = True
@@ -775,6 +780,7 @@ class MenuCombat():
             if ally.StatsCombat["CurHP"] <= 0.1:
                 if ally_id not in self.AliatsDerrotats.keys():
                     self.AliatsDerrotats[ally_id]=ally
+                    self.EliminarVistaAccioDescartats(ally, True)
             else:
                 if enemy != None:
                     xp = ally.XPObtained(enemy)
@@ -782,7 +788,12 @@ class MenuCombat():
                         self.Recompenses["XP"].update({ ally_id: xp })
                     else:
                         self.Recompenses["XP"]["ally_id"]+=xp
-        
+    
+    def EliminarVistaAccioDescartats(self, entitat, boolAliat = True):
+        if boolAliat == True:
+            self.canvas.delete(f"accio_entitat_aliada_{entitat.id}")
+        else:
+            self.canvas.delete(f"accio_entitat_enemy_{entitat.id}")
         
     def ComprobarFiCombat(self):
         if len(self.EnemicsDerrotats) == len(self.enemic) or len(self.AliatsDerrotats) == len(self.equip):
