@@ -50,6 +50,7 @@ class MenuCombat():
             "Objects": {},
         }
 
+
         # Llistat de derrotats
         self.EnemicsDerrotats = {}
         self.AliatsDerrotats = {}
