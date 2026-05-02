@@ -726,16 +726,14 @@ class MenuCombat():
                         self.ColocarVistaLiniaPrioritat()
                         self.AccioEnemiga()
                         
-            if combat == True:
-                combat = self.ComprobarFiCombat()
+            if self.combat == True:
+                self.ComprobarFiCombat()
             
             if self.AccioAliat == False and self.AccioEnemic == False:
                 self.IncrementarPrioritat()
 
         else:
-            if self.Fugir[0] == True:
-                print("Has fugit...")
-                self.dibuixar_Pantalla_fi_combat()
+            self.dibuixar_Pantalla_fi_combat()
     
     def dibuixar_Pantalla_fi_combat(self):
         self.PantallaFICombat = True
@@ -757,26 +755,37 @@ class MenuCombat():
     def AccioEnemiga(self):
         self.AccioEnemic = False
         self.AtacantEnemic.Priority = 0
+        self.DescartarDerrotats()
 
     def DescartarDerrotats(self):
+        comprobat = False
         for id, enemy in self.enemic.items():
             if enemy.StatsCombat["CurHP"] <= 0.1:
                 if id not in self.EnemicsDerrotats.keys():
                     self.EnemicsDerrotats[id]=enemy
                     self.app.jugador.gold += enemy.Lv * 10
-                    for ally_id, ally in self.equip.items():
-                        if ally.StatsCombat["CurHP"] <= 0.1:
-                            if id not in self.AliatsDerrotats.keys():
-                                self.AliatsDerrotats[id]=ally
-                        else:
-                            xp = ally.XPObtained(enemy)
-                            if ally_id not in self.Recompenses["XP"].keys():
-                                self.Recompenses["XP"].update({
-                                    ally_id: xp
-                                })
-                            else:
-                                self.Recompenses["XP"]["ally_id"]+=xp
-                                
+                    comprobat = True
+                    self.DescartarDerrotatsAliats(enemy)
+        if comprobat == False:
+            self.DescartarDerrotatsAliats()
+
+        print("Aliats: \n")
+        print(self.AliatsDerrotats)
+        print("Enemics: \n")
+        print(self.EnemicsDerrotats)
+    
+    def DescartarDerrotatsAliats(self, enemy = None):
+        for ally_id, ally in self.equip.items():
+            if ally.StatsCombat["CurHP"] <= 0.1:
+                if ally_id not in self.AliatsDerrotats.keys():
+                    self.AliatsDerrotats[ally_id]=ally
+            else:
+                if enemy != None:
+                    xp = ally.XPObtained(enemy)
+                    if ally_id not in self.Recompenses["XP"].keys():
+                        self.Recompenses["XP"].update({ ally_id: xp })
+                    else:
+                        self.Recompenses["XP"]["ally_id"]+=xp
         
         
     def ComprobarFiCombat(self):

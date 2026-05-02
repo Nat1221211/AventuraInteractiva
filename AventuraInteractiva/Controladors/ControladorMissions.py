@@ -18,40 +18,40 @@ from Classes import Utilitats
 from Classes import Characteristics
 import PrepararCridar as Call
 
-def sistemaMissionsDerrota(dada, jugador, missions):
-    for id in jugador.MisionsAcceptades:
-        if id in missions["Kill"].keys():
-            if missions["Kill"][id].Status not in ["Pendent Reclamar"]:
-                if missions["Kill"][id].Generic == True:
-                    if dada.base.id in missions["Kill"][id].Objective["enemy"]:
-                        missions["Kill"][id].Count += 1
+def sistemaMissionsDerrota(dada, app):
+    for id in app.jugador.MisionsAcceptades:
+        if id in app.missions["Kill"].keys():
+            if app.missions["Kill"][id].Status not in ["Pendent Reclamar"]:
+                if app.missions["Kill"][id].Generic == True:
+                    if dada.base.id in app.missions["Kill"][id].Objective["enemy"]:
+                        app.missions["Kill"][id].Count += 1
                 else:
-                    for obj in missions["Kill"][id].Objective["enemy"]:
+                    for obj in app.missions["Kill"][id].Objective["enemy"]:
                         if obj["entity"] == dada.base.id:
                             if obj["name"] == dada.nom:
                                 if obj["level"] == dada.Lv:
-                                    missions["Kill"][id].Count += 1
+                                    app.missions["Kill"][id].Count += 1
 
-                if missions["Kill"][id].Count >= missions["Kill"][id].Objective["Amount"]:
-                    ReclamarMissio(missions["Kill"][id])
+                if app.missions["Kill"][id].Count >= app.missions["Kill"][id].Objective["Amount"]:
+                    ReclamarMissio(app.missions["Kill"][id])
 
-def sistemaMissionsVisita(dada, jugador, missions):
-    for id in jugador.MisionsAcceptades:
-        if id in missions["Place"].keys():
-            if dada == missions["Place"][id].Objective["place"]:
-                ReclamarMissio(missions["Place"][id])
+def sistemaMissionsVisita(dada, app):
+    for id in app.jugador.MisionsAcceptades:
+        if id in app.missions["Place"].keys():
+            if dada == app.missions["Place"][id].Objective["place"]:
+                ReclamarMissio(app.missions["Place"][id])
 
-def sistemaMissionsObject(dada, jugador, missions):
-    for id in jugador.MisionsAcceptades:
-        if id in missions["Object"].keys():
-            if dada == missions["Object"][id].Objective["object"]:
-                ReclamarMissio(missions["Object"][id])
+def sistemaMissionsObject(dada, app):
+    for id in app.jugador.MisionsAcceptades:
+        if id in app.missions["Object"].keys():
+            if dada == app.missions["Object"][id].Objective["object"]:
+                ReclamarMissio(app.missions["Object"][id])
 
-def sistemaMissionsFind(dada, jugador, missions):
-    for id in jugador.MisionsAcceptades:
-        if id in missions["Find"].keys():
-            if dada == missions["Find"][id].Objective["find"]:
-                ReclamarMissio(missions["Find"][id])
+def sistemaMissionsFind(dada, app):
+    for id in app.jugador.MisionsAcceptades:
+        if id in app.missions["Find"].keys():
+            if dada == app.missions["Find"][id].Objective["find"]:
+                ReclamarMissio(app.missions["Find"][id])
 
 
 def ReclamarMissio(missio):
@@ -59,11 +59,11 @@ def ReclamarMissio(missio):
     input(f"Has completat la missio {missio.Name}.\nPensa a Reclamar-la...")
 
 
-def DesbloquejarMissio(dada, jugador, missions):
-    for id, misions in missions.items():    # Aquest fa referencia a Kill Place, etc. els tipus de missions
+def DesbloquejarMissio(dada, app):
+    for id, misions in app.missions.items():    # Aquest fa referencia a Kill Place, etc. els tipus de missions
         for id2, misio in misions.items():  # Aquest a cada mission en si.
             if "Mission" in misio.Requisite.keys() and dada in misio.Requisite["Mission"]:
-                res = misio.MissioDesbloquejable(jugador)
+                res = misio.MissioDesbloquejable(app.jugador)
                 if res == True:
                     misio.Status = "Disponible"
-                    jugador.MissionsDisponibles.append(id2)
+                    app.jugador.MissionsDisponibles.append(id2)

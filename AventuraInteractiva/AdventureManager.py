@@ -20,7 +20,7 @@ def Mapa(App):
 def CanviarZona(App, seleccio):
     App.jugador.Ubicacio = App.Zones[seleccio.id]    # Canviem la zona i la retornem
     App.jugador.ActualitzarUltimPobleVisitat()
-    App.event.CridarEvent("Lloc Visitat", App.jugador.Ubicacio.id, App.jugador, App.Missions)
+    App.event.CridarEvent("Lloc Visitat", App.jugador.Ubicacio, App)
     
     UIManager.MostrarMenuPrincipal(App)
     
