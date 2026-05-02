@@ -46,7 +46,7 @@ class MenuCombat():
         self.equip = self.app.jugador.Team
         self.enemic = {}
         self.Recompenses = {
-            "XP": 0,
+            "XP": {},
             "Objects": {},
         }
 
@@ -759,15 +759,24 @@ class MenuCombat():
         self.AtacantEnemic.Priority = 0
 
     def DescartarDerrotats(self):
-        for id, ally in self.equip.items():
-            if ally.StatsCombat["CurHP"] <= 0.1:
-                if id not in self.AliatsDerrotats.keys():
-                    self.AliatsDerrotats[id]=ally
-
         for id, enemy in self.enemic.items():
             if enemy.StatsCombat["CurHP"] <= 0.1:
                 if id not in self.EnemicsDerrotats.keys():
                     self.EnemicsDerrotats[id]=enemy
+                    self.app.jugador.gold += enemy.Lv * 10
+                    for ally_id, ally in self.equip.items():
+                        if ally.StatsCombat["CurHP"] <= 0.1:
+                            if id not in self.AliatsDerrotats.keys():
+                                self.AliatsDerrotats[id]=ally
+                        else:
+                            xp = ally.XPObtained(enemy)
+                            if ally_id not in self.Recompenses["XP"].keys():
+                                self.Recompenses["XP"].update({
+                                    ally_id: xp
+                                })
+                            else:
+                                self.Recompenses["XP"]["ally_id"]+=xp
+                                
         
         
     def ComprobarFiCombat(self):
