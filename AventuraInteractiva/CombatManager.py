@@ -267,6 +267,22 @@ class MenuCombat():
                 width=2, tags=("vida_actual_entitats", "info_enemics", "zona_enemics", "combat")
             )
             self.canvas.tag_raise("vida_actual_entitats", "vida_entitats")
+            
+            font = tkfont.Font(family="Courier", size=11, weight="bold")
+
+            texthealth = f"{round(ent[1].StatsCombat["CurHP"])}/{round(ent[1].StatsCombat["MaxHP"])}"
+            midatext = font.measure(texthealth)
+
+            self.canvas.create_text(
+                x + 40 + 90 - midatext, y + 85,
+                text=texthealth,
+                fill="black",
+                font=("Courier", 11, "bold"),
+                anchor="nw", tags=("vida_actual_entitats", "text_vida_actual", "vida_entitats", "combat")
+            )
+
+            self.canvas.tag_raise("text_vida_actual", "vida_actual_entitats")
+
             y += salt
         
     def dibuixar_info_aliats(self):
@@ -351,7 +367,7 @@ class MenuCombat():
                 x + 60 + mida, 
                 y + 80,
                 fill="green", outline="black",
-                width=2, tags=("vida_actual_entitats", "info_enemics", "zona_enemics", "combat")
+                width=2, tags=("vida_actual_entitats", "combat")
             )
             self.canvas.tag_raise("vida_actual_entitats", "vida_entitats")
 
@@ -365,8 +381,10 @@ class MenuCombat():
                 text=texthealth,
                 fill="black",
                 font=("Courier", 11, "bold"),
-                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+                anchor="nw", tags=("vida_actual_entitats", "text_vida_actual", "vida_entitats", "combat")
             )
+
+            self.canvas.tag_raise("text_vida_actual", "vida_actual_entitats")
 
             self.canvas.create_text(
                 x + 10, y + 88,
@@ -405,9 +423,10 @@ class MenuCombat():
                 text=textmana,
                 fill="black",
                 font=("Courier", 11, "bold"),
-                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+                anchor="nw", tags=("text_mana_actual", "mana_actual_entitats", "combat")
             )
 
+            self.canvas.tag_raise("text_vida_actual", "vida_actual_entitats")
 
             y += salt
     
@@ -510,7 +529,6 @@ class MenuCombat():
                 self.IndexAccio = (self.IndexAccio + 1) % len(self.AccionsCombat)
             self.dibuixar_seleccio_accio_aliat()
             
-
     def GenerarEnemic(self):
 
         pesos = []
