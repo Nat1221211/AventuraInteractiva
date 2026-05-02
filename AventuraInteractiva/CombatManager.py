@@ -76,6 +76,7 @@ class MenuCombat():
         self.MenuAccioAliat = False
         self.PantallaFICombat = False
         self.Derrotat = False
+        self.AccioFugirEstat = False
 
         self.Fugir = [False]
         self.combat = False
@@ -752,7 +753,6 @@ class MenuCombat():
             width=5, tags=("fi_combat_fons", "fi_combat")
         )
 
-
     def AccioEnemiga(self):
         self.AccioEnemic = False
         self.AtacantEnemic.Priority = 0
@@ -769,11 +769,6 @@ class MenuCombat():
                     self.DescartarDerrotatsAliats(enemy)
         if comprobat == False:
             self.DescartarDerrotatsAliats()
-
-        print("Aliats: \n")
-        print(self.AliatsDerrotats)
-        print("Enemics: \n")
-        print(self.EnemicsDerrotats)
     
     def DescartarDerrotatsAliats(self, enemy = None):
         for ally_id, ally in self.equip.items():
@@ -799,11 +794,6 @@ class MenuCombat():
                 self.Derrotat = True
                 self.app.Menu.CrearDialeg("Has estat derrotat...")
                 self.app.Menu.CrearDialeg("Algú t'ha trobat i portat a una posada, no ha deixat pista sobre qui és...")
-
-
-            
-
-
 
     def finalitzarCombat(self):
         for i in self.equip.values():
@@ -848,7 +838,6 @@ class MenuCombat():
                 if self.Fugir[0] == True:
                     self.dibuixar_Pantalla_fi_combat()
             
-
         else:
             self.Lluitar()
 
@@ -873,7 +862,6 @@ class MenuCombat():
 
 
     def AccioFugir(self):
-        print("Has intentat Fugir...")
         self.AccioFugirEstat = True
         teamSPD = 0
         for i in self.equip.values():
