@@ -794,6 +794,12 @@ class MenuCombat():
             # if len(self.enemic) == self.enemyderr:
             #     for id, val in self.enemic.items():
             #         self.app.event.CridarEvent("Derrotar Enemic", val, self.app)
+            if len(self.AliatsDerrotats) == len(self.equip):
+                self.app.Menu.CrearDialeg("Has estat derrotat...")
+                self.app.Menu.CrearDialeg("Algú t'ha trobat i portat a una posada, no ha deixat pista sobre qui és...")
+
+
+            
 
 
 

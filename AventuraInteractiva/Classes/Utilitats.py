@@ -187,6 +187,7 @@ class Menu():
             self.canvas.create_text(
                 30, y,
                 text=self.textdialeg, fill="black",
+                width=self.app.Ancho - 60,
                 font=("Courier", 16, "bold"),
                 anchor="nw", tags=("dialeg", "text_animat")
             )
