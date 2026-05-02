@@ -7,7 +7,7 @@
     "enemies": {
         "wolf": {
             "prob": 40,
-            "group_probs": [40, 50, 10],
+            "group_probs": [20, 70, 10],
             "companions": {},
             "drops": {
 
@@ -17,7 +17,7 @@
 
         "slime": {
             "prob": 30,
-            "group_probs": [80, 20],
+            "group_probs": [50, 45, 5],
             "companions": {},
             "drops": {
 
@@ -25,9 +25,9 @@
             "level_range": [3, 5]
         },
 
-        "conill": {
+        "rabbit": {
             "prob": 30,
-            "group_probs": [90, 10],
+            "group_probs": [70, 25, 5],
             "companions": {},
             "drops": {
 

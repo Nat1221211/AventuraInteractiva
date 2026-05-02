@@ -1,4 +1,4 @@
-# Arxiu: Entitat.py
+# Arxiu: Events.py
 # Autor: Bernat Puig Casals
 # Data: 5 de Març de 2026
 # Descripcio:
@@ -18,7 +18,7 @@ class ControladorEvents():
         else:
             self.Events[event] = [accio]
     
-    def CridarEvent(self, event, dades, jugador, llistat):
+    def CridarEvent(self, event, dades, app):
         if event in self.Events.keys():
             for accio in self.Events[event]:
-                accio(dades, jugador, llistat)
+                accio(dades, app)

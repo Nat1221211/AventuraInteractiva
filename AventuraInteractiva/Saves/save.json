@@ -1,7 +1,7 @@
 {
-    "Nom": "Nat",
-    "Ubicacio": "south_forest",
-    "Or": 2040,
+    "Nom": "Aishia",
+    "Ubicacio": "dawn_village",
+    "Or": 2000,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -18,56 +18,99 @@
         "south_forest"
     ],
     "Llocs_Visitats": [
-        "dawn_village",
-        "Bosc del Sud"
+        "dawn_village"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
     "Team": [
         {
             "id": "Player",
-            "Nom": "Nat",
-            "Base": "mage",
-            "Lv": 10,
+            "Nom": "Aishia",
+            "Base": "archer",
+            "Lv": 5,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 9.100000000000023
-        }
-    ],
-    "Inventari": [
+            "XP": 0,
+            "StatsCombat": {
+                "MaxHP": 22.0,
+                "CurHP": 5.0,
+                "MaxMana": 24.0,
+                "Mana": 12.0,
+                "ATK": 24.0,
+                "INT": 20.0,
+                "DEF": 24.0,
+                "SPD": 22.0
+            }
+        },
         {
-            "id": "inferior_potion",
-            "Amount": 2,
-            "Clase": "Combat"
+            "id": "ally_1",
+            "Nom": "Elaine",
+            "Base": "mage",
+            "Lv": 5,
+            "Lv_Limit": 100,
+            "Moves": [],
+            "Afected": [],
+            "XP": 0,
+            "StatsCombat": {
+                "MaxHP": 18.0,
+                "CurHP": 9.0,
+                "MaxMana": 30.0,
+                "Mana": 5.0,
+                "ATK": 16.0,
+                "INT": 28.0,
+                "DEF": 20.0,
+                "SPD": 20.0
+            }
+        },
+        {
+            "id": "ally_2",
+            "Nom": "Celia",
+            "Base": "priest",
+            "Lv": 5,
+            "Lv_Limit": 100,
+            "Moves": [],
+            "Afected": [],
+            "XP": 0,
+            "StatsCombat": {
+                "MaxHP": 22.0,
+                "CurHP": 1000.0,
+                "MaxMana": 26.0,
+                "Mana": 5.0,
+                "ATK": 18.0,
+                "INT": 22.0,
+                "DEF": 42.0,
+                "SPD": 18.0
+            }
         }
     ],
+    "Inventari": [],
     "Titols": [],
     "Estadistiques": {},
     "Increment_Stats": {
         "MaxHP": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         },
         "MaxMana": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         },
         "ATK": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         },
         "INT": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         },
         "DEF": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         },
         "SPD": {
             "%": 0,
-            "Flat": 10.0
+            "Flat": 0
         }
     },
     "Companys": []

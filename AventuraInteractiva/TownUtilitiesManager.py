@@ -44,18 +44,16 @@ def Botiga(jugador, objectes):
                             input("No tens suficients diners per a comprar-ho...")
 
 
-def Posada(jugador, free = False):
+def CridarPosada(App):
+    App.QuinaConfirmacio = "Hostal"
+    App.MenuConfirmacio("Vols quedar-te a l'hostal?\nFer-ho costara 100 d'or...")
 
-    if free == False:
-        res = UIManager.MostrarMenus(UIManager.Menus["Posada"], False)
-    if free == True or res == "si":
-        if jugador.Gold >= 100 or free == True:
-            print("Has descansat comodament, t'has recuperat completament...")
-            if free == False:
-                jugador.Gold -= 100
-            for i in jugador.Team.values():
-                i.Recuperacio()
-        else:
-            print("No tens suficient gold per pagar la posada, has marxat sense poder descansar...")
+def Posada(App, free = False):
+    if App.jugador.Gold >= 100 or free == True:
+        App.Menu.CrearDialeg("Has descansat comodament, t'has recuperat completament...")
+        if free == False:
+            App.jugador.Gold -= 100
+        for i in App.jugador.Team.values():
+            i.Recuperacio()
     else:
-        print("Has marxat...")  
+         App.Menu.CrearDialeg("No tens suficient or per pagar la posada, has marxat sense poder descansar...")

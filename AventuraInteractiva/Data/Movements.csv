@@ -18,7 +18,7 @@ block;Bloqueig;Descripció;0;100;5;FALSE;;;;;FALSE;FALSE;TRUE;40
 sanctuary;Santuari;Descripció;150;100;90;TRUE;;;;;TRUE;TRUE;FALSE;0
 heal;Cura;Descripció;25;100;10;TRUE;;;;;FALSE;TRUE;FALSE;0
 bite;Mossegada;Descripció;35;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0
-tail_tackle;Cop de Cua;Descripció;15;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0
+tail_flick;Cop de Cua;Descripció;15;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0
 id1;Urpada;Descripció;20;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0
 id1;Picada;Descripció;15;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0
 id1;Cop;Descripció;20;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0

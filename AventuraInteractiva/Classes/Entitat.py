@@ -100,6 +100,10 @@ class Entity():
             "Accesory_2": "",
         }
 
+        # Carregar Imatges individualment
+        self.Imatges = self.base.Images
+        self.ImatgeAjustada = {}
+
     def Recuperacio(self):
         self.StatsCombat["CurHP"] = self.StatsCombat["MaxHP"]
         self.StatsCombat["Mana"] = self.StatsCombat["MaxMana"]
@@ -155,6 +159,11 @@ class Entity():
             PostBuff = v + self.StatsPermanents[k]["Flat"]
             PostBuff *= (1 + self.StatsPermanents[k]["%"])
             self.StatsCombat[k] = PostBuff
+            if k in ["MaxHP", "MaxMana"]:
+                if k == "MaxHP" and v < self.StatsCombat["CurHP"]:
+                    self.StatsCombat["CurHP"] = self.StatsCombat["MaxHP"]
+                elif k == "Mana" and v < self.StatsCombat["Mana"]:
+                    self.StatsCombat["Mana"] = self.StatsCombat["MaxMana"]
     
     def ChangeCombatStats(self, changes):
         self.DefinirCombatStats()

@@ -45,34 +45,32 @@ class ObjecteCombat(Objecte):
         self.Preu = price
         self.OutCombat = usableoutcombat
     
-    def Utilitzar(self, jugador):
+    def Utilitzar(self, app, aliat):
+        objecte = aliat.Objecte
         for k, v in self.Effects.items():
             if k in ["HP", "Mana"]:
-                if v == str and v.endswith("%"):
-                    rec = int(v.replace("%", ""))
-                    if jugador.StatsCombat[k] + ((jugador.StatsCombat[k] * rec) / 100) > jugador.StatsCombat[max]:
-                        jugador.StatsCombat[k] = jugador.StatsCombat[max]
-                        input("Has recuperat tota la vida...")
-                    else:
-                        recup = ((jugador.StatsCombat[k] * rec) / 100)
-                        jugador.StatsCombat[k] += recup
-                        input(f"Has recuperat {recup} punts de vida...")
+                cur = k
+                if k == "HP":
+                    cur = "Cur" + k
+                max = "Max" + k
+                if isinstance(v, str) and v.endswith("%"):
+                    rec = v.replace("%", "")
+                    rec = int(rec)
+                    recup = ((objecte.StatsCombat[max] * rec) / 100)
                 else:
-                    cur = k
-                    if k == "HP":
-                        cur = "Cur" + k
-                    max = "Max" + k
-                    v = float(v)
-                    if jugador.StatsCombat[cur] + v > jugador.StatsCombat[max]:
-                        jugador.StatsCombat[cur] = jugador.StatsCombat[max]
-                        input("Has recuperat tota la vida...")
-                    else:
-                        jugador.StatsCombat[cur] += v
-                        input(f"Has recuperat {v} punts de vida...")
+                    recup = float(v)
+
+                if objecte.StatsCombat[cur] + recup > objecte.StatsCombat[max]:
+                    recup = objecte.StatsCombat[max] - objecte.StatsCombat[cur]
+                
+                app.RecuperantVida = True
+                app.Motxila = False
+                app.Menu.ActualitzarEstatMenuEquip(objecte, recup, cur, max)
             if k == "Flee":
                 print("")
             if k in ["ATK","SPD","DEF","INT"]:
                 print()
+        
 
 class ObjecteEquipment(Objecte):
 

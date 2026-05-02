@@ -4,7 +4,7 @@
 # Descripcio:
 # Creem la classe Tipus d'entitat.
 
-import random
+import os
 
 class EntityType():
     
@@ -22,7 +22,7 @@ class EntityType():
     EntityMoves = {}
     paths = dict()
     Companions = dict()
-
+    
     # Metodes
     def __init__(self, iden, name, playable, hp, magi, atk, intel, defs, spd, xp, group, description, moves):
         self.id = iden
@@ -39,6 +39,14 @@ class EntityType():
         self.EntityDescription = description
         self.EntityMoves = moves
         self.Companions = {}
+        self.Images = {
+            "Frontal": "",
+            "Back": ""
+        }
+        
+    
+    def AddImages(self, images):
+        self.Images = images
     
     def AddPaths(self, paths):
         self.paths = paths
