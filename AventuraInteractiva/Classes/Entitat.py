@@ -374,28 +374,24 @@ class Entity():
         # elif combat == False:
         input("Presiona per a continuar...")
 
-    def LvlUp(self, event, jugador, exits, enemy = None, XP = None):
+    def LvlUp(self, XP = None):
+        levelUP = False
         if self.Lv < self.LvLimit:
-            if XP == None and enemy != None:
-                XP = float(round(self.XPObtained(enemy), 2))
-                self.Xp += XP
-                self.Xp = float(round(self.Xp, 2))
-            elif XP != None and enemy == None:
+            if XP != None:
                 self.Xp += XP
                 self.Xp = float(round(self.Xp, 2))
             
-            print(f"{self.nom} ha guanyat {XP} punts d'experiencia.")
-
             while self.Xp > self.XpRequired:
+                levelUP = True
                 self.Lv += 1
-                print(f"{self.nom} ha pujat de nivell... Ara es nivell {self.Lv}")
                 self.DefinirStats(True)
                 self.DefinirCombatStats()
                 self.Xp -= self.XpRequired
                 self.XpRequired = float(round(self.CalcXPRequired(), 2))
-                event.CridarEvent("Nivell Incrementat", self, jugador, exits)
+                # event.CridarEvent("Nivell Incrementat", self, jugador, exits)
                 self.AplicarCanvisEfectesEstat()
-            input("Presiona per a continuar...")
+        return levelUP
+            
     
     def CalcXPRequired(self):
         baseAmount = 5

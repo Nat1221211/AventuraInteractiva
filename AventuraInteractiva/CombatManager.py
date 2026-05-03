@@ -46,7 +46,11 @@ class MenuCombat():
         self.equip = self.app.jugador.Team
         self.enemic = {}
         self.Recompenses = {
-            "XP": {},
+            "XP": {
+                "Player": 500,
+                "ally_1": 500,
+                "ally_2": 500
+            },
             "Objects": {},
         }
 
@@ -77,6 +81,7 @@ class MenuCombat():
         self.PantallaFICombat = False
         self.Derrotat = False
         self.AccioFugirEstat = False
+        self.levelingUp = False
 
         self.Fugir = [False]
         self.combat = False
@@ -838,43 +843,106 @@ class MenuCombat():
                 "Frontal":
                 self.app.RedimensionarImatge(
                 ally.Imatges["Frontal"],
-                33, 50, False
+                60, 90, False
                 )
             })
             
             self.canvas.create_image(
-                x + 10, y + 10,
+                x + 20, y + 20,
                 image=ally.ImatgeAjustada["Mini"]["Frontal"],
                 anchor="nw",
-                tags=("ent_estat_combat", "combat")
+                tags=("zona_experiencia", "fi_combat")
             )
             
             self.canvas.create_text(
-                x + 50, y + 15,
+                x + 95, y + 25,
                 text=ally.nom,
                 fill="black",
                 width=180,
                 font=("Courier", 16, "bold"),
-                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+                anchor="nw", tags=("zona_experiencia", "fi_combat")
             )
 
             self.canvas.create_text(
-                x + 50, y + 35,
-                text=f"Lv: {ally.Lv}",
+                x + 95, y + 55,
+                text=f"Lv: {ally.Lv} / {ally.LvLimit}",
                 fill="black",
                 font=("Courier", 16, "bold"),
-                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+                anchor="nw", tags=(f"text_nivell_{ally.id}", "zona_experiencia", "fi_combat")
             )
+
+            self.canvas.create_rectangle(
+                x + 20, self.app.Alto - 65,
+                x + salt - 20, 
+                self.app.Alto - 45,
+                fill="white", outline="black",
+                width=5, tags=(f"barra_xp_fons_{ally.id}", "zona_experiencia", "fi_combat")
+            )
+
+            percentatgeXP = (round(ally.Xp, 2) / round(ally.XpRequired, 2))
+            amplebarraxp = (salt - 20 - 20)
+            midabarraxp = amplebarraxp * percentatgeXP
+            
+            self.canvas.create_rectangle(
+                x + 20, self.app.Alto - 65,
+                x + 20 + midabarraxp, 
+                self.app.Alto - 45,
+                fill="cyan",
+                width=5, tags=(f"barra_xp_{ally.id}", "zona_experiencia", "fi_combat")
+            )
+
+            text_xp = f"{round(ally.Xp, 2)} / {round(ally.XpRequired, 2)}"
+            self.canvas.create_text(
+                x + 20, self.app.Alto - 40,
+                text=f"EXP: {text_xp}",
+                fill="black",
+                font=("Courier", 14, "bold"),
+                anchor="nw", tags=(f"text_experiencia_{ally.id}", "zona_experiencia", "fi_combat")
+            )
+            
             x+= salt
 
+        self.dibuixar_experiencia_pantalla_fi()
             # Falta crear la barra d'experiencia... (el fons d'aquesta, la de color en la altre funcio)
 
-
-    
     def dibuixar_experiencia_pantalla_fi(self):
-        pass
     # En aquesta només incrementarem la barra i creearem la de color, i la reduirem a zero si ja esta al limit del nivell
     # enunciarem que s'ha pujat de nivell, etc...
+        self.levelingUp = True
+        for num, ally in enumerate(self.equip.values()):
+            if ally.id in self.Recompenses["XP"].keys():
+                if self.Recompenses["XP"][ally.id] > 1:
+                    levelUp = ally.LvlUp(1)
+                    self.Recompenses["XP"][ally.id] -= 1
+                else:
+                    levelUp = ally.LvlUp(self.Recompenses["XP"][ally.id])
+                    self.Recompenses["XP"][ally.id] = 0
+
+            midesBarraFons = self.canvas.coords(f"barra_xp_fons_{ally.id}")
+
+            coordsBarraXP = self.canvas.coords(f"barra_xp_{ally.id}")
+            percentatgeXP = (round(ally.Xp, 2) / round(ally.XpRequired, 2))
+            amplebarraxp = midesBarraFons[2] - midesBarraFons[0]
+            coordsBarraXP[2] = coordsBarraXP[0] + (amplebarraxp * percentatgeXP)
+    
+            coordsBarraXP = self.canvas.coords(f"barra_xp_{ally.id}", coordsBarraXP)
+
+            text_xp = f"{round(ally.Xp, 2)} / {round(ally.XpRequired, 2)}"
+            self.canvas.itemconfig(f"text_experiencia_{ally.id}", text=text_xp)
+        
+        if levelUp == True:
+            self.canvas.itemconfig(f"text_nivell_{ally.id}", text=f"Lv: {ally.Lv} / {ally.LvLimit}")
+
+        completats = 0
+        for i in self.Recompenses["XP"].values():
+            if i == 0:
+                completats+=1
+        if completats == len(self.Recompenses["XP"].keys()):
+            self.levelingUp = False
+        
+        if self.levelingUp == True:
+            self.app.root.after(10, self.dibuixar_experiencia_pantalla_fi)
+
 
     def dibuixar_objectes_pantalla_fi(self):
         pass
