@@ -82,6 +82,7 @@ class MenuCombat():
         self.Derrotat = False
         self.AccioFugirEstat = False
         self.levelingUp = False
+        self.saltarPantallaFi = False
 
         self.Fugir = [False]
         self.combat = False
@@ -911,10 +912,12 @@ class MenuCombat():
         self.levelingUp = True
         for num, ally in enumerate(self.equip.values()):
             if ally.id in self.Recompenses["XP"].keys():
-                if self.Recompenses["XP"][ally.id] > 1:
+                if self.Recompenses["XP"][ally.id] > 1 and self.saltarPantallaFi == False:
                     levelUp = ally.LvlUp(1)
                     self.Recompenses["XP"][ally.id] -= 1
                 else:
+                    if self.saltarPantallaFi == True:
+                        self.levelingUp = False
                     levelUp = ally.LvlUp(self.Recompenses["XP"][ally.id])
                     self.Recompenses["XP"][ally.id] = 0
 
@@ -927,11 +930,19 @@ class MenuCombat():
     
             coordsBarraXP = self.canvas.coords(f"barra_xp_{ally.id}", coordsBarraXP)
 
-            text_xp = f"{round(ally.Xp, 2)} / {round(ally.XpRequired, 2)}"
+            text_xp = f"EXP: {round(ally.Xp, 2)} / {round(ally.XpRequired, 2)}"
             self.canvas.itemconfig(f"text_experiencia_{ally.id}", text=text_xp)
         
-        if levelUp == True:
-            self.canvas.itemconfig(f"text_nivell_{ally.id}", text=f"Lv: {ally.Lv} / {ally.LvLimit}")
+            if levelUp == True:
+                posicio = self.canvas.coords(f"text_nivell_{ally.id}")
+                self.canvas.create_text(
+                    posicio[0], posicio[1] + 20,
+                    text=f"Level UP !!",
+                    fill="black",
+                    font=("Courier", 14, "bold"),
+                    anchor="nw", tags=(f"text_pujatnivell_{ally.id}", "zona_experiencia", "fi_combat")
+                )
+                self.canvas.itemconfig(f"text_nivell_{ally.id}", text=f"Lv: {ally.Lv} / {ally.LvLimit}")
 
         completats = 0
         for i in self.Recompenses["XP"].values():
@@ -942,7 +953,6 @@ class MenuCombat():
         
         if self.levelingUp == True:
             self.app.root.after(10, self.dibuixar_experiencia_pantalla_fi)
-
 
     def dibuixar_objectes_pantalla_fi(self):
         pass
