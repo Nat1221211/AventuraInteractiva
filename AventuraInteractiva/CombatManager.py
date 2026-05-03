@@ -798,7 +798,7 @@ class MenuCombat():
         self.canvas.create_rectangle(
             5, 80,
             self.app.Ancho - 5, 
-            295,
+            395,
             fill="white", outline="black",
             width=5, tags=("zona_objectes", "fi_combat")
         )
@@ -812,18 +812,73 @@ class MenuCombat():
         )
 
         self.canvas.create_rectangle(
-            5, 300,
+            5, 400,
             self.app.Ancho - 5, 
             self.app.Alto - 5,
             fill="white", outline="black",
             width=5, tags=("zona_experiencia", "fi_combat")
         )
+
+        x = 5
+        y = 400
+        
+        for num, ally in enumerate(self.equip.values()):
+            salt = 295 if num <= 2 else 300
+            self.canvas.create_rectangle(
+                x, y,
+                x + salt, 
+                self.app.Alto - 5,
+                fill="white", outline="black",
+                width=5, tags=("zona_experiencia", "fi_combat")
+            )
+            if "MostrarExp" not in ally.ImatgeAjustada.keys():
+                ally.ImatgeAjustada["MostrarExp"]={}
+
+            ally.ImatgeAjustada["Mini"].update({
+                "Frontal":
+                self.app.RedimensionarImatge(
+                ally.Imatges["Frontal"],
+                33, 50, False
+                )
+            })
+            
+            self.canvas.create_image(
+                x + 10, y + 10,
+                image=ally.ImatgeAjustada["Mini"]["Frontal"],
+                anchor="nw",
+                tags=("ent_estat_combat", "combat")
+            )
+            
+            self.canvas.create_text(
+                x + 50, y + 15,
+                text=ally.nom,
+                fill="black",
+                width=180,
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+
+            self.canvas.create_text(
+                x + 50, y + 35,
+                text=f"Lv: {ally.Lv}",
+                fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
+            )
+            x+= salt
+
+            # Falta crear la barra d'experiencia... (el fons d'aquesta, la de color en la altre funcio)
+
+
     
     def dibuixar_experiencia_pantalla_fi(self):
         pass
+    # En aquesta només incrementarem la barra i creearem la de color, i la reduirem a zero si ja esta al limit del nivell
+    # enunciarem que s'ha pujat de nivell, etc...
 
     def dibuixar_objectes_pantalla_fi(self):
         pass
+    # dibuixar obtencio d'or, de moment res més, ja que en un combat no obtenim objectes...
 
     def AccioEnemiga(self):
         self.AccioEnemic = False
@@ -872,7 +927,6 @@ class MenuCombat():
             if len(self.AliatsDerrotats) == len(self.equip):
                 self.Derrotat = True
                 
-
     def finalitzarCombat(self):
         for i in self.equip.values():
             i.afected = []
@@ -918,14 +972,12 @@ class MenuCombat():
             
         else:
             self.Lluitar()
-
     
     def PasarTornSystem(self):
         self.PassarTorn = False
         self.AccioAliat = False
         self.AtacantAliat.Priority = 0
         self.Lluitar()
-
 
     # def TriarObjectius(list):
 
@@ -937,7 +989,6 @@ class MenuCombat():
     #     target = UIManager.MostrarMenus(UIManager.Menus["Qui és l'objectiu?"], True)
             
     #     return target
-
 
     def AccioFugir(self):
         self.AccioFugirEstat = True
