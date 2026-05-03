@@ -351,7 +351,9 @@ class App():
                     if self.MenuCombat.Derrotat == True:
                         self.jugador.Ubicacio = self.jugador.UltimPobleVisitat
                         UIManager.MostrarMenuPrincipal(self)
+                        self.Menu.CrearDialeg("Has estat derrotat...")
                         TUTManager.Posada(self, True)
+                        self.Menu.CrearDialeg("Segons l'hostaler, algú t'ha trobat i portat al Hostal, no ha deixat pista sobre qui és...")
                     else:
                         UIManager.MostrarMenuPrincipal(self)
 
