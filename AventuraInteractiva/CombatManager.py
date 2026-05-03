@@ -775,6 +775,56 @@ class MenuCombat():
             width=5, tags=("fi_combat_fons", "fi_combat")
         )
 
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 5, 
+            75,
+            fill="white", outline="black",
+            width=5, tags=("enunciat", "fi_combat")
+        )
+
+        enunciat = "Victoria !!"
+        if self.Derrotat == True:
+            enunciat = "Derrota..."
+
+        self.canvas.create_text(
+            30, 30,
+            text=enunciat,
+            fill="black",
+            font=("Courier", 24, "bold"),
+            anchor="w", tags=("text_enunciat", "enunciat", "fi_combat")
+        )
+
+        self.canvas.create_rectangle(
+            5, 80,
+            self.app.Ancho - 5, 
+            295,
+            fill="white", outline="black",
+            width=5, tags=("zona_objectes", "fi_combat")
+        )
+
+        self.canvas.create_text(
+            30, 110,
+            text="Objectes Adquirits",
+            fill="black",
+            font=("Courier", 24, "bold"),
+            anchor="w", tags=("text_enunciat", "enunciat", "fi_combat")
+        )
+
+        self.canvas.create_rectangle(
+            5, 300,
+            self.app.Ancho - 5, 
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=5, tags=("zona_experiencia", "fi_combat")
+        )
+    
+    def dibuixar_experiencia_pantalla_fi(self):
+        pass
+
+    def dibuixar_objectes_pantalla_fi(self):
+        pass
+
     def AccioEnemiga(self):
         self.AccioEnemic = False
         self.AtacantEnemic.Priority = 0
