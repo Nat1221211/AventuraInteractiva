@@ -347,18 +347,18 @@ class App():
         
         elif self.MenuCombat.PantallaFICombat == True:
             if tecla.keysym == "Return":
-                    self.Combat = False
-                    if self.MenuCombat.levelingUp == True:
-                        self.MenuCombat.saltarPantallaFi = True
+                if self.MenuCombat.levelingUp == True:
+                    self.MenuCombat.saltarPantallaFi = True
+                elif self.MenuCombat.CombatAcabat == True:
+                    if self.MenuCombat.Derrotat == True:
+                        self.Combat = False
+                        self.jugador.Ubicacio = self.jugador.UltimPobleVisitat
+                        UIManager.MostrarMenuPrincipal(self)
+                        self.Menu.CrearDialeg("Has estat derrotat...")
+                        TUTManager.Posada(self, True)
+                        self.Menu.CrearDialeg("Segons l'hostaler, algú t'ha trobat i portat al Hostal, no ha deixat pista sobre qui és...")                        
                     else:
-                        if self.MenuCombat.Derrotat == True:
-                            self.jugador.Ubicacio = self.jugador.UltimPobleVisitat
-                            UIManager.MostrarMenuPrincipal(self)
-                            self.Menu.CrearDialeg("Has estat derrotat...")
-                            TUTManager.Posada(self, True)
-                            self.Menu.CrearDialeg("Segons l'hostaler, algú t'ha trobat i portat al Hostal, no ha deixat pista sobre qui és...")
-                        else:
-                            UIManager.MostrarMenuPrincipal(self)
+                        UIManager.MostrarMenuPrincipal(self)
 
 
     def ControlBindsMenus(self, tecla):

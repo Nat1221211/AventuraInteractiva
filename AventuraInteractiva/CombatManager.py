@@ -47,9 +47,7 @@ class MenuCombat():
         self.enemic = {}
         self.Recompenses = {
             "XP": {
-                "Player": 500,
-                "ally_1": 500,
-                "ally_2": 500
+                "Player": 200
             },
             "Objects": {},
         }
@@ -83,6 +81,8 @@ class MenuCombat():
         self.AccioFugirEstat = False
         self.levelingUp = False
         self.saltarPantallaFi = False
+        self.CombatAcabat = False
+        self.levelAnimation = None
 
         self.Fugir = [False]
         self.combat = False
@@ -903,14 +903,15 @@ class MenuCombat():
             
             x+= salt
 
+        self.levelingUp = True
         self.dibuixar_experiencia_pantalla_fi()
             # Falta crear la barra d'experiencia... (el fons d'aquesta, la de color en la altre funcio)
 
     def dibuixar_experiencia_pantalla_fi(self):
     # En aquesta només incrementarem la barra i creearem la de color, i la reduirem a zero si ja esta al limit del nivell
     # enunciarem que s'ha pujat de nivell, etc...
-        self.levelingUp = True
         for num, ally in enumerate(self.equip.values()):
+            levelUp = False
             if ally.id in self.Recompenses["XP"].keys():
                 if self.Recompenses["XP"][ally.id] > 1 and self.saltarPantallaFi == False:
                     levelUp = ally.LvlUp(1)
@@ -950,9 +951,13 @@ class MenuCombat():
                 completats+=1
         if completats == len(self.Recompenses["XP"].keys()):
             self.levelingUp = False
+           
         
         if self.levelingUp == True:
-            self.app.root.after(10, self.dibuixar_experiencia_pantalla_fi)
+            self.levelAnimation = self.app.root.after(10, self.dibuixar_experiencia_pantalla_fi)
+        else:
+            self.app.root.after_cancel(self.levelAnimation)
+            self.CombatAcabat = True
 
     def dibuixar_objectes_pantalla_fi(self):
         pass
