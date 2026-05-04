@@ -34,7 +34,7 @@
             "XP": 50,
             "StatsCombat": {
                 "MaxHP": 22.0,
-                "CurHP": 5.0,
+                "CurHP": 0.0,
                 "MaxMana": 24.0,
                 "Mana": 12.0,
                 "ATK": 24.0,

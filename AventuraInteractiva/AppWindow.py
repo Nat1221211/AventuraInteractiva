@@ -350,8 +350,8 @@ class App():
                 if self.MenuCombat.levelingUp == True:
                     self.MenuCombat.saltarPantallaFi = True
                 elif self.MenuCombat.CombatAcabat == True:
+                    self.Combat = False
                     if self.MenuCombat.Derrotat == True:
-                        self.Combat = False
                         self.jugador.Ubicacio = self.jugador.UltimPobleVisitat
                         UIManager.MostrarMenuPrincipal(self)
                         self.Menu.CrearDialeg("Has estat derrotat...")
