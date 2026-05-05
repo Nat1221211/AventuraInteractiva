@@ -793,8 +793,11 @@ class MenuCombat():
         if self.Derrotat == True:
             enunciat = "Derrota..."
 
+        font = tkfont.Font(family="Courier", size=24, weight="bold")
+        mida = font.measure(enunciat)
+
         self.canvas.create_text(
-            30, 30,
+            (self.app.Ancho // 2) - (mida // 2), 40,
             text=enunciat,
             fill="black",
             font=("Courier", 24, "bold"),
@@ -814,7 +817,15 @@ class MenuCombat():
             text="Objectes Adquirits",
             fill="black",
             font=("Courier", 24, "bold"),
-            anchor="w", tags=("text_enunciat", "enunciat", "fi_combat")
+            anchor="w", tags=("enunciat_objectes", "zona_objectes", "fi_combat")
+        )
+
+        self.canvas.create_text(
+            30, 140,
+            text="No s'han adquirit objectes en aquest combat...",
+            fill="black",
+            font=("Courier", 18, "bold"),
+            anchor="w", tags=("text_objectes", "zona_objectes", "fi_combat")
         )
 
         self.canvas.create_rectangle(
