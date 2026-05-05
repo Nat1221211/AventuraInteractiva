@@ -172,6 +172,9 @@ class App():
                 seleccio = self.MenuCombat.AccionsCombat[self.MenuCombat.IndexAccio]
                 self.MenuCombat.CridarMenuSegonsAccio(seleccio)
             
+            elif self.MenuCombat.Atacar==True:
+                seleccio = self.MenuCombat.MovimentsAliat[self.MenuCombat.IndexMoviment]
+                self.MenuCombat.RealitzarAtac(seleccio)
             
             elif self.Menu.id == "Seleccio Equip":
                 if self.SeleccioAliat == True:
@@ -342,8 +345,11 @@ class App():
         elif self.MenuCombat.AccioAliat == True or self.MenuCombat.Atacar == True:
             if tecla.keysym == "w": self.MenuCombat.MovimentAccions(tecla.keysym)
             if tecla.keysym == "s": self.MenuCombat.MovimentAccions(tecla.keysym)
-            if tecla.keysym == "Return": 
+            if tecla.keysym == "Return":
                 self.ConfirmarSeleccio()
+            if self.MenuCombat.Atacar == True:
+                if tecla.keysym == "BackSpace":
+                    self.MenuCombat.MovimentAccions(tecla.keysym)
         
         elif self.MenuCombat.PantallaFICombat == True:
             if tecla.keysym == "Return":

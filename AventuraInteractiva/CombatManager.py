@@ -531,11 +531,16 @@ class MenuCombat():
             
     def MovimentAccions(self, direccio):
         if self.Atacar == True:
-            if direccio == "w":
-                self.IndexMoviment = (self.IndexMoviment - 1) % len(self.MovimentsAliat)
-            elif direccio == "s":
-                self.IndexMoviment = (self.IndexMoviment + 1) % len(self.MovimentsAliat)
-            self.dibuixar_info_moviment()
+            if direccio == "BackSpace":
+                self.Atacar = False
+                self.Lluitar()
+            else:
+                if direccio == "w":
+                    self.IndexMoviment = (self.IndexMoviment - 1) % len(self.MovimentsAliat)
+                elif direccio == "s":
+                    self.IndexMoviment = (self.IndexMoviment + 1) % len(self.MovimentsAliat)
+                self.dibuixar_info_moviment()
+        
         elif self.AccioAliat == True:
             if direccio == "w":
                 self.IndexAccio = (self.IndexAccio - 1) % len(self.AccionsCombat)
@@ -1090,7 +1095,6 @@ class MenuCombat():
 
         self.dibuixar_info_moviment()
 
-    
     def dibuixar_info_moviment(self):
         move = self.MovimentsAliat[self.IndexMoviment]
         pos_seg = (self.IndexMoviment + 1) % len(self.MovimentsAliat)
@@ -1181,6 +1185,10 @@ class MenuCombat():
             font=("Courier", 16, "bold"),
             anchor="nw", tags=("info_atac","seleccio_atac_aliat", "combat")
         )
+    
+    def RealitzarAtac(self, atac):
+        print(atac.Nom)
+        print(atac.id)
         
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
