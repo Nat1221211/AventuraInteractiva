@@ -339,7 +339,7 @@ class App():
                 self.canvas.delete("mostrar_estat")
                 self.Menu.dibuixar_menu_equip()
 
-        elif self.MenuCombat.AccioAliat == True:
+        elif self.MenuCombat.AccioAliat == True or self.MenuCombat.Atacar == True:
             if tecla.keysym == "w": self.MenuCombat.MovimentAccions(tecla.keysym)
             if tecla.keysym == "s": self.MenuCombat.MovimentAccions(tecla.keysym)
             if tecla.keysym == "Return": 

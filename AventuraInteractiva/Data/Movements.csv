@@ -7,7 +7,7 @@ aixafar;Aixafar;Descripció;20;90;0;FALSE;;;;;FALSE;FALSE;FALSE;0
 debuff;Debuff;Descripció;10;100;10;FALSE;;;;;FALSE;FALSE;FALSE;0
 tall;Tall;Descripció;25;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0
 cop_basto;Cop de Basto;Descripció;5;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0
-arrow;Dispar de Fletxa;Descripció;15;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0
+arrow;Dispar Rapid;Descripció;15;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0
 flame_arrow;Fletxa de flames;Descripció;45;100;10;FALSE;;;;;FALSE;FALSE;FALSE;0
 buff;Increment;Descripció;0;100;10;TRUE;;;;;FALSE;FALSE;FALSE;0
 wind_blade;Fulla de Vent;Descripció;45;100;10;TRUE;;;;;FALSE;FALSE;FALSE;0

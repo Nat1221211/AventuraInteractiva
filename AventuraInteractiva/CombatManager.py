@@ -530,12 +530,19 @@ class MenuCombat():
             )
             
     def MovimentAccions(self, direccio):
-        if self.AccioAliat == True:
+        if self.Atacar == True:
+            if direccio == "w":
+                self.IndexMoviment = (self.IndexMoviment - 1) % len(self.MovimentsAliat)
+            elif direccio == "s":
+                self.IndexMoviment = (self.IndexMoviment + 1) % len(self.MovimentsAliat)
+            self.dibuixar_info_moviment()
+        elif self.AccioAliat == True:
             if direccio == "w":
                 self.IndexAccio = (self.IndexAccio - 1) % len(self.AccionsCombat)
             elif direccio == "s":
                 self.IndexAccio = (self.IndexAccio + 1) % len(self.AccionsCombat)
             self.dibuixar_seleccio_accio_aliat()
+
             
     def GenerarEnemic(self):
 
@@ -1059,20 +1066,22 @@ class MenuCombat():
 
     def dibuixar_seleccio_Moviment(self):
         self.Atacar = True
+
         self.canvas.delete("seleccio_accio_aliat")
         self.canvas.delete("seleccio_atac_aliat")
         self.CrearLlistatMoviments()
         
         self.canvas.create_rectangle(
             5, self.app.Alto - 150,
-            self.app.Ancho - 205, 
+            self.app.Ancho - 305, 
             self.app.Alto - 5,
             fill="white", outline="black",
             width=5, tags=("zona_seleccio", "seleccio_atac_aliat", "combat")
         )
 
         self.canvas.create_rectangle(
-            400, self.app.Alto - 150,
+            self.app.Ancho - 300,
+            self.app.Alto - 150,
             self.app.Ancho - 5, 
             self.app.Alto - 5,
             fill="white", outline="black",
@@ -1084,74 +1093,78 @@ class MenuCombat():
     
     def dibuixar_info_moviment(self):
         move = self.MovimentsAliat[self.IndexMoviment]
-        pos = self.IndexMoviment
+        pos_seg = (self.IndexMoviment + 1) % len(self.MovimentsAliat)
+        pos_ant = (self.IndexMoviment - 1) % len(self.MovimentsAliat)
+
+        self.canvas.delete("info_atac")
+        self.canvas.delete("atacs")
 
         font1 = tkfont.Font(family="Courier", size=18, weight="bold")
         lenght = font1.measure(move.Moviment.Name)
 
         self.canvas.create_text(
-                (self.app.Ancho - 205 // 2) + (lenght // 2), 
+                5 + (((self.app.Ancho - 305) - lenght) / 2), 
                 self.app.Alto - 80,
                 text=move.Moviment.Name,
                 fill="blue",
                 width= 350,
                 font=("Courier", 18, "bold"),
-                anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+                anchor="nw", tags=("atac_actual", "atacs","seleccio_atac_aliat", "combat")
             )
 
         font2 = tkfont.Font(family="Courier", size=16, weight="bold")
-        lenght = font2.measure(self.MovimentsAliat[pos - 1].Moviment.Name)
+        lenght = font2.measure(self.MovimentsAliat[pos_ant].Moviment.Name)
 
         self.canvas.create_text(
-                (self.app.Ancho - 205 // 2) + (lenght // 2), 
+                5 + (((self.app.Ancho - 305) - lenght) / 2),
                 self.app.Alto - 110,
-                text=self.MovimentsAliat[pos - 1],
-                fill="#20202068",
+                text=self.MovimentsAliat[pos_ant].Moviment.Name,
+                fill="#202020",
                 width= 350,
                 font=("Courier", 16, "bold"),
-                anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+                anchor="nw", tags=("atac_ant", "atacs", "seleccio_atac_aliat", "combat")
             )
 
-        lenght = font2.measure(self.MovimentsAliat[pos + 1])
+        lenght = font2.measure(self.MovimentsAliat[pos_seg].Moviment.Name)
         self.canvas.create_text(
-                (self.app.Ancho - 205 // 2) + (lenght // 2), 
+                5 + (((self.app.Ancho - 305) - lenght) / 2),
                 self.app.Alto - 50,
-                text=self.MovimentsAliat[pos + 1],
-                fill="#20202068",
+                text=self.MovimentsAliat[pos_seg].Moviment.Name,
+                fill="#202020",
                 width= 350,
                 font=("Courier", 16, "bold"),
-                anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+                anchor="nw", tags=("atac_seg", "atacs", "seleccio_atac_aliat", "combat")
             )
         
         # Informacio Moviment
         self.canvas.create_text(
-            430, 
+            self.app.Ancho - 255, 
             self.app.Alto - 130,
             text=f"Potencia: {move.Moviment.Power}",
             fill="black",
             width= 350,
             font=("Courier", 16, "bold"),
-            anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+            anchor="nw", tags=("info_atac","seleccio_atac_aliat", "combat")
         )
 
         self.canvas.create_text(
-            430, 
+            self.app.Ancho - 255,
             self.app.Alto - 100,
             text=f"Precisio: {move.Moviment.Precision}",
             fill="black",
             width= 350,
             font=("Courier", 16, "bold"),
-            anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+            anchor="nw", tags=("info_atac","seleccio_atac_aliat", "combat")
         )
 
         self.canvas.create_text(
-            430, 
+            self.app.Ancho - 255,
             self.app.Alto - 70,
             text=f"Mana Cost: {move.Moviment.Cost}",
             fill="black",
             width= 350,
             font=("Courier", 16, "bold"),
-            anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+            anchor="nw", tags=("info_atac","seleccio_atac_aliat", "combat")
         )
 
         if move.Moviment.Type == True:
@@ -1160,13 +1173,13 @@ class MenuCombat():
             tipus = "Fisic"
 
         self.canvas.create_text(
-            430, 
+            self.app.Ancho - 255,
             self.app.Alto - 40,
             text=f"Tipus: {tipus}",
             fill="black",
             width= 350,
             font=("Courier", 16, "bold"),
-            anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+            anchor="nw", tags=("info_atac","seleccio_atac_aliat", "combat")
         )
         
     def AccioPasarTorn(self):
