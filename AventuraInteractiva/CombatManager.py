@@ -90,6 +90,7 @@ class MenuCombat():
         # Altres variables necessaries
         self.AtacantAliat = None
         self.AtacantEnemic = None
+        self.MovimentsAliat = []
 
 
     def CridarMenuSegonsAccio(self, accio):
@@ -485,6 +486,7 @@ class MenuCombat():
     def dibuixar_seleccio_accio_aliat(self):
         self.AccioAliat = True
         self.MenuAccioAliat = True
+        self.canvas.delete("seleccio_accio_aliat")
 
         self.canvas.create_rectangle(
             5, self.app.Alto - 150,
@@ -1048,13 +1050,129 @@ class MenuCombat():
     #             entitat.afected.remove(j)
     #     return entitat, derrotats
 
+    def CrearLlistatMoviments(self):
+        self.MovimentsAliat = []
+        for id, move in self.AtacantAliat.Moves.items():
+            self.MovimentsAliat.append(
+                OpcionsCombat(id, move.Name, "", True, move)
+            )
+
     def dibuixar_seleccio_Moviment(self):
         self.Atacar = True
-        self.app.Menu.CrearDialeg("Has atacat")
+        self.canvas.delete("seleccio_accio_aliat")
+        self.canvas.delete("seleccio_atac_aliat")
+        self.CrearLlistatMoviments()
+        
+        self.canvas.create_rectangle(
+            5, self.app.Alto - 150,
+            self.app.Ancho - 205, 
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=5, tags=("zona_seleccio", "seleccio_atac_aliat", "combat")
+        )
+
+        self.canvas.create_rectangle(
+            400, self.app.Alto - 150,
+            self.app.Ancho - 5, 
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=5, tags=("zona_descripcio", "seleccio_atac_aliat", "combat")
+        )
+
+        self.dibuixar_info_moviment()
+
+    
+    def dibuixar_info_moviment(self):
+        move = self.MovimentsAliat[self.IndexMoviment]
+        pos = self.IndexMoviment
+
+        font1 = tkfont.Font(family="Courier", size=18, weight="bold")
+        lenght = font1.measure(move.Moviment.Name)
+
+        self.canvas.create_text(
+                (self.app.Ancho - 205 // 2) + (lenght // 2), 
+                self.app.Alto - 80,
+                text=move.Moviment.Name,
+                fill="blue",
+                width= 350,
+                font=("Courier", 18, "bold"),
+                anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+            )
+
+        font2 = tkfont.Font(family="Courier", size=16, weight="bold")
+        lenght = font2.measure(self.MovimentsAliat[pos - 1].Moviment.Name)
+
+        self.canvas.create_text(
+                (self.app.Ancho - 205 // 2) + (lenght // 2), 
+                self.app.Alto - 110,
+                text=self.MovimentsAliat[pos - 1],
+                fill="#20202068",
+                width= 350,
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+            )
+
+        lenght = font2.measure(self.MovimentsAliat[pos + 1])
+        self.canvas.create_text(
+                (self.app.Ancho - 205 // 2) + (lenght // 2), 
+                self.app.Alto - 50,
+                text=self.MovimentsAliat[pos + 1],
+                fill="#20202068",
+                width= 350,
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+            )
+        
+        # Informacio Moviment
+        self.canvas.create_text(
+            430, 
+            self.app.Alto - 130,
+            text=f"Potencia: {move.Moviment.Power}",
+            fill="black",
+            width= 350,
+            font=("Courier", 16, "bold"),
+            anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+        )
+
+        self.canvas.create_text(
+            430, 
+            self.app.Alto - 100,
+            text=f"Precisio: {move.Moviment.Precision}",
+            fill="black",
+            width= 350,
+            font=("Courier", 16, "bold"),
+            anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+        )
+
+        self.canvas.create_text(
+            430, 
+            self.app.Alto - 70,
+            text=f"Mana Cost: {move.Moviment.Cost}",
+            fill="black",
+            width= 350,
+            font=("Courier", 16, "bold"),
+            anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+        )
+
+        if move.Moviment.Type == True:
+            tipus = "Magic"
+        else:
+            tipus = "Fisic"
+
+        self.canvas.create_text(
+            430, 
+            self.app.Alto - 40,
+            text=f"Tipus: {tipus}",
+            fill="black",
+            width= 350,
+            font=("Courier", 16, "bold"),
+            anchor="nw", tags=("atac_actual","seleccio_atac_aliat", "combat")
+        )
         
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
         self.PassarTorn = True
+        self.canvas.delete("seleccio_accio_aliat")
         self.app.Menu.CrearDialeg("Has decidit passar el torn")
 
     def EleccioDespresPostDialegIntern(self):
@@ -1086,6 +1204,9 @@ class MenuCombat():
 
     def AccioFugir(self):
         self.AccioFugirEstat = True
+        self.canvas.delete("seleccio_accio_aliat")
+
+
         teamSPD = 0
         for i in self.equip.values():
             teamSPD += i.StatsCombat["SPD"]

@@ -34,7 +34,7 @@
             "XP": 50,
             "StatsCombat": {
                 "MaxHP": 22.0,
-                "CurHP": 0.0,
+                "CurHP": 22.0,
                 "MaxMana": 24.0,
                 "Mana": 12.0,
                 "ATK": 24.0,
@@ -54,33 +54,13 @@
             "XP": 100,
             "StatsCombat": {
                 "MaxHP": 18.0,
-                "CurHP": 0.0,
+                "CurHP": 18.0,
                 "MaxMana": 30.0,
                 "Mana": 5.0,
                 "ATK": 16.0,
                 "INT": 28.0,
                 "DEF": 20.0,
                 "SPD": 20.0
-            }
-        },
-        {
-            "id": "ally_2",
-            "Nom": "Celia",
-            "Base": "priest",
-            "Lv": 5,
-            "Lv_Limit": 100,
-            "Moves": [],
-            "Afected": [],
-            "XP": 30,
-            "StatsCombat": {
-                "MaxHP": 22.0,
-                "CurHP": 0.0,
-                "MaxMana": 26.0,
-                "Mana": 5.0,
-                "ATK": 18.0,
-                "INT": 22.0,
-                "DEF": 42.0,
-                "SPD": 18.0
             }
         }
     ],
