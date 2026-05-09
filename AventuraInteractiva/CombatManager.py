@@ -61,7 +61,7 @@ class MenuCombat():
         self.IndexAccio = 0
         self.AccionsCombat = [
             OpcionsCombat("atacar", "Atacar", True, ""),
-            OpcionsCombat("motxila", "Motxila", True, ""),
+            OpcionsCombat("motxila", "Motxila", False, ""),
             OpcionsCombat("estat", "Veure Estat", True, ""),
             OpcionsCombat("fugir", "Fugir", True, ""),
             OpcionsCombat("pasar", "Pasar Torn", True, "")
@@ -510,6 +510,9 @@ class MenuCombat():
             color = "black"
             if self.IndexAccio == pos:
                 color = "blue"
+            
+            if opcio.Habilitat == False:
+                color="grey"
 
             self.canvas.create_text(
                 x, y,
@@ -546,6 +549,13 @@ class MenuCombat():
                 self.IndexAccio = (self.IndexAccio - 1) % len(self.AccionsCombat)
             elif direccio == "s":
                 self.IndexAccio = (self.IndexAccio + 1) % len(self.AccionsCombat)
+
+            while self.AccionsCombat[self.IndexAccio].Habilitat == False:
+                if direccio == "w":
+                    self.IndexAccio = (self.IndexAccio - 1) % len(self.AccionsCombat)
+                elif direccio == "s":
+                    self.IndexAccio = (self.IndexAccio + 1) % len(self.AccionsCombat)
+
             self.dibuixar_seleccio_accio_aliat()
 
             
@@ -747,28 +757,46 @@ class MenuCombat():
             self.canvas.tag_raise(f"accio_entitat_aliada_{self.AtacantAliat.id}", "all")
     
     def Lluitar(self):
-        accioFeta = False
         
         if self.combat == True and self.Fugir[0] == False: 
-            # Turn Aliat
+            if len(self.enemic) >= 1 and len(self.equip) >= 1:
+                maxPriorityPlayer = max(self.equip.values(), key=lambda j: j.Priority)
+                maxPriorityEnemies = max(self.enemic.values(), key=lambda e: e.Priority)
+
+                actuant = max(maxPriorityEnemies, maxPriorityPlayer, key=lambda e: e.Priority)
             
-            for aliat in self.equip.values():
-                if accioFeta == False:
-                    if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1:
-                        accioFeta = True
-                        self.AtacantAliat = aliat
+                if actuant.Priority >= 100:
+
+                    if actuant in self.equip.values():
+                        self.AtacantAliat = actuant
                         self.ColocarVistaLiniaPrioritat()
                         self.dibuixar_seleccio_accio_aliat()
-                        
-        # Turn enemic
-            for j in self.enemic.values():
-                if accioFeta == False:
-                    if j.Priority >= 100 and len(self.equip) >= 1 and j.StatsCombat["CurHP"] > 0:
-                        accioFeta = True
+                    else:
                         self.AccioEnemic = True
-                        self.AtacantEnemic = j
+                        self.AtacantEnemic = actuant
                         self.ColocarVistaLiniaPrioritat()
                         self.AccioEnemiga()
+                    
+            
+            # Turn Aliat
+            
+        #     for aliat in self.equip.values():
+        #         if accioFeta == False:
+        #             if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1:
+        #                 accioFeta = True
+        #                 self.AtacantAliat = aliat
+        #                 self.ColocarVistaLiniaPrioritat()
+        #                 self.dibuixar_seleccio_accio_aliat()
+                        
+        # # Turn enemic
+        #     for j in self.enemic.values():
+        #         if accioFeta == False:
+        #             if j.Priority >= 100 and len(self.equip) >= 1 and j.StatsCombat["CurHP"] > 0:
+        #                 accioFeta = True
+        #                 self.AccioEnemic = True
+        #                 self.AtacantEnemic = j
+        #                 self.ColocarVistaLiniaPrioritat()
+        #                 self.AccioEnemiga()
                         
             if self.combat == True:
                 self.ComprobarFiCombat()
@@ -1187,6 +1215,7 @@ class MenuCombat():
         )
     
     def RealitzarAtac(self, atac):
+        self.Atacar = False
         print(atac.Nom)
         print(atac.id)
         
