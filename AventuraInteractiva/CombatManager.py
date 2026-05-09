@@ -989,7 +989,8 @@ class MenuCombat():
         if self.levelingUp == True:
             self.levelAnimation = self.app.root.after(10, self.dibuixar_experiencia_pantalla_fi)
         else:
-            self.app.root.after_cancel(self.levelAnimation)
+            if self.levelAnimation != None:
+                self.app.root.after_cancel(self.levelAnimation)
             self.CombatAcabat = True
 
     def dibuixar_objectes_pantalla_fi(self):
@@ -1215,8 +1216,7 @@ class MenuCombat():
                     if danyrestant[ent.id] > (dany[ent.id] / 20) and ent.StatsCombat["CurHP"] > 0:
                         ent.StatsCombat["CurHP"] -= (dany[ent.id] / 20)
                         danyrestant[ent.id] -= (dany[ent.id] / 20)
-                        danyrestant[ent.id] = round(danyrestant[ent.id], 2)
-
+                    
                     elif danyrestant[ent.id] <= dany[ent.id] / 20 and ent.StatsCombat["CurHP"] > 0:
                         ent.StatsCombat["CurHP"] -= danyrestant[ent.id]
                         if ent.id in dany:
@@ -1227,6 +1227,11 @@ class MenuCombat():
                         if ent.id in dany:
                             dany.pop(ent.id)
                     
+                    if ent.StatsCombat["CurHP"] <= 0.01:
+                        ent.StatsCombat["CurHP"] = 0
+                    
+                    ent.StatsCombat["CurHP"] = round(ent.StatsCombat["CurHP"], 1)
+                    danyrestant[ent.id] = round(danyrestant[ent.id], 1)
 
                     health = ent.StatsCombat["CurHP"] / ent.StatsCombat["MaxHP"]
                     mida = 95 * health
@@ -1238,7 +1243,7 @@ class MenuCombat():
 
                     self.canvas.coords(f"hp_enemic_{ent.id}", actual_coords)
 
-                    text_hp = f"{round(ent.StatsCombat["CurHP"])}/{round(ent.StatsCombat["MaxHP"])}"
+                    text_hp = f"{round(ent.StatsCombat["CurHP"], 1)}/{round(ent.StatsCombat["MaxHP"], 1)}"
                     self.canvas.itemconfig(f"texthp_enemic_{ent.id}", text=text_hp)
                 
                 elif ent.id in self.equip.values():
