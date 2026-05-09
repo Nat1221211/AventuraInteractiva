@@ -164,6 +164,7 @@ class Entity():
                     self.StatsCombat["CurHP"] = self.StatsCombat["MaxHP"]
                 elif k == "Mana" and v < self.StatsCombat["Mana"]:
                     self.StatsCombat["Mana"] = self.StatsCombat["MaxMana"]
+            
     
     def ChangeCombatStats(self, changes):
         self.DefinirCombatStats()

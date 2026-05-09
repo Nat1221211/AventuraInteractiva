@@ -1060,7 +1060,6 @@ class MenuCombat():
             eliminar = []
             for i in comprobar.afected:
                 if i.RemainingTurns <= 0 and i.Turns > 0:
-                    statsafected = comprobar.afected.StatEffects[1][0]
                     eliminar.append(i)
                 elif comprobar.StatsCombat["CurHP"] > 0:
                     if i.Damage > 0:
@@ -1071,6 +1070,7 @@ class MenuCombat():
                     i.RemainingTurns -= 1
             for j in eliminar:
                 comprobar.afected.remove(j)
+            comprobar.AplicarCanvisEfectesEstat()
 
     def CrearLlistatMoviments(self):
         self.MovimentsAliat = []
