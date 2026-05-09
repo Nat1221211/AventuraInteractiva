@@ -1196,7 +1196,6 @@ class MenuCombat():
         )
     
     def RealitzarAtac(self, atac):
-        self.AtacantAliat.Priority = 0
         moviment = atac.Moviment
         self.app.Menu.CrearDialeg(f"{self.AtacantAliat.nom}, ha utilitzat {moviment.Name} !!")
         # Cal canviar per a poder seleccionar enemic...
@@ -1253,6 +1252,9 @@ class MenuCombat():
             self.UpdatingEnemyHP = False
             self.app.root.after_cancel(self.UpdateHPAnimation)
             self.Atacar = False
+            self.AccioAliat = False
+            self.canvas.delete("seleccio_atac_aliat")
+            self.AtacantAliat.Priority = 0
         else:
             self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, atacats, danyrestant))
             
