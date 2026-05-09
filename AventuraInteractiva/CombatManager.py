@@ -83,6 +83,8 @@ class MenuCombat():
         self.saltarPantallaFi = False
         self.CombatAcabat = False
         self.levelAnimation = None
+        self.UpdatingEnemyHP = False
+        self.UpdateHPAnimation = None
 
         self.Fugir = [False]
         self.combat = False
@@ -271,7 +273,7 @@ class MenuCombat():
                 x + 40 + mida, 
                 y + 100,
                 fill="green", outline="black",
-                width=2, tags=("vida_actual_entitats", "info_enemics", "zona_enemics", "combat")
+                width=2, tags=(f"hp_enemic_{ent[1].id}", "vida_actual_entitats", "info_enemics", "zona_enemics", "combat")
             )
             self.canvas.tag_raise("vida_actual_entitats", "vida_entitats")
             
@@ -285,7 +287,7 @@ class MenuCombat():
                 text=texthealth,
                 fill="black",
                 font=("Courier", 11, "bold"),
-                anchor="nw", tags=("vida_actual_entitats", "text_vida_actual", "vida_entitats", "combat")
+                anchor="nw", tags=(f"texthp_enemic_{ent[1].id}", "vida_actual_entitats", "text_vida_actual", "vida_entitats", "combat")
             )
 
             self.canvas.tag_raise("text_vida_actual", "vida_actual_entitats")
@@ -776,27 +778,6 @@ class MenuCombat():
                         self.AtacantEnemic = actuant
                         self.ColocarVistaLiniaPrioritat()
                         self.AccioEnemiga()
-                    
-            
-            # Turn Aliat
-            
-        #     for aliat in self.equip.values():
-        #         if accioFeta == False:
-        #             if aliat.Priority >= 100 and len(self.enemic) >= 1 and aliat.StatsCombat["CurHP"] > 0.1:
-        #                 accioFeta = True
-        #                 self.AtacantAliat = aliat
-        #                 self.ColocarVistaLiniaPrioritat()
-        #                 self.dibuixar_seleccio_accio_aliat()
-                        
-        # # Turn enemic
-        #     for j in self.enemic.values():
-        #         if accioFeta == False:
-        #             if j.Priority >= 100 and len(self.equip) >= 1 and j.StatsCombat["CurHP"] > 0:
-        #                 accioFeta = True
-        #                 self.AccioEnemic = True
-        #                 self.AtacantEnemic = j
-        #                 self.ColocarVistaLiniaPrioritat()
-        #                 self.AccioEnemiga()
                         
             if self.combat == True:
                 self.ComprobarFiCombat()
@@ -1215,10 +1196,67 @@ class MenuCombat():
         )
     
     def RealitzarAtac(self, atac):
+        self.AtacantAliat.Priority = 0
+        moviment = atac.Moviment
+        self.app.Menu.CrearDialeg(f"{self.AtacantAliat.nom}, ha utilitzat {moviment.Name} !!")
+        # Cal canviar per a poder seleccionar enemic...
+        self.AtacantAliat.atacar(self, "All", moviment)
+    
+    def AplicarDany(self, dany, atacats, danyrestant = None):
         self.Atacar = False
-        print(atac.Nom)
-        print(atac.id)
-        
+        popEnt = []
+
+        if danyrestant == None:
+            danyrestant = dany
+
+        for pos, ent in enumerate(atacats):
+            if ent.id in dany.keys():
+                if ent in self.enemic.values():
+                    self.UpdatingEnemyHP = True
+
+                    if danyrestant[ent.id] > dany / 20 and ent.StatsCombat["CurHP"] > 0:
+                        ent.StatsCombat["CurHP"] -= dany / 20
+                        danyrestant[ent.id] -= dany / 20
+
+                    elif danyrestant[ent.id] <= dany / 20 and ent.StatsCombat["CurHP"] > 0:
+                        ent.StatsCombat["CurHP"] -= danyrestant[ent.id]
+                        dany.pop(ent.id)
+                    else:
+                        if ent.id not in popEnt:
+                            popEnt.append(ent.id)
+                        if ent.id in dany:
+                            dany.pop(ent.id)
+                    
+
+                    health = ent.StatsCombat["CurHP"] / ent.StatsCombat["MaxHP"]
+                    mida = 95 * health
+
+                    actual_coords = self.canvas.coords(f"hp_enemic_{ent.id}")
+
+                    new_coords = actual_coords
+                    new_coords[2] = 5 + 40 + mida
+
+                    self.canvas.coords(f"hp_enemic_{ent.id}", actual_coords)
+
+                    text_hp = f"{ent.StatsCombat["CurHP"]}/{ent.StatsCombat["MaxHP"]}"
+                    self.canvas.itemconfig(f"texthp_enemic_{ent.id}", text=text_hp)
+                
+                elif ent.id in self.equip.values():
+                    pass
+
+        for ent in popEnt:
+            atacats.remove(ent)
+
+        if len(atacats) == 0 or len(dany) == 0:
+            self.UpdatingEnemyHP = False
+            self.app.root.after_cancel(self.UpdateHPAnimation)
+            self.UpdateHPAnimation = None
+            self.Atacar = False
+        else:
+            self.UpdateHPAnimation = self.app.root.after(10, self.AplicarDany(dany, atacats))
+            
+                
+            
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
         self.PassarTorn = True
@@ -1231,6 +1269,8 @@ class MenuCombat():
             if self.AccioFugirEstat == True:
                 if self.Fugir[0] == True:
                     self.dibuixar_Pantalla_fi_combat()
+            elif self.Atacar == True:
+                pass
             
         else:
             self.Lluitar()

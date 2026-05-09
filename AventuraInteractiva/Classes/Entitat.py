@@ -194,7 +194,7 @@ class Entity():
         self.ChangeCombatStats(StatChanges)
     
     
-    def ApplyStatusEffects(self, effect, prob):
+    def ApplyStatusEffects(self, MenuCombat, effect, prob):
         if prob < 100:
             apply = random.choices([True, False], [prob, 100 - prob])
         else:
@@ -213,17 +213,17 @@ class Entity():
                 limit = effect.EffectLimit
                 if effectCount + 1 > limit and limit != 0:
                     aplicable = False
-                    print(f"{self.nom} ha arribat al limit d'aplicacions de l'efecte {effect.Name}")
+                    MenuCombat.app.Menu.CrearDialeg(f"{self.nom} ha arribat al limit d'aplicacions de l'efecte {effect.Name}")
 
             if aplicable == True:
                 effect.RemainingTurns = effect.Turns
                 self.afected.append(effect)
-                print(f"{self.nom} ha estat afectat per {effect.Name}.")
+                MenuCombat.app.Menu.CrearDialeg(f"{self.nom} ha estat afectat per {effect.Name}.")
                 self.AplicarCanvisEfectesEstat()
 
                 
 
-    def CalcularDamage(self, enemy, move):
+    def CalcularDamage(self, MenuCombat, enemy, move):
         
         # Calcul dels danys
         if move.Type == False:
@@ -234,15 +234,14 @@ class Entity():
         crit = random.choices([True, False], cum_weights=[5, 95])
         if crit[0] == True:
             damage *= 1.75
-            print(f"{enemy.nom} ha rebut un critic...")
+            MenuCombat.app.Menu.CrearDialeg(f"{enemy.nom} ha rebut un critic...")
 
-        # Reduim les estadistiques per efectes d'estat despres de calcular el dany.
-        for i in move.Debuff.items():
-            enemy.ApplyStatusEffects(i[0], i[1])
         return damage
 
-    def atacar(self, enemy, target, move):
+    def atacar(self, MenuCombat, target, move):
         impedit = [False]
+        damage = {}
+        
         if len(self.afected) > 0:
             for i in self.afected:
                 if i.Blocking[0] == True and impedit[0] == False:
@@ -252,58 +251,41 @@ class Entity():
                         impedit = random.choices([True, False], cum_weights=[self.afected.Blocking[1], 100 - self.afected.Blocking[1]])
                         if impedit[0] == True:
                             impedit[1] = i
+        
+        # Seleccio equip al que atacar segons aliat o enemic
+        EquipAAtacar = {"ID": "", "Atacar": None}
+        if self.id in MenuCombat.enemic.keys():
+            EquipAAtacar["ID"]="Equip"
+            EquipAAtacar["Atacar"] = MenuCombat.equip
+        else:
+            EquipAAtacar["ID"]="Enemic"
+            EquipAAtacar["Atacar"] = MenuCombat.enemic
+        
         if impedit[0] == False:
-            # Cridar icrements d'stats en cas de ser necessari
+            # Cridar increments d'stats en cas de ser necessari
             for i in move.Buff.items():
-                self.ApplyStatusEffects(i[0], i[1])
+                self.ApplyStatusEffects(MenuCombat, i[0], i[1])
 
-            derrotats = []
-            for id, ent in enemy.items():
+            atacats = []
+            for id, ent in EquipAAtacar["Atacar"].items():
                 if move.MultiTarget or id == target or target == "All":
-                    print(f"{self.nom} ha atacat.")
                     if move.Precision < 100:
                         atac = random.choices([True, False], cum_weights=[move.Precision, 100 - move.Precision])
                     else:
                         atac = [True]
                     if atac == [True]:
-                        if ent.Protected == False or ent.ProtectedBy[0] != None:
-                            damage = self.CalcularDamage(ent, move)
-                            damage = round(damage, 2)
-                            if ent.Protected == True:
-                                if ent.ProtectedBy[0] != None:
-                                    damage = damage * ((100 - ent.ProtectedBy[1]) / 100)
-                                    ent.ProtectedBy[0].StatsCombat["CurHP"] -= damage
-                                    print(f"{ent.ProtectedBy[0].nom}, ha entomat el {ent.ProtectedBy[1]}% del dany...")
-                                    if ent.ProtectedBy[0].StatsCombat["CurHP"] < 0.1:
-                                        print(f"{ent.ProtectedBy[0].nom}, ha estat derrotat...")
-                                        derrotats.append(ent)
-                                    else:
-                                        print(f"{ent.ProtectedBy[0].nom}, ha recibit {damage} de dany...")
-                                else:
-                                    enemy.StatsCombat["CurHP"] -= damage
-                                    if enemy.StatsCombat["CurHP"] < 0.1:
-                                        print(f"{enemy.nom} ha estat derrotat.")
-                                        derrotats.append(ent)
-                                    else:
-                                        print(f"{enemy.nom} ha perdut {damage} punts de vida...")
-                            else:
-                                ent.StatsCombat["CurHP"] -= damage
-                                if ent.StatsCombat["CurHP"] < 0.1:
-                                    print(f"{ent.nom} ha estat derrotat.")
-                                    derrotats.append(ent)
-                                else:
-                                    print(f"{ent.nom} ha perdut {damage} punts de vida...")
-                        else:
-                            print(f"{ent.nom} esta protegit i per tant l'atac no ha causat res...")
+                        if ent.id not in damage.keys():
+                            damage[ent.id]=0
+
+                        damage[ent.id] = round(self.CalcularDamage(MenuCombat, ent, move), 2)
+                        atacats.append(ent)
+
                     else:
-                        print("Ha fallat l'atac...")
-                    
-                    if ent.Protected == True:
-                        ent.Protected = False
+                        MenuCombat.app.Menu.CrearDialeg("Ha fallat l'atac...")
         else:
-            print(f"Has estat impedit per {impedit.Name}")
-        input("Presiona per a continuar...")
-        return enemy, derrotats
+            MenuCombat.app.Menu.CrearDialeg(f"Has estat impedit per {impedit.Name}")
+        MenuCombat.AplicarDany(damage, atacats)
+
 
     def MoveProtHeal(self, targets, target, move):
         for id, ent in targets.items():
