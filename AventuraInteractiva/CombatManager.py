@@ -47,7 +47,6 @@ class MenuCombat():
         self.enemic = {}
         self.Recompenses = {
             "XP": {
-                "Player": 200
             },
             "Objects": {},
         }
@@ -1009,7 +1008,7 @@ class MenuCombat():
                 if id not in self.EnemicsDerrotats.keys():
                     self.EliminarVistaAccioDescartats(enemy, True)
                     self.EnemicsDerrotats[id]=enemy
-                    self.app.jugador.gold += enemy.Lv * 10
+                    self.app.jugador.Gold += enemy.Lv * 10
                     comprobat = True
                     self.DescartarDerrotatsAliats(enemy)
         if comprobat == False:
@@ -1027,7 +1026,7 @@ class MenuCombat():
                     if ally_id not in self.Recompenses["XP"].keys():
                         self.Recompenses["XP"].update({ ally_id: xp })
                     else:
-                        self.Recompenses["XP"]["ally_id"]+=xp
+                        self.Recompenses["XP"][ally_id]+=xp
     
     def EliminarVistaAccioDescartats(self, entitat, boolAliat = True):
         if boolAliat == True:
@@ -1255,6 +1254,7 @@ class MenuCombat():
             self.AccioAliat = False
             self.canvas.delete("seleccio_atac_aliat")
             self.AtacantAliat.Priority = 0
+            self.DescartarDerrotats()
         else:
             self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, atacats, danyrestant))
             
