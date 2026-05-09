@@ -1202,28 +1202,30 @@ class MenuCombat():
         # Cal canviar per a poder seleccionar enemic...
         self.AtacantAliat.atacar(self, "All", moviment)
     
-    def AplicarDany(self, dany, atacats, danyrestant = None):
+    def AplicarDany(self, dany, atacats, danyrestant = "No Aplicat"):
         self.Atacar = False
         popEnt = []
 
-        if danyrestant == None:
-            danyrestant = dany
+        if danyrestant == "No Aplicat":
+            danyrestant = dany.copy()
 
         for pos, ent in enumerate(atacats):
             if ent.id in dany.keys():
                 if ent in self.enemic.values():
                     self.UpdatingEnemyHP = True
 
-                    if danyrestant[ent.id] > dany / 20 and ent.StatsCombat["CurHP"] > 0:
-                        ent.StatsCombat["CurHP"] -= dany / 20
-                        danyrestant[ent.id] -= dany / 20
+                    if danyrestant[ent.id] > (dany[ent.id] / 20) and ent.StatsCombat["CurHP"] > 0:
+                        ent.StatsCombat["CurHP"] -= (dany[ent.id] / 20)
+                        danyrestant[ent.id] -= (dany[ent.id] / 20)
+                        danyrestant[ent.id] = round(danyrestant[ent.id], 2)
 
-                    elif danyrestant[ent.id] <= dany / 20 and ent.StatsCombat["CurHP"] > 0:
+                    elif danyrestant[ent.id] <= dany[ent.id] / 20 and ent.StatsCombat["CurHP"] > 0:
                         ent.StatsCombat["CurHP"] -= danyrestant[ent.id]
-                        dany.pop(ent.id)
+                        if ent.id in dany:
+                            dany.pop(ent.id)
                     else:
-                        if ent.id not in popEnt:
-                            popEnt.append(ent.id)
+                        if ent not in popEnt:
+                            popEnt.append(ent)
                         if ent.id in dany:
                             dany.pop(ent.id)
                     
@@ -1238,7 +1240,7 @@ class MenuCombat():
 
                     self.canvas.coords(f"hp_enemic_{ent.id}", actual_coords)
 
-                    text_hp = f"{ent.StatsCombat["CurHP"]}/{ent.StatsCombat["MaxHP"]}"
+                    text_hp = f"{round(ent.StatsCombat["CurHP"])}/{round(ent.StatsCombat["MaxHP"])}"
                     self.canvas.itemconfig(f"texthp_enemic_{ent.id}", text=text_hp)
                 
                 elif ent.id in self.equip.values():
@@ -1247,13 +1249,12 @@ class MenuCombat():
         for ent in popEnt:
             atacats.remove(ent)
 
-        if len(atacats) == 0 or len(dany) == 0:
+        if len(atacats) == 0 or len(dany.keys()) == 0:
             self.UpdatingEnemyHP = False
             self.app.root.after_cancel(self.UpdateHPAnimation)
-            self.UpdateHPAnimation = None
             self.Atacar = False
         else:
-            self.UpdateHPAnimation = self.app.root.after(10, self.AplicarDany(dany, atacats))
+            self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, atacats, danyrestant))
             
                 
             
