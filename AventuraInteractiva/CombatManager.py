@@ -84,6 +84,7 @@ class MenuCombat():
         self.levelAnimation = None
         self.UpdatingEnemyHP = False
         self.UpdateHPAnimation = None
+        self.ComprobarEfectes = False
 
         self.Fugir = [False]
         self.combat = False
@@ -1049,27 +1050,27 @@ class MenuCombat():
             i.afected = []
             i.DefinirCombatStats()
 
-    # def ComprobarEfectEstat(entitat, derrotats = []):
-    #     if len(entitat.afected) > 0:
-    #         eliminar = []
-    #         for i in entitat.afected:
-    #             if i.RemainingTurns <= 0 and i.Turns > 0:
-    #                 statsafected = entitat.afected.StatEffects[1][0]
-    #                 eliminar.append(i)
-    #                 # Regenerar Estadistiques
-    #                 print(f"{entitat.nom}, ja no esta afectat per {i.Name}, les seves estadistiques han retornat al que eren...")
-    #             elif entitat.StatsCombat["CurHP"] > 0:
-    #                 if i.Damage > 0:
-    #                     damagepereffect = ((entitat.StatsCombat["MaxHP"] / 100) * i.Damage)
-    #                     entitat.StatsCombat["CurHP"] -= damagepereffect
-    #                     print(f"{entitat.nom}, ha perdut {round(damagepereffect, 2)} HP degut a la {i.Name}.")
-    #                     if entitat.StatsCombat["CurHP"] <= 0:
-    #                         print(f"{entitat.nom}, ha estat derrotat per {i.Name}.")
-    #                         derrotats.append(entitat)
-    #                 i.RemainingTurns -= 1
-    #         for j in eliminar:
-    #             entitat.afected.remove(j)
-    #     return entitat, derrotats
+    def ComprobarEfecteEstat(self, entitat = "Aliat"):
+        if entitat == "Aliat":
+            comprobar = self.AtacantAliat
+        else:
+            comprobar = self.AtacantEnemic
+
+        if len(comprobar.afected) > 0:
+            eliminar = []
+            for i in comprobar.afected:
+                if i.RemainingTurns <= 0 and i.Turns > 0:
+                    statsafected = comprobar.afected.StatEffects[1][0]
+                    eliminar.append(i)
+                elif comprobar.StatsCombat["CurHP"] > 0:
+                    if i.Damage > 0:
+                        damagepereffect = ((comprobar.StatsCombat["MaxHP"] / 100) * i.Damage)
+                        self.app.root.CrearDialeg(f"{comprobar.nom}, ha perdut {round(damagepereffect, 2)} HP degut a la {i.Name}.")
+                        dany = {comprobar.id: damagepereffect}
+                        self.AplicarDany(dany, [comprobar])
+                    i.RemainingTurns -= 1
+            for j in eliminar:
+                comprobar.afected.remove(j)
 
     def CrearLlistatMoviments(self):
         self.MovimentsAliat = []
@@ -1258,18 +1259,25 @@ class MenuCombat():
             self.Atacar = False
             self.AccioAliat = False
             self.canvas.delete("seleccio_atac_aliat")
-            self.AtacantAliat.Priority = 0
-            self.DescartarDerrotats()
+            if self.ComprobarEfectes == False:
+                self.FinalitzarTornAliat()
         else:
             self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, atacats, danyrestant))
-            
-                
+
+    def FinalitzarTornAliat(self):
+        self.AtacantAliat.Priority = 0
+        self.ComprobarEfectes = True
+        # Afegir comprovacio estats d'efecte, que cridara
+        self.ComprobarEfecteEstat()
+        self.ComprobarEfectes = False
+        self.DescartarDerrotats()
             
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
         self.PassarTorn = True
         self.canvas.delete("seleccio_accio_aliat")
-        self.app.Menu.CrearDialeg("Has decidit passar el torn")
+        self.app.Menu.CrearDialeg("Has decidit passar el torn...")
+        self.FinalitzarTornAliat()
 
     def EleccioDespresPostDialegIntern(self):
         if self.AccioAliat == True:
@@ -1325,5 +1333,6 @@ class MenuCombat():
             self.app.Menu.CrearDialeg("Has conseguit Fugir !!")
         else:
             self.app.Menu.CrearDialeg("No has aconseguit fugir...")
+            self.FinalitzarTornAliat()
 
         

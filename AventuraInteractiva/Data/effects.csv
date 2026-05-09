@@ -7,4 +7,4 @@ Terror;Causa una sensació de terror en l'objectiu, impedint actuar amb normalit
 Paralisis;Causa una descarrega electrica al excedir-se...;True;40;0;0;SPD: 0.3;1
 Veri;Causa una quantitat de dany cada vegada que s'actua...;False;0;0;6;;5
 Mon dels Somnis;Entres en el domini dels somnis, aqui no saps que et depara el desti...;False;0;4;0; ATK: 0.25| DEF: 0.25|  INT: 0.25| SPD: 0.25;2
-Inteligencia; Augmenta la Int; False;0;0;0;INT: 1.5;1
+Inteligencia; Augmenta la Int; False;0;1;0;INT: 1.5;1
