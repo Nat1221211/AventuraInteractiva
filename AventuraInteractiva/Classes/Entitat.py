@@ -264,6 +264,7 @@ class Entity():
             EquipAAtacar["ID"]="Enemic"
             EquipAAtacar["Atacar"] = MenuCombat.enemic
         
+        fallat = False
         if impedit[0] == False:
             # Cridar increments d'stats en cas de ser necessari
             for i in move.Buff.items():
@@ -287,9 +288,12 @@ class Entity():
                             self.ApplyStatusEffects(MenuCombat, effect, prob, ent, damage[ent.id])
 
                     else:
-                        MenuCombat.app.Menu.CrearDialeg("L'atac ha fallat...")
+                        fallat = True
+                        
         else:
             MenuCombat.app.Menu.CrearDialeg(f"Ha estat impedit per {impedit.Name}")
+        if fallat == True:
+            MenuCombat.app.Menu.CrearDialeg("L'atac ha fallat...")
         MenuCombat.AplicarDany(damage, atacats, self)
 
     def MoveProtHeal(self, targets, target, move):

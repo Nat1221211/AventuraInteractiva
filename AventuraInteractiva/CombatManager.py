@@ -1149,8 +1149,8 @@ class MenuCombat():
         else:
             comprobar = self.AtacantEnemic
 
-        dany = {}
-        entitats_afectades = []
+        self.danyEfectes = {}
+        self.entitats_afectades = []
         if len(comprobar.afected) > 0:
             eliminar = []
             
@@ -1161,16 +1161,20 @@ class MenuCombat():
                     if i.Damage > 0:
                         damagepereffect = ((comprobar.StatsCombat["MaxHP"] / 100) * i.Damage)
                         self.app.Menu.CrearDialeg(f"{comprobar.nom}, ha perdut {round(damagepereffect, 2)} HP degut a la {i.Name}.")
-                        entitats_afectades.append(comprobar)
-                        if comprobar.id not in dany.keys():
-                            dany = {comprobar.id: damagepereffect}
+                        self.entitats_afectades.append(comprobar)
+                        if comprobar.id not in self.danyEfectes.keys():
+                            self.danyEfectes = {comprobar.id: damagepereffect}
                         else:
-                            dany[comprobar.id]+=damagepereffect
+                            self.danyEfectes[comprobar.id]+=damagepereffect
                     i.RemainingTurns -= 1
             for j in eliminar:
                 comprobar.afected.remove(j)
             comprobar.AplicarCanvisEfectesEstat()
-        self.AplicarDany(dany, entitats_afectades, comprobar)
+        if len(self.danyEfectes) > 0:
+            self.AplicarDany(self.danyEfectes, self.entitats_afectades, aliat)
+        else:
+            self.AplicarDany({}, [], aliat)
+
 
     def CrearLlistatMoviments(self):
         self.MovimentsAliat = []
@@ -1444,31 +1448,24 @@ class MenuCombat():
             if self.UpdateHPAnimation != None:
                 self.app.root.after_cancel(self.UpdateHPAnimation)
             self.canvas.delete("seleccio_atac_aliat")
-            if self.ComprobarEfectes == False:
-                self.ComprobarEfectes = True
-                # Afegir comprovacio estats d'efecte, que cridara
-                if atacant.id in self.equip.keys():
-                    self.ComprobarEfecteEstat()
-                else:
-                    self.ComprobarEfecteEstat(False)
+            if atacant.id in self.equip.keys():
+                self.FinalitzarTorn()
             else:
-                if atacant.id in self.equip.keys():
-                    self.FinalitzarTorn()
-                else:
-                    self.FinalitzarTorn(False)
+                self.FinalitzarTorn(False)
         else:
             self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, atacats, atacant, danyrestant))
-
+        
     def FinalitzarTorn(self, aliat = True):
-        self.ComprobarEfectes = False
-        self.DescartarDerrotats()
-        if aliat == True:
-            self.AtacantAliat.Priority = 0
-            self.AccioAliat = False
-            self.Atacar = False
-        else:
-            self.AtacantEnemic.Priority = 0
-            self.AccioEnemic = False
+            self.DescartarDerrotats()
+            if aliat == True:
+                self.AtacantAliat.Priority = 0
+                self.AccioAliat = False
+                self.Atacar = False
+            else:
+                self.AtacantEnemic.Priority = 0
+                self.AccioEnemic = False
+        
+        
                 
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
