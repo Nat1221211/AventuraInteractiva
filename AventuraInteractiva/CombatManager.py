@@ -786,7 +786,7 @@ class MenuCombat():
     def Lluitar(self):
         
         if self.combat == True and self.Fugir[0] == False:
-            if self.app.DialegActiu == False and self.UpdatingHP == False:
+            if self.UpdatingHP == False:
                 if len(self.enemic) >= 1 and len(self.equip) >= 1:
                     maxPriorityPlayer = max(self.equip.values(), key=lambda j: j.Priority)
                     maxPriorityEnemies = max(self.enemic.values(), key=lambda e: e.Priority)
@@ -1150,6 +1150,7 @@ class MenuCombat():
             comprobar = self.AtacantEnemic
 
         dany = {}
+        entitats_afectades = []
         if len(comprobar.afected) > 0:
             eliminar = []
             
@@ -1160,13 +1161,16 @@ class MenuCombat():
                     if i.Damage > 0:
                         damagepereffect = ((comprobar.StatsCombat["MaxHP"] / 100) * i.Damage)
                         self.app.Menu.CrearDialeg(f"{comprobar.nom}, ha perdut {round(damagepereffect, 2)} HP degut a la {i.Name}.")
-                        dany = {comprobar.id: damagepereffect}
-                        
+                        entitats_afectades.append(comprobar)
+                        if comprobar.id not in dany.keys():
+                            dany = {comprobar.id: damagepereffect}
+                        else:
+                            dany[comprobar.id]+=damagepereffect
                     i.RemainingTurns -= 1
             for j in eliminar:
                 comprobar.afected.remove(j)
             comprobar.AplicarCanvisEfectesEstat()
-        self.AplicarDany(dany, [comprobar], comprobar)
+        self.AplicarDany(dany, entitats_afectades, comprobar)
 
     def CrearLlistatMoviments(self):
         self.MovimentsAliat = []
@@ -1465,9 +1469,7 @@ class MenuCombat():
         else:
             self.AtacantEnemic.Priority = 0
             self.AccioEnemic = False
-        
-        self.Lluitar()
-        
+                
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
         self.PassarTorn = True
