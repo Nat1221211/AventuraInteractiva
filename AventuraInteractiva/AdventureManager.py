@@ -86,7 +86,7 @@ def Explorar(app):
             app.Menu.CrearDialeg(f"Has començat a buscar objectes")
             ExplorarTrobaroNo(app)
     elif prob > 70 and prob <= 95:  # Lluitar
-        CombatManager.GenerarEnemic(app)
+        CombatManager.StartCombat(app, app.canvas, "Menu Combat")
     elif prob > 95 and prob <= 100: # Seguent ruta
         TrobarSeguentZona(app)
         

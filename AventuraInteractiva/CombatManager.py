@@ -1052,7 +1052,7 @@ class MenuCombat():
         # Busquem entitat a atacar
         if accio[0].MultiTarget == False:
 
-            if move.Protective == False and move.Healing == False:
+            if accio[0].Protective == False and accio[0].Healing == False:
                 llistaObjectius = []
                 llistaProb = []
 
@@ -1076,9 +1076,9 @@ class MenuCombat():
                 target = random.choices(llistaObjectius, weights=llistaProb)
 
 
-                self.AtacantEnemic.atacar(self, target[0], move)
+                self.AtacantEnemic.atacar(self, target[0], accio[0])
         else:
-            self.AtacantEnemic.atacar(self, "", move)
+            self.AtacantEnemic.atacar(self, "", accio[0])
 
     def DescartarDerrotats(self):
         comprobat = False
@@ -1456,17 +1456,16 @@ class MenuCombat():
             self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, atacats, atacant, danyrestant))
         
     def FinalitzarTorn(self, aliat = True):
-            self.DescartarDerrotats()
-            if aliat == True:
-                self.AtacantAliat.Priority = 0
-                self.AccioAliat = False
-                self.Atacar = False
-            else:
-                self.AtacantEnemic.Priority = 0
-                self.AccioEnemic = False
-        
-        
-                
+        self.DescartarDerrotats()
+        if aliat == True:
+            self.AtacantAliat.Priority = 0
+            self.AccioAliat = False
+            self.Atacar = False
+        else:
+            self.AtacantEnemic.Priority = 0
+            self.AccioEnemic = False
+        self.Lluitar()
+                       
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
         self.PassarTorn = True
@@ -1518,5 +1517,3 @@ class MenuCombat():
         else:
             self.app.Menu.CrearDialeg("No has aconseguit fugir...")
             self.FinalitzarTorn()
-
-        
