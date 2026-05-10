@@ -1055,29 +1055,26 @@ class MenuCombat():
                         self.Recompenses["XP"][ally_id]+=xp
     
     def EliminarVistaAccioDescartats(self, entitat, boolAliat = True):
+        grup = None
         if boolAliat == True:
             self.canvas.delete(f"accio_entitat_aliada_{entitat.id}")
             self.canvas.itemconfig(f"ent_ally_img_{entitat.id}", state="hidden")
             if len(self.equip) != len(self.AliatsDerrotats):
-                viu = False
-                while viu == False:
-                    for pos, i in enumerate(self.equip.values()):
-                        if pos == self.IndexObjectiu:
-                            if i.StatsCombat["CurHP"] > 0:
-                                viu = True
-                            else:
-                                self.IndexObjectiu = (self.IndexObjectiu + 1) % len(self.equip)
+                grup = self.equip
         else:
             self.canvas.delete(f"accio_entitat_enemiga_{entitat.id}")
             self.canvas.itemconfig(f"ent_enemy_img_{entitat.id}", state="hidden")
             if len(self.enemic) != len(self.EnemicsDerrotats):
-                viu = False
-                while viu == False:
-                    for pos, i in enumerate(self.enemic.values()):
-                        if i.StatsCombat["CurHP"] > 0:
-                            viu = True
-                        else:
-                            self.IndexObjectiu = (self.IndexObjectiu + 1) % len(self.enemic)
+                grup = self.enemic
+        
+        if grup != None:
+            viu = False
+            while viu == False:
+                for pos, i in enumerate(grup.values()):
+                    if i.StatsCombat["CurHP"] > 0:
+                        viu = True
+                    else:
+                        self.IndexObjectiu = (self.IndexObjectiu + 1) % len(grup)
 
 
     def ComprobarFiCombat(self):
