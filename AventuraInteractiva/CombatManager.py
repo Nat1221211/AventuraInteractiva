@@ -1076,7 +1076,6 @@ class MenuCombat():
                     else:
                         self.IndexObjectiu = (self.IndexObjectiu + 1) % len(grup)
 
-
     def ComprobarFiCombat(self):
         if len(self.EnemicsDerrotats) == len(self.enemic) or len(self.AliatsDerrotats) == len(self.equip):
             self.combat = False
@@ -1270,7 +1269,6 @@ class MenuCombat():
         self.canvas.itemconfig(f"ent_enemy_img_{self.ObjectiuMoviment.id}", state="normal")
         self.app.root.after_cancel(self.AnimacioSeleccioObjectiu)
 
-    
     def RealitzarAtac(self):
         self.app.Menu.CrearDialeg(f"{self.AtacantAliat.nom}, ha utilitzat {self.AtacARealitzar.Name} !!")
         # Cal canviar per a poder seleccionar enemic...

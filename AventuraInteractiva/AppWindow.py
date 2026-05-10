@@ -352,7 +352,6 @@ class App():
             if tecla.keysym == "Return": self.ConfirmarSeleccio()
             if tecla.keysym == "BackSpace":
                 self.MenuCombat.CancelarSeleccioObjectiu()
-                self.MenuCombat.Lluitar()
 
         elif self.MenuCombat.AccioAliat == True or self.MenuCombat.Atacar == True:
             if tecla.keysym == "w": self.MenuCombat.MovimentAccions(tecla.keysym)
