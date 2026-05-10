@@ -559,8 +559,7 @@ class MenuCombat():
                     self.IndexAccio = (self.IndexAccio + 1) % len(self.AccionsCombat)
 
             self.dibuixar_seleccio_accio_aliat()
-
-            
+        
     def GenerarEnemic(self):
 
         pesos = []
