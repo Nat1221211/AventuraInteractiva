@@ -20,7 +20,7 @@ def Mapa(App):
 def CanviarZona(App, seleccio):
     App.jugador.Ubicacio = App.Zones[seleccio.id]    # Canviem la zona i la retornem
     App.jugador.ActualitzarUltimPobleVisitat()
-    App.event.CridarEvent("Lloc Visitat", App.jugador.Ubicacio.id, App.jugador, App.Missions)
+    App.event.CridarEvent("Lloc Visitat", App.jugador.Ubicacio, App)
     
     UIManager.MostrarMenuPrincipal(App)
     
@@ -86,7 +86,7 @@ def Explorar(app):
             app.Menu.CrearDialeg(f"Has començat a buscar objectes")
             ExplorarTrobaroNo(app)
     elif prob > 70 and prob <= 95:  # Lluitar
-        CombatManager.GenerarEnemic(app)
+        CombatManager.StartCombat(app, app.canvas, "Menu Combat")
     elif prob > 95 and prob <= 100: # Seguent ruta
         TrobarSeguentZona(app)
         

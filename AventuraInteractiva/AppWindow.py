@@ -12,7 +12,7 @@ import PrepararCridar as Call
 import SaveGame
 import UIManager
 import AdventureManager
-import TownUtilitiesManager as TUtManager
+import TownUtilitiesManager as TUTManager
 import CombatManager
 
 
@@ -128,7 +128,7 @@ class App():
                 
                 elif  self.QuinaConfirmacio == "Hostal":
                     if seleccionat.id == "si":
-                        TUtManager.Posada(self)
+                        TUTManager.Posada(self)
                     elif seleccionat.id == "no":
                         self.Menu.CrearDialeg("Has decidit no quedar-te al hostal...")
             
@@ -172,6 +172,13 @@ class App():
                 seleccio = self.MenuCombat.AccionsCombat[self.MenuCombat.IndexAccio]
                 self.MenuCombat.CridarMenuSegonsAccio(seleccio)
             
+            elif self.MenuCombat.Atacar==True:
+                if self.MenuCombat.SeleccionarObjectiu == True:
+                    self.MenuCombat.CancelarSeleccioObjectiu()
+                    self.MenuCombat.RealitzarAtac()
+                else:
+                    seleccio = self.MenuCombat.MovimentsAliat[self.MenuCombat.IndexMoviment]
+                    self.MenuCombat.dibuixar_seleccio_objectiu(seleccio)
             
             elif self.Menu.id == "Seleccio Equip":
                 if self.SeleccioAliat == True:
@@ -338,19 +345,37 @@ class App():
                 self.MostrarEstat = False
                 self.canvas.delete("mostrar_estat")
                 self.Menu.dibuixar_menu_equip()
+        
+        elif self.MenuCombat.SeleccionarObjectiu == True:
+            if tecla.keysym == "a": self.MenuCombat.MovimentAccions(tecla.keysym)
+            if tecla.keysym == "d": self.MenuCombat.MovimentAccions(tecla.keysym)
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace":
+                self.MenuCombat.CancelarSeleccioObjectiu()
 
-        elif self.MenuCombat.AccioAliat == True:
+        elif self.MenuCombat.AccioAliat == True or self.MenuCombat.Atacar == True:
             if tecla.keysym == "w": self.MenuCombat.MovimentAccions(tecla.keysym)
             if tecla.keysym == "s": self.MenuCombat.MovimentAccions(tecla.keysym)
-            if tecla.keysym == "Return": 
+            if tecla.keysym == "Return":
                 self.ConfirmarSeleccio()
+            if self.MenuCombat.Atacar == True:
+                if tecla.keysym == "BackSpace":
+                    self.MenuCombat.MovimentAccions(tecla.keysym)
         
         elif self.MenuCombat.PantallaFICombat == True:
             if tecla.keysym == "Return":
-                self.Combat = False
-                UIManager.MostrarMenuPrincipal(self)
-
-        
+                if self.MenuCombat.levelingUp == True:
+                    self.MenuCombat.saltarPantallaFi = True
+                elif self.MenuCombat.CombatAcabat == True:
+                    self.Combat = False
+                    if self.MenuCombat.Derrotat == True:
+                        self.jugador.Ubicacio = self.jugador.UltimPobleVisitat
+                        UIManager.MostrarMenuPrincipal(self)
+                        self.Menu.CrearDialeg("Has estat derrotat...")
+                        TUTManager.Posada(self, True)
+                        self.Menu.CrearDialeg("Segons l'hostaler, algú t'ha trobat i portat al Hostal, no ha deixat pista sobre qui és...")                        
+                    else:
+                        UIManager.MostrarMenuPrincipal(self)
 
 
     def ControlBindsMenus(self, tecla):
