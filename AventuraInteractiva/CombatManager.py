@@ -67,6 +67,7 @@ class MenuCombat():
         ]
 
         self.IndexMoviment = 0
+        self.IndexObjectiu = 0
 
         # Estats, seran booleanes.
         self.AccioAliat = False
@@ -85,6 +86,9 @@ class MenuCombat():
         self.UpdatingEnemyHP = False
         self.UpdateHPAnimation = None
         self.ComprobarEfectes = False
+        self.SeleccionarObjectiu = False
+        self.AtacARealitzar = None
+        self.AnimacioSeleccioObjectiu = None
 
         self.Fugir = [False]
         self.combat = False
@@ -458,7 +462,7 @@ class MenuCombat():
                     x + 10, y + 10,
                     image=ent[1].ImatgeAjustada["Combat"]["Back"],
                     anchor="nw",
-                    tags=("ent_estat_combat", "combat")
+                    tags=(f"ent_ally_img_{ent[1].id}", "ent_estat_combat", "combat")
                 )
             x += 150 if len(self.equip) > 1 else 210
         
@@ -481,7 +485,7 @@ class MenuCombat():
                     x + 10, y + 50,
                     image=ent[1].ImatgeAjustada["Combat"]["Frontal"],
                     anchor="nw",
-                    tags=("ent_estat_combat", "combat")
+                    tags=(f"ent_enemy_img_{ent[1].id}", "ent_estat_combat", "combat")
                 )
             x += 150 if len(self.equip) > 1 else 210
             
@@ -1195,7 +1199,32 @@ class MenuCombat():
             anchor="nw", tags=("info_atac","seleccio_atac_aliat", "combat")
         )
     
-    def RealitzarAtac(self, atac):
+    def dibuixar_seleccio_objectiu(self, moviment, mostrar = True):
+        self.SeleccionarObjectiu = True
+        if self.AtacARealitzar != moviment.Moviment:
+            self.AtacARealitzar = moviment.Moviment
+        
+        stat = "hidden"
+        if mostrar == True:
+            stat = "normal"
+
+        if self.AtacARealitzar.MultiTarget == False:
+            if self.AtacARealitzar.Healing == False and self.AtacARealitzar.Protective == False:
+                for pos, ent in enumerate(self.enemic.values()):
+                    if pos == self.IndexObjectiu:
+                        entitat = ent
+                    else:
+                        pass
+                self.canvas.itemconfig(f"ent_enemy_img_{entitat.id}", state=stat)
+            
+            
+            self.AnimacioSeleccioObjectiu = self.app.root.after(200, 
+                            lambda: self.dibuixar_seleccio_objectiu(moviment, not mostrar))
+
+        else:
+            pass
+    
+    def RealitzarAtac(self, atac, objectiu):
         moviment = atac.Moviment
         self.app.Menu.CrearDialeg(f"{self.AtacantAliat.nom}, ha utilitzat {moviment.Name} !!")
         # Cal canviar per a poder seleccionar enemic...

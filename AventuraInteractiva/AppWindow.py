@@ -173,8 +173,8 @@ class App():
                 self.MenuCombat.CridarMenuSegonsAccio(seleccio)
             
             elif self.MenuCombat.Atacar==True:
-                seleccio = self.MenuCombat.MovimentsAliat[self.MenuCombat.IndexMoviment]
-                self.MenuCombat.RealitzarAtac(seleccio)
+                    seleccio = self.MenuCombat.MovimentsAliat[self.MenuCombat.IndexMoviment]
+                    self.MenuCombat.dibuixar_seleccio_objectiu(seleccio)
             
             elif self.Menu.id == "Seleccio Equip":
                 if self.SeleccioAliat == True:
