@@ -195,34 +195,36 @@ class Entity():
         self.ChangeCombatStats(StatChanges)
     
     
-    def ApplyStatusEffects(self, MenuCombat, effect, prob):
+    def ApplyStatusEffects(self, MenuCombat, effect, prob, target = None, damage = 0):
         if prob < 100:
             apply = random.choices([True, False], [prob, 100 - prob])
         else:
             apply = [True]
-        if apply[0] == True:
+        
+        if target == None:
+            target = self
+
+        if apply[0] == True and (target.StatsCombat["CurHP"] - damage) > 0:
             efectNames = []
-            for i in self.afected:
+            for i in target.afected:
                 efectNames.append(i.Name)
             
             aplicable = True
             if effect.Name in efectNames:
                 effectCount = 0
-                for i in self.afected:
+                for i in target.afected:
                     if effect.Name == i.Name:
                         effectCount += 1
                 limit = effect.EffectLimit
                 if effectCount + 1 > limit and limit != 0:
                     aplicable = False
-                    MenuCombat.app.Menu.CrearDialeg(f"{self.nom} ha arribat al limit d'aplicacions de l'efecte {effect.Name}")
+                    MenuCombat.app.Menu.CrearDialeg(f"{target.nom} ha arribat al limit d'aplicacions de l'efecte {effect.Name}")
 
             if aplicable == True:
                 effect.RemainingTurns = effect.Turns
-                self.afected.append(effect)
-                MenuCombat.app.Menu.CrearDialeg(f"{self.nom} ha estat afectat per {effect.Name}.")
-                self.AplicarCanvisEfectesEstat()
-
-                
+                target.afected.append(effect)
+                MenuCombat.app.Menu.CrearDialeg(f"{target.nom} ha estat afectat per {effect.Name}.")
+                target.AplicarCanvisEfectesEstat()
 
     def CalcularDamage(self, MenuCombat, enemy, move):
         
@@ -281,12 +283,14 @@ class Entity():
                         damage[ent.id] = round(self.CalcularDamage(MenuCombat, ent, move), 2)
                         atacats.append(ent)
 
+                        for effect, prob in move.Debuff.items():
+                            self.ApplyStatusEffects(MenuCombat, effect, prob, ent, damage[ent.id])
+
                     else:
                         MenuCombat.app.Menu.CrearDialeg("Ha fallat l'atac...")
         else:
             MenuCombat.app.Menu.CrearDialeg(f"Has estat impedit per {impedit.Name}")
         MenuCombat.AplicarDany(damage, atacats)
-
 
     def MoveProtHeal(self, targets, target, move):
         for id, ent in targets.items():
