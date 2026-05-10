@@ -290,7 +290,7 @@ class Entity():
                         MenuCombat.app.Menu.CrearDialeg("L'atac ha fallat...")
         else:
             MenuCombat.app.Menu.CrearDialeg(f"Ha estat impedit per {impedit.Name}")
-        MenuCombat.AplicarDany(damage, atacats)
+        MenuCombat.AplicarDany(damage, atacats, self)
 
     def MoveProtHeal(self, targets, target, move):
         for id, ent in targets.items():

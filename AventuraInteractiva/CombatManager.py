@@ -765,7 +765,7 @@ class MenuCombat():
                 self.canvas.move(f"accio_entitat_aliada_{i.id}", x, 0)
         
         for pos, j in enumerate(self.enemic.values()):
-            if j.StatsCombat["CurHP"] > 0.1:
+            if j.StatsCombat["CurHP"] > 0:
                 j.Priority += j.StatsCombat["SPD"] / divVel
                 amplada = self.app.Ancho - 80
                 x = 40 + (amplada * (j.Priority / 100))
@@ -785,30 +785,31 @@ class MenuCombat():
     
     def Lluitar(self):
         
-        if self.combat == True and self.Fugir[0] == False: 
-            if len(self.enemic) >= 1 and len(self.equip) >= 1:
-                maxPriorityPlayer = max(self.equip.values(), key=lambda j: j.Priority)
-                maxPriorityEnemies = max(self.enemic.values(), key=lambda e: e.Priority)
+        if self.combat == True and self.Fugir[0] == False:
+            if self.app.DialegActiu == False and self.UpdatingHP == False:
+                if len(self.enemic) >= 1 and len(self.equip) >= 1:
+                    maxPriorityPlayer = max(self.equip.values(), key=lambda j: j.Priority)
+                    maxPriorityEnemies = max(self.enemic.values(), key=lambda e: e.Priority)
 
-                actuant = max(maxPriorityEnemies, maxPriorityPlayer, key=lambda e: e.Priority)
-            
-                if actuant.Priority >= 100:
+                    actuant = max(maxPriorityEnemies, maxPriorityPlayer, key=lambda e: e.Priority)
+                
+                    if actuant.Priority >= 100:
 
-                    if actuant in self.equip.values():
-                        self.AtacantAliat = actuant
-                        self.ColocarVistaLiniaPrioritat()
-                        self.dibuixar_seleccio_accio_aliat()
-                    else:
-                        self.AccioEnemic = True
-                        self.AtacantEnemic = actuant
-                        self.ColocarVistaLiniaPrioritat()
-                        self.AccioEnemiga()
-                        
-            if self.combat == True:
-                self.ComprobarFiCombat()
-            
-            if self.AccioAliat == False and self.AccioEnemic == False:
-                self.IncrementarPrioritat()
+                        if actuant in self.equip.values():
+                            self.AtacantAliat = actuant
+                            self.ColocarVistaLiniaPrioritat()
+                            self.dibuixar_seleccio_accio_aliat()
+                        else:
+                            self.AccioEnemic = True
+                            self.AtacantEnemic = actuant
+                            self.ColocarVistaLiniaPrioritat()
+                            self.AccioEnemiga()
+                            
+                if self.combat == True:
+                    self.ComprobarFiCombat()
+                
+                if self.AccioAliat == False and self.AccioEnemic == False:
+                    self.IncrementarPrioritat()
 
         else:
             self.dibuixar_Pantalla_fi_combat()
@@ -1079,9 +1080,6 @@ class MenuCombat():
         else:
             self.AtacantEnemic.atacar(self, "", move)
 
-        # Finalitzar el Torn Enemig
-        self.FinalitzarTorn(False)
-
     def DescartarDerrotats(self):
         comprobat = False
         for id, enemy in self.enemic.items():
@@ -1151,21 +1149,24 @@ class MenuCombat():
         else:
             comprobar = self.AtacantEnemic
 
+        dany = {}
         if len(comprobar.afected) > 0:
             eliminar = []
+            
             for i in comprobar.afected:
                 if i.RemainingTurns <= 0 and i.Turns > 0:
                     eliminar.append(i)
                 elif comprobar.StatsCombat["CurHP"] > 0:
                     if i.Damage > 0:
                         damagepereffect = ((comprobar.StatsCombat["MaxHP"] / 100) * i.Damage)
-                        self.app.root.CrearDialeg(f"{comprobar.nom}, ha perdut {round(damagepereffect, 2)} HP degut a la {i.Name}.")
+                        self.app.Menu.CrearDialeg(f"{comprobar.nom}, ha perdut {round(damagepereffect, 2)} HP degut a la {i.Name}.")
                         dany = {comprobar.id: damagepereffect}
-                        self.AplicarDany(dany, [comprobar])
+                        
                     i.RemainingTurns -= 1
             for j in eliminar:
                 comprobar.afected.remove(j)
             comprobar.AplicarCanvisEfectesEstat()
+        self.AplicarDany(dany, [comprobar], comprobar)
 
     def CrearLlistatMoviments(self):
         self.MovimentsAliat = []
@@ -1329,7 +1330,7 @@ class MenuCombat():
         # Cal canviar per a poder seleccionar enemic...
         self.AtacantAliat.atacar(self, self.ObjectiuMoviment.id, self.AtacARealitzar)
     
-    def AplicarDany(self, dany, atacats, danyrestant = "No Aplicat"):
+    def AplicarDany(self, dany, atacats, atacant, danyrestant = "No Aplicat"):
         self.Atacar = False
         popEnt = []
 
@@ -1404,7 +1405,7 @@ class MenuCombat():
 
                     texthealth = f"{round(ent.StatsCombat["CurHP"])}/{round(ent.StatsCombat["MaxHP"])}"
                     midatext = font.measure(texthealth)
-                    new_coords[0] = x + 60 - midatext
+                    new_coords[0] = self.app.Ancho - 20 - midatext
                     self.canvas.itemconfig(f"textvida_entitats_{ent.id}", text=texthealth)
                     self.canvas.coords(f"textvida_entitats_{ent.id}", new_coords)
 
@@ -1438,28 +1439,35 @@ class MenuCombat():
             self.UpdatingHP = False
             if self.UpdateHPAnimation != None:
                 self.app.root.after_cancel(self.UpdateHPAnimation)
-            self.Atacar = False
-            self.AccioAliat = False
             self.canvas.delete("seleccio_atac_aliat")
             if self.ComprobarEfectes == False:
-                self.FinalitzarTorn()
+                self.ComprobarEfectes = True
+                # Afegir comprovacio estats d'efecte, que cridara
+                if atacant.id in self.equip.keys():
+                    self.ComprobarEfecteEstat()
+                else:
+                    self.ComprobarEfecteEstat(False)
+            else:
+                if atacant.id in self.equip.keys():
+                    self.FinalitzarTorn()
+                else:
+                    self.FinalitzarTorn(False)
         else:
-            self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, atacats, danyrestant))
+            self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, atacats, atacant, danyrestant))
 
     def FinalitzarTorn(self, aliat = True):
-        self.ComprobarEfectes = True
-        # Afegir comprovacio estats d'efecte, que cridara
-        self.ComprobarEfecteEstat(aliat)
         self.ComprobarEfectes = False
         self.DescartarDerrotats()
-
         if aliat == True:
             self.AtacantAliat.Priority = 0
             self.AccioAliat = False
+            self.Atacar = False
         else:
             self.AtacantEnemic.Priority = 0
             self.AccioEnemic = False
-            
+        
+        self.Lluitar()
+        
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
         self.PassarTorn = True
