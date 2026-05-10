@@ -563,6 +563,7 @@ class MenuCombat():
             else:
                 if direccio == "BackSpace":
                     self.Atacar = False
+                    self.canvas.delete("seleccio_atac_aliat")
                     self.Lluitar()
                 else:
                     if direccio == "w":

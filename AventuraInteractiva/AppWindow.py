@@ -360,7 +360,6 @@ class App():
                 self.ConfirmarSeleccio()
             if self.MenuCombat.Atacar == True:
                 if tecla.keysym == "BackSpace":
-                    self.MenuCombat.Atacar = False
                     self.MenuCombat.MovimentAccions(tecla.keysym)
         
         elif self.MenuCombat.PantallaFICombat == True:
