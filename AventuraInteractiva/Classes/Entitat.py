@@ -287,9 +287,9 @@ class Entity():
                             self.ApplyStatusEffects(MenuCombat, effect, prob, ent, damage[ent.id])
 
                     else:
-                        MenuCombat.app.Menu.CrearDialeg("Ha fallat l'atac...")
+                        MenuCombat.app.Menu.CrearDialeg("L'atac ha fallat...")
         else:
-            MenuCombat.app.Menu.CrearDialeg(f"Has estat impedit per {impedit.Name}")
+            MenuCombat.app.Menu.CrearDialeg(f"Ha estat impedit per {impedit.Name}")
         MenuCombat.AplicarDany(damage, atacats)
 
     def MoveProtHeal(self, targets, target, move):
