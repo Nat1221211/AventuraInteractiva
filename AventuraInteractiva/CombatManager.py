@@ -812,7 +812,8 @@ class MenuCombat():
                     self.IncrementarPrioritat()
 
         else:
-            self.dibuixar_Pantalla_fi_combat()
+            if self.app.DialegActiu == False:
+                self.dibuixar_Pantalla_fi_combat()
     
     def dibuixar_Pantalla_fi_combat(self):
         self.PantallaFICombat = True
