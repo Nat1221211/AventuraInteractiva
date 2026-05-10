@@ -89,6 +89,8 @@ class MenuCombat():
         self.SeleccionarObjectiu = False
         self.AtacARealitzar = None
         self.AnimacioSeleccioObjectiu = None
+        self.ObjectiuMoviment = None
+        self.GrupObjectiuMoviment = ""
 
         self.Fugir = [False]
         self.combat = False
@@ -540,16 +542,27 @@ class MenuCombat():
             
     def MovimentAccions(self, direccio):
         if self.Atacar == True:
-            if direccio == "BackSpace":
-                self.Atacar = False
-                self.Lluitar()
+            if self.SeleccionarObjectiu == True:
+                if self.GrupObjectiuMoviment == "Enemics":
+                    grup = self.enemic
+                else:
+                    grup = self.equip
+
+                if direccio == "a":
+                    self.IndexObjectiu = (self.IndexObjectiu - 1) % len(grup)
+                elif direccio == "d":
+                    self.IndexObjectiu = (self.IndexObjectiu + 1) % len(grup)
             else:
-                if direccio == "w":
-                    self.IndexMoviment = (self.IndexMoviment - 1) % len(self.MovimentsAliat)
-                elif direccio == "s":
-                    self.IndexMoviment = (self.IndexMoviment + 1) % len(self.MovimentsAliat)
-                self.dibuixar_info_moviment()
-        
+                if direccio == "BackSpace":
+                    self.Atacar = False
+                    self.Lluitar()
+                else:
+                    if direccio == "w":
+                        self.IndexMoviment = (self.IndexMoviment - 1) % len(self.MovimentsAliat)
+                    elif direccio == "s":
+                        self.IndexMoviment = (self.IndexMoviment + 1) % len(self.MovimentsAliat)
+                    self.dibuixar_info_moviment()
+            
         elif self.AccioAliat == True:
             if direccio == "w":
                 self.IndexAccio = (self.IndexAccio - 1) % len(self.AccionsCombat)
@@ -1210,25 +1223,32 @@ class MenuCombat():
 
         if self.AtacARealitzar.MultiTarget == False:
             if self.AtacARealitzar.Healing == False and self.AtacARealitzar.Protective == False:
+                self.GrupObjectiuMoviment = "Enemics"
                 for pos, ent in enumerate(self.enemic.values()):
                     if pos == self.IndexObjectiu:
-                        entitat = ent
+                        if self.ObjectiuMoviment != ent:
+                            self.ObjectiuMoviment = ent
                     else:
-                        pass
-                self.canvas.itemconfig(f"ent_enemy_img_{entitat.id}", state=stat)
-            
+                        self.canvas.itemconfig(f"ent_enemy_img_{ent.id}", state="normal")
+
+                self.canvas.itemconfig(f"ent_enemy_img_{self.ObjectiuMoviment.id}", state=stat)
             
             self.AnimacioSeleccioObjectiu = self.app.root.after(200, 
                             lambda: self.dibuixar_seleccio_objectiu(moviment, not mostrar))
 
         else:
-            pass
+            self.ObjectiuMoviment = "All"
     
-    def RealitzarAtac(self, atac, objectiu):
-        moviment = atac.Moviment
-        self.app.Menu.CrearDialeg(f"{self.AtacantAliat.nom}, ha utilitzat {moviment.Name} !!")
+    def CancelarSeleccioObjectiu(self):
+        self.SeleccionarObjectiu = False
+        self.canvas.itemconfig(f"ent_enemy_img_{self.ObjectiuMoviment.id}", state="normal")
+        self.app.root.after_cancel(self.AnimacioSeleccioObjectiu)
+
+    
+    def RealitzarAtac(self):
+        self.app.Menu.CrearDialeg(f"{self.AtacantAliat.nom}, ha utilitzat {self.AtacARealitzar.Name} !!")
         # Cal canviar per a poder seleccionar enemic...
-        self.AtacantAliat.atacar(self, "All", moviment)
+        self.AtacantAliat.atacar(self, self.ObjectiuMoviment.id, self.AtacARealitzar)
     
     def AplicarDany(self, dany, atacats, danyrestant = "No Aplicat"):
         self.Atacar = False
@@ -1283,7 +1303,8 @@ class MenuCombat():
 
         if len(atacats) == 0 or len(dany.keys()) == 0:
             self.UpdatingEnemyHP = False
-            self.app.root.after_cancel(self.UpdateHPAnimation)
+            if self.UpdateHPAnimation != None:
+                self.app.root.after_cancel(self.UpdateHPAnimation)
             self.Atacar = False
             self.AccioAliat = False
             self.canvas.delete("seleccio_atac_aliat")
@@ -1324,17 +1345,6 @@ class MenuCombat():
         self.AccioAliat = False
         self.AtacantAliat.Priority = 0
         self.Lluitar()
-
-    # def TriarObjectius(list):
-
-    #     UIManager.ClearScreen()
-    #     targetable = [i for i in list.items() if i[1].StatsCombat["CurHP"] > 0]
-        
-    #     UIManager.CrearMenu(targetable, "Qui és l'objectiu?", "Entitat")
-
-    #     target = UIManager.MostrarMenus(UIManager.Menus["Qui és l'objectiu?"], True)
-            
-    #     return target
 
     def AccioFugir(self):
         self.AccioFugirEstat = True

@@ -173,6 +173,10 @@ class App():
                 self.MenuCombat.CridarMenuSegonsAccio(seleccio)
             
             elif self.MenuCombat.Atacar==True:
+                if self.MenuCombat.SeleccionarObjectiu == True:
+                    self.MenuCombat.CancelarSeleccioObjectiu()
+                    self.MenuCombat.RealitzarAtac()
+                else:
                     seleccio = self.MenuCombat.MovimentsAliat[self.MenuCombat.IndexMoviment]
                     self.MenuCombat.dibuixar_seleccio_objectiu(seleccio)
             
@@ -341,6 +345,14 @@ class App():
                 self.MostrarEstat = False
                 self.canvas.delete("mostrar_estat")
                 self.Menu.dibuixar_menu_equip()
+        
+        elif self.MenuCombat.SeleccionarObjectiu == True:
+            if tecla.keysym == "a": self.MenuCombat.MovimentAccions(tecla.keysym)
+            if tecla.keysym == "d": self.MenuCombat.MovimentAccions(tecla.keysym)
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace":
+                self.MenuCombat.CancelarSeleccioObjectiu()
+                self.MenuCombat.Lluitar()
 
         elif self.MenuCombat.AccioAliat == True or self.MenuCombat.Atacar == True:
             if tecla.keysym == "w": self.MenuCombat.MovimentAccions(tecla.keysym)
