@@ -548,10 +548,18 @@ class MenuCombat():
                 else:
                     grup = self.equip
 
-                if direccio == "a":
-                    self.IndexObjectiu = (self.IndexObjectiu - 1) % len(grup)
-                elif direccio == "d":
-                    self.IndexObjectiu = (self.IndexObjectiu + 1) % len(grup)
+                viu = False
+                while viu == False:
+                    if direccio == "a":
+                        self.IndexObjectiu = (self.IndexObjectiu - 1) % len(grup)
+                    elif direccio == "d":
+                        self.IndexObjectiu = (self.IndexObjectiu + 1) % len(grup)
+
+                    for pos, i in enumerate(grup.values()):
+                        if pos == self.IndexObjectiu:
+                            if i.StatsCombat["CurHP"] > 0:
+                                viu = True
+                
             else:
                 if direccio == "BackSpace":
                     self.Atacar = False
@@ -1024,10 +1032,10 @@ class MenuCombat():
         for id, enemy in self.enemic.items():
             if enemy.StatsCombat["CurHP"] <= 0.1:
                 if id not in self.EnemicsDerrotats.keys():
-                    self.EliminarVistaAccioDescartats(enemy, True)
                     self.EnemicsDerrotats[id]=enemy
                     self.app.jugador.Gold += enemy.Lv * 10
                     comprobat = True
+                    self.EliminarVistaAccioDescartats(enemy, False)
                     self.DescartarDerrotatsAliats(enemy)
         if comprobat == False:
             self.DescartarDerrotatsAliats()
@@ -1049,9 +1057,29 @@ class MenuCombat():
     def EliminarVistaAccioDescartats(self, entitat, boolAliat = True):
         if boolAliat == True:
             self.canvas.delete(f"accio_entitat_aliada_{entitat.id}")
+            self.canvas.itemconfig(f"ent_ally_img_{entitat.id}", state="hidden")
+            if len(self.equip) != len(self.AliatsDerrotats):
+                viu = False
+                while viu == False:
+                    for pos, i in enumerate(self.equip.values()):
+                        if pos == self.IndexObjectiu:
+                            if i.StatsCombat["CurHP"] > 0:
+                                viu = True
+                            else:
+                                self.IndexObjectiu = (self.IndexObjectiu + 1) % len(self.equip)
         else:
-            self.canvas.delete(f"accio_entitat_enemy_{entitat.id}")
-        
+            self.canvas.delete(f"accio_entitat_enemiga_{entitat.id}")
+            self.canvas.itemconfig(f"ent_enemy_img_{entitat.id}", state="hidden")
+            if len(self.enemic) != len(self.EnemicsDerrotats):
+                viu = False
+                while viu == False:
+                    for pos, i in enumerate(self.enemic.values()):
+                        if i.StatsCombat["CurHP"] > 0:
+                            viu = True
+                        else:
+                            self.IndexObjectiu = (self.IndexObjectiu + 1) % len(self.enemic)
+
+
     def ComprobarFiCombat(self):
         if len(self.EnemicsDerrotats) == len(self.enemic) or len(self.AliatsDerrotats) == len(self.equip):
             self.combat = False
@@ -1229,7 +1257,8 @@ class MenuCombat():
                         if self.ObjectiuMoviment != ent:
                             self.ObjectiuMoviment = ent
                     else:
-                        self.canvas.itemconfig(f"ent_enemy_img_{ent.id}", state="normal")
+                        if ent.StatsCombat["CurHP"] > 0:
+                            self.canvas.itemconfig(f"ent_enemy_img_{ent.id}", state="normal")
 
                 self.canvas.itemconfig(f"ent_enemy_img_{self.ObjectiuMoviment.id}", state=stat)
             
