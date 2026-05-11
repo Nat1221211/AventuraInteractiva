@@ -1339,12 +1339,15 @@ class MenuCombat():
         # Cal canviar per a poder seleccionar enemic...
         self.AtacantAliat.atacar(self, self.ObjectiuMoviment.id, self.AtacARealitzar)
     
-    def AplicarDany(self, dany, atacats, atacant, danyrestant = "No Aplicat"):
+    def AplicarDany(self, dany, managastat, atacats, atacant, manacost = 0, danyrestant = "No Aplicat"):
         self.Atacar = False
         popEnt = []
 
         if danyrestant == "No Aplicat":
             danyrestant = dany.copy()
+            if atacant.id in self.equip.keys():
+                if managastat > 0:
+                    manacost = managastat
 
         for pos, ent in enumerate(atacats):
             if ent.id in dany.keys():
@@ -1393,6 +1396,38 @@ class MenuCombat():
 
                     self.canvas.itemconfig(f"texthp_enemic_{ent.id}", text=texthealth)
                     self.canvas.coords(f"texthp_enemic_{ent.id}", new_coords)
+
+                    if atacant.id in self.equip.keys() and managastat > 0:
+
+                        if manacost >= managastat / 20:
+                            atacant.StatsCombat["Mana"] -= (managastat / 20)
+                            manacost -= (managastat / 20)
+                        else:
+                            atacant.StatsCombat["Mana"] -= manacost
+                            manacost = 0
+
+                        x = self.app.Ancho - 250
+                        mana = atacant.StatsCombat["Mana"] / atacant.StatsCombat["MaxMana"]
+                        amplada = (self.app.Ancho - 15) - (x + 60)
+                        mida = amplada * mana
+                        
+                        actual_coords = self.canvas.coords(f"mana_entitats_{atacant.id}")
+
+                        new_coords = actual_coords
+                        new_coords[2] = x + 60 + mida
+
+                        self.canvas.coords(f"mana_entitats_{atacant.id}", new_coords)
+
+                        textmana = f"{round(atacant.StatsCombat["Mana"])}/{round(atacant.StatsCombat["MaxMana"])}"
+
+                        actual_coords = self.canvas.coords(f"textmana_entitats_{atacant.id}")
+                        new_coords = actual_coords
+
+                        midatext = font.measure(textmana)
+
+                        new_coords[0] = self.app.Ancho - 20 - midatext
+                        self.canvas.itemconfig(f"textmana_entitats_{atacant.id}", text=textmana)
+                        self.canvas.coords(f"textmana_entitats_{atacant.id}", new_coords)
                 
                 elif ent in self.equip.values():
                     x = self.app.Ancho - 250
@@ -1418,33 +1453,15 @@ class MenuCombat():
                     self.canvas.itemconfig(f"textvida_entitats_{ent.id}", text=texthealth)
                     self.canvas.coords(f"textvida_entitats_{ent.id}", new_coords)
 
-                    mana = ent.StatsCombat["Mana"] / ent.StatsCombat["MaxMana"]
-                    amplada = (self.app.Ancho - 15) - (x + 60)
-                    mida = amplada * mana
                     
-                    actual_coords = self.canvas.coords(f"mana_entitats_{ent.id}")
-
-                    new_coords = actual_coords
-                    new_coords[2] = x + 60 + mida
-
-                    self.canvas.coords(f"mana_entitats_{ent.id}", new_coords)
-
-                    textmana = f"{round(ent.StatsCombat["Mana"])}/{round(ent.StatsCombat["MaxMana"])}"
-
-                    actual_coords = self.canvas.coords(f"textmana_entitats_{ent.id}")
-                    new_coords = actual_coords
-
-                    midatext = font.measure(textmana)
-
-                    new_coords[0] = self.app.Ancho - 20 - midatext
-                    self.canvas.itemconfig(f"textmana_entitats_{ent.id}", text=textmana)
-                    self.canvas.coords(f"textmana_entitats_{ent.id}", new_coords)
-
-
         for ent in popEnt:
             atacats.remove(ent)
 
-        if len(atacats) == 0 or len(dany.keys()) == 0:
+        mana_actualitzat = True
+        if managastat > 0 and manacost > 0:
+            mana_actualitzat = False
+
+        if len(atacats) == 0 or len(dany.keys()) == 0 and mana_actualitzat == True:
             self.UpdatingHP = False
             if self.UpdateHPAnimation != None:
                 self.app.root.after_cancel(self.UpdateHPAnimation)
@@ -1454,7 +1471,7 @@ class MenuCombat():
             else:
                 self.FinalitzarTorn(False)
         else:
-            self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, atacats, atacant, danyrestant))
+            self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, managastat, atacats, atacant, manacost, danyrestant))
         
     def FinalitzarTorn(self, aliat = True):
         self.DescartarDerrotats()
