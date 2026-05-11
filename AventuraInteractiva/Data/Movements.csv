@@ -1,5 +1,5 @@
 id;Nom;Descripcio;Potencia;Precisio;Cost;Magic?;Buff;Debuff;ProbEfecteBuff;ProbEfecteDebuff;MultipleObjectiu?;Cura?;Protegeix?;DanyperProteccio
-fire_ball;Bola de Foc;Una bola de flames d'alta temperatura;40;100;5;TRUE;Inteligencia;Cremada;100;90;FALSE;FALSE;FALSE;0
+fire_ball;Bola de Foc;Una bola de flames d'alta temperatura;40;100;5;TRUE;buff_int;burn;100;90;FALSE;FALSE;FALSE;0
 pierce_arrow;Fletxa Perforant;Descripció;50;100;5;FALSE;;;;;FALSE;FALSE;FALSE;0
 lightning_assault;Assalt Llampeg;Descripció;30;100;5;FALSE;;;;;FALSE;FALSE;FALSE;0
 power_slash;Tall potent;Descripció;50;100;5;FALSE;;;;;FALSE;FALSE;FALSE;0

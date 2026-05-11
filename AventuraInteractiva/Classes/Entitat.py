@@ -204,7 +204,7 @@ class Entity():
         if target == None:
             target = self
 
-        if apply[0] == True and (target.StatsCombat["CurHP"] - damage) > 0:
+        if apply[0] == True and (target.StatsCombat["CurHP"] - damage) > 0.1:
             efectNames = []
             for i in target.afected:
                 efectNames.append(i.Name)

@@ -53,7 +53,8 @@ class Effects():
     
     
     # Metodes
-    def __init__(self, name, description, blocking, turns, damage, statuschanges = "None", limit = 1):
+    def __init__(self, iden, name, description, blocking, turns, damage, statuschanges = "None", limit = 1):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Blocking = blocking

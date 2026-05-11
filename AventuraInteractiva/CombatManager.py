@@ -1214,9 +1214,14 @@ class MenuCombat():
         self.dibuixar_info_moviment()
 
     def dibuixar_info_moviment(self):
+        self.IndexMoviment = self.IndexMoviment % len(self.MovimentsAliat)
         move = self.MovimentsAliat[self.IndexMoviment]
-        pos_seg = (self.IndexMoviment + 1) % len(self.MovimentsAliat)
-        pos_ant = (self.IndexMoviment - 1) % len(self.MovimentsAliat)
+
+        pos_seg, pos_ant = None, None
+        if len(self.MovimentsAliat) > 1:
+            pos_seg = (self.IndexMoviment + 1) % len(self.MovimentsAliat)
+        if len(self.MovimentsAliat) > 2:
+            pos_ant = (self.IndexMoviment - 1) % len(self.MovimentsAliat)
 
         self.canvas.delete("info_atac")
         self.canvas.delete("atacs")
@@ -1233,30 +1238,34 @@ class MenuCombat():
                 font=("Courier", 18, "bold"),
                 anchor="nw", tags=("atac_actual", "atacs","seleccio_atac_aliat", "combat")
             )
+        
+        if pos_ant != None or pos_seg != None:
+            font2 = tkfont.Font(family="Courier", size=16, weight="bold")
+            if pos_ant != None:
+                font2 = tkfont.Font(family="Courier", size=16, weight="bold")
+                lenght = font2.measure(self.MovimentsAliat[pos_ant].Moviment.Name)
 
-        font2 = tkfont.Font(family="Courier", size=16, weight="bold")
-        lenght = font2.measure(self.MovimentsAliat[pos_ant].Moviment.Name)
+                self.canvas.create_text(
+                        5 + (((self.app.Ancho - 305) - lenght) / 2),
+                        self.app.Alto - 110,
+                        text=self.MovimentsAliat[pos_ant].Moviment.Name,
+                        fill="#202020",
+                        width= 350,
+                        font=("Courier", 16, "bold"),
+                        anchor="nw", tags=("atac_ant", "atacs", "seleccio_atac_aliat", "combat")
+                    )
 
-        self.canvas.create_text(
-                5 + (((self.app.Ancho - 305) - lenght) / 2),
-                self.app.Alto - 110,
-                text=self.MovimentsAliat[pos_ant].Moviment.Name,
-                fill="#202020",
-                width= 350,
-                font=("Courier", 16, "bold"),
-                anchor="nw", tags=("atac_ant", "atacs", "seleccio_atac_aliat", "combat")
-            )
-
-        lenght = font2.measure(self.MovimentsAliat[pos_seg].Moviment.Name)
-        self.canvas.create_text(
-                5 + (((self.app.Ancho - 305) - lenght) / 2),
-                self.app.Alto - 50,
-                text=self.MovimentsAliat[pos_seg].Moviment.Name,
-                fill="#202020",
-                width= 350,
-                font=("Courier", 16, "bold"),
-                anchor="nw", tags=("atac_seg", "atacs", "seleccio_atac_aliat", "combat")
-            )
+            if pos_seg != None:
+                lenght = font2.measure(self.MovimentsAliat[pos_seg].Moviment.Name)
+                self.canvas.create_text(
+                        5 + (((self.app.Ancho - 305) - lenght) / 2),
+                        self.app.Alto - 50,
+                        text=self.MovimentsAliat[pos_seg].Moviment.Name,
+                        fill="#202020",
+                        width= 350,
+                        font=("Courier", 16, "bold"),
+                        anchor="nw", tags=("atac_seg", "atacs", "seleccio_atac_aliat", "combat")
+                    )
         
         # Informacio Moviment
         self.canvas.create_text(
@@ -1298,6 +1307,17 @@ class MenuCombat():
             self.app.Ancho - 255,
             self.app.Alto - 40,
             text=f"Tipus: {tipus}",
+            fill="black",
+            width= 350,
+            font=("Courier", 16, "bold"),
+            anchor="nw", tags=("info_atac","seleccio_atac_aliat", "combat")
+        )
+
+        # Mostrar Posicio en llista
+        self.canvas.create_text(
+            self.app.Ancho - 515,
+            self.app.Alto - 30,
+            text=f"Moviment {self.IndexMoviment + 1} de {len(self.MovimentsAliat)}",
             fill="black",
             width= 350,
             font=("Courier", 16, "bold"),

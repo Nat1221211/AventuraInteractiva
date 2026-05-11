@@ -108,9 +108,9 @@ def CallEfect():
             bloqueig = (i["ImpedeixAccions?"], i["ProbabilitatImpedirAccio"])
         else:
             bloqueig = (False, 0)
-        efecte = Characteristics.Effects(i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], 
+        efecte = Characteristics.Effects(i["id"], i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], 
                                             i["Dany"], i["StatAfected"], i["Limit"])
-        efectes.update({efecte.Name: efecte})
+        efectes.update({efecte.id: efecte})
     return efectes
 
 def CallMovement(effects):
