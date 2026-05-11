@@ -1,7 +1,7 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "dawn_village",
-    "Or": 2000,
+    "Ubicacio": "south_forest",
+    "Or": 2050,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -18,7 +18,8 @@
         "south_forest"
     ],
     "Llocs_Visitats": [
-        "dawn_village"
+        "dawn_village",
+        "south_forest"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
@@ -31,12 +32,12 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 50,
+            "XP": 84.93,
             "StatsCombat": {
                 "MaxHP": 22.0,
-                "CurHP": 22.0,
+                "CurHP": 18.4,
                 "MaxMana": 24.0,
-                "Mana": 12.0,
+                "Mana": 2.0,
                 "ATK": 24.0,
                 "INT": 20.0,
                 "DEF": 24.0,
@@ -47,20 +48,20 @@
             "id": "ally_1",
             "Nom": "Elaine",
             "Base": "mage",
-            "Lv": 5,
+            "Lv": 6,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 100,
+            "XP": 8.24,
             "StatsCombat": {
-                "MaxHP": 18.0,
+                "MaxHP": 19.6,
                 "CurHP": 18.0,
-                "MaxMana": 30.0,
-                "Mana": 5.0,
-                "ATK": 16.0,
-                "INT": 28.0,
-                "DEF": 20.0,
-                "SPD": 20.0
+                "MaxMana": 34.0,
+                "Mana": 4.5,
+                "ATK": 17.2,
+                "INT": 31.6,
+                "DEF": 22.0,
+                "SPD": 22.0
             }
         }
     ],

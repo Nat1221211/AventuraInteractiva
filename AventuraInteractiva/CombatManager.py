@@ -1180,9 +1180,12 @@ class MenuCombat():
     def CrearLlistatMoviments(self):
         self.MovimentsAliat = []
         for id, move in self.AtacantAliat.Moves.items():
-            self.MovimentsAliat.append(
-                OpcionsCombat(id, move.Name, "", True, move)
-            )
+            # estat = True
+            if move.Cost <= self.AtacantAliat.StatsCombat["Mana"]:
+                # estat = False
+                self.MovimentsAliat.append(
+                    OpcionsCombat(id, move.Name, "", True, move)
+                )
 
     def dibuixar_seleccio_Moviment(self):
         self.Atacar = True
@@ -1482,7 +1485,7 @@ class MenuCombat():
         else:
             self.AtacantEnemic.Priority = 0
             self.AccioEnemic = False
-        self.Lluitar()
+            self.Lluitar()
                        
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
@@ -1498,7 +1501,7 @@ class MenuCombat():
                 if self.Fugir[0] == True:
                     self.dibuixar_Pantalla_fi_combat()
             elif self.Atacar == True:
-                pass
+                self.Lluitar()
             
         else:
             self.Lluitar()
