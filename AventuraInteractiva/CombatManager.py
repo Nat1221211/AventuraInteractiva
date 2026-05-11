@@ -1332,6 +1332,17 @@ class MenuCombat():
                             self.canvas.itemconfig(f"ent_enemy_img_{ent.id}", state="normal")
 
                 self.canvas.itemconfig(f"ent_enemy_img_{self.ObjectiuMoviment.id}", state=stat)
+            else:
+                self.GrupObjectiuMoviment = "Aliats"
+                for pos, ent in enumerate(self.equip.values()):
+                    if pos == self.IndexObjectiu:
+                        if self.ObjectiuMoviment != ent:
+                            self.ObjectiuMoviment = ent
+                    else:
+                        if ent.StatsCombat["CurHP"] > 0.1:
+                            self.canvas.itemconfig(f"ent_ally_img_{ent.id}", state="normal")
+
+                self.canvas.itemconfig(f"ent_ally_img_{self.ObjectiuMoviment.id}", state=stat)
             
             self.AnimacioSeleccioObjectiu = self.app.root.after(200, 
                             lambda: self.dibuixar_seleccio_objectiu(moviment, not mostrar))
@@ -1341,7 +1352,10 @@ class MenuCombat():
     
     def CancelarSeleccioObjectiu(self):
         self.SeleccionarObjectiu = False
-        self.canvas.itemconfig(f"ent_enemy_img_{self.ObjectiuMoviment.id}", state="normal")
+        if self.ObjectiuMoviment in self.equip.keys():
+            self.canvas.itemconfig(f"ent_ally_img_{self.ObjectiuMoviment.id}", state="normal")
+        else:
+            self.canvas.itemconfig(f"ent_enemy_img_{self.ObjectiuMoviment.id}", state="normal")
         self.app.root.after_cancel(self.AnimacioSeleccioObjectiu)
 
     def RealitzarAtac(self):

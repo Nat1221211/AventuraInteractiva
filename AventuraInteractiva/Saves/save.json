@@ -47,7 +47,7 @@
         {
             "id": "ally_1",
             "Nom": "Elaine",
-            "Base": "mage",
+            "Base": "priest",
             "Lv": 10,
             "Lv_Limit": 100,
             "Moves": [],
@@ -55,7 +55,7 @@
             "XP": 54.96,
             "StatsCombat": {
                 "MaxHP": 26.0,
-                "CurHP": 12.3,
+                "CurHP": 100.3,
                 "MaxMana": 50.0,
                 "Mana": 19.0,
                 "ATK": 22.0,
