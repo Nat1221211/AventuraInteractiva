@@ -61,4 +61,4 @@ class Effects():
         self.Turns = turns
         self.Damage = damage
         self.StatEffects = statuschanges
-        self.EffectLimit = limit   
+        self.EffectLimit = limit

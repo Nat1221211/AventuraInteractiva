@@ -1,7 +1,7 @@
 {
     "Nom": "Aishia",
     "Ubicacio": "south_forest",
-    "Or": 1950,
+    "Or": 2040,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -28,20 +28,20 @@
             "id": "Player",
             "Nom": "Aishia",
             "Base": "archer",
-            "Lv": 5,
+            "Lv": 6,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 84.93,
+            "XP": 81.53,
             "StatsCombat": {
-                "MaxHP": 22.0,
-                "CurHP": 22.0,
-                "MaxMana": 24.0,
-                "Mana": 24.0,
-                "ATK": 24.0,
-                "INT": 20.0,
-                "DEF": 24.0,
-                "SPD": 22.0
+                "MaxHP": 24.4,
+                "CurHP": 14.0,
+                "MaxMana": 26.799999999999997,
+                "Mana": 19.0,
+                "ATK": 26.799999999999997,
+                "INT": 22.0,
+                "DEF": 26.799999999999997,
+                "SPD": 24.4
             }
         },
         {
@@ -52,16 +52,16 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 8.24,
+            "XP": 54.96,
             "StatsCombat": {
-                "MaxHP": 19.6,
-                "CurHP": 19.6,
-                "MaxMana": 34.0,
-                "Mana": 34.0,
-                "ATK": 17.2,
-                "INT": 31.6,
-                "DEF": 22.0,
-                "SPD": 22.0
+                "MaxHP": 26.0,
+                "CurHP": 12.3,
+                "MaxMana": 50.0,
+                "Mana": 19.0,
+                "ATK": 22.0,
+                "INT": 46.0,
+                "DEF": 30.0,
+                "SPD": 30.0
             }
         }
     ],

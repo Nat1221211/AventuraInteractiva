@@ -108,6 +108,7 @@ def CallEfect():
             bloqueig = (i["ImpedeixAccions?"], i["ProbabilitatImpedirAccio"])
         else:
             bloqueig = (False, 0)
+
         efecte = Characteristics.Effects(i["id"], i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], 
                                             i["Dany"], i["StatAfected"], i["Limit"])
         efectes.update({efecte.id: efecte})

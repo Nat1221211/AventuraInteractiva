@@ -1159,23 +1159,10 @@ class MenuCombat():
                 if i.RemainingTurns <= 0 and i.Turns > 0:
                     eliminar.append(i)
                 elif comprobar.StatsCombat["CurHP"] > 0:
-                    if i.Damage > 0:
-                        damagepereffect = ((comprobar.StatsCombat["MaxHP"] / 100) * i.Damage)
-                        self.app.Menu.CrearDialeg(f"{comprobar.nom}, ha perdut {round(damagepereffect, 2)} HP degut a la {i.Name}.")
-                        self.entitats_afectades.append(comprobar)
-                        if comprobar.id not in self.danyEfectes.keys():
-                            self.danyEfectes = {comprobar.id: damagepereffect}
-                        else:
-                            self.danyEfectes[comprobar.id]+=damagepereffect
                     i.RemainingTurns -= 1
             for j in eliminar:
                 comprobar.afected.remove(j)
             comprobar.AplicarCanvisEfectesEstat()
-        if len(self.danyEfectes) > 0:
-            self.AplicarDany(self.danyEfectes, self.entitats_afectades, aliat)
-        else:
-            self.AplicarDany({}, [], aliat)
-
 
     def CrearLlistatMoviments(self):
         self.MovimentsAliat = []
@@ -1496,6 +1483,7 @@ class MenuCombat():
             self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, managastat, atacats, atacant, manacost, danyrestant))
         
     def FinalitzarTorn(self, aliat = True):
+        self.ComprobarEfecteEstat(aliat)
         self.DescartarDerrotats()
         if aliat == True:
             self.AtacantAliat.Priority = 0
