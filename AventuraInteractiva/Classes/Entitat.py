@@ -290,6 +290,7 @@ class Entity():
                                 if ent.ProtectedBy[0] != self:
                                     danyProtector = ((dany / 100) * ent.ProtectedBy[1])
                                     damage[ent.ProtectedBy[0].id] = danyProtector
+                                    atacats.append(ent.ProtectedBy[0])
                                 damage[ent.id] = danyRestant
 
                             else:
