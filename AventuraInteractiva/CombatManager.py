@@ -1362,7 +1362,7 @@ class MenuCombat():
         self.app.Menu.CrearDialeg(f"{self.AtacantAliat.nom}, ha utilitzat {self.AtacARealitzar.Name} !!")
         # Cal canviar per a poder seleccionar enemic...
         if self.AtacARealitzar.Healing == True or self.AtacARealitzar.Protective == True:
-            pass
+            self.AtacantAliat.MoveProtHeal(self, self.ObjectiuMoviment.id, self.AtacARealitzar)
         else:
             self.AtacantAliat.atacar(self, self.ObjectiuMoviment.id, self.AtacARealitzar)
     
@@ -1380,21 +1380,32 @@ class MenuCombat():
             if ent.id in dany.keys():
                 self.UpdatingHP = True
 
+                if dany[ent.id] > 0:
+                    if danyrestant[ent.id] > (dany[ent.id] / 20) and ent.StatsCombat["CurHP"] > 0:
+                        ent.StatsCombat["CurHP"] -= (dany[ent.id] / 20)
+                        danyrestant[ent.id] -= (dany[ent.id] / 20)
+                    
+                    elif danyrestant[ent.id] <= dany[ent.id] / 20 and ent.StatsCombat["CurHP"] > 0:
+                        ent.StatsCombat["CurHP"] -= danyrestant[ent.id]
+                        if ent.id in dany:
+                            dany.pop(ent.id)
+                    else:
+                        if ent not in popEnt:
+                            popEnt.append(ent)
+                        if ent.id in dany:
+                            dany.pop(ent.id)
                 
+                elif dany[ent.id] < 0:
+                    danyrestant[ent.id] = abs(danyrestant[ent.id])
 
-                if danyrestant[ent.id] > (dany[ent.id] / 20) and ent.StatsCombat["CurHP"] > 0:
-                    ent.StatsCombat["CurHP"] -= (dany[ent.id] / 20)
-                    danyrestant[ent.id] -= (dany[ent.id] / 20)
-                
-                elif danyrestant[ent.id] <= dany[ent.id] / 20 and ent.StatsCombat["CurHP"] > 0:
-                    ent.StatsCombat["CurHP"] -= danyrestant[ent.id]
-                    if ent.id in dany:
-                        dany.pop(ent.id)
-                else:
-                    if ent not in popEnt:
-                        popEnt.append(ent)
-                    if ent.id in dany:
-                        dany.pop(ent.id)
+                    if danyrestant[ent.id] > (abs(dany[ent.id]) / 20):
+                        ent.StatsCombat["CurHP"] += (abs(dany[ent.id]) / 20)
+                        danyrestant[ent.id] -= (abs(dany[ent.id]) / 20)
+                    
+                    elif danyrestant[ent.id] <= (abs(dany[ent.id]) / 20):
+                        ent.StatsCombat["CurHP"] += abs(danyrestant[ent.id])
+                        if ent.id in dany:
+                            dany.pop(ent.id)
                 
                 if ent.StatsCombat["CurHP"] <= 0.01:
                     ent.StatsCombat["CurHP"] = 0
@@ -1449,6 +1460,7 @@ class MenuCombat():
                     new_coords[0] = self.app.Ancho - 20 - midatext
                     self.canvas.itemconfig(f"textvida_entitats_{ent.id}", text=texthealth)
                     self.canvas.coords(f"textvida_entitats_{ent.id}", new_coords)
+            
             if atacant.id in self.equip.keys() and managastat > 0:
 
                 if manacost >= managastat / 20:

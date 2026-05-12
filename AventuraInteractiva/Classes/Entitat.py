@@ -296,18 +296,32 @@ class Entity():
             MenuCombat.app.Menu.CrearDialeg("L'atac ha fallat...")
         MenuCombat.AplicarDany(damage, move.Cost, atacats, self)
 
-    def MoveProtHeal(self, targets, target, move):
-        for id, ent in targets.items():
+    def MoveProtHeal(self, MenuCombat, target, move):
+        # Seleccio equip al que atacar segons aliat o enemic
+        EquipAAtacar = {"ID": "", "Atacar": None}
+        if self.id in MenuCombat.equip.keys():
+            EquipAAtacar["ID"]="Equip"
+            EquipAAtacar["Atacar"] = MenuCombat.equip
+        else:
+            EquipAAtacar["ID"]="Enemic"
+            EquipAAtacar["Atacar"] = MenuCombat.enemic
+
+        atacats = []
+        damage = {}
+        for id, ent in  EquipAAtacar["Atacar"].items():
             if id == target or move.MultiTarget:
+                if ent.id not in damage.keys():
+                    damage[ent.id] = 0
+
+
                 if move.Healing == True:
                     if (ent.StatsCombat["CurHP"] + (move.Power * (self.StatsCombat["INT"] / 100))) > ent.StatsCombat["MaxHP"]:
-                        ent.StatsCombat["CurHP"] = ent.StatsCombat["MaxHP"]
-                        print(f"{ent.nom} ha recuperat vida fins al seu limit...")
+                        damage[ent.id] = (ent.StatsCombat["MaxHP"] - ent.StatsCombat["CurHP"]) * -1
                     else:
-                        ent.StatsCombat["CurHP"] += (move.Power * (self.StatsCombat["INT"] / 100))
-                        print(f"{ent.nom} ha recuperat {move.Power * (self.StatsCombat["INT"] / 100)} punts de vida...")
-                    for i in move.Buff.items():
-                        ent.ApplyStatusEffects(i[0], i[1])
+                        damage[ent.id] = (move.Power * (self.StatsCombat["INT"] / 100)) * -1
+                    atacats.append(ent)
+
+                    
                 if move.Protective == True:
                     ent.Protected = True
                     if self == ent:
@@ -317,10 +331,10 @@ class Entity():
                     if move.AutoDamaging > 0:
                         target.ProtectedBy = (self, move.AutoDamaging)
                         
-                    for i in move.Buff.items():
-                        target.ApplyStatusEffects(i[0], i[1])
-        input("Presiona per a continuar...")
-        return targets
+                for i in move.Buff.items():
+                    target.ApplyStatusEffects(i[0], i[1])
+
+        MenuCombat.AplicarDany(damage, move.Cost, atacats, self)
 
     def ShowStatus(self, jugador, combat = False):
         UIManager.ClearScreen()
