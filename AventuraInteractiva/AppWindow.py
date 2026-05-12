@@ -159,7 +159,10 @@ class App():
                 UIManager.CridarAccioMenuPrincipal(self, seleccionat)
             
             elif self.Menu.id == "Mapa":
-                AdventureManager.CanviarZona(self, seleccionat)
+                if seleccionat.id != "sortir":
+                    AdventureManager.CanviarZona(self, seleccionat)
+                else:
+                    self.Enrere()
         
     
     def ConfirmarSeleccioCombat(self, event = None):
