@@ -1349,6 +1349,7 @@ class MenuCombat():
 
         else:
             self.ObjectiuMoviment = "All"
+            self.RealitzarAtac()
     
     def CancelarSeleccioObjectiu(self):
         self.SeleccionarObjectiu = False
@@ -1359,12 +1360,18 @@ class MenuCombat():
         self.app.root.after_cancel(self.AnimacioSeleccioObjectiu)
 
     def RealitzarAtac(self):
+        self.SeleccionarObjectiu = False
         self.app.Menu.CrearDialeg(f"{self.AtacantAliat.nom}, ha utilitzat {self.AtacARealitzar.Name} !!")
         # Cal canviar per a poder seleccionar enemic...
-        if self.AtacARealitzar.Healing == True or self.AtacARealitzar.Protective == True:
-            self.AtacantAliat.MoveProtHeal(self, self.ObjectiuMoviment.id, self.AtacARealitzar)
+        if self.AtacARealitzar.MultiTarget == True:
+            target = self.ObjectiuMoviment
         else:
-            self.AtacantAliat.atacar(self, self.ObjectiuMoviment.id, self.AtacARealitzar)
+            target = self.ObjectiuMoviment.id
+
+        if self.AtacARealitzar.Healing == True or self.AtacARealitzar.Protective == True:
+            self.AtacantAliat.MoveProtHeal(self, target, self.AtacARealitzar)
+        else:
+            self.AtacantAliat.atacar(self, target, self.AtacARealitzar)
     
     def AplicarDany(self, dany, managastat, atacats, atacant, manacost = 0, danyrestant = "No Aplicat"):
         self.Atacar = False

@@ -177,8 +177,9 @@ class App():
             
             elif self.MenuCombat.Atacar==True:
                 if self.MenuCombat.SeleccionarObjectiu == True:
-                    self.MenuCombat.CancelarSeleccioObjectiu()
-                    self.MenuCombat.RealitzarAtac()
+                    if self.MenuCombat.AtacARealitzar.MultiTarget == False:
+                        self.MenuCombat.CancelarSeleccioObjectiu()
+                        self.MenuCombat.RealitzarAtac()
                 else:
                     seleccio = self.MenuCombat.MovimentsAliat[self.MenuCombat.IndexMoviment]
                     self.MenuCombat.dibuixar_seleccio_objectiu(seleccio)
