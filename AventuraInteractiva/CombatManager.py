@@ -1220,7 +1220,7 @@ class MenuCombat():
                 5 + (((self.app.Ancho - 305) - lenght) / 2), 
                 self.app.Alto - 80,
                 text=move.Moviment.Name,
-                fill="blue" if self.MovimentsAliat[pos_ant].Habilitat == True else "grey",
+                fill="blue" if self.move.Habilitat == True else "grey",
                 width= 350,
                 font=("Courier", 18, "bold"),
                 anchor="nw", tags=("atac_actual", "atacs","seleccio_atac_aliat", "combat")
