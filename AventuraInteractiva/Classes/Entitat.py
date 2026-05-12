@@ -162,7 +162,7 @@ class Entity():
             if k in ["MaxHP", "MaxMana"]:
                 if k == "MaxHP" and v < self.StatsCombat["CurHP"]:
                     self.StatsCombat["CurHP"] = self.StatsCombat["MaxHP"]
-                elif k == "Mana" and v < self.StatsCombat["Mana"]:
+                elif k == "MaxMana" and v < self.StatsCombat["Mana"]:
                     self.StatsCombat["Mana"] = self.StatsCombat["MaxMana"]
             
     
@@ -351,49 +351,6 @@ class Entity():
                     ent.ApplyStatusEffects(i[0], i[1])
 
         MenuCombat.AplicarDany(damage, move.Cost, atacats, self)
-
-    def ShowStatus(self, jugador, combat = False):
-        UIManager.ClearScreen()
-        print(f"Nom: {self.nom}")
-        if self.base.isPlayable == True:
-            print(f"Clase: {self.base.EntityName}")
-            if len(self.PastClasses) > 0:
-                subclasses = ""
-                for i in self.PastClasses:
-                    if i == self.PastClasses[len(self.PastClasses)]:
-                        subclasses += {i.EntityName}
-                    else:
-                        subclasses += ({i.EntityName} + ", ")
-                print(f"Classe Secundaria: {subclasses}")
-        else:
-            print(f"Raça: {self.base.EntityName}")
-        print(f"Or: {jugador.Gold}")
-        print(f"Lv: {self.Lv} / {self.LvLimit}")
-        print(f"XP: {round(self.Xp, 2)} / {round(self.XpRequired, 2)}")
-        print(f"HP: {round(self.StatsCombat["CurHP"], 2)} / {round(self.StatsCombat["MaxHP"], 2)}")
-        print(f"Mana: {round(self.StatsCombat["Mana"], 2)} / {round(self.StatsCombat["MaxMana"], 2)}")
-        print(f"ATK: {round(self.StatsCombat["ATK"], 2)}")
-        print(f"INT: {round(self.StatsCombat["INT"], 2)}")
-        print(f"DEF: {round(self.StatsCombat["DEF"], 2)}")
-        print(f"SPD: {round(self.StatsCombat["SPD"], 2)}")
-        print("\nTitols: ")
-        # if self.isPlayer == True:
-        #     count = 0
-        #     for i in self.Titles:
-        #         if count < 3:
-        #             print(i.TitleName, end=", ")
-        #         else:
-        #             print(i)
-        #             count = 0
-        print("")
-        if combat == False and self.subAcquirable == True:
-            res = int(input("Digues si vols sortir (1), o obtenir una segona classe (2): "))
-            if res not in [1, 2]:
-                self.ShowStatus()
-            if res == 2:
-                self.DefinirSubClass()
-        # elif combat == False:
-        input("Presiona per a continuar...")
 
     def LvlUp(self, XP = None):
         levelUP = False
