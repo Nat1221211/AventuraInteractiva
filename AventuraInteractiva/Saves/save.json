@@ -1,7 +1,7 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "south_forest",
-    "Or": 2040,
+    "Ubicacio": "dawn_village",
+    "Or": 1940,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -35,9 +35,9 @@
             "XP": 81.53,
             "StatsCombat": {
                 "MaxHP": 24.4,
-                "CurHP": 14.0,
+                "CurHP": 24.4,
                 "MaxMana": 26.799999999999997,
-                "Mana": 19.0,
+                "Mana": 26.799999999999997,
                 "ATK": 26.799999999999997,
                 "INT": 22.0,
                 "DEF": 26.799999999999997,
@@ -54,14 +54,14 @@
             "Afected": [],
             "XP": 54.96,
             "StatsCombat": {
-                "MaxHP": 26.0,
-                "CurHP": 100.3,
-                "MaxMana": 50.0,
-                "Mana": 19.0,
-                "ATK": 22.0,
-                "INT": 46.0,
-                "DEF": 30.0,
-                "SPD": 30.0
+                "MaxHP": 34.0,
+                "CurHP": 20.0,
+                "MaxMana": 42.0,
+                "Mana": 42.0,
+                "ATK": 26.0,
+                "INT": 34.0,
+                "DEF": 34.0,
+                "SPD": 34.0
             }
         }
     ],

@@ -1352,7 +1352,7 @@ class MenuCombat():
     
     def CancelarSeleccioObjectiu(self):
         self.SeleccionarObjectiu = False
-        if self.ObjectiuMoviment in self.equip.keys():
+        if self.ObjectiuMoviment.id in self.equip.keys():
             self.canvas.itemconfig(f"ent_ally_img_{self.ObjectiuMoviment.id}", state="normal")
         else:
             self.canvas.itemconfig(f"ent_enemy_img_{self.ObjectiuMoviment.id}", state="normal")
@@ -1406,6 +1406,9 @@ class MenuCombat():
                         ent.StatsCombat["CurHP"] += abs(danyrestant[ent.id])
                         if ent.id in dany:
                             dany.pop(ent.id)
+                else:
+                    if ent.id in dany:
+                        dany.pop(ent.id)
                 
                 if ent.StatsCombat["CurHP"] <= 0.01:
                     ent.StatsCombat["CurHP"] = 0
