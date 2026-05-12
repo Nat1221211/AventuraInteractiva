@@ -1361,7 +1361,10 @@ class MenuCombat():
     def RealitzarAtac(self):
         self.app.Menu.CrearDialeg(f"{self.AtacantAliat.nom}, ha utilitzat {self.AtacARealitzar.Name} !!")
         # Cal canviar per a poder seleccionar enemic...
-        self.AtacantAliat.atacar(self, self.ObjectiuMoviment.id, self.AtacARealitzar)
+        if self.AtacARealitzar.Healing == True or self.AtacARealitzar.Protective == True:
+            pass
+        else:
+            self.AtacantAliat.atacar(self, self.ObjectiuMoviment.id, self.AtacARealitzar)
     
     def AplicarDany(self, dany, managastat, atacats, atacant, manacost = 0, danyrestant = "No Aplicat"):
         self.Atacar = False
@@ -1376,6 +1379,8 @@ class MenuCombat():
         for pos, ent in enumerate(atacats):
             if ent.id in dany.keys():
                 self.UpdatingHP = True
+
+                
 
                 if danyrestant[ent.id] > (dany[ent.id] / 20) and ent.StatsCombat["CurHP"] > 0:
                     ent.StatsCombat["CurHP"] -= (dany[ent.id] / 20)

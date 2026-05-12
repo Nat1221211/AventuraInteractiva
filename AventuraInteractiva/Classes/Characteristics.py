@@ -62,3 +62,6 @@ class Effects():
         self.Damage = damage
         self.StatEffects = statuschanges
         self.EffectLimit = limit
+        self.Debuff = False
+        if self.Damage > 0:
+            self.Debuff = True
