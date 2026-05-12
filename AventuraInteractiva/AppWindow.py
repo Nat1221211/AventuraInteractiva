@@ -182,7 +182,8 @@ class App():
                         self.MenuCombat.RealitzarAtac()
                 else:
                     seleccio = self.MenuCombat.MovimentsAliat[self.MenuCombat.IndexMoviment]
-                    self.MenuCombat.dibuixar_seleccio_objectiu(seleccio)
+                    if seleccio.Habilitat == True:
+                        self.MenuCombat.dibuixar_seleccio_objectiu(seleccio)
             
             elif self.Menu.id == "Seleccio Equip":
                 if self.SeleccioAliat == True:

@@ -1167,12 +1167,12 @@ class MenuCombat():
     def CrearLlistatMoviments(self):
         self.MovimentsAliat = []
         for id, move in self.AtacantAliat.Moves.items():
-            # estat = True
-            if move.Cost <= self.AtacantAliat.StatsCombat["Mana"]:
-                # estat = False
-                self.MovimentsAliat.append(
-                    OpcionsCombat(id, move.Name, "", True, move)
-                )
+            estat = True
+            if move.Cost > self.AtacantAliat.StatsCombat["Mana"]:
+                estat = False
+            self.MovimentsAliat.append(
+                OpcionsCombat(id, move.Name, estat, "", move)
+            )
 
     def dibuixar_seleccio_Moviment(self):
         self.Atacar = True
@@ -1220,7 +1220,7 @@ class MenuCombat():
                 5 + (((self.app.Ancho - 305) - lenght) / 2), 
                 self.app.Alto - 80,
                 text=move.Moviment.Name,
-                fill="blue",
+                fill="blue" if self.MovimentsAliat[pos_ant].Habilitat == True else "grey",
                 width= 350,
                 font=("Courier", 18, "bold"),
                 anchor="nw", tags=("atac_actual", "atacs","seleccio_atac_aliat", "combat")
@@ -1236,7 +1236,7 @@ class MenuCombat():
                         5 + (((self.app.Ancho - 305) - lenght) / 2),
                         self.app.Alto - 110,
                         text=self.MovimentsAliat[pos_ant].Moviment.Name,
-                        fill="#202020",
+                        fill="#202020" if self.MovimentsAliat[pos_ant].Habilitat == True else "grey",
                         width= 350,
                         font=("Courier", 16, "bold"),
                         anchor="nw", tags=("atac_ant", "atacs", "seleccio_atac_aliat", "combat")
@@ -1248,7 +1248,7 @@ class MenuCombat():
                         5 + (((self.app.Ancho - 305) - lenght) / 2),
                         self.app.Alto - 50,
                         text=self.MovimentsAliat[pos_seg].Moviment.Name,
-                        fill="#202020",
+                        fill="#202020" if self.MovimentsAliat[pos_seg].Habilitat == True else "grey",
                         width= 350,
                         font=("Courier", 16, "bold"),
                         anchor="nw", tags=("atac_seg", "atacs", "seleccio_atac_aliat", "combat")
