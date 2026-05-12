@@ -281,8 +281,23 @@ class Entity():
                         if ent.id not in damage.keys():
                             damage[ent.id]=0
 
-                        damage[ent.id] = round(self.CalcularDamage(MenuCombat, ent, move), 2)
+                        dany = round(self.CalcularDamage(MenuCombat, ent, move), 2)
                         atacats.append(ent)
+
+                        if ent.Protected == True:
+                            if ent.ProtectedBy != None:
+                                danyRestant = ((dany / 100) * (100 - ent.ProtectedBy[1]))
+                                if ent.ProtectedBy[0] != self:
+                                    danyProtector = ((dany / 100) * ent.ProtectedBy[1])
+                                    damage[ent.ProtectedBy[0].id] = danyProtector
+                                damage[ent.id] = danyRestant
+
+                            else:
+                                MenuCombat.app.Menu.CrearDialeg(f"{ent.nom} ha estat protegit del dany...")
+                        else:
+                            damage[ent.id] = dany
+
+
 
                         for effect, prob in move.Debuff.items():
                             self.ApplyStatusEffects(MenuCombat, effect, prob, ent, damage[ent.id])
@@ -325,14 +340,14 @@ class Entity():
                 if move.Protective == True:
                     ent.Protected = True
                     if self == ent:
-                        print(f"{self.nom} s'ha preparat per protegir-se")
+                        MenuCombat.app.Menu.CrearDialeg(f"{self.nom} s'ha preparat per protegir-se")
                     else:
-                        print(f"{self.nom} s'ha preparat per protegir a {ent.nom}")
+                        MenuCombat.app.Menu.CrearDialeg(f"{self.nom} s'ha preparat per protegir a {ent.nom}")
                     if move.AutoDamaging > 0:
-                        target.ProtectedBy = (self, move.AutoDamaging)
+                        ent.ProtectedBy = (self, move.AutoDamaging)
                         
                 for i in move.Buff.items():
-                    target.ApplyStatusEffects(i[0], i[1])
+                    ent.ApplyStatusEffects(i[0], i[1])
 
         MenuCombat.AplicarDany(damage, move.Cost, atacats, self)
 

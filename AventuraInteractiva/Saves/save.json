@@ -63,6 +63,26 @@
                 "DEF": 34.0,
                 "SPD": 34.0
             }
+        },
+        {
+            "id": "ally_2",
+            "Nom": "Erdrick",
+            "Base": "warrior",
+            "Lv": 10,
+            "Lv_Limit": 100,
+            "Moves": [],
+            "Afected": [],
+            "XP": 54.96,
+            "StatsCombat": {
+                "MaxHP": 34.0,
+                "CurHP": 20.0,
+                "MaxMana": 42.0,
+                "Mana": 42.0,
+                "ATK": 26.0,
+                "INT": 34.0,
+                "DEF": 34.0,
+                "SPD": 34.0
+            }
         }
     ],
     "Inventari": [],

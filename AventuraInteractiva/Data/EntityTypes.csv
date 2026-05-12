@@ -1,6 +1,6 @@
 id;Nom;Descripcio;Vida;Mana;ATK;INT;DEF;SPD;Playable?;XP;Groups;Movements
 mage;Mag;Qui ha iniciat el seu cami per a descobrir les veritats del mon...;80;200;60;180;100;100;True;50;Human;cop_basto: 1 | fire_ball: 3 | debuff: 10
-warrior;Guerrer;Un habil lluitador cos a cos...;160;100;140;40;130;80;True;50;Human;tall: 1 | power_slash: 4 | lightning_slash: 8 | war_cry: 10
+warrior;Guerrer;Un habil lluitador cos a cos...;160;100;140;40;130;80;True;50;Human;tall: 1 | power_slash: 4 | lightning_slash: 8 | block: 9 | war_cry: 10
 archer;Arquer;Una persona amb bon ull, capaç d'apuntar a essers en moviment i acertar-los...;120;140;140;100;140;120;True;50;Human;arrow: 1 | pierce_arrow: 5 | power_arrow: 10
 thief;Lladre;;120;120;130;100;120;160;True;50;Human;tall: 1 | lightning_assault: 4 | debuff: 10
 wolf;Llop;;120;40;120;20;100;140;False;30;Beast;bite: 1
