@@ -60,7 +60,7 @@ class MenuCombat():
         self.IndexAccio = 0
         self.AccionsCombat = [
             OpcionsCombat("atacar", "Atacar", True, ""),
-            OpcionsCombat("motxila", "Motxila", False, ""),
+            OpcionsCombat("motxila", "Motxila", True, ""),
             OpcionsCombat("estat", "Veure Estat", True, ""),
             OpcionsCombat("fugir", "Fugir", True, ""),
             OpcionsCombat("pasar", "Pasar Torn", True, "")
@@ -108,7 +108,7 @@ class MenuCombat():
 
         AccionsDisponibles={
             "atacar": lambda: self.dibuixar_seleccio_Moviment(),
-            # "motxila": lambda: "",
+            "motxila": lambda: self.app.MenuMotxila(),
             "estat": lambda: UIManager.VeureEstatus(self.app),
             "fugir": lambda: self.AccioFugir(),
             "pasar": lambda: self.AccioPasarTorn()

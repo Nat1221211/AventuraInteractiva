@@ -167,13 +167,24 @@ class App():
     
     def ConfirmarSeleccioCombat(self, event = None):
         if self.Menu.id not in ["Motxila"]:
-            seleccio = self.Menu.opcions[self.Menu.index]
-
+            seleccio = self.Menu.opcions[self.Menu.index]            
 
         if self.MenuCombat.AccioAliat == True:
             if self.MenuCombat.MenuAccioAliat == True:
                 seleccio = self.MenuCombat.AccionsCombat[self.MenuCombat.IndexAccio]
                 self.MenuCombat.CridarMenuSegonsAccio(seleccio)
+            
+            elif self.Menu.id == "Motxila":
+                if self.Menu.llistaobjectes[self.Menu.index].id != "sortir":
+                    seleccionat = self.Menu.llistaobjectes[self.Menu.index].Objecte["objecte"]
+                    self.Motxila = False
+                    self.UltimObjecteSeleccionat = seleccionat
+                    UIManager.VeureEstatus(self, True)
+                
+                else:
+                    self.Motxila = False
+                    self.canvas.delete("menu_motxila")
+                    self.MenuCombat.Lluitar()
             
             elif self.MenuCombat.Atacar==True:
                 if self.MenuCombat.SeleccionarObjectiu == True:
@@ -329,6 +340,17 @@ class App():
             if tecla.keysym == "BackSpace": 
                 self.Menu.PulsarEnter()
         
+        elif self.Motxila == True:
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+            if tecla.keysym == "a": self.Menu.Moviment("a")
+            if tecla.keysym == "d": self.Menu.Moviment("d")
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace":
+                self.Motxila = False
+                self.canvas.delete("menu_motxila")
+                self.MenuCombat.Lluitar()
+        
         elif self.SeleccioAliat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")
             if tecla.keysym == "s": self.Menu.Moviment("s")
@@ -381,7 +403,6 @@ class App():
                         self.Menu.CrearDialeg("Segons l'hostaler, algú t'ha trobat i portat al Hostal, no ha deixat pista sobre qui és...")                        
                     else:
                         UIManager.MostrarMenuPrincipal(self)
-
 
     def ControlBindsMenus(self, tecla):
         if self.DialegActiu == True:

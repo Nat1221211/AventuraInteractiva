@@ -465,7 +465,11 @@ class Menu():
                 self.healthanimation = None
                 self.app.Motxila = True
                 self.app.SeleccioAliat = False
-                self.app.root.after(200, self.app.MenuMotxila())
+                if self.app.Combat == False:
+                    self.app.root.after(200, self.app.MenuMotxila())
+                else:
+                    self.app.MenuCombat.FinalitzarTorn()
+                    self.app.root.after(200, self.app.MenuCombat.Lluitar())
    
     def mostrar_estat_equip(self):
         if self.app.Combat == False:
@@ -804,7 +808,8 @@ class Menu():
         self.app.SeleccionarEntitat()
     
     def DibuixarMenuMotxila(self):
-        self.canvas.delete("all")
+        if self.app.Combat == False:
+            self.canvas.delete("all")
         self.IndexColumna = 0
         
         # Barra SUperior on es mostraran els menus disponibles dins de la motxila
