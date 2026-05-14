@@ -463,11 +463,13 @@ class Menu():
             if self.healthanimation != None:
                 self.app.root.after_cancel(self.healthanimation)
                 self.healthanimation = None
-                self.app.Motxila = True
                 self.app.SeleccioAliat = False
                 if self.app.Combat == False:
+                    self.app.Motxila = True
                     self.app.root.after(200, self.app.MenuMotxila())
                 else:
+                    self.canvas.delete("mostrar_equip")
+                    self.canvas.delete("menu_motxila")
                     self.app.MenuCombat.FinalitzarTorn()
                     self.app.root.after(200, self.app.MenuCombat.Lluitar())
    
