@@ -471,6 +471,7 @@ class Menu():
                     self.canvas.delete("mostrar_equip")
                     self.canvas.delete("menu_motxila")
                     self.app.MenuCombat.FinalitzarTorn()
+                    self.app.MenuCombat.ActualitzarBarresEstat()
                     self.app.root.after(200, self.app.MenuCombat.Lluitar())
    
     def mostrar_estat_equip(self):
