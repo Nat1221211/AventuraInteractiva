@@ -384,7 +384,7 @@ class MenuCombat():
                 fill="green", outline="black",
                 width=2, tags=(f"vida_entitats_{ent[1].id}", "vida_actual_entitats", "combat")
             )
-            self.canvas.tag_raise("vida_actual_entitats", "vida_entitats")
+            self.canvas.tag_raise("vida_actual_entitats", "vida_entitats_aliades")
 
             font = tkfont.Font(family="Courier", size=11, weight="bold")
 
