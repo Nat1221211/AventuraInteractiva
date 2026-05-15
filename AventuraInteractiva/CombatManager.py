@@ -268,7 +268,7 @@ class MenuCombat():
                 x + 40 + 95, 
                 y + 100,
                 fill="white", outline="black",
-                width=2, tags=("vida_entitats", "info_enemics", "zona_enemics", "combat")
+                width=2, tags=("vida_entitats_enemigues", "info_enemics", "zona_enemics", "combat")
             )
 
             health = ent[1].StatsCombat["CurHP"] / ent[1].StatsCombat["MaxHP"]
@@ -281,7 +281,7 @@ class MenuCombat():
                 fill="green", outline="black",
                 width=2, tags=(f"hp_enemic_{ent[1].id}", "vida_actual_entitats", "info_enemics", "zona_enemics", "combat")
             )
-            self.canvas.tag_raise("vida_actual_entitats", "vida_entitats")
+            self.canvas.tag_raise("vida_actual_entitats", "vida_entitats_enemigues")
             
             font = tkfont.Font(family="Courier", size=11, weight="bold")
 
@@ -370,7 +370,7 @@ class MenuCombat():
                 self.app.Ancho - 15, 
                 y + 80,
                 fill="white", outline="black",
-                width=2, tags=("vida_entitats", "info_aliats", "zona_aliats", "combat")
+                width=2, tags=("vida_entitats_aliades", "info_aliats", "zona_aliats", "combat")
             )
 
             health = ent[1].StatsCombat["CurHP"] / ent[1].StatsCombat["MaxHP"]
@@ -1376,36 +1376,39 @@ class MenuCombat():
     def ActualitzarBarresEstat(self, entitat = None):
         if entitat != None:
             grup = [entitat]
-            if entitat in self.enemic.values():
-                tag = {
-                "barraHP": "vida_entitats_",
-                "barraMP": "",
-                "textHP": "",
-                "textMP": ""
 
-                }
-
-        else:
-            grup = self.equip.values()
+        if entitat in self.enemic.values():
             tag = {
-                "barraHP": "vida_entitats_",
-                "barraMP": "",
-                "textHP": "textvida_entitats_",
-                "textMP": ""
+            "barraHP": "hp_enemic_",
+            "textHP": "texthp_enemic_",
+            "barraBase": "vida_entitats_enemigues"
+            }
+        elif entitat == None or entitat in self.equip.values():
+            if entitat == None:
+                grup = self.equip.values()
 
-                }
+            tag = {
+            "barraHP": "vida_entitats_",
+            "barraMP": "",
+            "textHP": "textvida_entitats_",
+            "textMP": "",
+            "barraBase": "vida_entitats_aliades"
+
+            }
 
         for pos, ent in enumerate(grup):
             x = self.app.Ancho - 250
 
-            health = ent.StatsCombat["CurHP"] / ent.StatsCombat["MaxHP"]
-            amplada = (self.app.Ancho - 15) - (x + 60)
-            mida = amplada * health
+            coords_barraBase = self.canvas.coords(f"{tag["barraBase"]}")
 
             actual_coords = self.canvas.coords(f"{tag["barraHP"]}{ent.id}")
 
+            health = ent.StatsCombat["CurHP"] / ent.StatsCombat["MaxHP"]
+            amplada = coords_barraBase[2] - coords_barraBase[0]
+            mida = amplada * health
+
             new_coords = actual_coords
-            new_coords[2] = x + 60 + mida
+            new_coords[2] =  coords_barraBase[0] + mida
 
             self.canvas.coords(f"{tag["barraHP"]}{ent.id}", new_coords)
 
@@ -1418,6 +1421,33 @@ class MenuCombat():
             new_coords[0] = self.app.Ancho - 20 - midatext
             self.canvas.itemconfig(f"{tag["textHP"]}{ent.id}", text=texthealth)
             self.canvas.coords(f"{tag["textHP"]}{ent.id}", new_coords)
+
+            if "textMP" in tag.keys():
+                if entitat == None:
+                    x = self.app.Ancho - 250
+                mana = ent.StatsCombat["Mana"] / ent.StatsCombat["MaxMana"]
+                amplada = (self.app.Ancho - 15) - (x + 60)
+                mida = amplada * mana
+                
+                actual_coords = self.canvas.coords(f"mana_entitats_{ent.id}")
+
+                new_coords = actual_coords
+                new_coords[2] = x + 60 + mida
+
+                self.canvas.coords(f"mana_entitats_{ent.id}", new_coords)
+
+                textmana = f"{round(ent.StatsCombat["Mana"])}/{round(ent.StatsCombat["MaxMana"])}"
+
+                actual_coords = self.canvas.coords(f"textmana_entitats_{ent.id}")
+                new_coords = actual_coords
+
+                font = tkfont.Font(family="Courier", size=11, weight="bold")
+                midatext = font.measure(textmana)
+
+                new_coords[0] = self.app.Ancho - 20 - midatext
+                self.canvas.itemconfig(f"textmana_entitats_{ent.id}", text=textmana)
+                self.canvas.coords(f"textmana_entitats_{ent.id}", new_coords)
+
     
     def AplicarDany(self, dany, managastat, atacats, atacant, manacost = 0, danyrestant = "No Aplicat"):
         self.Atacar = False
@@ -1469,53 +1499,7 @@ class MenuCombat():
                 ent.StatsCombat["CurHP"] = round(ent.StatsCombat["CurHP"], 1)
                 danyrestant[ent.id] = round(danyrestant[ent.id], 1)
 
-                if ent in self.enemic.values():
-                    health = ent.StatsCombat["CurHP"] / ent.StatsCombat["MaxHP"]
-                    mida = 95 * health
-
-                    actual_coords = self.canvas.coords(f"hp_enemic_{ent.id}")
-
-                    new_coords = actual_coords
-                    new_coords[2] = 5 + 40 + mida
-
-                    self.canvas.coords(f"hp_enemic_{ent.id}", new_coords)
-
-                    actual_coords = self.canvas.coords(f"texthp_enemic_{ent.id}")
-
-                    new_coords = actual_coords
-                    font = tkfont.Font(family="Courier", size=11, weight="bold")
-
-                    texthealth = f"{round(ent.StatsCombat["CurHP"])}/{round(ent.StatsCombat["MaxHP"])}"
-                    midatext = font.measure(texthealth)
-
-                    new_coords[0] = 45 + 90 - midatext
-
-                    self.canvas.itemconfig(f"texthp_enemic_{ent.id}", text=texthealth)
-                    self.canvas.coords(f"texthp_enemic_{ent.id}", new_coords)
-                
-                elif ent in self.equip.values():
-                    x = self.app.Ancho - 250
-
-                    health = ent.StatsCombat["CurHP"] / ent.StatsCombat["MaxHP"]
-                    amplada = (self.app.Ancho - 15) - (x + 60)
-                    mida = amplada * health
-
-                    actual_coords = self.canvas.coords(f"vida_entitats_{ent.id}")
-
-                    new_coords = actual_coords
-                    new_coords[2] = x + 60 + mida
-
-                    self.canvas.coords(f"vida_entitats_{ent.id}", new_coords)
-
-                    actual_coords = self.canvas.coords(f"textvida_entitats_{ent.id}")
-                    new_coords = actual_coords
-                    font = tkfont.Font(family="Courier", size=11, weight="bold")
-
-                    texthealth = f"{round(ent.StatsCombat["CurHP"])}/{round(ent.StatsCombat["MaxHP"])}"
-                    midatext = font.measure(texthealth)
-                    new_coords[0] = self.app.Ancho - 20 - midatext
-                    self.canvas.itemconfig(f"textvida_entitats_{ent.id}", text=texthealth)
-                    self.canvas.coords(f"textvida_entitats_{ent.id}", new_coords)
+                self.ActualitzarBarresEstat(ent)
             
             if atacant.id in self.equip.keys() and managastat > 0:
 
