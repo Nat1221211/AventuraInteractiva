@@ -1381,7 +1381,8 @@ class MenuCombat():
             tag = {
             "barraHP": "hp_enemic_",
             "textHP": "texthp_enemic_",
-            "barraBase": "vida_entitats_enemigues"
+            "barraBase": "vida_entitats_enemigues",
+            "posBaseXHP": (135)
             }
         elif entitat == None or entitat in self.equip.values():
             if entitat == None:
@@ -1392,8 +1393,8 @@ class MenuCombat():
             "barraMP": "",
             "textHP": "textvida_entitats_",
             "textMP": "",
-            "barraBase": "vida_entitats_aliades"
-
+            "barraBase": "vida_entitats_aliades",
+            "posBaseXHP": (self.app.Ancho - 20)
             }
 
         for pos, ent in enumerate(grup):
@@ -1418,7 +1419,7 @@ class MenuCombat():
 
             texthealth = f"{round(ent.StatsCombat["CurHP"])}/{round(ent.StatsCombat["MaxHP"])}"
             midatext = font.measure(texthealth)
-            new_coords[0] = self.app.Ancho - 20 - midatext
+            new_coords[0] = tag["posBaseXHP"] - midatext
             self.canvas.itemconfig(f"{tag["textHP"]}{ent.id}", text=texthealth)
             self.canvas.coords(f"{tag["textHP"]}{ent.id}", new_coords)
 
