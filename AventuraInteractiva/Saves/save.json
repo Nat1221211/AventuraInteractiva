@@ -1,7 +1,7 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "greenwoods",
-    "Or": 2110,
+    "Ubicacio": "dawn_village",
+    "Or": 1900,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {},
     "Missions_Finalitzades": [],
@@ -15,14 +15,10 @@
     },
     "Llocs_Trobats": [
         "dawn_village",
-        "south_forest",
-        "greenwoods",
-        "knightshire"
+        "south_forest"
     ],
     "Llocs_Visitats": [
-        "dawn_village",
-        "south_forest",
-        "greenwoods"
+        "dawn_village"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
@@ -30,51 +26,25 @@
         {
             "id": "Player",
             "Nom": "Aishia",
-            "Base": "archer",
-            "Lv": 6,
+            "Base": "priest",
+            "Lv": 30,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 81.53,
+            "XP": 0,
             "StatsCombat": {
-                "MaxHP": 24.4,
-                "CurHP": 19.0,
-                "MaxMana": 26.799999999999997,
-                "Mana": 26.799999999999997,
-                "ATK": 26.799999999999997,
-                "INT": 22.0,
-                "DEF": 26.799999999999997,
-                "SPD": 24.4
-            }
-        },
-        {
-            "id": "ally_1",
-            "Nom": "Erdrick",
-            "Base": "warrior",
-            "Lv": 10,
-            "Lv_Limit": 100,
-            "Moves": [],
-            "Afected": [],
-            "XP": 54.96,
-            "StatsCombat": {
-                "MaxHP": 42.0,
-                "CurHP": 20.0,
-                "MaxMana": 30.0,
-                "Mana": 30.0,
-                "ATK": 38.0,
-                "INT": 18.0,
-                "DEF": 36.0,
-                "SPD": 26.0
+                "MaxHP": 82.0,
+                "CurHP": 82.0,
+                "MaxMana": 106.0,
+                "Mana": 106.0,
+                "ATK": 58.0,
+                "INT": 82.0,
+                "DEF": 82.0,
+                "SPD": 82.0
             }
         }
     ],
-    "Inventari": [
-        {
-            "id": "high_potion",
-            "Amount": 1,
-            "Clase": "Combat"
-        }
-    ],
+    "Inventari": [],
     "Titols": [],
     "Estadistiques": {},
     "Increment_Stats": {

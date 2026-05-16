@@ -7,4 +7,7 @@ fright;Terror;Causa una sensació de terror en l'objectiu, impedint actuar amb n
 paralisis;Paralisis;Causa una descarrega electrica al excedir-se...;True;40;0;0;SPD: 0.3;1
 poison;Veri;Causa una quantitat de dany cada vegada que s'actua...;False;0;0;6;;5
 dream_world;Mon dels Somnis;Entres en el domini dels somnis, aqui no saps que et depara el desti...;False;0;4;0; ATK: 0.25| DEF: 0.25|  INT: 0.25| SPD: 0.25;2
-buff_int;Inteligencia; Augmenta la Int; False;0;3;0;INT: 1.5;1
+buff_int;Inteligencia; Augmenta la Inteligencia; False;0;3;0;INT: 1.5;1
+buff_atk;Potencia; Augmenta el Atac; False;0;3;0;ATK: 1.5;1
+buff_spd;Agilitat; Augmenta la Velocitat; False;0;3;0;SPD: 1.5;1
+buff_def;Defensa; Augmenta la Defensa; False;0;3;0;DEF: 1.5;1

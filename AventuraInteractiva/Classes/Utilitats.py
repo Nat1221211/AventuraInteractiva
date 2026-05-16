@@ -608,31 +608,40 @@ class Menu():
         # Mostrem efectes d'estat
         self.opcions[self.index].Objecte.afected
         self.canvas.create_text(
-            30, y + 50,
+            30, self.app.Alto - 300,
             text="Efectes d'estat",
             fill="black",
             font=("Courier", 16, "bold"),
             anchor="nw", tags=("ent_info", "mostrar_estat")
         )
 
-        y = y+70
-        for i in self.opcions[self.index].Objecte.afected:
+        y = self.app.Alto - 270
+        x = 30
+        for pos, i in enumerate(self.opcions[self.index].Objecte.afected):
 
-            color = "green"
+            color = "cyan"
             if i.Debuff == True:
                 color = "red"
 
+            textShown = f"{i.Name}\nTurns: {i.Turns}"
+
             self.canvas.create_text(
-            30, y,
-            text=i.Name,
-            fill=color,
-            font=("Courier", 16, "bold"),
-            anchor="nw", tags=("ent_info", "mostrar_estat")
-        )
+                x, y,
+                text=textShown,
+                fill=color,
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("ent_info", "mostrar_estat")
+            )
+            if (pos + 1) // 3 == 1:
+                x = 30
+                y += 50
+            else:
+                x += 200
+
 
         # Mostrem la descripcio
         self.canvas.create_text(
-            30, self.app.Alto - 150,
+            30, self.app.Alto - 100,
             width=self.app.Ancho - 265,
             text=self.opcions[self.index].Objecte.base.EntityDescription, fill="black",
             font=("Courier", 16, "bold"),

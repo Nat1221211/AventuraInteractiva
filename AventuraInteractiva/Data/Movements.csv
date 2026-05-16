@@ -15,7 +15,7 @@ sacred_light;Llum Sagrada;Descripció;50;100;5;TRUE;;;;;FALSE;FALSE;FALSE;0
 lightning_slash;Tall Llampeg;Descripció;70;100;10;FALSE;;;;;FALSE;FALSE;FALSE;0
 war_cry;Crit de Guerra;Descripció;5;100;10;FALSE;;;;;TRUE;FALSE;FALSE;0
 block;Bloqueig;Descripció;0;100;5;FALSE;;;;;FALSE;FALSE;TRUE;40
-sanctuary;Santuari;Descripció;150;100;90;TRUE;;;;;TRUE;TRUE;FALSE;0
+sanctuary;Santuari;Descripció;150;100;90;TRUE;buff_int| buff_atk| buff_spd| buff_def;;100| 100| 100| 100;;TRUE;TRUE;FALSE;0
 heal;Cura;Descripció;25;100;10;TRUE;;;;;FALSE;TRUE;FALSE;0
 bite;Mossegada;Descripció;35;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0
 tail_flick;Cop de Cua;Descripció;15;100;0;FALSE;;;;;FALSE;FALSE;FALSE;0

@@ -348,7 +348,7 @@ class Entity():
                         ent.ProtectedBy = (self, move.AutoDamaging)
                         
                 for i in move.Buff.items():
-                    ent.ApplyStatusEffects(i[0], i[1])
+                    ent.ApplyStatusEffects(MenuCombat, i[0], i[1])
 
         MenuCombat.AplicarDany(damage, move.Cost, atacats, self)
 

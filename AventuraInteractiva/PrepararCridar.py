@@ -119,7 +119,7 @@ def CallMovement(effects):
     moves = {}
     for i in movements:
         Buff = {}
-        if len(i["Buff"]) > 1 and i["Buff"] == list:
+        if isinstance(i["Buff"], list) and len(i["Buff"]) > 1:
             for j in range(len(i["Buff"])):
                 if i["Buff"][j] != "" and i["ProbEfecteBuff"][j] != "":
                     Buff[effects[i["Buff"][j]]]=int(i["ProbEfecteBuff"][j])
