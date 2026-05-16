@@ -1505,9 +1505,9 @@ class MenuCombat():
             
             if atacant.id in self.equip.keys() and managastat > 0:
 
-                if manacost >= managastat / 20:
-                    atacant.StatsCombat["Mana"] -= (managastat / 20)
-                    manacost -= (managastat / 20)
+                if manacost >= (atacant.StatsCombat["MaxMana"] / 100):
+                    atacant.StatsCombat["Mana"] -= (atacant.StatsCombat["MaxMana"] / 100)
+                    manacost -= (atacant.StatsCombat["MaxMana"] / 100)
                 else:
                     atacant.StatsCombat["Mana"] -= manacost
                     manacost = 0

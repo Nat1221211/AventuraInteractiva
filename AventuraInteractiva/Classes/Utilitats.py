@@ -593,11 +593,11 @@ class Menu():
         for pos, stat in enumerate(self.opcions[self.index].Objecte.StatsCombat.items()):
             if stat[0] in ["MaxHP", "MaxMana"]:
                 if stat[0] == "MaxHP":
-                    text_mostrat = f"HP: {self.opcions[self.index].Objecte.StatsCombat["CurHP"]} / {stat[1]}"
+                    text_mostrat = f"HP: {round(self.opcions[self.index].Objecte.StatsCombat["CurHP"], 1)} / {round(stat[1], 1)}"
                 else:
-                    text_mostrat = f"Mana: {self.opcions[self.index].Objecte.StatsCombat["Mana"]} / {stat[1]}"
+                    text_mostrat = f"Mana: {round(self.opcions[self.index].Objecte.StatsCombat["Mana"], 1)} / {round(stat[1], 1)}"
             else:
-                text_mostrat = f"{stat[0]}: {stat[1]}"
+                text_mostrat = f"{stat[0]}: {round(stat[1], 1)}"
 
             if stat[0] in ["CurHP", "Mana"]:
                 continue
@@ -643,6 +643,15 @@ class Menu():
                 y += 50
             else:
                 x += 200
+        
+        if len(self.opcions[self.index].Objecte.afected) < 1:
+            self.canvas.create_text(
+                x, y,
+                text="Ningun",
+                fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("ent_info", "mostrar_estat")
+            )
 
 
         # Mostrem la descripcio
