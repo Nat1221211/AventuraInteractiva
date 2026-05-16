@@ -1075,11 +1075,12 @@ class MenuCombat():
                         llistaProb.append(prob)
 
                 target = random.choices(llistaObjectius, weights=llistaProb)
-
-
-                self.AtacantEnemic.atacar(self, target[0], accio[0])
+                
         else:
-            self.AtacantEnemic.atacar(self, "", accio[0])
+            target = ["All"]
+
+        self.app.Menu.CrearDialeg(f"{self.AtacantEnemic.nom} ha utilitzat {accio[0].Name}!")
+        self.AtacantEnemic.atacar(self, target[0], accio[0])
 
     def DescartarDerrotats(self):
         comprobat = False
@@ -1564,7 +1565,6 @@ class MenuCombat():
         else:
             self.AtacantEnemic.Priority = 0
             self.AccioEnemic = False
-            self.Lluitar()
                        
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...

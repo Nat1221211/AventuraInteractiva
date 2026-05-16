@@ -177,22 +177,28 @@ class Menu():
     def PulsarEnter(self, tecla = None):  # Funcio per a determinar que ocurreix si estem en un menu i es presiona enter...
         
         if self.Escribint == True:
-            self.app.root.after_cancel(self.after_id)
-            self.Escribint = False
-            self.canvas.delete("text_animat")
-
-            y = 450
+            saltar = True
             if self.app.Combat == True:
-                y = 470
+                if self.app.MenuCombat.AccioAliat == True or self.app.MenuCombat.AccioAliat == True:
+                    saltar = False
+            
+            if saltar == True:
+                self.app.root.after_cancel(self.after_id)
+                self.Escribint = False
+                self.canvas.delete("text_animat")
 
-            self.canvas.create_text(
-                30, y,
-                text=self.textdialeg, fill="black",
-                width=self.app.Ancho - 60,
-                font=("Courier", 16, "bold"),
-                anchor="nw", tags=("dialeg", "text_animat")
-            )
-            self.ComencarParpadeig()
+                y = 450
+                if self.app.Combat == True:
+                    y = 470
+
+                self.canvas.create_text(
+                    30, y,
+                    text=self.textdialeg, fill="black",
+                    width=self.app.Ancho - 60,
+                    font=("Courier", 16, "bold"),
+                    anchor="nw", tags=("dialeg", "text_animat")
+                )
+                self.ComencarParpadeig()
 
         elif self.parpadeig_id != None:
             self.app.root.after_cancel(self.parpadeig_id)
