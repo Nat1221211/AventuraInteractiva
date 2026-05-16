@@ -1465,11 +1465,11 @@ class MenuCombat():
                 self.UpdatingHP = True
 
                 if dany[ent.id] > 0:
-                    if danyrestant[ent.id] > (dany[ent.id] / 20) and ent.StatsCombat["CurHP"] > 0:
-                        ent.StatsCombat["CurHP"] -= (dany[ent.id] / 20)
-                        danyrestant[ent.id] -= (dany[ent.id] / 20)
+                    if danyrestant[ent.id] > (ent.StatsCombat["MaxHP"] / 100) and ent.StatsCombat["CurHP"] > 0:
+                        ent.StatsCombat["CurHP"] -= (ent.StatsCombat["MaxHP"] / 100)
+                        danyrestant[ent.id] -= (ent.StatsCombat["MaxHP"] / 100)
                     
-                    elif danyrestant[ent.id] <= dany[ent.id] / 20 and ent.StatsCombat["CurHP"] > 0:
+                    elif danyrestant[ent.id] <= (ent.StatsCombat["MaxHP"] / 100) and ent.StatsCombat["CurHP"] > 0:
                         ent.StatsCombat["CurHP"] -= danyrestant[ent.id]
                         if ent.id in dany:
                             dany.pop(ent.id)
@@ -1482,11 +1482,11 @@ class MenuCombat():
                 elif dany[ent.id] < 0:
                     danyrestant[ent.id] = abs(danyrestant[ent.id])
 
-                    if danyrestant[ent.id] > (abs(dany[ent.id]) / 20):
-                        ent.StatsCombat["CurHP"] += (abs(dany[ent.id]) / 20)
-                        danyrestant[ent.id] -= (abs(dany[ent.id]) / 20)
+                    if danyrestant[ent.id] > (ent.StatsCombat["MaxHP"] / 100):
+                        ent.StatsCombat["CurHP"] += (ent.StatsCombat["MaxHP"] / 100)
+                        danyrestant[ent.id] -= (ent.StatsCombat["MaxHP"] / 100)
                     
-                    elif danyrestant[ent.id] <= (abs(dany[ent.id]) / 20):
+                    elif danyrestant[ent.id] <= (ent.StatsCombat["MaxHP"] / 100):
                         ent.StatsCombat["CurHP"] += abs(danyrestant[ent.id])
                         if ent.id in dany:
                             dany.pop(ent.id)
