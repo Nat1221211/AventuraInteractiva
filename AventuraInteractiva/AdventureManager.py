@@ -20,10 +20,9 @@ def Mapa(App):
 def CanviarZona(App, seleccio):
     App.jugador.Ubicacio = App.Zones[seleccio.id]    # Canviem la zona i la retornem
     App.jugador.ActualitzarUltimPobleVisitat()
-    App.event.CridarEvent("Lloc Visitat", App.jugador.Ubicacio, App)
-    
     UIManager.MostrarMenuPrincipal(App)
-    
+    App.event.CridarEvent("Lloc Visitat", App.jugador.Ubicacio.id, App)
+
 
 def OcurrenciaMisio(misio, app):
     if type(misio) == Missions.KillMission:        
@@ -69,7 +68,7 @@ def Explorar(app):
     elif prob > 20 and prob <= 70:  # Res / Missions / Ocurrencies
         llista = []
         for id in app.jugador.MisionsAcceptades:
-            for i in app.missions.items():
+            for i in app.Missions.items():
                 if id in i[1]:
                     if i[1][id].Objective["place"] == app.jugador.Ubicacio.id:
                         if i[0] == "Kill":

@@ -1,11 +1,9 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "dawn_village",
+    "Ubicacio": "greenwoods",
     "Or": 1900,
     "Ultim_Visitat": "dawn_village",
-    "Missions_Acceptades": {},
-    "Missions_Finalitzades": [],
-    "Missions_Disponibles": {
+    "Missions_Acceptades": {
         "first_adventure": {
             "id": "first_adventure",
             "type": "Place",
@@ -13,12 +11,18 @@
             "Status": "Disponible"
         }
     },
+    "Missions_Finalitzades": [],
+    "Missions_Disponibles": {},
     "Llocs_Trobats": [
         "dawn_village",
-        "south_forest"
+        "south_forest",
+        "greenwoods",
+        "knightshire"
     ],
     "Llocs_Visitats": [
-        "dawn_village"
+        "dawn_village",
+        "south_forest",
+        "greenwoods"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
@@ -44,7 +48,13 @@
             }
         }
     ],
-    "Inventari": [],
+    "Inventari": [
+        {
+            "id": "complete_potion",
+            "Amount": 1,
+            "Clase": "Combat"
+        }
+    ],
     "Titols": [],
     "Estadistiques": {},
     "Increment_Stats": {
