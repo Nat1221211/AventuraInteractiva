@@ -1075,6 +1075,29 @@ class MenuCombat():
                         llistaProb.append(prob)
 
                 target = random.choices(llistaObjectius, weights=llistaProb)
+            else:
+                llistaObjectius = []
+                llistaProb = []
+
+                atacCategoria = "ATK"
+                if accio[0].Type == True:
+                    atacCategoria = "INT"
+
+                for id, ent in self.equip.items():
+                    if ent.StatsCombat["CurHP"] > 0:
+                        llistaObjectius.append(id)
+                        if ent.StatsCombat["CurHP"] < ent.StatsCombat["MaxHP"] / 10:
+                            prob = 70
+                        elif ent.StatsCombat["CurHP"] < ent.StatsCombat["MaxHP"] / 4:
+                            prob = 45
+                        elif ent.StatsCombat["CurHP"] < ent.StatsCombat["MaxHP"] / 2:
+                            prob = 30
+                        else:
+                            prob = 15
+                        
+                        llistaProb.append(prob)
+
+                target = random.choices(llistaObjectius, weights=llistaProb)
                 
         else:
             target = ["All"]
@@ -1144,6 +1167,9 @@ class MenuCombat():
         for i in self.equip.values():
             i.afected = []
             i.DefinirCombatStats()
+        for id, ent in self.EnemicsDerrotats.items():
+            self.app.event.CridarEvent("Derrotar Enemic", ent, self.app)
+
 
     def ComprobarEfecteEstat(self, aliat = True):
         if aliat == True:
