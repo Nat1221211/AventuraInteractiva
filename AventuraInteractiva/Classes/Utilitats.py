@@ -1197,6 +1197,17 @@ class Menu():
                                 width=390,
                                 anchor="nw", tags=("descripcio_objecte", "informacio_missions", "menu_motxila")
                             )
+
+                            textRecompenses = missio.Objecte.MostrarRecompenses(self.app)
+                            
+                            self.canvas.create_text(
+                                self.app.Ancho - 415, 145,
+                                text=textRecompenses, 
+                                fill="black",
+                                font=("Courier", 16, "bold"),
+                                width=390,
+                                anchor="nw", tags=("descripcio_objecte", "informacio_missions", "menu_motxila")
+                            )
                             
                         self.canvas.create_text(
                             200, self.app.Alto - 165,

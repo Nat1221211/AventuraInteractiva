@@ -31,6 +31,19 @@ class Mission():
         self.Description = description
         self.Rewards = rewards
         self.Categoria = cat
+    
+    def MostrarRecompenses(self, app):
+        text = f"Recompenses: "
+        if "XP" in self.Rewards.keys():
+            text += f"\n  - XP: {self.Rewards["XP"]}"
+        if "Gold" in self.Rewards.keys():
+            text += f"\n  - Or: {self.Rewards["Gold"]}"
+        if "Objects" in self.Rewards.keys():
+            text += f"\n  - Objects: "
+            for object in self.Rewards["Objects"]:
+                text += f"\n    + {app.Objects[object["type"]][object["id"]].ObjectName} x{object["Amount"]}"
+        
+        return text
 
     def ShowRequisites(self):
         if len(self.Requisite) > 0:
@@ -156,6 +169,7 @@ class PlaceMission(Mission):
             text += "0 / 1"
         
         return text
+
 
 class KillMission(Mission):
     
