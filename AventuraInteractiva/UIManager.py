@@ -27,7 +27,7 @@ Menus = {
             Utilitats.OpcioMenu("hostal", "Hostal", True, "Anar al hostal a descansar (Recuperar Salut i altres...)"),
             Utilitats.OpcioMenu("botiga", "Botiga", False, "Comprar Objectes."),
             Utilitats.OpcioMenu("estat", "Estat", True, "Veure el estat dels personatges del jugador..."),
-            Utilitats.OpcioMenu("missions", "Missions", False, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
+            Utilitats.OpcioMenu("missions", "Missions", True, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
             Utilitats.OpcioMenu("exits", "Éxits", True, "Veure els exits que pots i has adquirit..."),
             Utilitats.OpcioMenu("guardar", "Guardar", True, "Guardar la Partida."),
             Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del menu.")
@@ -43,7 +43,7 @@ Menus = {
             Utilitats.OpcioMenu("explorar","Explorar", True, "Anar a explorar la zona, pots trobar or, enemics i involucrar-te en missions..."),
             Utilitats.OpcioMenu("lluitar","Lluitar", True, "Entrar forçosament en combat amb un dels enemcis de la zona..."),
             Utilitats.OpcioMenu("estat","Estat", True, "Veure el estat dels personatges del jugador..."),
-            Utilitats.OpcioMenu("missions", "Missions", False, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
+            Utilitats.OpcioMenu("missions", "Missions", True, "Veure les missions disponibles, aceptar-les i reclamar-les..."),
             Utilitats.OpcioMenu("exits", "Éxits", True, "Veure els exits que pots i has adquirit..."),
             Utilitats.OpcioMenu("guardar", "Guardar", True, "Guardar la Partida."),
             Utilitats.OpcioMenu("sortir", "Sortir", True, "Sortir del menu.")
@@ -133,7 +133,7 @@ def CridarAccioMenuPrincipal(App, accio):
         "hostal": lambda: TUtManager.CridarPosada(App),
         #"botiga": lambda: TUtManager.Botiga(App.jugador, App.Objects),
         "estat": lambda: VeureEstatus(App),
-        # "missions": lambda: MenuMisions(App)
+        "missions": lambda: App.MostrarMenuMissions(),
         "lluitar": lambda: CombatManager.StartCombat(App, App.canvas, "menu_combat"),
         "guardar": lambda: App.GuardarPartida(),
         "exits": lambda: MostrarExits(App),
@@ -235,16 +235,29 @@ def CrearMenuProductes(botiga, NomMenu, opcionsvisibles = 5):
         }
     )
 
-def CrearMenuMissions(llistamissions, NomMenu, filtre, estat = None, opcionsvisibles = 6):
-    opcions = []
-    for i in llistamissions.items():
-        for j in i[1].items():
-            if j[0] in filtre:
-                if estat == None or j[1].Status == estat:
-                    if estat == "Pendent Reclamar":
-                        opcions.append(Utilitats.OpcioMenu({"id": j[0], "tipus": i[0]}, j[1].Name, True, j[1].Description))
-                    else:
-                        opcions.append(Utilitats.OpcioMenu(j[0], j[1].Name, True, j[1].Description))
+def CrearMenuMissions(app, llistamissions, NomMenu):
+    opcions = {}
+
+    if "Acceptades" not in opcions.keys():
+                opcions["Acceptades"]=[]
+    
+    if "Pendent Acceptar" not in opcions.keys():
+                opcions["Pendent Acceptar"]=[]
+    
+    if "Completades" not in opcions.keys():
+                opcions["Completades"]=[]
+
+    for id_tipus, missions in llistamissions.items():
+        for id, missio in missions.items():
+            if missio.id in app.jugador.MisionsAcceptades:
+                tipus = "Acceptades"
+            elif missio.id in app.jugador.MissionsDisponibles:
+                tipus = "Pendent Acceptar"
+            elif missio.id in app.jugador.MissionsFinalitzades:
+                tipus = "Completades"
+        
+            opcio = Utilitats.OpcioMenu(missio.id, missio.Name, True, "", None, missio)
+            opcions[tipus].append(opcio)
                 
     Menus.update({NomMenu: {
                 "id": NomMenu,

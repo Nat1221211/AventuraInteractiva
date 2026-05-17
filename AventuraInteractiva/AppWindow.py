@@ -70,6 +70,7 @@ class App():
         self.UltimObjecteSeleccionat = None
         self.RecuperantVida = False
         self.MenuExits = False
+        self.MenuMissions = False
 
         # Midas pantalla
         self.Alto = 600 # Declarem mides en variables per a utilitzarles facilment.
@@ -535,3 +536,9 @@ class App():
         UIManager.CrearMenu(self.jugador.objectes.items(), "Motxila", "Objectes")
         self.CanviarMenu(UIManager.Menus["Motxila"])
         self.Menu.DibuixarMenuMotxila()
+    
+    def MostrarMenuMissions(self):
+        self.MenuMissions = True
+        UIManager.CrearMenuMissions(self, self.Missions, "MenuMissions")
+        self.CanviarMenu(UIManager.Menus["MenuMissions"])
+        self.Menu.DibuixarMenuMissions()

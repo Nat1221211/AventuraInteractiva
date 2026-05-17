@@ -1091,6 +1091,127 @@ class Menu():
             midatext = font.measure(opc)
             x+=midatext + 30
 
+    def DibuixarMenuMissions(self):
+        self.IndexColumna = 0
+        
+        # Barra Superior on es mostraran els menus disponibles dins de la motxila
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 650, 60,
+            fill="white", outline="black",
+            width=5, tags=("zona_nommenu", "menu_missions")
+        )
+
+        self.canvas.create_rectangle(
+            self.app.Ancho - 645, 5,
+            self.app.Ancho - 5, 60,
+            fill="white", outline="black",
+            width=5, tags=("zona_submenus", "menu_missions")
+        )
+
+        self.canvas.create_rectangle(
+            5, 65,
+            self.app.Ancho - 450,
+            self.app.Alto - 190,
+            fill="white", outline="black",
+            width=5, tags=("zona_missions", "menu_missions")
+        )
+
+        self.canvas.create_rectangle(
+            self.app.Ancho - 445, 65,
+            self.app.Ancho - 5,
+            self.app.Alto - 190,
+            fill="white", outline="black",
+            width=5, tags=("zona_informacio", "menu_missions")
+        )
+
+        self.canvas.create_rectangle(
+            5, self.app.Alto - 185,
+            self.app.Ancho - 5,
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=5, tags=("zona_descripcio", "menu_missions")
+        )
+
+        self.OmplirInformacioMissions()
+    
+    def OmplirInformacioMissions(self):
+        self.canvas.delete("informacio_missions")
+
+        x = 280
+        for i, opc in enumerate(self.opcions.items()):
+            color = "black"
+            if i == self.IndexColumna:
+                color = "blue"
+                self.canvas.create_text(
+                    30, 30,
+                    text="Missions " + str(opc[0]), fill="black",
+                    font=("Courier", 16, "bold"),
+                    anchor="w", tags=("titol_menu", "informacio_missions", "menu_motxila")
+                )
+
+                self.llistamissions = opc[1]
+
+                if self.index > len(self.llistamissions) - 1:
+                    self.index = len(self.llistamissions) -1
+                elif len(self.llistamissions) == 0:
+                    self.index = 0
+                
+                qty_mostrar = 8
+                if self.index >= qty_mostrar:
+                    limit_inf = self.index - (qty_mostrar)
+                    limit_sup = self.index + 1
+                else:
+                    limit_sup = qty_mostrar + 1
+                    limit_inf = 0
+
+                y_obj = 95
+                
+                for j, missio in enumerate(self.llistamissions[limit_inf:limit_sup]):
+                    color_obj = "black"
+                    if self.index == self.llistamissions.index(missio):
+                        color_obj = "blue"
+
+                        descript = "Selecciona per a sortir de la motxila..."
+                        if missio.id != "sortir":
+                            descript = missio.Objecte.Description
+                            
+                        self.canvas.create_text(
+                            200, self.app.Alto - 165,
+                            text=descript, 
+                            fill="black",
+                            font=("Courier", 16, "bold"),
+                            width=self.app.Ancho - 35,
+                            anchor="nw", tags=("descripcio_objecte", "informacio_missions", "menu_motxila")
+                        )
+
+                    if missio.id != "sortir":
+                        text = missio.Objecte.Name
+                    else:
+                        text = missio.Nom
+
+                    self.canvas.create_text(
+                        30, y_obj,
+                        text=text, fill=color_obj,
+                        font=("Courier", 16, "bold"),
+                        anchor="nw", tags=("objecte_inventari", "informacio_missions", "menu_motxila")
+                    )
+                    
+                    y_obj += 30                
+
+            self.canvas.create_text(
+                x, 30,
+                text=opc[0], fill=color,
+                font=("Courier", 16, "bold"),
+                anchor="w", tags=("titol_menu", "informacio_missions", "menu_motxila")
+            )
+
+            font = tkfont.Font(family="Courier", size=16, weight="bold")
+
+            midatext = font.measure(opc[0])
+            x+=midatext + 30
+    
+
 class OpcioMenu():
     def __init__(self,iden, nom, habilitat, descripcio, imatge = None, objecte = None, condicio_habilitat = False):
         self.id = iden
