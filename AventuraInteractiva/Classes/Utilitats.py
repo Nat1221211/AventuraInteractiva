@@ -725,6 +725,17 @@ class Menu():
             elif direccio == "d":
                 self.IndexColumna = (self.IndexColumna + 1) % len(self.opcions.keys())
             self.OmplirInformacioMotxila()
+        
+        elif self.app.MenuMissions == True:
+            if direccio == "w":
+                self.index = (self.index - 1) % len(self.llistamissions)
+            elif direccio == "s":
+                self.index = (self.index + 1) % len(self.llistamissions)
+            elif direccio == "a":
+                self.IndexColumna = (self.IndexColumna - 1) % len(self.opcions.keys())
+            elif direccio == "d":
+                self.IndexColumna = (self.IndexColumna + 1) % len(self.opcions.keys())
+            self.OmplirInformacioMissions()
 
         elif self.app.MenuExits == True:
             if direccio == "w":
@@ -961,7 +972,7 @@ class Menu():
                             text=descript, 
                             fill="black",
                             font=("Courier", 16, "bold"),
-                            width=self.app.Ancho - 35,
+                            width=self.app.Ancho - 235,
                             anchor="nw", tags=("descripcio_objecte", "informacio_motxila", "menu_motxila")
                         )
 
@@ -1060,7 +1071,7 @@ class Menu():
                             200, self.app.Alto - 165,
                             text=descript, 
                             fill="black",
-                            width=self.app.Ancho - 35,
+                            width=self.app.Ancho - 235,
                             font=("Courier", 16, "bold"),
                             anchor="nw", tags=("descripcio_exit", "informacio_exits", "menu_exits")
                         )
@@ -1097,13 +1108,13 @@ class Menu():
         # Barra Superior on es mostraran els menus disponibles dins de la motxila
         self.canvas.create_rectangle(
             5, 5,
-            self.app.Ancho - 650, 60,
+            self.app.Ancho - 580, 60,
             fill="white", outline="black",
             width=5, tags=("zona_nommenu", "menu_missions")
         )
 
         self.canvas.create_rectangle(
-            self.app.Ancho - 645, 5,
+            self.app.Ancho - 575, 5,
             self.app.Ancho - 5, 60,
             fill="white", outline="black",
             width=5, tags=("zona_submenus", "menu_missions")
@@ -1138,7 +1149,7 @@ class Menu():
     def OmplirInformacioMissions(self):
         self.canvas.delete("informacio_missions")
 
-        x = 280
+        x = 340
         for i, opc in enumerate(self.opcions.items()):
             color = "black"
             if i == self.IndexColumna:
@@ -1181,7 +1192,7 @@ class Menu():
                             text=descript, 
                             fill="black",
                             font=("Courier", 16, "bold"),
-                            width=self.app.Ancho - 35,
+                            width=self.app.Ancho - 235,
                             anchor="nw", tags=("descripcio_objecte", "informacio_missions", "menu_motxila")
                         )
 

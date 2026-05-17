@@ -102,7 +102,7 @@ class App():
         if self.Combat == True:
             self.ConfirmarSeleccioCombat(event)
         else:
-            if self.Menu.id not in ["Motxila"]:
+            if self.Menu.id not in ["Motxila", "MenuMissions"]:
                 seleccionat = self.Menu.opcions[self.Menu.index]
         
             if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
@@ -117,6 +117,15 @@ class App():
                 
                 else:
                     self.Motxila = False
+                    UIManager.MostrarMenuPrincipal(self)
+            
+            elif self.Menu.id == "MenuMissions":
+                if self.Menu.llistamissions[self.Menu.index].id != "sortir":
+                    seleccionat = self.Menu.llistamissions[self.Menu.index].Objecte
+                    print(seleccionat)
+                
+                else:
+                    self.MenuMissions = False
                     UIManager.MostrarMenuPrincipal(self)
                 
             elif self.Menu.id == "Confirmacio":
@@ -455,6 +464,16 @@ class App():
             if tecla.keysym == "Return": self.ConfirmarSeleccio()
             if tecla.keysym == "BackSpace":
                 self.Motxila = False
+                UIManager.MostrarMenuPrincipal(self)
+        
+        elif self.MenuMissions == True:
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+            if tecla.keysym == "a": self.Menu.Moviment("a")
+            if tecla.keysym == "d": self.Menu.Moviment("d")
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace":
+                self.MenuMissions = False
                 UIManager.MostrarMenuPrincipal(self)
         
         else:

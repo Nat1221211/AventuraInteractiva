@@ -241,8 +241,8 @@ def CrearMenuMissions(app, llistamissions, NomMenu):
     if "Acceptades" not in opcions.keys():
                 opcions["Acceptades"]=[]
     
-    if "Pendent Acceptar" not in opcions.keys():
-                opcions["Pendent Acceptar"]=[]
+    if "Per Acceptar" not in opcions.keys():
+                opcions["Per Acceptar"]=[]
     
     if "Completades" not in opcions.keys():
                 opcions["Completades"]=[]
@@ -252,12 +252,20 @@ def CrearMenuMissions(app, llistamissions, NomMenu):
             if missio.id in app.jugador.MisionsAcceptades:
                 tipus = "Acceptades"
             elif missio.id in app.jugador.MissionsDisponibles:
-                tipus = "Pendent Acceptar"
+                tipus = "Per Acceptar"
             elif missio.id in app.jugador.MissionsFinalitzades:
                 tipus = "Completades"
-        
-            opcio = Utilitats.OpcioMenu(missio.id, missio.Name, True, "", None, missio)
-            opcions[tipus].append(opcio)
+            else:
+                tipus = None
+            
+            if tipus != None:
+                opcio = Utilitats.OpcioMenu(missio.id, missio.Name, True, "", None, missio)
+                opcions[tipus].append(opcio)
+    
+    for tipus, llista in opcions.items():
+        opcions[tipus].append(
+            Utilitats.OpcioMenu("sortir", "Sortir", True, "")
+        )
                 
     Menus.update({NomMenu: {
                 "id": NomMenu,
