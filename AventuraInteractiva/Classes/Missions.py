@@ -80,7 +80,7 @@ class Mission():
             self.Status = "Completada"
             jugador.MissionsFinalitzades.append(self.id)
             jugador.MisionsAcceptades.remove(self.id)
-
+    
 class FindMission(Mission):
     
     Objective = {}
@@ -94,7 +94,19 @@ class FindMission(Mission):
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
-        
+    
+    def TextProgres(self):
+
+        text = f"Visitat {self.Objective["place"]}: "
+
+        if self.Status == "Pendent Reclamar":
+            text += "1 / 1"
+        else:
+            text += "0 / 1"
+
+        return text
+
+
 class ObjectMission(Mission):
     
     Objective = {}
@@ -108,6 +120,17 @@ class ObjectMission(Mission):
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
+    
+    def TextProgres(self):
+
+        text = f"Trobar en/la {self.Objective["place"]}: "
+
+        if self.Status == "Pendent Reclamar":
+            text += "1 / 1"
+        else:
+            text += "0 / 1"
+
+        return text
   
 class PlaceMission(Mission):
     
@@ -122,6 +145,17 @@ class PlaceMission(Mission):
         self.Rewards = rewards
         self.Objective = objective
         self.Requisite = requisite
+    
+    def TextProgres(self, app):
+
+        text = f"Trobar {app.Zones[self.Objective["place"]].NameZone}: "
+
+        if self.Status == "Pendent Reclamar":
+            text += "1 / 1"
+        else:
+            text += "0 / 1"
+        
+        return text
 
 class KillMission(Mission):
     
@@ -162,5 +196,16 @@ class KillMission(Mission):
         else:
             if enemy == self.Enemic:
                 self.Status = "Rewards Unclaimed"
+        
+    def TextProgres(self, app):
 
+        if self.Generic == True:
+            nom_entitat = app.Enemies[self.Objective["enemy"][0]].EntityName
+        else:
+            nom_entitat = app.Enemies[self.Objective["enemy"][0]["name"]]
 
+        text = f"Derrotar {nom_entitat}: "
+
+        text += f"{self.Count} / {self.Objectiu["Amount"]}"
+
+        return text

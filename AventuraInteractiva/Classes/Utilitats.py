@@ -1186,15 +1186,28 @@ class Menu():
                         descript = "Selecciona per a sortir de la motxila..."
                         if missio.id != "sortir":
                             descript = missio.Objecte.Description
+
+                            textProgres = missio.Objecte.TextProgres(self.app)
+
+                            self.canvas.create_text(
+                                self.app.Ancho - 415, 95,
+                                text=textProgres, 
+                                fill="black",
+                                font=("Courier", 16, "bold"),
+                                width=390,
+                                anchor="nw", tags=("descripcio_objecte", "informacio_missions", "menu_motxila")
+                            )
                             
                         self.canvas.create_text(
                             200, self.app.Alto - 165,
-                            text=descript, 
+                            text=descript,
                             fill="black",
                             font=("Courier", 16, "bold"),
                             width=self.app.Ancho - 235,
                             anchor="nw", tags=("descripcio_objecte", "informacio_missions", "menu_motxila")
                         )
+
+                        
 
                     if missio.id != "sortir":
                         text = missio.Objecte.Name
