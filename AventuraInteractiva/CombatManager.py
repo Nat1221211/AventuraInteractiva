@@ -974,9 +974,9 @@ class MenuCombat():
         for num, ally in enumerate(self.equip.values()):
             levelUp = False
             if ally.id in self.Recompenses["XP"].keys():
-                if self.Recompenses["XP"][ally.id] > 1 and self.saltarPantallaFi == False:
-                    levelUp = ally.LvlUp(1)
-                    self.Recompenses["XP"][ally.id] -= 1
+                if self.Recompenses["XP"][ally.id] > (ally.XpRequired / 100) and self.saltarPantallaFi == False:
+                    levelUp = ally.LvlUp((ally.XpRequired / 100))
+                    self.Recompenses["XP"][ally.id] -= (ally.XpRequired / 100)
                 else:
                     if self.saltarPantallaFi == True:
                         self.levelingUp = False

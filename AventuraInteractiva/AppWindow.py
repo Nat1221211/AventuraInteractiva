@@ -122,7 +122,7 @@ class App():
             elif self.Menu.id == "MenuMissions":
                 if self.Menu.llistamissions[self.Menu.index].id != "sortir":
                     seleccionat = self.Menu.llistamissions[self.Menu.index].Objecte
-                    print(seleccionat)
+                    self.Menu.AccioMissio(seleccionat)
                 
                 else:
                     self.MenuMissions = False

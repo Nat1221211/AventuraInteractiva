@@ -31,7 +31,7 @@
             "id": "Player",
             "Nom": "Aishia",
             "Base": "priest",
-            "Lv": 30,
+            "Lv": 10,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],

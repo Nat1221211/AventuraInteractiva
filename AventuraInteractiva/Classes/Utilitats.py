@@ -1246,6 +1246,17 @@ class Menu():
             midatext = font.measure(opc[0])
             x+=midatext + 30
     
+    def AccioMissio(self, seleccionat):
+        # Aqui decidim si aceptem, reclamem, etc... la missio.
+        if seleccionat.id in self.app.jugador.MissionsDisponibles:
+            self.app.jugador.MissionsAcceptades.append(seleccionat.id)
+            self.app.jugador.MissionsDisponibles.pop(seleccionat.id)
+            self.CrearDialeg(f"Has acceptat la missio {seleccionat.Nom} !")
+        
+        elif seleccionat.id in self.app.jugador.MisionsAcceptades:
+            print("Acceptades")
+        else:
+            print("Completades")
 
 class OpcioMenu():
     def __init__(self,iden, nom, habilitat, descripcio, imatge = None, objecte = None, condicio_habilitat = False):
