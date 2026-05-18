@@ -4,15 +4,17 @@
     "Or": 1900,
     "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {
-        "first_adventure": {
+       
+    },
+    "Missions_Finalitzades": [],
+    "Missions_Disponibles": {
+         "first_adventure": {
             "id": "first_adventure",
             "type": "Place",
             "Progress": 0,
             "Status": "Disponible"
         }
     },
-    "Missions_Finalitzades": [],
-    "Missions_Disponibles": {},
     "Llocs_Trobats": [
         "dawn_village",
         "south_forest",

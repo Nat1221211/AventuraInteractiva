@@ -212,8 +212,12 @@ class Menu():
                     self.dibuixar_dialeg(passarDialeg)
             else:
                 if self.app.Confirmacio != True and self.app.Combat == False:
-                    self.canvas.delete("all")
-                    self.dibuixar()
+                    if self.app.MenuMissions == True:
+                        self.canvas.delete("dialeg")
+                        
+                    else:
+                        self.canvas.delete("all")
+                        self.dibuixar()
             
                 if self.app.Combat == True:
                     self.canvas.delete("dialeg")
@@ -1104,7 +1108,7 @@ class Menu():
 
     def DibuixarMenuMissions(self):
         self.IndexColumna = 0
-        
+
         # Barra Superior on es mostraran els menus disponibles dins de la motxila
         self.canvas.create_rectangle(
             5, 5,
@@ -1249,9 +1253,9 @@ class Menu():
     def AccioMissio(self, seleccionat):
         # Aqui decidim si aceptem, reclamem, etc... la missio.
         if seleccionat.id in self.app.jugador.MissionsDisponibles:
-            self.app.jugador.MissionsAcceptades.append(seleccionat.id)
-            self.app.jugador.MissionsDisponibles.pop(seleccionat.id)
-            self.CrearDialeg(f"Has acceptat la missio {seleccionat.Nom} !")
+            self.app.jugador.MisionsAcceptades.append(seleccionat.id)
+            self.app.jugador.MissionsDisponibles.remove(seleccionat.id)
+            self.CrearDialeg(f"Has acceptat la missio {seleccionat.Name} !")
         
         elif seleccionat.id in self.app.jugador.MisionsAcceptades:
             print("Acceptades")
