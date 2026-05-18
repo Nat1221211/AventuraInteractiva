@@ -235,7 +235,7 @@ class App():
         menuAnterior = self.Menu
         self.Menu = Utilitats.Menu(self, self.canvas, menu["id"], menu["opcions"], x, y)
 
-        self.Menu.MenuAnterior = menuAnterior
+        self.Menu.APlicarMenuAnterior(menuAnterior)
 
     def MostrarMenu(self):
         self.canvas.delete("all")
@@ -550,14 +550,18 @@ class App():
         self.CanviarMenu(UIManager.Menus["Confirmacio"], 60, self.Alto - 265)
         self.Menu.CrearDialeg(dialeg)
 
-    def MenuMotxila(self):
+    def MenuMotxila(self, reinici = True):
         self.Motxila = True
         UIManager.CrearMenu(self.jugador.objectes.items(), "Motxila", "Objectes")
         self.CanviarMenu(UIManager.Menus["Motxila"])
+        if reinici == True:
+            self.Menu.IndexColumna = 0
         self.Menu.DibuixarMenuMotxila()
     
-    def MostrarMenuMissions(self):
+    def MostrarMenuMissions(self, reinici = True):
         self.MenuMissions = True
         UIManager.CrearMenuMissions(self, self.Missions, "MenuMissions")
         self.CanviarMenu(UIManager.Menus["MenuMissions"])
+        if reinici == True:
+            self.Menu.IndexColumna = 0
         self.Menu.DibuixarMenuMissions()

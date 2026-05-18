@@ -27,6 +27,10 @@ class Menu():
         self.espaiat_y = 0
         self.x_inicial = self.app.Ancho - x
         self.y_inicial = y
+        if self.MenuAnterior != None:
+            self.IndexColumna = self.MenuAnterior.IndexColumna
+        else:
+            self.IndexColumna = 0
 
         # Estats Dialeg
         self.Esciribint = False
@@ -42,6 +46,14 @@ class Menu():
         # estats Confirmacio
         self.CaixaConfirmacio = False
         self.Confirmacio = False
+
+    def APlicarMenuAnterior(self, menuAnterior):
+        self.MenuAnterior = menuAnterior
+        if self.MenuAnterior != None and isinstance(self.opcions, dict):
+            self.IndexColumna = self.MenuAnterior.IndexColumna % len(self.opcions)
+        else:
+            self.IndexColumna = 0
+        
 
     def dibuixar(self):
         self.canvas.delete("menu_interactiu")
@@ -211,24 +223,28 @@ class Menu():
                     self.SeguentDialeg.remove(i)
                     self.dibuixar_dialeg(passarDialeg)
             else:
-                if self.app.Confirmacio != True and self.app.Combat == False:
-                    if self.app.MenuMissions == True:
-                        self.canvas.delete("dialeg")
-                        
+                if self.app.Confirmacio == True and self.app.Combat == False:
+                    self.dibuixar()
+
+                elif self.app.Combat == True:
+                    self.canvas.delete("dialeg")
+                    self.app.MenuCombat.EleccioDespresPostDialegIntern()
+
+                else:
+                    if self.id == "Confirmacio":
+                        self.canvas.delete("all")
+                        self.app.Enrere()
+
+                    elif self.app.MenuMissions == True:
+                        self.canvas.delete("all")
+                        self.app.MostrarMenuMissions(False)
+                    
                     else:
                         self.canvas.delete("all")
                         self.dibuixar()
             
-                if self.app.Combat == True:
-                    self.canvas.delete("dialeg")
-                    self.app.MenuCombat.EleccioDespresPostDialegIntern()
-
-            if self.app.Confirmacio == True and self.app.Combat == False:
-                self.dibuixar()
-            else:
-                if self.id == "Confirmacio":
-                    self.canvas.delete("all")
-                    self.app.Enrere()
+                
+                
 
     def CrearDialeg(self, text):
         if self.app.DialegActiu == True:
@@ -1107,8 +1123,6 @@ class Menu():
             x+=midatext + 30
 
     def DibuixarMenuMissions(self):
-        self.IndexColumna = 0
-
         # Barra Superior on es mostraran els menus disponibles dins de la motxila
         self.canvas.create_rectangle(
             5, 5,
