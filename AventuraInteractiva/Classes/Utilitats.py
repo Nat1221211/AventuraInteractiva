@@ -243,9 +243,6 @@ class Menu():
                         self.canvas.delete("all")
                         self.dibuixar()
             
-                
-                
-
     def CrearDialeg(self, text):
         if self.app.DialegActiu == True:
             self.SeguentDialeg.append(text)
@@ -868,7 +865,6 @@ class Menu():
     def DibuixarMenuMotxila(self):
         if self.app.Combat == False:
             self.canvas.delete("all")
-        self.IndexColumna = 0
         
         # Barra SUperior on es mostraran els menus disponibles dins de la motxila
         self.canvas.create_rectangle(
