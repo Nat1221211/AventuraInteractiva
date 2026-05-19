@@ -1120,6 +1120,8 @@ class Menu():
 
     def DibuixarMenuMissions(self):
         # Barra Superior on es mostraran els menus disponibles dins de la motxila
+        self.canvas.delete("all")
+
         self.canvas.create_rectangle(
             5, 5,
             self.app.Ancho - 580, 60,
@@ -1268,9 +1270,15 @@ class Menu():
             self.CrearDialeg(f"Has acceptat la missio {seleccionat.Name} !")
         
         elif seleccionat.id in self.app.jugador.MisionsAcceptades:
-            print("Acceptades")
+            if seleccionat.Reclamar(self.app) == True:
+                seleccionat.dibuixar_Pantalla_Reclamar_Missio(self.app)
+                print("Reclamada")
+            else:
+                print("Acceptada")
         else:
             print("Completades")
+    
+
 
 class OpcioMenu():
     def __init__(self,iden, nom, habilitat, descripcio, imatge = None, objecte = None, condicio_habilitat = False):

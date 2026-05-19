@@ -96,11 +96,28 @@ class App():
         self.MenuCombat = CombatManager.MenuCombat
         self.Combat = False
 
+        # Estats Pantalla Missions Reclamar
+        self.ReclamarMissio = False
+        self.levelingUp = False
+        self.saltarPantallaReclamarMissio = False
+        self.ObtainingObjects = False
+        self.ObjectsAnimation = None
+        self.levelAnimation = None
+        self.ReclamarMissioFinalitzat = False
+
+
         self.MostrarPantallaInicial()
     
     def ConfirmarSeleccio(self, event = None):
         if self.Combat == True:
             self.ConfirmarSeleccioCombat(event)
+        elif self.ReclamarMissio == True:
+            if self.saltarPantallaReclamarMissio == False:
+                self.saltarPantallaReclamarMissio = True
+            elif self.ReclamarMissioFinalitzat == True:
+                self.ReclamarMissioFinalitzat = False
+                self.ReclamarMissio = False
+                self.root.after(200, lambda: self.MostrarMenuMissions(False))
         else:
             if self.Menu.id not in ["Motxila", "MenuMissions"]:
                 seleccionat = self.Menu.opcions[self.Menu.index]
@@ -226,7 +243,6 @@ class App():
                     else:
                         self.Menu.mostrar_estat_equip()
                
-         
     def Enrere(self):
         self.Menu = self.Menu.MenuAnterior
         self.MostrarMenu()
@@ -421,6 +437,10 @@ class App():
             if tecla.keysym == "BackSpace": 
                 self.Menu.PulsarEnter()
         
+        elif self.ReclamarMissio == True:
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace": self.ConfirmarSeleccio()
+        
         elif self.SeleccioAliat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")
             if tecla.keysym == "s": self.Menu.Moviment("s")
@@ -485,7 +505,6 @@ class App():
             if tecla.keysym == "BackSpace":
                 if self.Menu.id not in ["Menu Wild", "Menu Poble", "Seleccio Partida", "Seleccio Entitats"]:
                     self.Enrere()
-
 
     def SeleccionarPartida(self):
         seleccionat = self.Menu.opcions[self.Menu.index]
