@@ -69,9 +69,7 @@ class Mission():
             elif key == "Mission":
                 for id in self.Requisite["Mission"]:
                     if id not in jugador.MissionsFinalitzades:
-                        resultat = False
-        print("arribat")
-        
+                        resultat = False        
         return resultat
     
     def Reclamar(self, app):
@@ -319,12 +317,12 @@ class FindMission(Mission):
     
     def TextProgres(self, app):
 
-        text = f"Missio {self.Categoria} \nVisitat {self.Objective["place"]}: "
+        text = f"Missio {self.Categoria} \nVisitat {self.Objective["find"]}: "
 
         if self.Status == "Pendent Reclamar":
-            text += "1 / 1"
+            text += "Progres: 1 / 1"
         else:
-            text += "0 / 1"
+            text += "Progres: 0 / 1"
 
         return text
 
@@ -345,12 +343,12 @@ class ObjectMission(Mission):
     
     def TextProgres(self, app):
 
-        text = f"Missio {self.Categoria} \nTrobar en/la {self.Objective["place"]}: "
+        text = f"Missio {self.Categoria} \nTrobar en/la {self.Objective["ObjName"]}: "
 
         if self.Status == "Pendent Reclamar":
-            text += "1 / 1"
+            text += "Progres: 1 / 1"
         else:
-            text += "0 / 1"
+            text += "Progres: 0 / 1"
 
         return text
   
@@ -373,9 +371,9 @@ class PlaceMission(Mission):
         text = f"Missio {self.Categoria} \nArribar a {app.Zones[self.Objective["place"]].NameZone}: "
 
         if self.Status == "Pendent Reclamar":
-            text += "1 / 1"
+            text += "Progres: 1 / 1"
         else:
-            text += "0 / 1"
+            text += "Progres: 0 / 1"
         
         return text
 
@@ -424,17 +422,22 @@ class KillMission(Mission):
 
         if self.Generic == True:
             text = f"Derrotar {self.Objective["Amount"]}"
-            for pos, i in enumerate(self.Objective["enemy"]):
-                ent = app.Entities[i]
-                if pos != 0:
-                    text += ", "
-                text += f"{ent.EntityName}"
+            if len(self.Objective["enemy"]) > 1:
+                text+= "dels seguents enemics:\n"
+
+                for pos, i in enumerate(self.Objective["enemy"]):
+                    ent = app.Entities[i]
+                    if pos != 0:
+                        text += ", "
+                    text += f"{ent.EntityName}"
+            else:
+                text+= f" enemics de tipus {app.Entities[self.Objective["enemy"][0]].EntityName}."
             text += f"\n"
         else:
             nom_entitat = app.Entities[self.Objective["enemy"][0]["name"]]
 
             text = f"Missio {self.Categoria} \nDerrotar {nom_entitat}: "
 
-        text += f"{self.Count} / {self.Objective["Amount"]}"
+        text += f"Progres: {self.Count} / {self.Objective["Amount"]}"
 
         return text

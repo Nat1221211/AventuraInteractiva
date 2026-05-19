@@ -1217,7 +1217,7 @@ class Menu():
                             textRecompenses = missio.Objecte.MostrarRecompenses(self.app)
                             
                             self.canvas.create_text(
-                                self.app.Ancho - 415, 145,
+                                self.app.Ancho - 415, 175,
                                 text=textRecompenses, 
                                 fill="black",
                                 font=("Courier", 16, "bold"),

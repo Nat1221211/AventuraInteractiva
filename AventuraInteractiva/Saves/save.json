@@ -1,17 +1,31 @@
 {
     "Nom": "Aishia",
     "Ubicacio": "knightshire",
-    "Or": 1900,
+    "Or": 4900,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
-        "first_adventure": {
-            "id": "first_adventure",
-            "type": "Place",
+        "defeat_slimes": {
+            "id": "defeat_slimes",
+            "type": "Kill",
             "Progress": 0,
-            "Status": "Pendent Reclamar"
+            "Status": "Disponible"
+        },
+        "find_smulet_greenwoods": {
+            "id": "find_smulet_greenwoods",
+            "type": "Object",
+            "Progress": 0,
+            "Status": "Disponible"
+        },
+        "fins_jack_south_forest": {
+            "id": "fins_jack_south_forest",
+            "type": "Find",
+            "Progress": 0,
+            "Status": "Disponible"
         }
     },
-    "Missions_Finalitzades": [],
+    "Missions_Finalitzades": [
+        "first_adventure"
+    ],
     "Missions_Disponibles": {},
     "Llocs_Trobats": [
         "dawn_village",
@@ -36,7 +50,7 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 0,
+            "XP": 200.08,
             "StatsCombat": {
                 "MaxHP": 34.0,
                 "CurHP": 14.0,
@@ -52,6 +66,16 @@
     "Inventari": [
         {
             "id": "complete_potion",
+            "Amount": 1,
+            "Clase": "Combat"
+        },
+        {
+            "id": "inferior_potion",
+            "Amount": 1,
+            "Clase": "Combat"
+        },
+        {
+            "id": "potion",
             "Amount": 1,
             "Clase": "Combat"
         }
