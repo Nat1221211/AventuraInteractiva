@@ -62,7 +62,7 @@ def ReclamarMissio(missio, app):
 def DesbloquejarMissio(dada, app):
     for id, misions in app.Missions.items():    # Aquest fa referencia a Kill Place, etc. els tipus de missions
         for id2, misio in misions.items():  # Aquest a cada mission en si.
-            if "Mission" in misio.Requisite.keys() and dada in misio.Requisite["Mission"]:
+            if "Mission" in misio.Requisite.keys() and dada.id in misio.Requisite["Mission"]:
                 res = misio.MissioDesbloquejable(app.jugador)
                 if res == True:
                     misio.Status = "Disponible"

@@ -423,7 +423,7 @@ class KillMission(Mission):
     def TextProgres(self, app):
 
         if self.Generic == True:
-            text = f"Derrotar {self.Objectiu["Amount"]}"
+            text = f"Derrotar {self.Objective["Amount"]}"
             for pos, i in enumerate(self.Objective["enemy"]):
                 ent = app.Enemies[i]
                 if pos != 0:
@@ -435,6 +435,6 @@ class KillMission(Mission):
 
             text = f"Missio {self.Categoria} \nDerrotar {nom_entitat}: "
 
-        text += f"{self.Count} / {self.Objectiu["Amount"]}"
+        text += f"{self.Count} / {self.Objective["Amount"]}"
 
         return text
