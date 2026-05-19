@@ -1272,7 +1272,6 @@ class Menu():
         elif seleccionat.id in self.app.jugador.MisionsAcceptades:
             if seleccionat.Reclamar(self.app) == True:
                 seleccionat.dibuixar_Pantalla_Reclamar_Missio(self.app)
-                print("Reclamada")
             else:
                 print("Acceptada")
         else:

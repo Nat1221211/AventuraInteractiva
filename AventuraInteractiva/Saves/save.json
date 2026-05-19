@@ -1,18 +1,18 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "greenwoods",
+    "Ubicacio": "knightshire",
     "Or": 1900,
-    "Ultim_Visitat": "dawn_village",
-    "Missions_Acceptades": {},
-    "Missions_Finalitzades": [],
-    "Missions_Disponibles": {
+    "Ultim_Visitat": "knightshire",
+    "Missions_Acceptades": {
         "first_adventure": {
             "id": "first_adventure",
             "type": "Place",
             "Progress": 0,
-            "Status": "Disponible"
+            "Status": "Pendent Reclamar"
         }
     },
+    "Missions_Finalitzades": [],
+    "Missions_Disponibles": {},
     "Llocs_Trobats": [
         "dawn_village",
         "south_forest",
@@ -22,7 +22,8 @@
     "Llocs_Visitats": [
         "dawn_village",
         "south_forest",
-        "greenwoods"
+        "greenwoods",
+        "knightshire"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],

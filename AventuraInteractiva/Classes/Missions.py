@@ -70,16 +70,9 @@ class Mission():
                 for id in self.Requisite["Mission"]:
                     if id not in jugador.MissionsFinalitzades:
                         resultat = False
+        print("arribat")
         
         return resultat
-
-    def Aceptar(self, jugador):
-        self.RequisitesCompleted(jugador)
-        if self.Status == "Requisites":
-            self.Status = "Accepted"
-            print(f"Has aceptat {self.Name}.\n")
-        else:
-            print("No compleixes amb els requisits per a la missio...")
     
     def Reclamar(self, app):
         if self.Status == "Pendent Reclamar":
@@ -94,6 +87,7 @@ class Mission():
             self.Status = "Completada"
             app.jugador.MissionsFinalitzades.append(self.id)
             app.jugador.MisionsAcceptades.remove(self.id)
+            app.event.CridarEvent("Missio Finalitzada", self, app)
             return True
         else:
             return False
