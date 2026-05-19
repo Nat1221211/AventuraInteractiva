@@ -317,7 +317,7 @@ class FindMission(Mission):
         self.Objective = objective
         self.Requisite = requisite
     
-    def TextProgres(self):
+    def TextProgres(self, app):
 
         text = f"Missio {self.Categoria} \nVisitat {self.Objective["place"]}: "
 
@@ -343,7 +343,7 @@ class ObjectMission(Mission):
         self.Objective = objective
         self.Requisite = requisite
     
-    def TextProgres(self):
+    def TextProgres(self, app):
 
         text = f"Missio {self.Categoria} \nTrobar en/la {self.Objective["place"]}: "
 
@@ -425,13 +425,13 @@ class KillMission(Mission):
         if self.Generic == True:
             text = f"Derrotar {self.Objective["Amount"]}"
             for pos, i in enumerate(self.Objective["enemy"]):
-                ent = app.Enemies[i]
+                ent = app.Entities[i]
                 if pos != 0:
                     text += ", "
                 text += f"{ent.EntityName}"
             text += f"\n"
         else:
-            nom_entitat = app.Enemies[self.Objective["enemy"][0]["name"]]
+            nom_entitat = app.Entities[self.Objective["enemy"][0]["name"]]
 
             text = f"Missio {self.Categoria} \nDerrotar {nom_entitat}: "
 
