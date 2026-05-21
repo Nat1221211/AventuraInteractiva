@@ -4,6 +4,12 @@
     "Or": 4900,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
+        "first_adventure": {
+            "id": "first_adventure",
+            "type": "Place",
+            "Progress": 0,
+            "Status": "Pendent Reclamar"
+        },
         "defeat_slimes": {
             "id": "defeat_slimes",
             "type": "Kill",
@@ -23,9 +29,7 @@
             "Status": "Disponible"
         }
     },
-    "Missions_Finalitzades": [
-        "first_adventure"
-    ],
+    "Missions_Finalitzades": [],
     "Missions_Disponibles": {},
     "Llocs_Trobats": [
         "dawn_village",

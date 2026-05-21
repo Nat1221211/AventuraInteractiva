@@ -23,8 +23,6 @@ class Mission():
     Place = Zones.Zona
     Finished = False
     Categoria = ""
-
-
     # Metodes
     def __init__(self, iden, name, description, rewards, cat):
         self.id = iden
@@ -139,14 +137,6 @@ class Mission():
             anchor="w", tags=("enunciat_objectes", "zona_objectes", "reclamar_missio")
         )
 
-        app.canvas.create_text(
-            30, 140,
-            text="No s'han adquirit objectes en aquest combat...",
-            fill="black",
-            font=("Courier", 18, "bold"),
-            anchor="w", tags=("text_objectes", "zona_objectes", "reclamar_missio")
-        )
-
         app.canvas.create_rectangle(
             5, 400,
             app.Ancho - 5, 
@@ -234,13 +224,14 @@ class Mission():
             x+= salt
         
         clonrecompenses = {}
+        clonobjectes = self.Rewards["Objects"].copy()
         for pos, ent in enumerate(app.jugador.Team.values()):
             clonrecompenses.update({ent.id: self.Rewards["XP"]})
-
+        
         app.levelingUp = True
-        self.dibuixar_experiencia_pantalla_missions(app, clonrecompenses)
+        self.dibuixar_experiencia_pantalla_missions(app, clonrecompenses, clonobjectes)
 
-    def dibuixar_experiencia_pantalla_missions(self, app, experienciarestant):
+    def dibuixar_experiencia_pantalla_missions(self, app, experienciarestant, clonobjectes = None):
     # En aquesta només incrementarem la barra i creearem la de color, i la reduirem a zero si ja esta al limit del nivell
     # enunciarem que s'ha pujat de nivell, etc...
         for num, ally in enumerate(app.jugador.Team.values()):
@@ -287,18 +278,60 @@ class Mission():
            
         
         if app.levelingUp == True:
-            # if app.ObtainingObjects == True:
-            #     app.ObjectsAnimation = app.root.after(10, lambda: self.dibuixar_objectes_pantalla_missions(app))
-            # else:
-                app.levelAnimation = app.root.after(10, lambda: self.dibuixar_experiencia_pantalla_missions(app, experienciarestant))
+                if len(clonobjectes) > 0:
+                        app.ObtainingObjects = True
+
+
+                if app.ObtainingObjects == False:
+                    if app.ObjectesDibuixats == False:
+                        app.canvas.create_text(
+                            30, 140,
+                            text="No s'han adquirit objectes en aquest combat...",
+                            fill="black",
+                            font=("Courier", 18, "bold"),
+                            anchor="w", tags=("text_objectes", "zona_objectes", "reclamar_missio")
+                        )
+                        app.ObjectesDibuixats = True
+                    app.levelAnimation = app.root.after(10, lambda: self.dibuixar_experiencia_pantalla_missions(app, experienciarestant))
+                else:
+                    
+                    if app.ObtainingObjects == True:
+                        app.ObjectsAnimation = app.root.after(10, lambda: self.dibuixar_objectes_pantalla_missions(app, 140, clonobjectes, experienciarestant))
+                    else:
+                        app.levelAnimation = app.root.after(10, lambda: self.dibuixar_experiencia_pantalla_missions(app, experienciarestant, clonobjectes))
+
         else:
             if app.levelAnimation != None:
                 app.root.after_cancel(app.levelAnimation)
                 app.ReclamarMissioFinalitzat = True
 
-    def dibuixar_objectes_pantalla_missions(self, app):
-        pass
-    # dibuixar obtencio d'or, de moment res més, ja que en un combat no obtenim objectes...
+    def dibuixar_objectes_pantalla_missions(self, app, y, objectesrestants, experienciarestant):
+
+        ultimObjecte = objectesrestants[-1]
+        objectesrestants.pop(-1)
+
+        app.canvas.create_text(
+            30, app.YRecompenses,
+            text=f"{app.Objects[ultimObjecte["type"]][ultimObjecte["id"]].ObjectName}",
+            fill="black",
+            font=("Courier", 18, "bold"),
+            anchor="w", tags=("text_objectes", "zona_objectes", "reclamar_missio")
+        )
+        app.canvas.create_text(
+            400, app.YRecompenses,
+            text=f"x{ultimObjecte["Amount"]}",
+            fill="black",
+            font=("Courier", 18, "bold"),
+            anchor="w", tags=("text_objectes", "zona_objectes", "reclamar_missio")
+        )
+        app.ObjectesDibuixats = True
+        app.YRecompenses+= 30
+
+        app.levelAnimation = app.root.after(10, lambda: self.dibuixar_experiencia_pantalla_missions(app, experienciarestant, objectesrestants))
+
+
+
+
 
     
 class FindMission(Mission):

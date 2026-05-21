@@ -104,6 +104,8 @@ class App():
         self.ObjectsAnimation = None
         self.levelAnimation = None
         self.ReclamarMissioFinalitzat = False
+        self.ObjectesDibuixats = False
+        self.YRecompenses = 140
 
 
         self.MostrarPantallaInicial()
