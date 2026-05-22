@@ -1,30 +1,20 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "greenwoods",
-    "Or": 4950,
+    "Ubicacio": "south_forest",
+    "Or": 11060,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
         "defeat_slimes": {
             "id": "defeat_slimes",
             "type": "Kill",
-            "Progress": 2,
-            "Status": "Disponible"
-        },
-        "find_smulet_greenwoods": {
-            "id": "find_smulet_greenwoods",
-            "type": "Object",
-            "Progress": 0,
-            "Status": "Disponible"
-        },
-        "fins_jack_south_forest": {
-            "id": "fins_jack_south_forest",
-            "type": "Find",
-            "Progress": 0,
-            "Status": "Disponible"
+            "Progress": 3,
+            "Status": "Pendent Reclamar"
         }
     },
     "Missions_Finalitzades": [
-        "first_adventure"
+        "first_adventure",
+        "find_smulet_greenwoods",
+        "fins_jack_south_forest"
     ],
     "Missions_Disponibles": {},
     "Llocs_Trobats": [
@@ -46,20 +36,20 @@
             "id": "Player",
             "Nom": "Aishia",
             "Base": "priest",
-            "Lv": 10,
+            "Lv": 11,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 263.75,
+            "XP": 157.88,
             "StatsCombat": {
-                "MaxHP": 34.0,
-                "CurHP": 24.6,
-                "MaxMana": 42.0,
-                "Mana": 26.999999999999943,
-                "ATK": 26.0,
-                "INT": 34.0,
-                "DEF": 34.0,
-                "SPD": 34.0
+                "MaxHP": 36.4,
+                "CurHP": 21.5,
+                "MaxMana": 45.2,
+                "Mana": 16.999999999999908,
+                "ATK": 27.6,
+                "INT": 36.4,
+                "DEF": 36.4,
+                "SPD": 36.4
             }
         }
     ],
@@ -71,12 +61,12 @@
         },
         {
             "id": "inferior_potion",
-            "Amount": 1,
+            "Amount": 3,
             "Clase": "Combat"
         },
         {
             "id": "potion",
-            "Amount": 1,
+            "Amount": 3,
             "Clase": "Combat"
         }
     ],

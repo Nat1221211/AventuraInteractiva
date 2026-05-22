@@ -29,12 +29,10 @@ def OcurrenciaMisio(misio, app):
         CombatManager.Lluitar(app.jugador, misio.Enemic, app)
     elif type(misio) == Missions.FindMission:
         app.Menu.CrearDialeg(f"Has trobat en/la {misio.Objective["find"]}")
-        app.event.CridarEvent("Persona Missio Trobada", misio.Objective["find"], app.jugador, app.missions)
+        app.event.CridarEvent("Persona Missio Trobada", misio.Objective["find"], app)
     elif type(misio) == Missions.ObjectMission:
         app.Menu.CrearDialeg(f"Has trobat l'objecte {misio.Objective["ObjName"]}")
-        app.event.CridarEvent("Objecte Missio Trobat", misio.Objective["object"], app.jugador, app.missions)
-    if type(misio) != Missions.KillMission:
-        input("Presiona per a Continuar...")
+        app.event.CridarEvent("Objecte Missio Trobat", misio.Objective["object"], app)
 
 def ExplorarTrobaroNo(app):
     
