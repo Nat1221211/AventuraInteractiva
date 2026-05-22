@@ -7,8 +7,8 @@
         "defeat_slimes": {
             "id": "defeat_slimes",
             "type": "Kill",
-            "Progress": 3,
-            "Status": "Pendent Reclamar"
+            "Progress": 2,
+            "Status": "Disponible"
         },
         "find_smulet_greenwoods": {
             "id": "find_smulet_greenwoods",

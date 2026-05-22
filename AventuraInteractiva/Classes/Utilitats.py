@@ -155,6 +155,19 @@ class Menu():
         if not self.Escribint == True:
             return
         
+        midacuadre = 180
+        if self.app.Combat == True:
+            midacuadre = 150
+        
+        rect2 = self.canvas.create_rectangle(
+            5, self.app.Alto - midacuadre,
+            self.app.Ancho - 5,
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=4, tags="dialeg"
+        )
+        self.canvas.tag_raise("dialeg")
+        
         if index <= len(self.textdialeg):
             mostrat = self.textdialeg[:index]
 
@@ -227,8 +240,12 @@ class Menu():
                     self.dibuixar()
 
                 elif self.app.Combat == True:
-                    self.canvas.delete("dialeg")
-                    self.app.MenuCombat.EleccioDespresPostDialegIntern()
+                    if self.app.MenuCombat.DialegMissions == True:
+                        self.app.MenuCombat.DialegMissions = False
+                        self.canvas.delete("dialeg")
+                    else:
+                        self.canvas.delete("dialeg")
+                        self.app.MenuCombat.EleccioDespresPostDialegIntern()
 
                 else:
                     if self.id == "Confirmacio":

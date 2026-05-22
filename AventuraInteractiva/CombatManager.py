@@ -91,6 +91,7 @@ class MenuCombat():
         self.AnimacioSeleccioObjectiu = None
         self.ObjectiuMoviment = None
         self.GrupObjectiuMoviment = ""
+        self.DialegMissions = False
 
         self.Fugir = [False]
         self.combat = False
@@ -973,38 +974,39 @@ class MenuCombat():
     # enunciarem que s'ha pujat de nivell, etc...
         for num, ally in enumerate(self.equip.values()):
             levelUp = False
-            if ally.id in self.Recompenses["XP"].keys():
-                if self.Recompenses["XP"][ally.id] > (ally.XpRequired / 100) and self.saltarPantallaFi == False:
-                    levelUp = ally.LvlUp((ally.XpRequired / 100))
-                    self.Recompenses["XP"][ally.id] -= (ally.XpRequired / 100)
-                else:
-                    if self.saltarPantallaFi == True:
-                        self.levelingUp = False
-                    levelUp = ally.LvlUp(self.Recompenses["XP"][ally.id])
-                    self.Recompenses["XP"][ally.id] = 0
+            if self.DialegMissions == False:
+                if ally.id in self.Recompenses["XP"].keys():
+                    if self.Recompenses["XP"][ally.id] > (ally.XpRequired / 100) and self.saltarPantallaFi == False:
+                        levelUp = ally.LvlUp((ally.XpRequired / 100))
+                        self.Recompenses["XP"][ally.id] -= (ally.XpRequired / 100)
+                    else:
+                        if self.saltarPantallaFi == True:
+                            self.levelingUp = False
+                        levelUp = ally.LvlUp(self.Recompenses["XP"][ally.id])
+                        self.Recompenses["XP"][ally.id] = 0
 
-            midesBarraFons = self.canvas.coords(f"barra_xp_fons_{ally.id}")
+                midesBarraFons = self.canvas.coords(f"barra_xp_fons_{ally.id}")
 
-            coordsBarraXP = self.canvas.coords(f"barra_xp_{ally.id}")
-            percentatgeXP = (round(ally.Xp, 2) / round(ally.XpRequired, 2))
-            amplebarraxp = midesBarraFons[2] - midesBarraFons[0]
-            coordsBarraXP[2] = coordsBarraXP[0] + (amplebarraxp * percentatgeXP)
-    
-            coordsBarraXP = self.canvas.coords(f"barra_xp_{ally.id}", coordsBarraXP)
-
-            text_xp = f"EXP: {round(ally.Xp, 2)} / {round(ally.XpRequired, 2)}"
-            self.canvas.itemconfig(f"text_experiencia_{ally.id}", text=text_xp)
+                coordsBarraXP = self.canvas.coords(f"barra_xp_{ally.id}")
+                percentatgeXP = (round(ally.Xp, 2) / round(ally.XpRequired, 2))
+                amplebarraxp = midesBarraFons[2] - midesBarraFons[0]
+                coordsBarraXP[2] = coordsBarraXP[0] + (amplebarraxp * percentatgeXP)
         
-            if levelUp == True:
-                posicio = self.canvas.coords(f"text_nivell_{ally.id}")
-                self.canvas.create_text(
-                    posicio[0], posicio[1] + 20,
-                    text=f"Level UP !!",
-                    fill="black",
-                    font=("Courier", 14, "bold"),
-                    anchor="nw", tags=(f"text_pujatnivell_{ally.id}", "zona_experiencia", "fi_combat")
-                )
-                self.canvas.itemconfig(f"text_nivell_{ally.id}", text=f"Lv: {ally.Lv} / {ally.LvLimit}")
+                coordsBarraXP = self.canvas.coords(f"barra_xp_{ally.id}", coordsBarraXP)
+
+                text_xp = f"EXP: {round(ally.Xp, 2)} / {round(ally.XpRequired, 2)}"
+                self.canvas.itemconfig(f"text_experiencia_{ally.id}", text=text_xp)
+            
+                if levelUp == True:
+                    posicio = self.canvas.coords(f"text_nivell_{ally.id}")
+                    self.canvas.create_text(
+                        posicio[0], posicio[1] + 20,
+                        text=f"Level UP !!",
+                        fill="black",
+                        font=("Courier", 14, "bold"),
+                        anchor="nw", tags=(f"text_pujatnivell_{ally.id}", "zona_experiencia", "fi_combat")
+                    )
+                    self.canvas.itemconfig(f"text_nivell_{ally.id}", text=f"Lv: {ally.Lv} / {ally.LvLimit}")
 
         completats = 0
         for i in self.Recompenses["XP"].values():
@@ -1167,9 +1169,9 @@ class MenuCombat():
         for i in self.equip.values():
             i.afected = []
             i.DefinirCombatStats()
+        self.DialegMissions = True
         for id, ent in self.EnemicsDerrotats.items():
             self.app.event.CridarEvent("Derrotar Enemic", ent, self.app)
-
 
     def ComprobarEfecteEstat(self, aliat = True):
         if aliat == True:
