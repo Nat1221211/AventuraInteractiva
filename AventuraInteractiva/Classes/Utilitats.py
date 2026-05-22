@@ -157,7 +157,10 @@ class Menu():
         
         midacuadre = 180
         if self.app.Combat == True:
-            midacuadre = 150
+            if self.app.MenuCombat.PantallaFICombat == True:
+                midacuadre = 240
+            else:
+                midacuadre = 150
         
         rect2 = self.canvas.create_rectangle(
             5, self.app.Alto - midacuadre,
