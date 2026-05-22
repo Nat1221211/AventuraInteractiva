@@ -1,14 +1,14 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "south_forest",
-    "Or": 14060,
-    "Ultim_Visitat": "knightshire",
+    "Ubicacio": "dawn_village",
+    "Or": 14320,
+    "Ultim_Visitat": "dawn_village",
     "Missions_Acceptades": {
         "def_great_slime": {
             "id": "def_great_slime",
             "type": "Kill",
-            "Progress": 0,
-            "Status": "Disponible"
+            "Progress": 1,
+            "Status": "Pendent Reclamar"
         }
     },
     "Missions_Finalitzades": [
@@ -41,12 +41,12 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 457.84,
+            "XP": 551.79,
             "StatsCombat": {
                 "MaxHP": 36.4,
-                "CurHP": 21.5,
+                "CurHP": 36.4,
                 "MaxMana": 45.2,
-                "Mana": 16.999999999999908,
+                "Mana": 45.2,
                 "ATK": 27.6,
                 "INT": 36.4,
                 "DEF": 36.4,

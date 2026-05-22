@@ -26,7 +26,7 @@ def CanviarZona(App, seleccio):
 
 def OcurrenciaMisio(misio, app):
     if type(misio) == Missions.KillMission:        
-        CombatManager.Lluitar(app.jugador, misio.Enemic, app)
+        CombatManager.StartCombat(app, app.canvas, "Combat Missio", True, misio.Enemic)
     elif type(misio) == Missions.FindMission:
         app.Menu.CrearDialeg(f"Has trobat en/la {misio.Objective["find"]}")
         app.event.CridarEvent("Persona Missio Trobada", misio.Objective["find"], app)
