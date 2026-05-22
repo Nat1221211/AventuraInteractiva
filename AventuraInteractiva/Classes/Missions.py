@@ -278,9 +278,10 @@ class Mission():
            
         
         if app.levelingUp == True:
-                if len(clonobjectes) > 0:
-                        app.ObtainingObjects = True
-
+                if clonobjectes != None and len(clonobjectes) > 0:
+                    app.ObtainingObjects = True
+                else:
+                    app.ObtainingObjects = False
 
                 if app.ObtainingObjects == False:
                     if app.ObjectesDibuixats == False:
