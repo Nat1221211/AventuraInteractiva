@@ -243,8 +243,8 @@ class MenuCombat():
                 x + 50, y + 15,
                 text=ent[1].nom,
                 fill="black",
-                width=150,
-                font=("Courier", 16, "bold"),
+                width=(140 - 50),
+                font=("Courier", 13, "bold"),
                 anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
             )
 
@@ -345,7 +345,7 @@ class MenuCombat():
                 x + 50, y + 15,
                 text=ent[1].nom,
                 fill="black",
-                width=180,
+                width=(180 - 50),
                 font=("Courier", 16, "bold"),
                 anchor="nw", tags=("info_aliats", "zona_aliats", "combat")
             )

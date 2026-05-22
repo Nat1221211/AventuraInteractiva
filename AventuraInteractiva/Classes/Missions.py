@@ -430,14 +430,13 @@ class KillMission(Mission):
         self.Count = 0
         if self.Generic == False:
             self.Enemic = {}
-            count = 0
-            for j in self.Objective["enemy"]:
+            
+            for pos, j in enumerate(self.Objective["enemy"]):
                 self.Enemic.update({
-                    f"missions_enemy_{count}":
-                    Entitat.Entity(f"missions_enemy_{count}", j["name"],
+                    f"enemy_{pos}":
+                    Entitat.Entity(f"enemy_{pos}", j["name"],
                                     j["level"], False, entitats[j["entity"]])
                 })
-                count += 1
 
     def IncrementCount(self, enemy):
         if self.Generic == True:
