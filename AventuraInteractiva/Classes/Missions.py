@@ -468,7 +468,7 @@ class KillMission(Mission):
                 text+= f" enemics de tipus {app.Entities[self.Objective["enemy"][0]].EntityName}."
             text += f"\n"
         else:
-            nom_entitat = app.Entities[self.Objective["enemy"][0]["name"]]
+            nom_entitat = self.Objective["enemy"][0]["name"]
 
             text = f"Missio {self.Categoria} \nDerrotar {nom_entitat}: "
 

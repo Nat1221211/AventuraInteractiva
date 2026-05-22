@@ -1,20 +1,21 @@
 {
     "Nom": "Aishia",
     "Ubicacio": "south_forest",
-    "Or": 11060,
+    "Or": 14060,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
-        "defeat_slimes": {
-            "id": "defeat_slimes",
+        "def_great_slime": {
+            "id": "def_great_slime",
             "type": "Kill",
-            "Progress": 3,
-            "Status": "Pendent Reclamar"
+            "Progress": 0,
+            "Status": "Disponible"
         }
     },
     "Missions_Finalitzades": [
         "first_adventure",
         "find_smulet_greenwoods",
-        "fins_jack_south_forest"
+        "fins_jack_south_forest",
+        "defeat_slimes"
     ],
     "Missions_Disponibles": {},
     "Llocs_Trobats": [
@@ -40,7 +41,7 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 157.88,
+            "XP": 457.84,
             "StatsCombat": {
                 "MaxHP": 36.4,
                 "CurHP": 21.5,
@@ -67,6 +68,11 @@
         {
             "id": "potion",
             "Amount": 3,
+            "Clase": "Combat"
+        },
+        {
+            "id": "high_potion",
+            "Amount": 1,
             "Clase": "Combat"
         }
     ],
