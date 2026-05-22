@@ -1,14 +1,14 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "knightshire",
-    "Or": 4900,
+    "Ubicacio": "greenwoods",
+    "Or": 4950,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
         "defeat_slimes": {
             "id": "defeat_slimes",
             "type": "Kill",
-            "Progress": 0,
-            "Status": "Disponible"
+            "Progress": 3,
+            "Status": "Pendent Reclamar"
         },
         "find_smulet_greenwoods": {
             "id": "find_smulet_greenwoods",
@@ -50,12 +50,12 @@
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 200.08,
+            "XP": 263.75,
             "StatsCombat": {
                 "MaxHP": 34.0,
-                "CurHP": 14.0,
+                "CurHP": 24.6,
                 "MaxMana": 42.0,
-                "Mana": 42.0,
+                "Mana": 26.999999999999943,
                 "ATK": 26.0,
                 "INT": 34.0,
                 "DEF": 34.0,
