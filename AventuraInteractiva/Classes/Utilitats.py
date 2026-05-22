@@ -207,7 +207,7 @@ class Menu():
         if self.Escribint == True:
             saltar = True
             if self.app.Combat == True:
-                if self.app.MenuCombat.AccioAliat == True or self.app.MenuCombat.AccioAliat == True:
+                if self.app.MenuCombat.AccioAliat == True or self.app.MenuCombat.AccioAliat == True: # UpdatingHP
                     saltar = False
             
             if saltar == True:

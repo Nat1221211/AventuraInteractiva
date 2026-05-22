@@ -1017,6 +1017,9 @@ class MenuCombat():
            
         
         if self.levelingUp == True:
+            if self.app.DialegActiu == False:
+                if self.DialegMissions == True:
+                    self.DialegMissions = False
             self.levelAnimation = self.app.root.after(10, self.dibuixar_experiencia_pantalla_fi)
         else:
             if self.levelAnimation != None:

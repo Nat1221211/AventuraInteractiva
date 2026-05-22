@@ -1,13 +1,13 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "knightshire",
-    "Or": 5000,
+    "Ubicacio": "greenwoods",
+    "Or": 5040,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
         "defeat_slimes": {
             "id": "defeat_slimes",
             "type": "Kill",
-            "Progress": 0,
+            "Progress": 1,
             "Status": "Disponible"
         }
     },
@@ -47,20 +47,20 @@
             "id": "Player",
             "Nom": "Aishia",
             "Base": "warrior",
-            "Lv": 6,
+            "Lv": 26,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 73.4,
+            "XP": 76.6,
             "StatsCombat": {
-                "MaxHP": 29.200000000000003,
+                "MaxHP": 93.2,
                 "CurHP": 26.0,
-                "MaxMana": 22.0,
-                "Mana": 20.0,
-                "ATK": 26.799999999999997,
-                "INT": 14.8,
-                "DEF": 25.6,
-                "SPD": 19.6
+                "MaxMana": 62.0,
+                "Mana": 14.999999999999996,
+                "ATK": 82.8,
+                "INT": 30.8,
+                "DEF": 77.60000000000001,
+                "SPD": 51.6
             }
         }
     ],
