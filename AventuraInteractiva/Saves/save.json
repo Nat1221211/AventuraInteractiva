@@ -7,7 +7,7 @@
         "defeat_slimes": {
             "id": "defeat_slimes",
             "type": "Kill",
-            "Progress": 1,
+            "Progress": 2,
             "Status": "Disponible"
         }
     },
