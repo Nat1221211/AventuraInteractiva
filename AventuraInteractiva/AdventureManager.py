@@ -20,22 +20,19 @@ def Mapa(App):
 def CanviarZona(App, seleccio):
     App.jugador.Ubicacio = App.Zones[seleccio.id]    # Canviem la zona i la retornem
     App.jugador.ActualitzarUltimPobleVisitat()
-    App.event.CridarEvent("Lloc Visitat", App.jugador.Ubicacio, App)
-    
     UIManager.MostrarMenuPrincipal(App)
-    
+    App.event.CridarEvent("Lloc Visitat", App.jugador.Ubicacio.id, App)
+
 
 def OcurrenciaMisio(misio, app):
     if type(misio) == Missions.KillMission:        
-        CombatManager.Lluitar(app.jugador, misio.Enemic, app)
+        CombatManager.StartCombat(app, app.canvas, "Combat Missio", True, misio.Enemic)
     elif type(misio) == Missions.FindMission:
         app.Menu.CrearDialeg(f"Has trobat en/la {misio.Objective["find"]}")
-        app.event.CridarEvent("Persona Missio Trobada", misio.Objective["find"], app.jugador, app.missions)
+        app.event.CridarEvent("Persona Missio Trobada", misio.Objective["find"], app)
     elif type(misio) == Missions.ObjectMission:
         app.Menu.CrearDialeg(f"Has trobat l'objecte {misio.Objective["ObjName"]}")
-        app.event.CridarEvent("Objecte Missio Trobat", misio.Objective["object"], app.jugador, app.missions)
-    if type(misio) != Missions.KillMission:
-        input("Presiona per a Continuar...")
+        app.event.CridarEvent("Objecte Missio Trobat", misio.Objective["object"], app)
 
 def ExplorarTrobaroNo(app):
     
@@ -69,7 +66,7 @@ def Explorar(app):
     elif prob > 20 and prob <= 70:  # Res / Missions / Ocurrencies
         llista = []
         for id in app.jugador.MisionsAcceptades:
-            for i in app.missions.items():
+            for i in app.Missions.items():
                 if id in i[1]:
                     if i[1][id].Objective["place"] == app.jugador.Ubicacio.id:
                         if i[0] == "Kill":

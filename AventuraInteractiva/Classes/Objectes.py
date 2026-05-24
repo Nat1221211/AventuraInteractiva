@@ -65,6 +65,10 @@ class ObjecteCombat(Objecte):
                 
                 app.RecuperantVida = True
                 app.Motxila = False
+                app.jugador.objectes[self.id]["amount"] -= 1
+                if app.jugador.objectes[self.id]["amount"] == 0:
+                    app.jugador.objectes.pop(self.id)
+
                 app.Menu.ActualitzarEstatMenuEquip(objecte, recup, cur, max)
             if k == "Flee":
                 print("")

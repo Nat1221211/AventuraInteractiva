@@ -1,24 +1,44 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "dawn_village",
-    "Or": 2000,
-    "Ultim_Visitat": "dawn_village",
-    "Missions_Acceptades": {},
-    "Missions_Finalitzades": [],
+    "Ubicacio": "knightshire",
+    "Or": 5040,
+    "Ultim_Visitat": "knightshire",
+    "Missions_Acceptades": {
+        "defeat_slimes": {
+            "id": "defeat_slimes",
+            "type": "Kill",
+            "Progress": 2,
+            "Status": "Disponible"
+        }
+    },
+    "Missions_Finalitzades": [
+        "first_adventure"
+    ],
     "Missions_Disponibles": {
-        "first_adventure": {
-            "id": "first_adventure",
-            "type": "Place",
+        "find_smulet_greenwoods": {
+            "id": "find_smulet_greenwoods",
+            "type": "Object",
+            "Progress": 0,
+            "Status": "Disponible"
+        },
+        "fins_jack_south_forest": {
+            "id": "fins_jack_south_forest",
+            "type": "Find",
             "Progress": 0,
             "Status": "Disponible"
         }
     },
     "Llocs_Trobats": [
         "dawn_village",
-        "south_forest"
+        "south_forest",
+        "greenwoods",
+        "knightshire"
     ],
     "Llocs_Visitats": [
-        "dawn_village"
+        "dawn_village",
+        "south_forest",
+        "greenwoods",
+        "knightshire"
     ],
     "AchievementsProgress": {},
     "AchievementsObtained": [],
@@ -26,45 +46,41 @@
         {
             "id": "Player",
             "Nom": "Aishia",
-            "Base": "archer",
-            "Lv": 5,
+            "Base": "warrior",
+            "Lv": 26,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 50,
+            "XP": 76.6,
             "StatsCombat": {
-                "MaxHP": 22.0,
-                "CurHP": 22.0,
-                "MaxMana": 24.0,
-                "Mana": 12.0,
-                "ATK": 24.0,
-                "INT": 20.0,
-                "DEF": 24.0,
-                "SPD": 22.0
-            }
-        },
-        {
-            "id": "ally_1",
-            "Nom": "Elaine",
-            "Base": "mage",
-            "Lv": 5,
-            "Lv_Limit": 100,
-            "Moves": [],
-            "Afected": [],
-            "XP": 100,
-            "StatsCombat": {
-                "MaxHP": 18.0,
-                "CurHP": 18.0,
-                "MaxMana": 30.0,
-                "Mana": 5.0,
-                "ATK": 16.0,
-                "INT": 28.0,
-                "DEF": 20.0,
-                "SPD": 20.0
+                "MaxHP": 93.2,
+                "CurHP": 26.0,
+                "MaxMana": 62.0,
+                "Mana": 14.999999999999996,
+                "ATK": 82.8,
+                "INT": 30.8,
+                "DEF": 77.60000000000001,
+                "SPD": 56.800000000000004
             }
         }
     ],
-    "Inventari": [],
+    "Inventari": [
+        {
+            "id": "complete_potion",
+            "Amount": 1,
+            "Clase": "Combat"
+        },
+        {
+            "id": "inferior_potion",
+            "Amount": 1,
+            "Clase": "Combat"
+        },
+        {
+            "id": "potion",
+            "Amount": 1,
+            "Clase": "Combat"
+        }
+    ],
     "Titols": [],
     "Estadistiques": {},
     "Increment_Stats": {

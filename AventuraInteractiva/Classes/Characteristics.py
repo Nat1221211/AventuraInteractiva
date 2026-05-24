@@ -53,11 +53,15 @@ class Effects():
     
     
     # Metodes
-    def __init__(self, name, description, blocking, turns, damage, statuschanges = "None", limit = 1):
+    def __init__(self, iden, name, description, blocking, turns, damage, statuschanges = "None", limit = 1):
+        self.id = iden
         self.Name = name
         self.Description = description
         self.Blocking = blocking
         self.Turns = turns
         self.Damage = damage
         self.StatEffects = statuschanges
-        self.EffectLimit = limit   
+        self.EffectLimit = limit
+        self.Debuff = False
+        if self.Damage > 0:
+            self.Debuff = True

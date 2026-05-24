@@ -27,6 +27,10 @@ class Menu():
         self.espaiat_y = 0
         self.x_inicial = self.app.Ancho - x
         self.y_inicial = y
+        if self.MenuAnterior != None:
+            self.IndexColumna = self.MenuAnterior.IndexColumna
+        else:
+            self.IndexColumna = 0
 
         # Estats Dialeg
         self.Esciribint = False
@@ -42,6 +46,14 @@ class Menu():
         # estats Confirmacio
         self.CaixaConfirmacio = False
         self.Confirmacio = False
+
+    def APlicarMenuAnterior(self, menuAnterior):
+        self.MenuAnterior = menuAnterior
+        if self.MenuAnterior != None and isinstance(self.opcions, dict):
+            self.IndexColumna = self.MenuAnterior.IndexColumna % len(self.opcions)
+        else:
+            self.IndexColumna = 0
+        
 
     def dibuixar(self):
         self.canvas.delete("menu_interactiu")
@@ -143,6 +155,22 @@ class Menu():
         if not self.Escribint == True:
             return
         
+        midacuadre = 180
+        if self.app.Combat == True:
+            if self.app.MenuCombat.PantallaFICombat == True:
+                midacuadre = 240
+            else:
+                midacuadre = 150
+        
+        rect2 = self.canvas.create_rectangle(
+            5, self.app.Alto - midacuadre,
+            self.app.Ancho - 5,
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=4, tags="dialeg"
+        )
+        self.canvas.tag_raise("dialeg")
+        
         if index <= len(self.textdialeg):
             mostrat = self.textdialeg[:index]
 
@@ -177,22 +205,28 @@ class Menu():
     def PulsarEnter(self, tecla = None):  # Funcio per a determinar que ocurreix si estem en un menu i es presiona enter...
         
         if self.Escribint == True:
-            self.app.root.after_cancel(self.after_id)
-            self.Escribint = False
-            self.canvas.delete("text_animat")
-
-            y = 450
+            saltar = True
             if self.app.Combat == True:
-                y = 470
+                if self.app.MenuCombat.AccioAliat == True or self.app.MenuCombat.AccioAliat == True: # UpdatingHP
+                    saltar = False
+            
+            if saltar == True:
+                self.app.root.after_cancel(self.after_id)
+                self.Escribint = False
+                self.canvas.delete("text_animat")
 
-            self.canvas.create_text(
-                30, y,
-                text=self.textdialeg, fill="black",
-                width=self.app.Ancho - 60,
-                font=("Courier", 16, "bold"),
-                anchor="nw", tags=("dialeg", "text_animat")
-            )
-            self.ComencarParpadeig()
+                y = 450
+                if self.app.Combat == True:
+                    y = 470
+
+                self.canvas.create_text(
+                    30, y,
+                    text=self.textdialeg, fill="black",
+                    width=self.app.Ancho - 60,
+                    font=("Courier", 16, "bold"),
+                    anchor="nw", tags=("dialeg", "text_animat")
+                )
+                self.ComencarParpadeig()
 
         elif self.parpadeig_id != None:
             self.app.root.after_cancel(self.parpadeig_id)
@@ -205,21 +239,30 @@ class Menu():
                     self.SeguentDialeg.remove(i)
                     self.dibuixar_dialeg(passarDialeg)
             else:
-                if self.app.Confirmacio != True and self.app.Combat == False:
-                    self.canvas.delete("all")
+                if self.app.Confirmacio == True and self.app.Combat == False:
                     self.dibuixar()
+
+                elif self.app.Combat == True:
+                    if self.app.MenuCombat.DialegMissions == True:
+                        self.app.MenuCombat.DialegMissions = False
+                        self.canvas.delete("dialeg")
+                    else:
+                        self.canvas.delete("dialeg")
+                        self.app.MenuCombat.EleccioDespresPostDialegIntern()
+
+                else:
+                    if self.id == "Confirmacio":
+                        self.canvas.delete("all")
+                        self.app.Enrere()
+
+                    elif self.app.MenuMissions == True:
+                        self.canvas.delete("all")
+                        self.app.MostrarMenuMissions(False)
+                    
+                    else:
+                        self.canvas.delete("all")
+                        self.dibuixar()
             
-                if self.app.Combat == True:
-                    self.canvas.delete("dialeg")
-                    self.app.MenuCombat.EleccioDespresPostDialegIntern()
-
-            if self.app.Confirmacio == True and self.app.Combat == False:
-                self.dibuixar()
-            else:
-                if self.id == "Confirmacio":
-                    self.canvas.delete("all")
-                    self.app.Enrere()
-
     def CrearDialeg(self, text):
         if self.app.DialegActiu == True:
             self.SeguentDialeg.append(text)
@@ -463,9 +506,16 @@ class Menu():
             if self.healthanimation != None:
                 self.app.root.after_cancel(self.healthanimation)
                 self.healthanimation = None
-                self.app.Motxila = True
                 self.app.SeleccioAliat = False
-                self.app.root.after(200, self.app.MenuMotxila())
+                if self.app.Combat == False:
+                    self.app.Motxila = True
+                    self.app.root.after(200, self.app.MenuMotxila())
+                else:
+                    self.canvas.delete("mostrar_equip")
+                    self.canvas.delete("menu_motxila")
+                    self.app.MenuCombat.FinalitzarTorn()
+                    self.app.MenuCombat.ActualitzarBarresEstat()
+                    self.app.root.after(200, self.app.MenuCombat.Lluitar())
    
     def mostrar_estat_equip(self):
         if self.app.Combat == False:
@@ -580,11 +630,11 @@ class Menu():
         for pos, stat in enumerate(self.opcions[self.index].Objecte.StatsCombat.items()):
             if stat[0] in ["MaxHP", "MaxMana"]:
                 if stat[0] == "MaxHP":
-                    text_mostrat = f"HP: {self.opcions[self.index].Objecte.StatsCombat["CurHP"]} / {stat[1]}"
+                    text_mostrat = f"HP: {round(self.opcions[self.index].Objecte.StatsCombat["CurHP"], 1)} / {round(stat[1], 1)}"
                 else:
-                    text_mostrat = f"Mana: {self.opcions[self.index].Objecte.StatsCombat["Mana"]} / {stat[1]}"
+                    text_mostrat = f"Mana: {round(self.opcions[self.index].Objecte.StatsCombat["Mana"], 1)} / {round(stat[1], 1)}"
             else:
-                text_mostrat = f"{stat[0]}: {stat[1]}"
+                text_mostrat = f"{stat[0]}: {round(stat[1], 1)}"
 
             if stat[0] in ["CurHP", "Mana"]:
                 continue
@@ -598,9 +648,52 @@ class Menu():
             )
             y += 20
 
+        # Mostrem efectes d'estat
+        self.opcions[self.index].Objecte.afected
+        self.canvas.create_text(
+            30, self.app.Alto - 300,
+            text="Efectes d'estat",
+            fill="black",
+            font=("Courier", 16, "bold"),
+            anchor="nw", tags=("ent_info", "mostrar_estat")
+        )
+
+        y = self.app.Alto - 270
+        x = 30
+        for pos, i in enumerate(self.opcions[self.index].Objecte.afected):
+
+            color = "cyan"
+            if i.Debuff == True:
+                color = "red"
+
+            textShown = f"{i.Name}\nTurns: {i.Turns}"
+
+            self.canvas.create_text(
+                x, y,
+                text=textShown,
+                fill=color,
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("ent_info", "mostrar_estat")
+            )
+            if (pos + 1) // 3 == 1:
+                x = 30
+                y += 50
+            else:
+                x += 200
+        
+        if len(self.opcions[self.index].Objecte.afected) < 1:
+            self.canvas.create_text(
+                x, y,
+                text="Ningun",
+                fill="black",
+                font=("Courier", 16, "bold"),
+                anchor="nw", tags=("ent_info", "mostrar_estat")
+            )
+
+
         # Mostrem la descripcio
         self.canvas.create_text(
-            30, self.app.Alto - 150,
+            30, self.app.Alto - 100,
             width=self.app.Ancho - 265,
             text=self.opcions[self.index].Objecte.base.EntityDescription, fill="black",
             font=("Courier", 16, "bold"),
@@ -669,6 +762,17 @@ class Menu():
             elif direccio == "d":
                 self.IndexColumna = (self.IndexColumna + 1) % len(self.opcions.keys())
             self.OmplirInformacioMotxila()
+        
+        elif self.app.MenuMissions == True:
+            if direccio == "w":
+                self.index = (self.index - 1) % len(self.llistamissions)
+            elif direccio == "s":
+                self.index = (self.index + 1) % len(self.llistamissions)
+            elif direccio == "a":
+                self.IndexColumna = (self.IndexColumna - 1) % len(self.opcions.keys())
+            elif direccio == "d":
+                self.IndexColumna = (self.IndexColumna + 1) % len(self.opcions.keys())
+            self.OmplirInformacioMissions()
 
         elif self.app.MenuExits == True:
             if direccio == "w":
@@ -779,8 +883,8 @@ class Menu():
         self.app.SeleccionarEntitat()
     
     def DibuixarMenuMotxila(self):
-        self.canvas.delete("all")
-        self.IndexColumna = 0
+        if self.app.Combat == False:
+            self.canvas.delete("all")
         
         # Barra SUperior on es mostraran els menus disponibles dins de la motxila
         self.canvas.create_rectangle(
@@ -904,7 +1008,7 @@ class Menu():
                             text=descript, 
                             fill="black",
                             font=("Courier", 16, "bold"),
-                            width=self.app.Ancho - 35,
+                            width=self.app.Ancho - 235,
                             anchor="nw", tags=("descripcio_objecte", "informacio_motxila", "menu_motxila")
                         )
 
@@ -1003,7 +1107,7 @@ class Menu():
                             200, self.app.Alto - 165,
                             text=descript, 
                             fill="black",
-                            width=self.app.Ancho - 35,
+                            width=self.app.Ancho - 235,
                             font=("Courier", 16, "bold"),
                             anchor="nw", tags=("descripcio_exit", "informacio_exits", "menu_exits")
                         )
@@ -1033,6 +1137,167 @@ class Menu():
 
             midatext = font.measure(opc)
             x+=midatext + 30
+
+    def DibuixarMenuMissions(self):
+        # Barra Superior on es mostraran els menus disponibles dins de la motxila
+        self.canvas.delete("all")
+
+        self.canvas.create_rectangle(
+            5, 5,
+            self.app.Ancho - 580, 60,
+            fill="white", outline="black",
+            width=5, tags=("zona_nommenu", "menu_missions")
+        )
+
+        self.canvas.create_rectangle(
+            self.app.Ancho - 575, 5,
+            self.app.Ancho - 5, 60,
+            fill="white", outline="black",
+            width=5, tags=("zona_submenus", "menu_missions")
+        )
+
+        self.canvas.create_rectangle(
+            5, 65,
+            self.app.Ancho - 450,
+            self.app.Alto - 190,
+            fill="white", outline="black",
+            width=5, tags=("zona_missions", "menu_missions")
+        )
+
+        self.canvas.create_rectangle(
+            self.app.Ancho - 445, 65,
+            self.app.Ancho - 5,
+            self.app.Alto - 190,
+            fill="white", outline="black",
+            width=5, tags=("zona_informacio", "menu_missions")
+        )
+
+        self.canvas.create_rectangle(
+            5, self.app.Alto - 185,
+            self.app.Ancho - 5,
+            self.app.Alto - 5,
+            fill="white", outline="black",
+            width=5, tags=("zona_descripcio", "menu_missions")
+        )
+
+        self.OmplirInformacioMissions()
+    
+    def OmplirInformacioMissions(self):
+        self.canvas.delete("informacio_missions")
+
+        x = 340
+        for i, opc in enumerate(self.opcions.items()):
+            color = "black"
+            if i == self.IndexColumna:
+                color = "blue"
+                self.canvas.create_text(
+                    30, 30,
+                    text="Missions " + str(opc[0]), fill="black",
+                    font=("Courier", 16, "bold"),
+                    anchor="w", tags=("titol_menu", "informacio_missions", "menu_motxila")
+                )
+
+                self.llistamissions = opc[1]
+
+                if self.index > len(self.llistamissions) - 1:
+                    self.index = len(self.llistamissions) -1
+                elif len(self.llistamissions) == 0:
+                    self.index = 0
+                
+                qty_mostrar = 8
+                if self.index >= qty_mostrar:
+                    limit_inf = self.index - (qty_mostrar)
+                    limit_sup = self.index + 1
+                else:
+                    limit_sup = qty_mostrar + 1
+                    limit_inf = 0
+
+                y_obj = 95
+                
+                for j, missio in enumerate(self.llistamissions[limit_inf:limit_sup]):
+                    color_obj = "black"
+                    if self.index == self.llistamissions.index(missio):
+                        color_obj = "blue"
+
+                        descript = "Selecciona per a sortir de la motxila..."
+                        if missio.id != "sortir":
+                            descript = missio.Objecte.Description
+
+                            textProgres = missio.Objecte.TextProgres(self.app)
+
+                            self.canvas.create_text(
+                                self.app.Ancho - 415, 95,
+                                text=textProgres, 
+                                fill="black",
+                                font=("Courier", 16, "bold"),
+                                width=390,
+                                anchor="nw", tags=("descripcio_objecte", "informacio_missions", "menu_motxila")
+                            )
+
+                            textRecompenses = missio.Objecte.MostrarRecompenses(self.app)
+                            
+                            self.canvas.create_text(
+                                self.app.Ancho - 415, 175,
+                                text=textRecompenses, 
+                                fill="black",
+                                font=("Courier", 16, "bold"),
+                                width=390,
+                                anchor="nw", tags=("descripcio_objecte", "informacio_missions", "menu_motxila")
+                            )
+                            
+                        self.canvas.create_text(
+                            200, self.app.Alto - 165,
+                            text=descript,
+                            fill="black",
+                            font=("Courier", 16, "bold"),
+                            width=self.app.Ancho - 235,
+                            anchor="nw", tags=("descripcio_objecte", "informacio_missions", "menu_motxila")
+                        )
+
+                        
+
+                    if missio.id != "sortir":
+                        text = missio.Objecte.Name
+                    else:
+                        text = missio.Nom
+
+                    self.canvas.create_text(
+                        30, y_obj,
+                        text=text, fill=color_obj,
+                        font=("Courier", 16, "bold"),
+                        anchor="nw", tags=("objecte_inventari", "informacio_missions", "menu_motxila")
+                    )
+                    
+                    y_obj += 30                
+
+            self.canvas.create_text(
+                x, 30,
+                text=opc[0], fill=color,
+                font=("Courier", 16, "bold"),
+                anchor="w", tags=("titol_menu", "informacio_missions", "menu_motxila")
+            )
+
+            font = tkfont.Font(family="Courier", size=16, weight="bold")
+
+            midatext = font.measure(opc[0])
+            x+=midatext + 30
+    
+    def AccioMissio(self, seleccionat):
+        # Aqui decidim si aceptem, reclamem, etc... la missio.
+        if seleccionat.id in self.app.jugador.MissionsDisponibles:
+            self.app.jugador.MisionsAcceptades.append(seleccionat.id)
+            self.app.jugador.MissionsDisponibles.remove(seleccionat.id)
+            self.CrearDialeg(f"Has acceptat la missio {seleccionat.Name} !")
+        
+        elif seleccionat.id in self.app.jugador.MisionsAcceptades:
+            if seleccionat.Reclamar(self.app) == True:
+                seleccionat.dibuixar_Pantalla_Reclamar_Missio(self.app)
+            else:
+                print("Acceptada")
+        else:
+            print("Completades")
+    
+
 
 class OpcioMenu():
     def __init__(self,iden, nom, habilitat, descripcio, imatge = None, objecte = None, condicio_habilitat = False):

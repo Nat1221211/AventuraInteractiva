@@ -70,6 +70,7 @@ class App():
         self.UltimObjecteSeleccionat = None
         self.RecuperantVida = False
         self.MenuExits = False
+        self.MenuMissions = False
 
         # Midas pantalla
         self.Alto = 600 # Declarem mides en variables per a utilitzarles facilment.
@@ -95,13 +96,32 @@ class App():
         self.MenuCombat = CombatManager.MenuCombat
         self.Combat = False
 
+        # Estats Pantalla Missions Reclamar
+        self.ReclamarMissio = False
+        self.levelingUp = False
+        self.saltarPantallaReclamarMissio = False
+        self.ObtainingObjects = False
+        self.ObjectsAnimation = None
+        self.levelAnimation = None
+        self.ReclamarMissioFinalitzat = False
+        self.ObjectesDibuixats = False
+        self.YRecompenses = 140
+
+
         self.MostrarPantallaInicial()
     
     def ConfirmarSeleccio(self, event = None):
         if self.Combat == True:
             self.ConfirmarSeleccioCombat(event)
+        elif self.ReclamarMissio == True:
+            if self.saltarPantallaReclamarMissio == False:
+                self.saltarPantallaReclamarMissio = True
+            elif self.ReclamarMissioFinalitzat == True:
+                self.ReclamarMissioFinalitzat = False
+                self.ReclamarMissio = False
+                self.root.after(200, lambda: self.MostrarMenuMissions(False))
         else:
-            if self.Menu.id not in ["Motxila"]:
+            if self.Menu.id not in ["Motxila", "MenuMissions"]:
                 seleccionat = self.Menu.opcions[self.Menu.index]
         
             if self.Menu.id == "Seleccio Partida":    # Segons la opcio i l'objecte dur a terme una accio
@@ -116,6 +136,15 @@ class App():
                 
                 else:
                     self.Motxila = False
+                    UIManager.MostrarMenuPrincipal(self)
+            
+            elif self.Menu.id == "MenuMissions":
+                if self.Menu.llistamissions[self.Menu.index].id != "sortir":
+                    seleccionat = self.Menu.llistamissions[self.Menu.index].Objecte
+                    self.Menu.AccioMissio(seleccionat)
+                
+                else:
+                    self.MenuMissions = False
                     UIManager.MostrarMenuPrincipal(self)
                 
             elif self.Menu.id == "Confirmacio":
@@ -159,26 +188,42 @@ class App():
                 UIManager.CridarAccioMenuPrincipal(self, seleccionat)
             
             elif self.Menu.id == "Mapa":
-                AdventureManager.CanviarZona(self, seleccionat)
+                if seleccionat.id != "sortir":
+                    AdventureManager.CanviarZona(self, seleccionat)
+                else:
+                    self.Enrere()
         
     
     def ConfirmarSeleccioCombat(self, event = None):
         if self.Menu.id not in ["Motxila"]:
-            seleccio = self.Menu.opcions[self.Menu.index]
-
+            seleccio = self.Menu.opcions[self.Menu.index]            
 
         if self.MenuCombat.AccioAliat == True:
             if self.MenuCombat.MenuAccioAliat == True:
                 seleccio = self.MenuCombat.AccionsCombat[self.MenuCombat.IndexAccio]
                 self.MenuCombat.CridarMenuSegonsAccio(seleccio)
             
+            elif self.Menu.id == "Motxila":
+                if self.Menu.llistaobjectes[self.Menu.index].id != "sortir":
+                    seleccionat = self.Menu.llistaobjectes[self.Menu.index].Objecte["objecte"]
+                    self.Motxila = False
+                    self.UltimObjecteSeleccionat = seleccionat
+                    UIManager.VeureEstatus(self, True)
+                
+                else:
+                    self.Motxila = False
+                    self.canvas.delete("menu_motxila")
+                    self.MenuCombat.Lluitar()
+            
             elif self.MenuCombat.Atacar==True:
                 if self.MenuCombat.SeleccionarObjectiu == True:
-                    self.MenuCombat.CancelarSeleccioObjectiu()
-                    self.MenuCombat.RealitzarAtac()
+                    if self.MenuCombat.AtacARealitzar.MultiTarget == False:
+                        self.MenuCombat.CancelarSeleccioObjectiu()
+                        self.MenuCombat.RealitzarAtac()
                 else:
                     seleccio = self.MenuCombat.MovimentsAliat[self.MenuCombat.IndexMoviment]
-                    self.MenuCombat.dibuixar_seleccio_objectiu(seleccio)
+                    if seleccio.Habilitat == True:
+                        self.MenuCombat.dibuixar_seleccio_objectiu(seleccio)
             
             elif self.Menu.id == "Seleccio Equip":
                 if self.SeleccioAliat == True:
@@ -200,7 +245,6 @@ class App():
                     else:
                         self.Menu.mostrar_estat_equip()
                
-         
     def Enrere(self):
         self.Menu = self.Menu.MenuAnterior
         self.MostrarMenu()
@@ -209,7 +253,7 @@ class App():
         menuAnterior = self.Menu
         self.Menu = Utilitats.Menu(self, self.canvas, menu["id"], menu["opcions"], x, y)
 
-        self.Menu.MenuAnterior = menuAnterior
+        self.Menu.APlicarMenuAnterior(menuAnterior)
 
     def MostrarMenu(self):
         self.canvas.delete("all")
@@ -220,6 +264,16 @@ class App():
         if image != None:
             if os.path.exists(image):
                 self.ImatgeFons = Image.open(image)
+        else:
+            if not isinstance(self.jugador.Ubicacio, str):
+                if self.jugador.Ubicacio.id in self.Zones.keys():
+                    if self.Combat == True:
+                        text = ""
+                    else:
+                        text = "Scene"
+                    
+                    if text in self.jugador.Ubicacio.Scenes.keys():
+                        self.ImatgeFons = Image.open(self.jugador.Ubicacio.Scenes[text])
         
         # Redimensionem a la mida de la pantalla, i li donem format LANCZOS (de bona qualitat)
         redim_image = self.ImatgeFons.resize(
@@ -324,6 +378,17 @@ class App():
             if tecla.keysym == "BackSpace": 
                 self.Menu.PulsarEnter()
         
+        elif self.Motxila == True:
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+            if tecla.keysym == "a": self.Menu.Moviment("a")
+            if tecla.keysym == "d": self.Menu.Moviment("d")
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace":
+                self.Motxila = False
+                self.canvas.delete("menu_motxila")
+                self.MenuCombat.Lluitar()
+        
         elif self.SeleccioAliat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")
             if tecla.keysym == "s": self.Menu.Moviment("s")
@@ -377,13 +442,16 @@ class App():
                     else:
                         UIManager.MostrarMenuPrincipal(self)
 
-
     def ControlBindsMenus(self, tecla):
         if self.DialegActiu == True:
             if tecla.keysym == "Return":
                 self.Menu.PulsarEnter()
             if tecla.keysym == "BackSpace": 
                 self.Menu.PulsarEnter()
+        
+        elif self.ReclamarMissio == True:
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace": self.ConfirmarSeleccio()
         
         elif self.SeleccioAliat == True:
             if tecla.keysym == "w": self.Menu.Moviment("w")
@@ -430,6 +498,16 @@ class App():
                 self.Motxila = False
                 UIManager.MostrarMenuPrincipal(self)
         
+        elif self.MenuMissions == True:
+            if tecla.keysym == "w": self.Menu.Moviment("w")
+            if tecla.keysym == "s": self.Menu.Moviment("s")
+            if tecla.keysym == "a": self.Menu.Moviment("a")
+            if tecla.keysym == "d": self.Menu.Moviment("d")
+            if tecla.keysym == "Return": self.ConfirmarSeleccio()
+            if tecla.keysym == "BackSpace":
+                self.MenuMissions = False
+                UIManager.MostrarMenuPrincipal(self)
+        
         else:
             if tecla.keysym == "w": self.Menu.Moviment("w")
             if tecla.keysym == "s": self.Menu.Moviment("s")
@@ -439,7 +517,6 @@ class App():
             if tecla.keysym == "BackSpace":
                 if self.Menu.id not in ["Menu Wild", "Menu Poble", "Seleccio Partida", "Seleccio Entitats"]:
                     self.Enrere()
-
 
     def SeleccionarPartida(self):
         seleccionat = self.Menu.opcions[self.Menu.index]
@@ -488,7 +565,10 @@ class App():
     
     def CarregarPartida(self, partida):
         self.jugador = SaveGame.CarregarPartida(partida, self.Missions, self.Objects, self.Zones, self.Entities)
+        
         UIManager.MostrarMenuPrincipal(self)
+
+
 
     def GuardarPartida(self):
         self.QuinaConfirmacio = "Guardar"
@@ -504,8 +584,18 @@ class App():
         self.CanviarMenu(UIManager.Menus["Confirmacio"], 60, self.Alto - 265)
         self.Menu.CrearDialeg(dialeg)
 
-    def MenuMotxila(self):
+    def MenuMotxila(self, reinici = True):
         self.Motxila = True
         UIManager.CrearMenu(self.jugador.objectes.items(), "Motxila", "Objectes")
         self.CanviarMenu(UIManager.Menus["Motxila"])
+        if reinici == True:
+            self.Menu.IndexColumna = 0
         self.Menu.DibuixarMenuMotxila()
+    
+    def MostrarMenuMissions(self, reinici = True):
+        self.MenuMissions = True
+        UIManager.CrearMenuMissions(self, self.Missions, "MenuMissions")
+        self.CanviarMenu(UIManager.Menus["MenuMissions"])
+        if reinici == True:
+            self.Menu.IndexColumna = 0
+        self.Menu.DibuixarMenuMissions()

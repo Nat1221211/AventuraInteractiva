@@ -108,9 +108,10 @@ def CallEfect():
             bloqueig = (i["ImpedeixAccions?"], i["ProbabilitatImpedirAccio"])
         else:
             bloqueig = (False, 0)
-        efecte = Characteristics.Effects(i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], 
+
+        efecte = Characteristics.Effects(i["id"], i["Nom"],  i["Descripcio"], bloqueig, i["Duracio"], 
                                             i["Dany"], i["StatAfected"], i["Limit"])
-        efectes.update({efecte.Name: efecte})
+        efectes.update({efecte.id: efecte})
     return efectes
 
 def CallMovement(effects):
@@ -118,7 +119,7 @@ def CallMovement(effects):
     moves = {}
     for i in movements:
         Buff = {}
-        if len(i["Buff"]) > 1 and i["Buff"] == list:
+        if isinstance(i["Buff"], list) and len(i["Buff"]) > 1:
             for j in range(len(i["Buff"])):
                 if i["Buff"][j] != "" and i["ProbEfecteBuff"][j] != "":
                     Buff[effects[i["Buff"][j]]]=int(i["ProbEfecteBuff"][j])
@@ -186,8 +187,21 @@ def CallZones():
                         shop_value
                     }
                 )
+        
+            base_path = os.path.dirname(__file__)
+            ruta_background = os.path.join(base_path, f"Assets/Backgrounds/Battle/{i["zone_type"]}_Battleground.png")
+            ruta_scene = os.path.join(base_path, f"Assets/Backgrounds/GUIs/{i["id"]}_scene.png")
 
-            place = Zones.Zona(i["id"], i["name"], i["description"], i["zone_type"], i["enemies"], 
+            imatges = {}
+            if os.path.exists(ruta_background):
+                imatges.update({"Battle": ruta_background})
+            if os.path.exists(ruta_scene):
+                imatges.update({"Scene": ruta_scene})
+            else:
+                ruta_scene = os.path.join(base_path, f"Assets/Backgrounds/GUIs/{i["zone_type"]}_scene.png")
+                imatges.update({"Scene": ruta_scene})
+
+            place = Zones.Zona(i["id"], i["name"], i["description"], i["zone_type"], imatges, i["enemies"], 
                             i["monedes"], i["Intents"], i["objects"], shop_dict)
             
             place.AddConnections(i["connections"])

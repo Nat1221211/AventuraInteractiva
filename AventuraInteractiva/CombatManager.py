@@ -60,7 +60,7 @@ class MenuCombat():
         self.IndexAccio = 0
         self.AccionsCombat = [
             OpcionsCombat("atacar", "Atacar", True, ""),
-            OpcionsCombat("motxila", "Motxila", False, ""),
+            OpcionsCombat("motxila", "Motxila", True, ""),
             OpcionsCombat("estat", "Veure Estat", True, ""),
             OpcionsCombat("fugir", "Fugir", True, ""),
             OpcionsCombat("pasar", "Pasar Torn", True, "")
@@ -91,6 +91,7 @@ class MenuCombat():
         self.AnimacioSeleccioObjectiu = None
         self.ObjectiuMoviment = None
         self.GrupObjectiuMoviment = ""
+        self.DialegMissions = False
 
         self.Fugir = [False]
         self.combat = False
@@ -108,7 +109,7 @@ class MenuCombat():
 
         AccionsDisponibles={
             "atacar": lambda: self.dibuixar_seleccio_Moviment(),
-            # "motxila": lambda: "",
+            "motxila": lambda: self.app.MenuMotxila(),
             "estat": lambda: UIManager.VeureEstatus(self.app),
             "fugir": lambda: self.AccioFugir(),
             "pasar": lambda: self.AccioPasarTorn()
@@ -242,8 +243,8 @@ class MenuCombat():
                 x + 50, y + 15,
                 text=ent[1].nom,
                 fill="black",
-                width=150,
-                font=("Courier", 16, "bold"),
+                width=(140 - 50),
+                font=("Courier", 13, "bold"),
                 anchor="nw", tags=("info_enemics", "zona_enemics", "combat")
             )
 
@@ -268,7 +269,7 @@ class MenuCombat():
                 x + 40 + 95, 
                 y + 100,
                 fill="white", outline="black",
-                width=2, tags=("vida_entitats", "info_enemics", "zona_enemics", "combat")
+                width=2, tags=("vida_entitats_enemigues", "info_enemics", "zona_enemics", "combat")
             )
 
             health = ent[1].StatsCombat["CurHP"] / ent[1].StatsCombat["MaxHP"]
@@ -281,7 +282,7 @@ class MenuCombat():
                 fill="green", outline="black",
                 width=2, tags=(f"hp_enemic_{ent[1].id}", "vida_actual_entitats", "info_enemics", "zona_enemics", "combat")
             )
-            self.canvas.tag_raise("vida_actual_entitats", "vida_entitats")
+            self.canvas.tag_raise("vida_actual_entitats", "vida_entitats_enemigues")
             
             font = tkfont.Font(family="Courier", size=11, weight="bold")
 
@@ -344,7 +345,7 @@ class MenuCombat():
                 x + 50, y + 15,
                 text=ent[1].nom,
                 fill="black",
-                width=180,
+                width=(180 - 50),
                 font=("Courier", 16, "bold"),
                 anchor="nw", tags=("info_aliats", "zona_aliats", "combat")
             )
@@ -370,7 +371,7 @@ class MenuCombat():
                 self.app.Ancho - 15, 
                 y + 80,
                 fill="white", outline="black",
-                width=2, tags=("vida_entitats", "info_aliats", "zona_aliats", "combat")
+                width=2, tags=("vida_entitats_aliades", "info_aliats", "zona_aliats", "combat")
             )
 
             health = ent[1].StatsCombat["CurHP"] / ent[1].StatsCombat["MaxHP"]
@@ -384,7 +385,7 @@ class MenuCombat():
                 fill="green", outline="black",
                 width=2, tags=(f"vida_entitats_{ent[1].id}", "vida_actual_entitats", "combat")
             )
-            self.canvas.tag_raise("vida_actual_entitats", "vida_entitats")
+            self.canvas.tag_raise("vida_actual_entitats", "vida_entitats_aliades")
 
             font = tkfont.Font(family="Courier", size=11, weight="bold")
 
@@ -754,7 +755,7 @@ class MenuCombat():
                         # Quan mes alta sigui més lent recorren la barra d'acció.
 
         for pos, i in enumerate(self.equip.values()):
-            if i.StatsCombat["CurHP"] > 0:
+            if i.StatsCombat["CurHP"] > 0.1:
                 i.Priority += i.StatsCombat["SPD"] / divVel
                 amplada = self.app.Ancho - 80
                 x = 40 + (amplada * (i.Priority / 100))
@@ -765,7 +766,7 @@ class MenuCombat():
                 self.canvas.move(f"accio_entitat_aliada_{i.id}", x, 0)
         
         for pos, j in enumerate(self.enemic.values()):
-            if j.StatsCombat["CurHP"] > 0:
+            if j.StatsCombat["CurHP"] > 0.1:
                 j.Priority += j.StatsCombat["SPD"] / divVel
                 amplada = self.app.Ancho - 80
                 x = 40 + (amplada * (j.Priority / 100))
@@ -973,38 +974,39 @@ class MenuCombat():
     # enunciarem que s'ha pujat de nivell, etc...
         for num, ally in enumerate(self.equip.values()):
             levelUp = False
-            if ally.id in self.Recompenses["XP"].keys():
-                if self.Recompenses["XP"][ally.id] > 1 and self.saltarPantallaFi == False:
-                    levelUp = ally.LvlUp(1)
-                    self.Recompenses["XP"][ally.id] -= 1
-                else:
-                    if self.saltarPantallaFi == True:
-                        self.levelingUp = False
-                    levelUp = ally.LvlUp(self.Recompenses["XP"][ally.id])
-                    self.Recompenses["XP"][ally.id] = 0
+            if self.DialegMissions == False:
+                if ally.id in self.Recompenses["XP"].keys():
+                    if self.Recompenses["XP"][ally.id] > (ally.XpRequired / 100) and self.saltarPantallaFi == False:
+                        levelUp = ally.LvlUp((ally.XpRequired / 100))
+                        self.Recompenses["XP"][ally.id] -= (ally.XpRequired / 100)
+                    else:
+                        if self.saltarPantallaFi == True:
+                            self.levelingUp = False
+                        levelUp = ally.LvlUp(self.Recompenses["XP"][ally.id])
+                        self.Recompenses["XP"][ally.id] = 0
 
-            midesBarraFons = self.canvas.coords(f"barra_xp_fons_{ally.id}")
+                midesBarraFons = self.canvas.coords(f"barra_xp_fons_{ally.id}")
 
-            coordsBarraXP = self.canvas.coords(f"barra_xp_{ally.id}")
-            percentatgeXP = (round(ally.Xp, 2) / round(ally.XpRequired, 2))
-            amplebarraxp = midesBarraFons[2] - midesBarraFons[0]
-            coordsBarraXP[2] = coordsBarraXP[0] + (amplebarraxp * percentatgeXP)
-    
-            coordsBarraXP = self.canvas.coords(f"barra_xp_{ally.id}", coordsBarraXP)
-
-            text_xp = f"EXP: {round(ally.Xp, 2)} / {round(ally.XpRequired, 2)}"
-            self.canvas.itemconfig(f"text_experiencia_{ally.id}", text=text_xp)
+                coordsBarraXP = self.canvas.coords(f"barra_xp_{ally.id}")
+                percentatgeXP = (round(ally.Xp, 2) / round(ally.XpRequired, 2))
+                amplebarraxp = midesBarraFons[2] - midesBarraFons[0]
+                coordsBarraXP[2] = coordsBarraXP[0] + (amplebarraxp * percentatgeXP)
         
-            if levelUp == True:
-                posicio = self.canvas.coords(f"text_nivell_{ally.id}")
-                self.canvas.create_text(
-                    posicio[0], posicio[1] + 20,
-                    text=f"Level UP !!",
-                    fill="black",
-                    font=("Courier", 14, "bold"),
-                    anchor="nw", tags=(f"text_pujatnivell_{ally.id}", "zona_experiencia", "fi_combat")
-                )
-                self.canvas.itemconfig(f"text_nivell_{ally.id}", text=f"Lv: {ally.Lv} / {ally.LvLimit}")
+                coordsBarraXP = self.canvas.coords(f"barra_xp_{ally.id}", coordsBarraXP)
+
+                text_xp = f"EXP: {round(ally.Xp, 2)} / {round(ally.XpRequired, 2)}"
+                self.canvas.itemconfig(f"text_experiencia_{ally.id}", text=text_xp)
+            
+                if levelUp == True:
+                    posicio = self.canvas.coords(f"text_nivell_{ally.id}")
+                    self.canvas.create_text(
+                        posicio[0], posicio[1] + 20,
+                        text=f"Level UP !!",
+                        fill="black",
+                        font=("Courier", 14, "bold"),
+                        anchor="nw", tags=(f"text_pujatnivell_{ally.id}", "zona_experiencia", "fi_combat")
+                    )
+                    self.canvas.itemconfig(f"text_nivell_{ally.id}", text=f"Lv: {ally.Lv} / {ally.LvLimit}")
 
         completats = 0
         for i in self.Recompenses["XP"].values():
@@ -1015,6 +1017,9 @@ class MenuCombat():
            
         
         if self.levelingUp == True:
+            if self.app.DialegActiu == False:
+                if self.DialegMissions == True:
+                    self.DialegMissions = False
             self.levelAnimation = self.app.root.after(10, self.dibuixar_experiencia_pantalla_fi)
         else:
             if self.levelAnimation != None:
@@ -1075,11 +1080,35 @@ class MenuCombat():
                         llistaProb.append(prob)
 
                 target = random.choices(llistaObjectius, weights=llistaProb)
+            else:
+                llistaObjectius = []
+                llistaProb = []
 
+                atacCategoria = "ATK"
+                if accio[0].Type == True:
+                    atacCategoria = "INT"
 
-                self.AtacantEnemic.atacar(self, target[0], accio[0])
+                for id, ent in self.equip.items():
+                    if ent.StatsCombat["CurHP"] > 0:
+                        llistaObjectius.append(id)
+                        if ent.StatsCombat["CurHP"] < ent.StatsCombat["MaxHP"] / 10:
+                            prob = 70
+                        elif ent.StatsCombat["CurHP"] < ent.StatsCombat["MaxHP"] / 4:
+                            prob = 45
+                        elif ent.StatsCombat["CurHP"] < ent.StatsCombat["MaxHP"] / 2:
+                            prob = 30
+                        else:
+                            prob = 15
+                        
+                        llistaProb.append(prob)
+
+                target = random.choices(llistaObjectius, weights=llistaProb)
+                
         else:
-            self.AtacantEnemic.atacar(self, "", accio[0])
+            target = ["All"]
+
+        self.app.Menu.CrearDialeg(f"{self.AtacantEnemic.nom} ha utilitzat {accio[0].Name}!")
+        self.AtacantEnemic.atacar(self, target[0], accio[0])
 
     def DescartarDerrotats(self):
         comprobat = False
@@ -1143,6 +1172,9 @@ class MenuCombat():
         for i in self.equip.values():
             i.afected = []
             i.DefinirCombatStats()
+        self.DialegMissions = True
+        for id, ent in self.EnemicsDerrotats.items():
+            self.app.event.CridarEvent("Derrotar Enemic", ent, self.app)
 
     def ComprobarEfecteEstat(self, aliat = True):
         if aliat == True:
@@ -1159,29 +1191,19 @@ class MenuCombat():
                 if i.RemainingTurns <= 0 and i.Turns > 0:
                     eliminar.append(i)
                 elif comprobar.StatsCombat["CurHP"] > 0:
-                    if i.Damage > 0:
-                        damagepereffect = ((comprobar.StatsCombat["MaxHP"] / 100) * i.Damage)
-                        self.app.Menu.CrearDialeg(f"{comprobar.nom}, ha perdut {round(damagepereffect, 2)} HP degut a la {i.Name}.")
-                        self.entitats_afectades.append(comprobar)
-                        if comprobar.id not in self.danyEfectes.keys():
-                            self.danyEfectes = {comprobar.id: damagepereffect}
-                        else:
-                            self.danyEfectes[comprobar.id]+=damagepereffect
                     i.RemainingTurns -= 1
             for j in eliminar:
                 comprobar.afected.remove(j)
             comprobar.AplicarCanvisEfectesEstat()
-        if len(self.danyEfectes) > 0:
-            self.AplicarDany(self.danyEfectes, self.entitats_afectades, aliat)
-        else:
-            self.AplicarDany({}, [], aliat)
-
 
     def CrearLlistatMoviments(self):
         self.MovimentsAliat = []
         for id, move in self.AtacantAliat.Moves.items():
+            estat = True
+            if move.Cost > self.AtacantAliat.StatsCombat["Mana"]:
+                estat = False
             self.MovimentsAliat.append(
-                OpcionsCombat(id, move.Name, "", True, move)
+                OpcionsCombat(id, move.Name, estat, "", move)
             )
 
     def dibuixar_seleccio_Moviment(self):
@@ -1211,9 +1233,14 @@ class MenuCombat():
         self.dibuixar_info_moviment()
 
     def dibuixar_info_moviment(self):
+        self.IndexMoviment = self.IndexMoviment % len(self.MovimentsAliat)
         move = self.MovimentsAliat[self.IndexMoviment]
-        pos_seg = (self.IndexMoviment + 1) % len(self.MovimentsAliat)
-        pos_ant = (self.IndexMoviment - 1) % len(self.MovimentsAliat)
+
+        pos_seg, pos_ant = None, None
+        if len(self.MovimentsAliat) > 1:
+            pos_seg = (self.IndexMoviment + 1) % len(self.MovimentsAliat)
+        if len(self.MovimentsAliat) > 2:
+            pos_ant = (self.IndexMoviment - 1) % len(self.MovimentsAliat)
 
         self.canvas.delete("info_atac")
         self.canvas.delete("atacs")
@@ -1225,35 +1252,39 @@ class MenuCombat():
                 5 + (((self.app.Ancho - 305) - lenght) / 2), 
                 self.app.Alto - 80,
                 text=move.Moviment.Name,
-                fill="blue",
+                fill="blue" if move.Habilitat == True else "grey",
                 width= 350,
                 font=("Courier", 18, "bold"),
                 anchor="nw", tags=("atac_actual", "atacs","seleccio_atac_aliat", "combat")
             )
+        
+        if pos_ant != None or pos_seg != None:
+            font2 = tkfont.Font(family="Courier", size=16, weight="bold")
+            if pos_ant != None:
+                font2 = tkfont.Font(family="Courier", size=16, weight="bold")
+                lenght = font2.measure(self.MovimentsAliat[pos_ant].Moviment.Name)
 
-        font2 = tkfont.Font(family="Courier", size=16, weight="bold")
-        lenght = font2.measure(self.MovimentsAliat[pos_ant].Moviment.Name)
+                self.canvas.create_text(
+                        5 + (((self.app.Ancho - 305) - lenght) / 2),
+                        self.app.Alto - 110,
+                        text=self.MovimentsAliat[pos_ant].Moviment.Name,
+                        fill="#202020" if self.MovimentsAliat[pos_ant].Habilitat == True else "grey",
+                        width= 350,
+                        font=("Courier", 16, "bold"),
+                        anchor="nw", tags=("atac_ant", "atacs", "seleccio_atac_aliat", "combat")
+                    )
 
-        self.canvas.create_text(
-                5 + (((self.app.Ancho - 305) - lenght) / 2),
-                self.app.Alto - 110,
-                text=self.MovimentsAliat[pos_ant].Moviment.Name,
-                fill="#202020",
-                width= 350,
-                font=("Courier", 16, "bold"),
-                anchor="nw", tags=("atac_ant", "atacs", "seleccio_atac_aliat", "combat")
-            )
-
-        lenght = font2.measure(self.MovimentsAliat[pos_seg].Moviment.Name)
-        self.canvas.create_text(
-                5 + (((self.app.Ancho - 305) - lenght) / 2),
-                self.app.Alto - 50,
-                text=self.MovimentsAliat[pos_seg].Moviment.Name,
-                fill="#202020",
-                width= 350,
-                font=("Courier", 16, "bold"),
-                anchor="nw", tags=("atac_seg", "atacs", "seleccio_atac_aliat", "combat")
-            )
+            if pos_seg != None:
+                lenght = font2.measure(self.MovimentsAliat[pos_seg].Moviment.Name)
+                self.canvas.create_text(
+                        5 + (((self.app.Ancho - 305) - lenght) / 2),
+                        self.app.Alto - 50,
+                        text=self.MovimentsAliat[pos_seg].Moviment.Name,
+                        fill="#202020" if self.MovimentsAliat[pos_seg].Habilitat == True else "grey",
+                        width= 350,
+                        font=("Courier", 16, "bold"),
+                        anchor="nw", tags=("atac_seg", "atacs", "seleccio_atac_aliat", "combat")
+                    )
         
         # Informacio Moviment
         self.canvas.create_text(
@@ -1300,6 +1331,17 @@ class MenuCombat():
             font=("Courier", 16, "bold"),
             anchor="nw", tags=("info_atac","seleccio_atac_aliat", "combat")
         )
+
+        # Mostrar Posicio en llista
+        self.canvas.create_text(
+            self.app.Ancho - 515,
+            self.app.Alto - 30,
+            text=f"Moviment {self.IndexMoviment + 1} de {len(self.MovimentsAliat)}",
+            fill="black",
+            width= 350,
+            font=("Courier", 16, "bold"),
+            anchor="nw", tags=("info_atac","seleccio_atac_aliat", "combat")
+        )
     
     def dibuixar_seleccio_objectiu(self, moviment, mostrar = True):
         self.SeleccionarObjectiu = True
@@ -1318,49 +1360,169 @@ class MenuCombat():
                         if self.ObjectiuMoviment != ent:
                             self.ObjectiuMoviment = ent
                     else:
-                        if ent.StatsCombat["CurHP"] > 0:
+                        if ent.StatsCombat["CurHP"] > 0.1:
                             self.canvas.itemconfig(f"ent_enemy_img_{ent.id}", state="normal")
 
                 self.canvas.itemconfig(f"ent_enemy_img_{self.ObjectiuMoviment.id}", state=stat)
+            else:
+                self.GrupObjectiuMoviment = "Aliats"
+                for pos, ent in enumerate(self.equip.values()):
+                    if pos == self.IndexObjectiu:
+                        if self.ObjectiuMoviment != ent:
+                            self.ObjectiuMoviment = ent
+                    else:
+                        if ent.StatsCombat["CurHP"] > 0.1:
+                            self.canvas.itemconfig(f"ent_ally_img_{ent.id}", state="normal")
+
+                self.canvas.itemconfig(f"ent_ally_img_{self.ObjectiuMoviment.id}", state=stat)
             
             self.AnimacioSeleccioObjectiu = self.app.root.after(200, 
                             lambda: self.dibuixar_seleccio_objectiu(moviment, not mostrar))
 
         else:
             self.ObjectiuMoviment = "All"
+            self.RealitzarAtac()
     
     def CancelarSeleccioObjectiu(self):
         self.SeleccionarObjectiu = False
-        self.canvas.itemconfig(f"ent_enemy_img_{self.ObjectiuMoviment.id}", state="normal")
+        if self.ObjectiuMoviment.id in self.equip.keys():
+            self.canvas.itemconfig(f"ent_ally_img_{self.ObjectiuMoviment.id}", state="normal")
+        else:
+            self.canvas.itemconfig(f"ent_enemy_img_{self.ObjectiuMoviment.id}", state="normal")
         self.app.root.after_cancel(self.AnimacioSeleccioObjectiu)
 
     def RealitzarAtac(self):
+        self.SeleccionarObjectiu = False
         self.app.Menu.CrearDialeg(f"{self.AtacantAliat.nom}, ha utilitzat {self.AtacARealitzar.Name} !!")
         # Cal canviar per a poder seleccionar enemic...
-        self.AtacantAliat.atacar(self, self.ObjectiuMoviment.id, self.AtacARealitzar)
+        if self.AtacARealitzar.MultiTarget == True:
+            target = self.ObjectiuMoviment
+        else:
+            target = self.ObjectiuMoviment.id
+
+        if self.AtacARealitzar.Healing == True or self.AtacARealitzar.Protective == True:
+            self.AtacantAliat.MoveProtHeal(self, target, self.AtacARealitzar)
+        else:
+            self.AtacantAliat.atacar(self, target, self.AtacARealitzar)
     
-    def AplicarDany(self, dany, atacats, atacant, danyrestant = "No Aplicat"):
+    def ActualitzarBarresEstat(self, entitat = None):
+        if entitat != None:
+            grup = [entitat]
+
+        if entitat in self.enemic.values():
+            tag = {
+            "barraHP": "hp_enemic_",
+            "textHP": "texthp_enemic_",
+            "barraBase": "vida_entitats_enemigues",
+            "posBaseXHP": (135)
+            }
+        elif entitat == None or entitat in self.equip.values():
+            if entitat == None:
+                grup = self.equip.values()
+
+            tag = {
+            "barraHP": "vida_entitats_",
+            "barraMP": "",
+            "textHP": "textvida_entitats_",
+            "textMP": "",
+            "barraBase": "vida_entitats_aliades",
+            "posBaseXHP": (self.app.Ancho - 20)
+            }
+
+        for pos, ent in enumerate(grup):
+            x = self.app.Ancho - 250
+
+            coords_barraBase = self.canvas.coords(f"{tag["barraBase"]}")
+
+            actual_coords = self.canvas.coords(f"{tag["barraHP"]}{ent.id}")
+
+            health = ent.StatsCombat["CurHP"] / ent.StatsCombat["MaxHP"]
+            amplada = coords_barraBase[2] - coords_barraBase[0]
+            mida = amplada * health
+
+            new_coords = actual_coords
+            new_coords[2] =  coords_barraBase[0] + mida
+
+            self.canvas.coords(f"{tag["barraHP"]}{ent.id}", new_coords)
+
+            actual_coords = self.canvas.coords(f"{tag["textHP"]}{ent.id}")
+            new_coords = actual_coords
+            font = tkfont.Font(family="Courier", size=11, weight="bold")
+
+            texthealth = f"{round(ent.StatsCombat["CurHP"])}/{round(ent.StatsCombat["MaxHP"])}"
+            midatext = font.measure(texthealth)
+            new_coords[0] = tag["posBaseXHP"] - midatext
+            self.canvas.itemconfig(f"{tag["textHP"]}{ent.id}", text=texthealth)
+            self.canvas.coords(f"{tag["textHP"]}{ent.id}", new_coords)
+
+            if "textMP" in tag.keys():
+                if entitat == None:
+                    x = self.app.Ancho - 250
+                mana = ent.StatsCombat["Mana"] / ent.StatsCombat["MaxMana"]
+                amplada = (self.app.Ancho - 15) - (x + 60)
+                mida = amplada * mana
+                
+                actual_coords = self.canvas.coords(f"mana_entitats_{ent.id}")
+
+                new_coords = actual_coords
+                new_coords[2] = x + 60 + mida
+
+                self.canvas.coords(f"mana_entitats_{ent.id}", new_coords)
+
+                textmana = f"{round(ent.StatsCombat["Mana"])}/{round(ent.StatsCombat["MaxMana"])}"
+
+                actual_coords = self.canvas.coords(f"textmana_entitats_{ent.id}")
+                new_coords = actual_coords
+
+                font = tkfont.Font(family="Courier", size=11, weight="bold")
+                midatext = font.measure(textmana)
+
+                new_coords[0] = self.app.Ancho - 20 - midatext
+                self.canvas.itemconfig(f"textmana_entitats_{ent.id}", text=textmana)
+                self.canvas.coords(f"textmana_entitats_{ent.id}", new_coords)
+
+    
+    def AplicarDany(self, dany, managastat, atacats, atacant, manacost = 0, danyrestant = "No Aplicat"):
         self.Atacar = False
         popEnt = []
 
         if danyrestant == "No Aplicat":
             danyrestant = dany.copy()
+            if atacant.id in self.equip.keys():
+                if managastat > 0:
+                    manacost = managastat
 
         for pos, ent in enumerate(atacats):
             if ent.id in dany.keys():
                 self.UpdatingHP = True
 
-                if danyrestant[ent.id] > (dany[ent.id] / 20) and ent.StatsCombat["CurHP"] > 0:
-                    ent.StatsCombat["CurHP"] -= (dany[ent.id] / 20)
-                    danyrestant[ent.id] -= (dany[ent.id] / 20)
+                if dany[ent.id] > 0:
+                    if danyrestant[ent.id] > (ent.StatsCombat["MaxHP"] / 100) and ent.StatsCombat["CurHP"] > 0:
+                        ent.StatsCombat["CurHP"] -= (ent.StatsCombat["MaxHP"] / 100)
+                        danyrestant[ent.id] -= (ent.StatsCombat["MaxHP"] / 100)
+                    
+                    elif danyrestant[ent.id] <= (ent.StatsCombat["MaxHP"] / 100) and ent.StatsCombat["CurHP"] > 0:
+                        ent.StatsCombat["CurHP"] -= danyrestant[ent.id]
+                        if ent.id in dany:
+                            dany.pop(ent.id)
+                    else:
+                        if ent not in popEnt:
+                            popEnt.append(ent)
+                        if ent.id in dany:
+                            dany.pop(ent.id)
                 
-                elif danyrestant[ent.id] <= dany[ent.id] / 20 and ent.StatsCombat["CurHP"] > 0:
-                    ent.StatsCombat["CurHP"] -= danyrestant[ent.id]
-                    if ent.id in dany:
-                        dany.pop(ent.id)
+                elif dany[ent.id] < 0:
+                    danyrestant[ent.id] = abs(danyrestant[ent.id])
+
+                    if danyrestant[ent.id] > (ent.StatsCombat["MaxHP"] / 100):
+                        ent.StatsCombat["CurHP"] += (ent.StatsCombat["MaxHP"] / 100)
+                        danyrestant[ent.id] -= (ent.StatsCombat["MaxHP"] / 100)
+                    
+                    elif danyrestant[ent.id] <= (ent.StatsCombat["MaxHP"] / 100):
+                        ent.StatsCombat["CurHP"] += abs(danyrestant[ent.id])
+                        if ent.id in dany:
+                            dany.pop(ent.id)
                 else:
-                    if ent not in popEnt:
-                        popEnt.append(ent)
                     if ent.id in dany:
                         dany.pop(ent.id)
                 
@@ -1370,81 +1532,49 @@ class MenuCombat():
                 ent.StatsCombat["CurHP"] = round(ent.StatsCombat["CurHP"], 1)
                 danyrestant[ent.id] = round(danyrestant[ent.id], 1)
 
-                if ent in self.enemic.values():
-                    health = ent.StatsCombat["CurHP"] / ent.StatsCombat["MaxHP"]
-                    mida = 95 * health
+                self.ActualitzarBarresEstat(ent)
+            
+            if atacant.id in self.equip.keys() and managastat > 0:
 
-                    actual_coords = self.canvas.coords(f"hp_enemic_{ent.id}")
+                if manacost >= (atacant.StatsCombat["MaxMana"] / 100):
+                    atacant.StatsCombat["Mana"] -= (atacant.StatsCombat["MaxMana"] / 100)
+                    manacost -= (atacant.StatsCombat["MaxMana"] / 100)
+                else:
+                    atacant.StatsCombat["Mana"] -= manacost
+                    manacost = 0
 
-                    new_coords = actual_coords
-                    new_coords[2] = 5 + 40 + mida
-
-                    self.canvas.coords(f"hp_enemic_{ent.id}", new_coords)
-
-                    actual_coords = self.canvas.coords(f"texthp_enemic_{ent.id}")
-
-                    new_coords = actual_coords
-                    font = tkfont.Font(family="Courier", size=11, weight="bold")
-
-                    texthealth = f"{round(ent.StatsCombat["CurHP"])}/{round(ent.StatsCombat["MaxHP"])}"
-                    midatext = font.measure(texthealth)
-
-                    new_coords[0] = 45 + 90 - midatext
-
-                    self.canvas.itemconfig(f"texthp_enemic_{ent.id}", text=texthealth)
-                    self.canvas.coords(f"texthp_enemic_{ent.id}", new_coords)
+                x = self.app.Ancho - 250
+                mana = atacant.StatsCombat["Mana"] / atacant.StatsCombat["MaxMana"]
+                amplada = (self.app.Ancho - 15) - (x + 60)
+                mida = amplada * mana
                 
-                elif ent in self.equip.values():
-                    x = self.app.Ancho - 250
+                actual_coords = self.canvas.coords(f"mana_entitats_{atacant.id}")
 
-                    health = ent.StatsCombat["CurHP"] / ent.StatsCombat["MaxHP"]
-                    amplada = (self.app.Ancho - 15) - (x + 60)
-                    mida = amplada * health
+                new_coords = actual_coords
+                new_coords[2] = x + 60 + mida
 
-                    actual_coords = self.canvas.coords(f"vida_entitats_{ent.id}")
+                self.canvas.coords(f"mana_entitats_{atacant.id}", new_coords)
 
-                    new_coords = actual_coords
-                    new_coords[2] = x + 60 + mida
+                textmana = f"{round(atacant.StatsCombat["Mana"])}/{round(atacant.StatsCombat["MaxMana"])}"
 
-                    self.canvas.coords(f"vida_entitats_{ent.id}", new_coords)
+                actual_coords = self.canvas.coords(f"textmana_entitats_{atacant.id}")
+                new_coords = actual_coords
 
-                    actual_coords = self.canvas.coords(f"textvida_entitats_{ent.id}")
-                    new_coords = actual_coords
-                    font = tkfont.Font(family="Courier", size=11, weight="bold")
+                font = tkfont.Font(family="Courier", size=11, weight="bold")
+                midatext = font.measure(textmana)
 
-                    texthealth = f"{round(ent.StatsCombat["CurHP"])}/{round(ent.StatsCombat["MaxHP"])}"
-                    midatext = font.measure(texthealth)
-                    new_coords[0] = self.app.Ancho - 20 - midatext
-                    self.canvas.itemconfig(f"textvida_entitats_{ent.id}", text=texthealth)
-                    self.canvas.coords(f"textvida_entitats_{ent.id}", new_coords)
-
-                    mana = ent.StatsCombat["Mana"] / ent.StatsCombat["MaxMana"]
-                    amplada = (self.app.Ancho - 15) - (x + 60)
-                    mida = amplada * mana
+                new_coords[0] = self.app.Ancho - 20 - midatext
+                self.canvas.itemconfig(f"textmana_entitats_{atacant.id}", text=textmana)
+                self.canvas.coords(f"textmana_entitats_{atacant.id}", new_coords)
                     
-                    actual_coords = self.canvas.coords(f"mana_entitats_{ent.id}")
-
-                    new_coords = actual_coords
-                    new_coords[2] = x + 60 + mida
-
-                    self.canvas.coords(f"mana_entitats_{ent.id}", new_coords)
-
-                    textmana = f"{round(ent.StatsCombat["Mana"])}/{round(ent.StatsCombat["MaxMana"])}"
-
-                    actual_coords = self.canvas.coords(f"textmana_entitats_{ent.id}")
-                    new_coords = actual_coords
-
-                    midatext = font.measure(textmana)
-
-                    new_coords[0] = self.app.Ancho - 20 - midatext
-                    self.canvas.itemconfig(f"textmana_entitats_{ent.id}", text=textmana)
-                    self.canvas.coords(f"textmana_entitats_{ent.id}", new_coords)
-
-
         for ent in popEnt:
             atacats.remove(ent)
 
-        if len(atacats) == 0 or len(dany.keys()) == 0:
+        mana_actualitzat = True
+        if managastat > 0 and manacost > 0:
+            mana_actualitzat = False
+
+        if len(atacats) == 0 or len(dany.keys()) == 0 and mana_actualitzat == True:
             self.UpdatingHP = False
             if self.UpdateHPAnimation != None:
                 self.app.root.after_cancel(self.UpdateHPAnimation)
@@ -1454,9 +1584,10 @@ class MenuCombat():
             else:
                 self.FinalitzarTorn(False)
         else:
-            self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, atacats, atacant, danyrestant))
+            self.UpdateHPAnimation = self.app.root.after(10, lambda: self.AplicarDany(dany, managastat, atacats, atacant, manacost, danyrestant))
         
     def FinalitzarTorn(self, aliat = True):
+        self.ComprobarEfecteEstat(aliat)
         self.DescartarDerrotats()
         if aliat == True:
             self.AtacantAliat.Priority = 0
@@ -1465,7 +1596,6 @@ class MenuCombat():
         else:
             self.AtacantEnemic.Priority = 0
             self.AccioEnemic = False
-        self.Lluitar()
                        
     def AccioPasarTorn(self):
         # Cridar un dialeg que mostri amb text que s'ha passat el torn...
@@ -1481,7 +1611,7 @@ class MenuCombat():
                 if self.Fugir[0] == True:
                     self.dibuixar_Pantalla_fi_combat()
             elif self.Atacar == True:
-                pass
+                self.Lluitar()
             
         else:
             self.Lluitar()

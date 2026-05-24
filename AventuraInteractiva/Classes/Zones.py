@@ -18,13 +18,13 @@ class Zona():
     CondicioPerTrobarRuta = {}
     IntentsPerTrobar = 10
 
-
     # Metodes
-    def __init__(self, id, name, description, tipus, enemies, gol, intents = 5, objects = {}, shops = {}):
+    def __init__(self, id, name, description, tipus, scenes, enemies, gol, intents = 5, objects = {}, shops = {}):
         self.id = id
         self.NameZone = name
         self.Description = description
         self.ZoneType = tipus
+        self.Scenes = scenes
         self.Enemies = enemies
         self.Or = gol
         self.CondicioPerTrobarRuta = {}

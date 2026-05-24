@@ -2,7 +2,7 @@
     "id": "greenwoods",
     "name": "Bosc de Fusta Verda",
     "description": "Al atravesar el bosc ubicat al sud de Dawn Village, entres als boscs de fusta verda, t'apropes a la capital...",
-    "zone_type": "bosc",
+    "zone_type": "forest",
     "shops": [],
     
     "enemies": {
@@ -26,7 +26,7 @@
             "level_range": [3, 7]
         },
 
-        "conill": {
+        "rabbit": {
             "prob": 30,
             "group_probs": [90, 10],
             "companions": {},
