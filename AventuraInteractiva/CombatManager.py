@@ -470,7 +470,7 @@ class MenuCombat():
             x += 150 if len(self.equip) > 1 else 210
         
         y = 50
-        x = 300 if len(self.enemic) == 1 else 220 if len(self.enemic) == 2 else 150
+        x = 300 if len(self.enemic) == 1 else 200 if len(self.enemic) == 2 else 100
 
         for i, ent in enumerate(self.enemic.items()):
             if "Combat" not in ent[1].ImatgeAjustada.keys():
@@ -480,12 +480,12 @@ class MenuCombat():
                 "Frontal":
                 self.app.RedimensionarImatge(
                 ent[1].Imatges["Frontal"],
-                100, 150, False
+                70, 105, False
                 )
             })
             
             self.canvas.create_image(
-                    x + 10, y + 50,
+                    x + 10, y + 150,
                     image=ent[1].ImatgeAjustada["Combat"]["Frontal"],
                     anchor="nw",
                     tags=(f"ent_enemy_img_{ent[1].id}", "ent_estat_combat", "combat")

@@ -261,6 +261,8 @@ class App():
 
     def RedimensionarFons(self, image = None):
 
+        x = 0
+        y = 0
         if image != None:
             if os.path.exists(image):
                 self.ImatgeFons = Image.open(image)
@@ -268,7 +270,9 @@ class App():
             if not isinstance(self.jugador.Ubicacio, str):
                 if self.jugador.Ubicacio.id in self.Zones.keys():
                     if self.Combat == True:
-                        text = ""
+                        text = "Battle"
+                        x = 150
+                        y = 60
                     else:
                         text = "Scene"
                     
@@ -276,15 +280,21 @@ class App():
                         self.ImatgeFons = Image.open(self.jugador.Ubicacio.Scenes[text])
         
         # Redimensionem a la mida de la pantalla, i li donem format LANCZOS (de bona qualitat)
-        redim_image = self.ImatgeFons.resize(
-            (self.Ancho, self.Alto), Image.Resampling.LANCZOS
-        )
+        
+        if self.Combat == True:
+            redim_image = self.ImatgeFons.resize(
+                (600, 400), Image.Resampling.LANCZOS
+            )
+        else:
+            redim_image = self.ImatgeFons.resize(
+                (self.Ancho, self.Alto), Image.Resampling.LANCZOS
+            )
 
         # Convertim a format compatible
         self.fondo = ImageTk.PhotoImage(redim_image)
 
         # Posicionem la imatge en la finestra
-        self.canvas.create_image(0, 0, image=self.fondo, anchor="nw", tags="fondo")
+        self.canvas.create_image(x, y, image=self.fondo, anchor="nw", tags="fondo")
         self.canvas.tag_lower("fondo")
     
     def RedimensionarImatge(self, imatge, x, y, borros=False, scale = None):

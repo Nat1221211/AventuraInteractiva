@@ -162,16 +162,17 @@ class Menu():
             else:
                 midacuadre = 150
         
-        rect2 = self.canvas.create_rectangle(
-            5, self.app.Alto - midacuadre,
-            self.app.Ancho - 5,
-            self.app.Alto - 5,
-            fill="white", outline="black",
-            width=4, tags="dialeg"
-        )
-        self.canvas.tag_raise("dialeg")
         
         if index <= len(self.textdialeg):
+            
+            rect2 = self.canvas.create_rectangle(
+                5, self.app.Alto - midacuadre,
+                self.app.Ancho - 5,
+                self.app.Alto - 5,
+                fill="white", outline="black",
+                width=4, tags="dialeg"
+            )
+            self.canvas.tag_raise("dialeg")
             mostrat = self.textdialeg[:index]
 
             y = 450
