@@ -187,8 +187,21 @@ def CallZones():
                         shop_value
                     }
                 )
+        
+            base_path = os.path.dirname(__file__)
+            ruta_background = os.path.join(base_path, f"Assets/Backgrounds/Battle/{i["zone_type"]}_Battleground.png")
+            ruta_scene = os.path.join(base_path, f"Assets/Backgrounds/GUIs/{i["id"]}_scene.png")
 
-            place = Zones.Zona(i["id"], i["name"], i["description"], i["zone_type"], i["enemies"], 
+            imatges = {}
+            if os.path.exists(ruta_background):
+                imatges.update({"Battle": ruta_background})
+            if os.path.exists(ruta_scene):
+                imatges.update({"Scene": ruta_scene})
+            else:
+                ruta_scene = os.path.join(base_path, f"Assets/Backgrounds/GUIs/{i["zone_type"]}_scene.png")
+                imatges.update({"Scene": ruta_scene})
+
+            place = Zones.Zona(i["id"], i["name"], i["description"], i["zone_type"], imatges, i["enemies"], 
                             i["monedes"], i["Intents"], i["objects"], shop_dict)
             
             place.AddConnections(i["connections"])

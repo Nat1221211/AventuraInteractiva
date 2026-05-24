@@ -264,6 +264,16 @@ class App():
         if image != None:
             if os.path.exists(image):
                 self.ImatgeFons = Image.open(image)
+        else:
+            if not isinstance(self.jugador.Ubicacio, str):
+                if self.jugador.Ubicacio.id in self.Zones.keys():
+                    if self.Combat == True:
+                        text = ""
+                    else:
+                        text = "Scene"
+                    
+                    if text in self.jugador.Ubicacio.Scenes.keys():
+                        self.ImatgeFons = Image.open(self.jugador.Ubicacio.Scenes[text])
         
         # Redimensionem a la mida de la pantalla, i li donem format LANCZOS (de bona qualitat)
         redim_image = self.ImatgeFons.resize(
@@ -555,7 +565,10 @@ class App():
     
     def CarregarPartida(self, partida):
         self.jugador = SaveGame.CarregarPartida(partida, self.Missions, self.Objects, self.Zones, self.Entities)
+        
         UIManager.MostrarMenuPrincipal(self)
+
+
 
     def GuardarPartida(self):
         self.QuinaConfirmacio = "Guardar"

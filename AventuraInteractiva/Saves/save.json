@@ -1,6 +1,6 @@
 {
     "Nom": "Aishia",
-    "Ubicacio": "greenwoods",
+    "Ubicacio": "knightshire",
     "Or": 5040,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
@@ -60,7 +60,7 @@
                 "ATK": 82.8,
                 "INT": 30.8,
                 "DEF": 77.60000000000001,
-                "SPD": 51.6
+                "SPD": 56.800000000000004
             }
         }
     ],
