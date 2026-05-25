@@ -617,14 +617,15 @@ class Menu():
                 anchor="nw", tags=("ent_info", "mostrar_estat")
             )
         
-        text_xp = f"XP: {self.opcions[self.index].Objecte.Xp} / {self.opcions[self.index].Objecte.XpRequired}"
-        self.canvas.create_text(
-                30, 130,
-                text=text_xp,
-                fill="black",
-                font=("Courier", 16, "bold"),
-                anchor="nw", tags=("ent_info", "mostrar_estat")
-            )
+        if self.opcions[self.index].Objecte.Lv < self.opcions[self.index].Objecte.LvLimit:
+            text_xp = f"XP: {self.opcions[self.index].Objecte.Xp} / {self.opcions[self.index].Objecte.XpRequired}"
+            self.canvas.create_text(
+                    30, 130,
+                    text=text_xp,
+                    fill="black",
+                    font=("Courier", 16, "bold"),
+                    anchor="nw", tags=("ent_info", "mostrar_estat")
+                )
 
         stats_colors = ["green", "green", "blue", "blue", "red", "purple", "orange", "cyan"]
         y = 170

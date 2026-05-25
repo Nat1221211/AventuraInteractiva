@@ -1,0 +1,28 @@
+{
+    "id": "defeat_wolfs",
+    "name": "Derrotant Llops",
+    "description": "T'encarreguen que derrotis uns quants llops com a proba de que pots lluitar...",
+    "class": "Principal",
+    "type": "Kill",
+    "generic": "True",
+    "objective":{
+        "place": "greenwoods", 
+        "enemy": ["wolf"],
+        "Amount": 3
+    },
+    "rewards": {
+        "XP": 300,
+        "Gold": 3000,
+        "Objects": [
+            {
+                "id": "high_potion",
+                "type": "Combat",
+                "Amount": 1
+            }
+        ]
+    },
+    "requisites": {
+        "Lv": 5,
+        "Mission": ["first_adventure"]
+    }
+}

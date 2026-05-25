@@ -1,20 +1,15 @@
 {
-    "Nom": "Aishia",
-    "Ubicacio": "knightshire",
-    "Or": 5040,
+    "Nom": "Jose",
+    "Ubicacio": "greenwoods",
+    "Or": 5100,
     "Ultim_Visitat": "knightshire",
     "Missions_Acceptades": {
         "defeat_slimes": {
             "id": "defeat_slimes",
             "type": "Kill",
-            "Progress": 2,
+            "Progress": 1,
             "Status": "Disponible"
-        }
-    },
-    "Missions_Finalitzades": [
-        "first_adventure"
-    ],
-    "Missions_Disponibles": {
+        },
         "find_smulet_greenwoods": {
             "id": "find_smulet_greenwoods",
             "type": "Object",
@@ -28,6 +23,10 @@
             "Status": "Disponible"
         }
     },
+    "Missions_Finalitzades": [
+        "first_adventure"
+    ],
+    "Missions_Disponibles": {},
     "Llocs_Trobats": [
         "dawn_village",
         "south_forest",
@@ -45,31 +44,26 @@
     "Team": [
         {
             "id": "Player",
-            "Nom": "Aishia",
-            "Base": "warrior",
-            "Lv": 26,
+            "Nom": "Jose",
+            "Base": "priest",
+            "Lv": 90,
             "Lv_Limit": 100,
             "Moves": [],
             "Afected": [],
-            "XP": 76.6,
+            "XP": 161.57,
             "StatsCombat": {
-                "MaxHP": 93.2,
-                "CurHP": 26.0,
-                "MaxMana": 62.0,
-                "Mana": 14.999999999999996,
-                "ATK": 82.8,
-                "INT": 30.8,
-                "DEF": 77.60000000000001,
-                "SPD": 56.800000000000004
+                "MaxHP": 19.6,
+                "CurHP": 14.2,
+                "MaxMana": 34.0,
+                "Mana": 14.999999999999988,
+                "ATK": 17.2,
+                "INT": 31.6,
+                "DEF": 22.0,
+                "SPD": 22.0
             }
         }
     ],
     "Inventari": [
-        {
-            "id": "complete_potion",
-            "Amount": 1,
-            "Clase": "Combat"
-        },
         {
             "id": "inferior_potion",
             "Amount": 1,
