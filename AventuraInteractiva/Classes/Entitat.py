@@ -372,16 +372,18 @@ class Entity():
             
     
     def CalcXPRequired(self):
-        baseAmount = 5
-        multiplierToLvl = 600
+        xpRequired = 0
+        if self.Lv < self.LvLimit:
+            baseAmount = 5
+            multiplierToLvl = 600
 
-        exponentForLvl = 2
+            exponentForLvl = 2
 
 
-        addToExponent = (self.Lv * (1 / multiplierToLvl))
+            addToExponent = (self.Lv * (1 / multiplierToLvl))
 
-        xpMultiplier = (self.Lv ** (exponentForLvl + addToExponent))
-        xpRequired = baseAmount * xpMultiplier
+            xpMultiplier = (self.Lv ** (exponentForLvl + addToExponent))
+            xpRequired = baseAmount * xpMultiplier
 
         return xpRequired
 
