@@ -1,13 +1,18 @@
 # AventuraInteractiva
+Joc Interactiu d'Interficie Grafica, amb combat, exploracio de zones per linies de text, missions, objectes utilitzables en combat (curacio), entre d'altres.
 
-Joc RPG amb combat segons prioritat (dona més importancia a la velocitat), els menus són menus amb moviment mitjançant w/s i enter per a enviar, enter per a seleccionar una opcio i q per a sortir, menicionant en cada menu quines opcions tensa, es a dir, si ports sortir amb q, o seleccionar amb enter...
+El joc es façilment ampliable en termes de contingut afegint imatges en assets entities, respectant el terme:
+cada entitat id_sprite, dins la cual una imatge front i una back, en format .png.
 
-Hi ha missions, zones, exits (logros / acheivements), multiples enitats, moviments, efectes d'estat (buffs / debuffs), exploracio amb probabilitat d etrobar objectes, rutes d'altres zones, ho activar / provocar / entrar en una missio de les acceptades.
+Afegir entitats, moviments, zones, missions, utilitzant les d'exemple ja existents.
 
-Compte amb una opcio de guardat de partida, i carrega d'aquesta, però hi ha un sol slot de guardat.
+Les imatges de fons, poden ser de tipus combat (Battleground), o de Scene (GUIs), en aquestes, han de portar el noms amb el seguent format:
+Scenes:
+  - per zona: ZoneType_scene.png
+  -  per id: id_scene.png
 
-El contiongut del joc és completament definit per els fitxers CSV i JSON, però esta limitat a les diferents opcions que es donen, mentre es segueixi una pauta similar-ment identica es pot afegir contingut al joc, però si hi ha alguna errada en els fitxers podria evocar en fallos del codi imprevisibles, desde un simple ara no faig dany fins a que el programa colapsi i digui, ha ocurrido un error.
+les de combat igualment, pero de moment només per zonetype_Battleground.png
 
-S'ha de tenir en compte els noms dels fitxers en alguns casos al afegir contingut i sobretot els id de les diferents coses, com entitats, zones, missions, objectes, efectes d'estat, i altres detalls al crear contingut.
+Per a revisar la carrega d'imatges mirar el fitxer PreparariCridar, en els apartats, d'Entitats i Zones...
 
-Finalment al afegir contingut recomano seguir creant clons dels diferents tipus de missions o zones, etc... i canviar petits detalls, com l'enemic, les recompenses i similar, afegir entitats és pot fer simplement seguint l'exemple dels ja creats que s'utilutzen en el joc, ja que els que no ho fan podrian no estar adaptats completament, asseguro que els 4 tipus de missio són funcionals aixì com les zones, botigues, entitats, objectes i altres detalls.
+No afegir sense comprobar el funcionament dels sistemes anteriorment, o fer a base de prova i error degut a falta d'informació...
